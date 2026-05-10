@@ -1,5 +1,5 @@
 import type * as Platform from '../platform/platform.js';
-import type * as ProtocolClient from '../protocol_client/protocol_client.js';
+import * as ProtocolClient from '../protocol_client/protocol_client.js';
 import type { ProtocolMessage, RehydratingExecutionContext, RehydratingResource, RehydratingScript, RehydratingTarget, ServerMessage } from './RehydratingObject.js';
 import { TraceObject } from './TraceObject.js';
 export interface RehydratingConnectionInterface {
@@ -10,7 +10,7 @@ export declare const enum RehydratingConnectionState {
     INITIALIZED = 2,
     REHYDRATED = 3
 }
-export declare class RehydratingConnection implements ProtocolClient.ConnectionTransport.ConnectionTransport {
+export declare class RehydratingConnectionTransport implements ProtocolClient.ConnectionTransport.ConnectionTransport {
     #private;
     rehydratingConnectionState: RehydratingConnectionState;
     onDisconnect: ((arg0: string) => void) | null;

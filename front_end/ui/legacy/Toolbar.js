@@ -8,7 +8,7 @@ import * as Platform from '../../core/platform/platform.js';
 import * as Root from '../../core/root/root.js';
 import * as Buttons from '../../ui/components/buttons/buttons.js';
 import * as VisualLogging from '../../ui/visual_logging/visual_logging.js';
-import * as IconButton from '../components/icon_button/icon_button.js';
+import { createIcon } from '../kit/kit.js';
 import { ActionRegistry } from './ActionRegistry.js';
 import * as ARIAUtils from './ARIAUtils.js';
 import { ContextMenu } from './ContextMenu.js';
@@ -17,6 +17,7 @@ import { TextPrompt } from './TextPrompt.js';
 import toolbarStyles from './toolbar.css.js';
 import { Tooltip } from './Tooltip.js';
 import { bindCheckbox, CheckboxLabel, LongClickController } from './UIUtils.js';
+import { Widget } from './Widget.js';
 const UIStrings = {
     /**
      * @description Announced screen reader message for ToolbarSettingToggle when the setting is toggled on.
@@ -34,6 +35,10 @@ const UIStrings = {
      * @description Placeholder for filter bars that shows before the user types in a filter keyword.
      */
     filter: 'Filter',
+    /**
+     * @description Tooltip shown when the user hovers over the regex icon to toggle regular-expression filtering.
+     */
+    useRegularExpression: 'Use regular expression',
 };
 const str_ = i18n.i18n.registerUIStrings('ui/legacy/Toolbar.ts', UIStrings);
 const i18nString = i18n.i18n.getLocalizedString.bind(undefined, str_);
@@ -296,7 +301,13 @@ export class Toolbar extends HTMLElement {
             item.applyEnabledState(false);
         }
         if (item.element.parentElement !== this) {
-            this.appendChild(item.element);
+            const widget = Widget.get(item.element);
+            if (widget) {
+                widget.show(this);
+            }
+            else {
+                this.appendChild(item.element);
+            }
         }
         this.hideSeparatorDupes();
     }
@@ -310,7 +321,15 @@ export class Toolbar extends HTMLElement {
         if (!this.enabled) {
             item.applyEnabledState(false);
         }
-        this.prepend(item.element);
+        if (item.element.parentElement !== this) {
+            const widget = Widget.get(item.element);
+            if (widget) {
+                widget.show(this, this.firstChild);
+            }
+            else {
+                this.prepend(item.element);
+            }
+        }
         this.hideSeparatorDupes();
     }
     appendSeparator() {
@@ -326,7 +345,13 @@ export class Toolbar extends HTMLElement {
         const updatedItems = [];
         for (const item of this.items) {
             if (item === itemToRemove) {
-                item.element.remove();
+                const widget = Widget.get(item.element);
+                if (widget) {
+                    widget.detach();
+                }
+                else {
+                    item.element.remove();
+                }
             }
             else {
                 updatedItems.push(item);
@@ -337,6 +362,10 @@ export class Toolbar extends HTMLElement {
     removeToolbarItems() {
         for (const item of this.items) {
             item.toolbar = null;
+            const widget = Widget.get(item.element);
+            if (widget) {
+                widget.detach();
+            }
         }
         this.items = [];
         this.removeChildren();
@@ -475,7 +504,7 @@ export class ToolbarText extends ToolbarItem {
         this.setText(text);
     }
     text() {
-        return this.element.textContent ?? '';
+        return this.element.textContent;
     }
     setText(text) {
         this.element.textContent = text;
@@ -632,6 +661,9 @@ export class ToolbarInput extends ToolbarItem {
         this.element.appendChild(clearButton);
         this.updateEmptyStyles();
     }
+    insertTrailingElement(element) {
+        this.element.appendChild(element);
+    }
     applyEnabledState(enabled) {
         if (enabled) {
             this.element.classList.remove('disabled');
@@ -679,19 +711,38 @@ export class ToolbarInput extends ToolbarItem {
     }
 }
 export class ToolbarFilter extends ToolbarInput {
-    constructor(filterBy, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext, element) {
+    constructor(filterBy, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext, element, showRegexToggle, onRegexToggle) {
         const filterPlaceholder = filterBy ? filterBy : i18nString(UIStrings.filter);
         super(filterPlaceholder, filterPlaceholder, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext || 'filter', element);
-        const filterIcon = IconButton.Icon.create('filter');
+        const filterIcon = createIcon('filter');
         this.element.prepend(filterIcon);
         this.element.classList.add('toolbar-filter');
+        if (showRegexToggle) {
+            const regexIconName = 'regular-expression';
+            const regexButton = new Buttons.Button.Button();
+            regexButton.data = {
+                variant: "icon_toggle" /* Buttons.Button.Variant.ICON_TOGGLE */,
+                size: "SMALL" /* Buttons.Button.Size.SMALL */,
+                iconName: regexIconName,
+                toggledIconName: regexIconName,
+                toggleType: "primary-toggle" /* Buttons.Button.ToggleType.PRIMARY */,
+                toggled: false,
+                title: i18nString(UIStrings.useRegularExpression),
+                jslogContext: regexIconName,
+            };
+            ARIAUtils.setLabel(regexButton, i18nString(UIStrings.useRegularExpression));
+            regexButton.addEventListener('click', () => {
+                onRegexToggle?.();
+            });
+            this.insertTrailingElement(regexButton);
+        }
     }
 }
 export class ToolbarInputElement extends HTMLElement {
-    static observedAttributes = ['value', 'disabled'];
+    static observedAttributes = ['value', 'disabled', 'regex'];
     item;
     datalist = null;
-    value = undefined;
+    #value = undefined;
     #disabled = false;
     connectedCallback() {
         if (this.item) {
@@ -709,15 +760,15 @@ export class ToolbarInputElement extends HTMLElement {
         if (isFilter) {
             this.item = new ToolbarFilter(placeholder, /* growFactor=*/ undefined, 
             /* shrinkFactor=*/ undefined, tooltip, this.datalist ? this.#onAutocomplete.bind(this) : undefined, 
-            /* dynamicCompletions=*/ undefined, jslogContext || 'filter', this);
+            /* dynamicCompletions=*/ undefined, jslogContext || 'filter', this, this.hasAttribute('regex'), this.#onRegexToggle.bind(this));
         }
         else {
             this.item = new ToolbarInput(placeholder, accessiblePlaceholder, /* growFactor=*/ undefined, 
             /* shrinkFactor=*/ undefined, tooltip, this.datalist ? this.#onAutocomplete.bind(this) : undefined, 
             /* dynamicCompletions=*/ undefined, jslogContext, this);
         }
-        if (this.value) {
-            this.item.setValue(this.value);
+        if (this.#value) {
+            this.item.setValue(this.#value);
         }
         if (this.#disabled) {
             this.item.setEnabled(false);
@@ -732,6 +783,9 @@ export class ToolbarInputElement extends HTMLElement {
     focus() {
         this.item?.focus();
     }
+    #onRegexToggle() {
+        this.dispatchEvent(new CustomEvent('regextoggle'));
+    }
     async #onAutocomplete(expression, prefix, force) {
         if (!prefix && !force && expression || !this.datalist) {
             return [];
@@ -745,7 +799,7 @@ export class ToolbarInputElement extends HTMLElement {
                 this.item.setValue(newValue, true);
             }
             else {
-                this.value = newValue;
+                this.#value = newValue;
             }
         }
         else if (name === 'disabled') {
@@ -754,6 +808,12 @@ export class ToolbarInputElement extends HTMLElement {
                 this.item.setEnabled(!this.#disabled);
             }
         }
+    }
+    get value() {
+        return this.item ? this.item.value() : (this.#value ?? '');
+    }
+    set value(value) {
+        this.setAttribute('value', value);
     }
     set disabled(disabled) {
         if (disabled) {
@@ -824,7 +884,7 @@ export class ToolbarMenuButton extends ToolbarItem {
         this.title = '';
         if (!isIconDropdown) {
             this.element.classList.add('toolbar-has-dropdown');
-            const dropdownArrowIcon = IconButton.Icon.create('triangle-down', 'toolbar-dropdown-arrow');
+            const dropdownArrowIcon = createIcon('triangle-down', 'toolbar-dropdown-arrow');
             this.element.appendChild(dropdownArrowIcon);
         }
         if (jslogContext) {
@@ -963,6 +1023,9 @@ export class ToolbarComboBox extends ToolbarItem {
             this.element.setAttribute('jslog', `${VisualLogging.dropDown().track({ change: true }).context(jslogContext)}`);
         }
     }
+    turnShrinkable() {
+        this.element.classList.add('toolbar-has-dropdown-shrinkable');
+    }
     size() {
         return this.element.childElementCount;
     }
@@ -1087,11 +1150,11 @@ export class ToolbarSettingComboBox extends ToolbarComboBox {
 export class ToolbarCheckbox extends ToolbarItem {
     #checkboxLabel;
     constructor(text, tooltip, listener, jslogContext) {
-        const checkboxLabel = CheckboxLabel.create(text, undefined, undefined, jslogContext);
+        // Pass tooltip to CheckboxLabel.create so it's set on the inner input/text elements,
+        // rather than installing it on the wrapper element which causes screen readers to
+        // incorrectly announce it as a group name.
+        const checkboxLabel = CheckboxLabel.create(text, undefined, undefined, jslogContext, undefined, tooltip);
         super(checkboxLabel);
-        if (tooltip) {
-            Tooltip.install(this.element, tooltip);
-        }
         if (listener) {
             this.element.addEventListener('click', listener, false);
         }

@@ -2,12 +2,11 @@ import type * as ProtocolProxyApi from '../../generated/protocol-proxy-api.js';
 import * as Protocol from '../../generated/protocol.js';
 import * as TextUtils from '../../models/text_utils/text_utils.js';
 import * as Common from '../common/common.js';
-import * as Host from '../host/host.js';
 import * as Platform from '../platform/platform.js';
 import { NetworkRequest } from './NetworkRequest.js';
 import { SDKModel } from './SDKModel.js';
 import { type Target } from './Target.js';
-import { type SDKModelObserver } from './TargetManager.js';
+import { type SDKModelObserver, TargetManager } from './TargetManager.js';
 /**
  * We store two settings to disk to persist network throttling.
  * 1. The custom conditions that the user has defined.
@@ -16,8 +15,8 @@ import { type SDKModelObserver } from './TargetManager.js';
  * to in multiple places, and this ensures we don't have accidental typos which
  * mean extra settings get mistakenly created.
  */
-export declare function customUserNetworkConditionsSetting(): Common.Settings.Setting<Conditions[]>;
-export declare function activeNetworkThrottlingKeySetting(): Common.Settings.Setting<ThrottlingConditionKey>;
+export declare function customUserNetworkConditionsSetting(settings?: Common.Settings.Settings): Common.Settings.Setting<Conditions[]>;
+export declare function activeNetworkThrottlingKeySetting(settings?: Common.Settings.Settings): Common.Settings.Setting<ThrottlingConditionKey>;
 export declare class NetworkManager extends SDKModel<EventTypes> {
     #private;
     readonly dispatcher: NetworkDispatcher;
@@ -41,12 +40,13 @@ export declare class NetworkManager extends SDKModel<EventTypes> {
     requestForId(id: string): NetworkRequest | null;
     requestForLoaderId(loaderId: Protocol.Network.LoaderId): NetworkRequest | null;
     private cacheDisabledSettingChanged;
-    private cookieControlFlagsSettingChanged;
+    private preserveLogChanged;
     dispose(): void;
     private bypassServiceWorkerChanged;
     getSecurityIsolationStatus(frameId: Protocol.Page.FrameId | null): Promise<Protocol.Network.SecurityIsolationStatus | null>;
-    getIpProtectionProxyStatus(): Promise<Protocol.Network.IpProxyStatus | null>;
-    enableReportingApi(enable?: boolean): Promise<Promise<Protocol.ProtocolResponseWithError>>;
+    enableReportingApi(enable?: boolean): Promise<Protocol.ProtocolResponseWithError>;
+    enableDeviceBoundSessions(enable?: boolean): Promise<Protocol.ProtocolResponseWithError>;
+    deleteDeviceBoundSession(key: Protocol.Network.DeviceBoundSessionKey): Promise<Protocol.ProtocolResponseWithError>;
     loadNetworkResource(frameId: Protocol.Page.FrameId | null, url: Platform.DevToolsPath.UrlString, options: Protocol.Network.LoadNetworkResourceOptions): Promise<Protocol.Network.LoadNetworkResourcePageResult>;
     clearRequests(): void;
 }
@@ -61,7 +61,9 @@ export declare enum Events {
     LoadingFinished = "LoadingFinished",
     ReportingApiReportAdded = "ReportingApiReportAdded",
     ReportingApiReportUpdated = "ReportingApiReportUpdated",
-    ReportingApiEndpointsChangedForOrigin = "ReportingApiEndpointsChangedForOrigin"
+    ReportingApiEndpointsChangedForOrigin = "ReportingApiEndpointsChangedForOrigin",
+    DeviceBoundSessionsAdded = "DeviceBoundSessionsAdded",
+    DeviceBoundSessionEventOccurred = "DeviceBoundSessionEventOccurred"
 }
 export interface RequestStartedEvent {
     request: NetworkRequest;
@@ -88,6 +90,8 @@ export interface EventTypes {
     [Events.ReportingApiReportAdded]: Protocol.Network.ReportingApiReport;
     [Events.ReportingApiReportUpdated]: Protocol.Network.ReportingApiReport;
     [Events.ReportingApiEndpointsChangedForOrigin]: Protocol.Network.ReportingApiEndpointsChangedForOriginEvent;
+    [Events.DeviceBoundSessionsAdded]: Protocol.Network.DeviceBoundSession[];
+    [Events.DeviceBoundSessionEventOccurred]: Protocol.Network.DeviceBoundSessionEventOccurredEvent;
 }
 /**
  * Define some built-in DevTools throttling presets.
@@ -118,7 +122,7 @@ export declare class NetworkDispatcher implements ProtocolProxyApi.NetworkDispat
     requestForLoaderId(loaderId: Protocol.Network.LoaderId): NetworkRequest | null;
     resourceChangedPriority({ requestId, newPriority }: Protocol.Network.ResourceChangedPriorityEvent): void;
     signedExchangeReceived({ requestId, info }: Protocol.Network.SignedExchangeReceivedEvent): void;
-    requestWillBeSent({ requestId, loaderId, documentURL, request, timestamp, wallTime, initiator, redirectHasExtraInfo, redirectResponse, type, frameId, hasUserGesture, }: Protocol.Network.RequestWillBeSentEvent): void;
+    requestWillBeSent({ requestId, loaderId, documentURL, request, timestamp, wallTime, initiator, redirectHasExtraInfo, redirectResponse, type, frameId, hasUserGesture, renderBlockingBehavior, }: Protocol.Network.RequestWillBeSentEvent): void;
     requestServedFromCache({ requestId }: Protocol.Network.RequestServedFromCacheEvent): void;
     responseReceived({ requestId, loaderId, timestamp, type, response, hasExtraInfo, frameId }: Protocol.Network.ResponseReceivedEvent): void;
     dataReceived(event: Protocol.Network.DataReceivedEvent): void;
@@ -133,7 +137,7 @@ export declare class NetworkDispatcher implements ProtocolProxyApi.NetworkDispat
     webSocketClosed({ requestId, timestamp: time }: Protocol.Network.WebSocketClosedEvent): void;
     eventSourceMessageReceived({ requestId, timestamp: time, eventName, eventId, data }: Protocol.Network.EventSourceMessageReceivedEvent): void;
     requestIntercepted({}: Protocol.Network.RequestInterceptedEvent): void;
-    requestWillBeSentExtraInfo({ requestId, associatedCookies, headers, clientSecurityState, connectTiming, siteHasCookieInOtherPartition, appliedNetworkConditionsId }: Protocol.Network.RequestWillBeSentExtraInfoEvent): void;
+    requestWillBeSentExtraInfo({ requestId, associatedCookies, headers, deviceBoundSessionUsages, clientSecurityState, connectTiming, siteHasCookieInOtherPartition, appliedNetworkConditionsId }: Protocol.Network.RequestWillBeSentExtraInfoEvent): void;
     responseReceivedEarlyHints({ requestId, headers, }: Protocol.Network.ResponseReceivedEarlyHintsEvent): void;
     responseReceivedExtraInfo({ requestId, blockedCookies, headers, headersText, resourceIPAddressSpace, statusCode, cookiePartitionKey, cookiePartitionKeyOpaque, exemptedCookies, }: Protocol.Network.ResponseReceivedExtraInfoEvent): void;
     private getExtraInfoBuilder;
@@ -158,10 +162,14 @@ export declare class NetworkDispatcher implements ProtocolProxyApi.NetworkDispat
     directUDPSocketClosed(event: Protocol.Network.DirectUDPSocketClosedEvent): void;
     directUDPSocketChunkSent(event: Protocol.Network.DirectUDPSocketChunkSentEvent): void;
     directUDPSocketChunkReceived(event: Protocol.Network.DirectUDPSocketChunkReceivedEvent): void;
+    directUDPSocketJoinedMulticastGroup(event: Protocol.Network.DirectUDPSocketJoinedMulticastGroupEvent): void;
+    directUDPSocketLeftMulticastGroup(event: Protocol.Network.DirectUDPSocketLeftMulticastGroupEvent): void;
     trustTokenOperationDone(event: Protocol.Network.TrustTokenOperationDoneEvent): void;
     reportingApiReportAdded(data: Protocol.Network.ReportingApiReportAddedEvent): void;
     reportingApiReportUpdated(data: Protocol.Network.ReportingApiReportUpdatedEvent): void;
     reportingApiEndpointsChangedForOrigin(data: Protocol.Network.ReportingApiEndpointsChangedForOriginEvent): void;
+    deviceBoundSessionsAdded(_params: Protocol.Network.DeviceBoundSessionsAddedEvent): void;
+    deviceBoundSessionEventOccurred(_params: Protocol.Network.DeviceBoundSessionEventOccurredEvent): void;
     policyUpdated(): void;
     /**
      * @deprecated
@@ -194,7 +202,7 @@ export declare class RequestURLPattern {
 }
 export declare class RequestCondition extends Common.ObjectWrapper.ObjectWrapper<RequestCondition.EventTypes> {
     #private;
-    static createFromSetting(setting: RequestConditionsSetting): RequestCondition;
+    static createFromSetting(setting: RequestConditionsSetting, settings?: Common.Settings.Settings): RequestCondition;
     static create(pattern: RequestURLPattern, conditions: ThrottlingConditions): RequestCondition;
     private constructor();
     get isBlocking(): boolean;
@@ -202,7 +210,7 @@ export declare class RequestCondition extends Common.ObjectWrapper.ObjectWrapper
     get constructorString(): string | undefined;
     get wildcardURL(): string | undefined;
     get constructorStringOrWildcardURL(): string;
-    set pattern(pattern: RequestURLPattern | string);
+    set pattern(pattern: RequestURLPattern);
     get enabled(): boolean;
     set enabled(enabled: boolean);
     get conditions(): ThrottlingConditions;
@@ -220,7 +228,7 @@ export declare namespace RequestCondition {
 }
 export declare class RequestConditions extends Common.ObjectWrapper.ObjectWrapper<RequestConditions.EventTypes> {
     #private;
-    constructor();
+    constructor(settings: Common.Settings.Settings);
     get count(): number;
     get conditionsEnabled(): boolean;
     set conditionsEnabled(enabled: boolean);
@@ -234,10 +242,7 @@ export declare class RequestConditions extends Common.ObjectWrapper.ObjectWrappe
     get conditions(): IteratorObject<RequestCondition>;
     applyConditions(offline: boolean, globalConditions: Conditions | null, ...agents: ProtocolProxyApi.NetworkApi[]): boolean;
     conditionsAppliedForTest(): Promise<unknown>;
-    conditionsForId(appliedNetworkConditionsId: string): {
-        conditions: Conditions;
-        urlPattern?: string;
-    } | undefined;
+    conditionsForId(appliedNetworkConditionsId: string): AppliedNetworkConditions | undefined;
 }
 export declare namespace RequestConditions {
     const enum Events {
@@ -247,12 +252,19 @@ export declare namespace RequestConditions {
         [Events.REQUEST_CONDITIONS_CHANGED]: void;
     }
 }
+export declare class AppliedNetworkConditions {
+    readonly conditions: Conditions;
+    readonly appliedNetworkConditionsId: string;
+    readonly urlPattern?: string | undefined;
+    constructor(conditions: Conditions, appliedNetworkConditionsId: string, urlPattern?: string | undefined);
+}
 export declare class MultitargetNetworkManager extends Common.ObjectWrapper.ObjectWrapper<MultitargetNetworkManager.EventTypes> implements SDKModelObserver<NetworkManager> {
     #private;
     readonly inflightMainResourceRequests: Map<string, NetworkRequest>;
-    constructor();
+    constructor(targetManager: TargetManager);
     static instance(opts?: {
         forceNew: boolean | null;
+        targetManager?: TargetManager;
     }): MultitargetNetworkManager;
     static dispose(): void;
     static patchUserAgentWithChromeVersion(uaString: string): string;
@@ -275,16 +287,6 @@ export declare class MultitargetNetworkManager extends Common.ObjectWrapper.Obje
     private updateAcceptedEncodingsOverride;
     get requestConditions(): RequestConditions;
     isBlocking(): boolean;
-    /**
-     * @deprecated Kept for layout tests
-     * TODO(pfaffe) remove
-     */
-    private setBlockingEnabled;
-    /**
-     * @deprecated Kept for layout tests
-     * TODO(pfaffe) remove
-     */
-    private setBlockedPatterns;
     private updateBlockedPatterns;
     isIntercepting(): boolean;
     setInterceptionHandlerForPatterns(patterns: InterceptionPattern[], requestInterceptor: (arg0: InterceptedRequest) => Promise<void>): Promise<void>;
@@ -294,15 +296,7 @@ export declare class MultitargetNetworkManager extends Common.ObjectWrapper.Obje
     clearBrowserCache(): void;
     clearBrowserCookies(): void;
     getCertificate(origin: string): Promise<string[]>;
-    loadResource(url: Platform.DevToolsPath.UrlString): Promise<{
-        success: boolean;
-        content: string;
-        errorDescription: Host.ResourceLoader.LoadErrorDescription;
-    }>;
-    appliedRequestConditions(requestInternal: NetworkRequest): {
-        conditions: Conditions;
-        urlPattern?: string;
-    } | undefined;
+    appliedRequestConditions(requestInternal: NetworkRequest): AppliedNetworkConditions | undefined;
 }
 export declare namespace MultitargetNetworkManager {
     const enum Events {

@@ -5,7 +5,7 @@ import * as Lit from '../lit/lit.js';
 import * as VisualLogging from '../visual_logging/visual_logging.js';
 import { UIUtils } from './legacy.js';
 const { html } = Lit;
-export async function render(container) {
+export function render(container) {
     function createDivWithP(text) {
         const div = document.createElement('div');
         div.style.paddingLeft = '25px';
@@ -19,7 +19,6 @@ export async function render(container) {
     function onChange(event) {
         const menu = event.target;
         if (menu instanceof HTMLSelectElement) {
-            // eslint-disable-next-line no-console
             console.log('Option selected: ', menu.value);
         }
     }
@@ -41,6 +40,17 @@ export async function render(container) {
         })}
                 value="Option3">Option 3</option>
       </select>`, simpleMenuHTML);
+    }
+    {
+        const disabledMenuHTML = createDivWithP('Disabled select with lit-html');
+        // clang-format off
+        Lit.render(html `<select disabled aria-label="Select an option" @change=${onChange}>
+                <option hidden>Select an option</option>
+                <option jslog=${VisualLogging.item('option-1').track({
+            click: true
+        })} value="Option1">Option 1</option>
+              </select>`, disabledMenuHTML);
+        // clang-format on
     }
     {
         const groupMenuHTML = createDivWithP('Select with groups with lit-html');

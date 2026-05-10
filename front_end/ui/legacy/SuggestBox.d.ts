@@ -24,6 +24,7 @@ export declare class SuggestBox implements ListDelegate<Suggestion> {
     private readonly glassPane;
     constructor(suggestBoxDelegate: SuggestBoxDelegate, maxItemsHeight?: number);
     visible(): boolean;
+    completion(): Suggestion | null;
     setPosition(anchorBox: AnchorBox): void;
     setAnchorBehavior(behavior: AnchorBehavior): void;
     private updateMaxSize;
@@ -56,6 +57,7 @@ export interface Suggestion {
     };
     hideGhostText?: boolean;
     iconElement?: HTMLElement;
+    disableAcceptSuggestionOnStopCharacters?: boolean;
 }
 export type Suggestions = Suggestion[];
 export interface AutocompleteConfig {

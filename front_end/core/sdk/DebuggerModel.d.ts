@@ -1,7 +1,7 @@
 import type * as ProtocolProxyApi from '../../generated/protocol-proxy-api.js';
 import * as Protocol from '../../generated/protocol.js';
 import * as Common from '../common/common.js';
-import * as Platform from '../platform/platform.js';
+import type * as Platform from '../platform/platform.js';
 import type { PageResourceLoadInitiator } from './PageResourceLoader.js';
 import { type RemoteObject, RemoteObjectProperty } from './RemoteObject.js';
 import { type EvaluationOptions, type EvaluationResult, type ExecutionContext, RuntimeModel } from './RuntimeModel.js';
@@ -69,7 +69,6 @@ export declare class DebuggerModel extends SDKModel<EventTypes> {
     private setDebuggerPausedDetails;
     private resetDebuggerPausedDetails;
     setBeforePausedCallback(callback: ((arg0: DebuggerPausedDetails, autoSteppingContext: Location | null) => Promise<boolean>) | null): void;
-    setExpandCallFramesCallback(callback: ((arg0: CallFrame[]) => Promise<CallFrame[]>) | null): void;
     setEvaluateOnCallFrameCallback(callback: ((arg0: CallFrame, arg1: EvaluationOptions) => Promise<EvaluationResult | null>) | null): void;
     setSynchronizeBreakpointsCallback(callback: ((script: Script) => Promise<void>) | null): void;
     pausedScript(callFrames: Protocol.Debugger.CallFrame[], reason: Protocol.Debugger.PausedEventReason, auxData: Object | undefined, breakpointIds: string[], asyncStackTrace?: Protocol.Runtime.StackTrace, asyncStackTraceId?: Protocol.Runtime.StackTraceId): Promise<void>;
@@ -108,7 +107,7 @@ export declare class DebuggerModel extends SDKModel<EventTypes> {
      *
      * Important: This iterator will not yield the "synchronous" part of the stack trace, only the async parent chain.
      */
-    iterateAsyncParents(stackTraceOrPausedDetails: Protocol.Runtime.StackTrace | DebuggerPausedDetails): AsyncGenerator<{
+    iterateAsyncParents(stackTraceOrPausedDetails: Protocol.Runtime.StackTrace | Pick<DebuggerPausedDetails, 'asyncStackTrace' | 'asyncStackTraceId'>): AsyncGenerator<{
         stackTrace: Protocol.Runtime.StackTrace;
         target: Target;
     }>;
@@ -178,10 +177,6 @@ export interface MissingDebugFiles {
     resourceUrl: Platform.DevToolsPath.UrlString;
     initiator: PageResourceLoadInitiator;
 }
-export interface MissingDebugInfoDetails {
-    details: string;
-    resources: MissingDebugFiles[];
-}
 export declare class CallFrame {
     #private;
     debuggerModel: DebuggerModel;
@@ -189,7 +184,6 @@ export declare class CallFrame {
     payload: Protocol.Debugger.CallFrame;
     readonly inlineFrameIndex: number;
     readonly functionName: string;
-    missingDebugInfoDetails: MissingDebugInfoDetails | null;
     readonly exception: RemoteObject | null;
     readonly canBeRestarted: boolean;
     constructor(debuggerModel: DebuggerModel, script: Script, payload: Protocol.Debugger.CallFrame, inlineFrameIndex?: number, functionName?: string, exception?: RemoteObject | null);
@@ -241,8 +235,8 @@ export declare class DebuggerPausedDetails {
     reason: Protocol.Debugger.PausedEventReason;
     auxData: Record<string, any> | undefined;
     breakpointIds: string[];
-    asyncStackTrace: Protocol.Runtime.StackTrace | undefined;
-    asyncStackTraceId: Protocol.Runtime.StackTraceId | undefined;
+    asyncStackTrace?: Protocol.Runtime.StackTrace;
+    asyncStackTraceId?: Protocol.Runtime.StackTraceId;
     constructor(debuggerModel: DebuggerModel, callFrames: Protocol.Debugger.CallFrame[], reason: Protocol.Debugger.PausedEventReason, auxData: Record<string, any> | undefined, breakpointIds: string[], asyncStackTrace?: Protocol.Runtime.StackTrace, asyncStackTraceId?: Protocol.Runtime.StackTraceId);
     private exception;
     private cleanRedundantFrames;

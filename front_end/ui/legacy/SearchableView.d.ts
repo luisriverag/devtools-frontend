@@ -10,6 +10,7 @@ export declare class SearchableView extends VBox {
     private replaceToggleButton;
     private searchInputElement;
     private matchesElement;
+    private matchesElementValue;
     private searchNavigationPrevElement;
     private searchNavigationNextElement;
     private readonly replaceInputElement;
@@ -60,6 +61,7 @@ export declare class SearchableView extends VBox {
     private onValueChanged;
 }
 export interface Searchable {
+    supportsMatchCounts?(): boolean;
     currentQuery?: string;
     currentSearchMatches?: number;
     onSearchCanceled(): void;

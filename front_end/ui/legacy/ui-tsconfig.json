@@ -31,15 +31,19 @@
     "target": "esnext",
     "tsBuildInfoFile": "ui-tsconfig.json.tsbuildinfo",
     "typeRoots": [],
+    "types": [],
     "useUnknownInCatchVariables": false
   },
   "files": [
     "../../../../../../front_end/ui/legacy/ARIAUtils.ts",
     "../../../../../../front_end/ui/legacy/ActionRegistration.ts",
     "../../../../../../front_end/ui/legacy/ActionRegistry.ts",
+    "../../../../../../front_end/ui/legacy/App.ts",
+    "../../../../../../front_end/ui/legacy/AppProvider.ts",
     "../../../../../../front_end/ui/legacy/Context.ts",
     "../../../../../../front_end/ui/legacy/ContextFlavorListener.ts",
     "../../../../../../front_end/ui/legacy/ContextMenu.ts",
+    "../../../../../../front_end/ui/legacy/DOMUtilities.ts",
     "../../../../../../front_end/ui/legacy/Dialog.ts",
     "../../../../../../front_end/ui/legacy/DockController.ts",
     "../../../../../../front_end/ui/legacy/DropTarget.ts",
@@ -47,12 +51,13 @@
     "../../../../../../front_end/ui/legacy/FilterBar.ts",
     "../../../../../../front_end/ui/legacy/FilterSuggestionBuilder.ts",
     "../../../../../../front_end/ui/legacy/ForwardedInputEventHandler.ts",
-    "../../../../../../front_end/ui/legacy/Fragment.ts",
     "../../../../../../front_end/ui/legacy/GlassPane.ts",
     "../../../../../../front_end/ui/legacy/Infobar.ts",
     "../../../../../../front_end/ui/legacy/InplaceEditor.ts",
+    "../../../../../../front_end/ui/legacy/InspectorDrawerView.ts",
     "../../../../../../front_end/ui/legacy/InspectorView.ts",
     "../../../../../../front_end/ui/legacy/KeyboardShortcut.ts",
+    "../../../../../../front_end/ui/legacy/LinkContextMenuProvider.ts",
     "../../../../../../front_end/ui/legacy/ListControl.ts",
     "../../../../../../front_end/ui/legacy/ListModel.ts",
     "../../../../../../front_end/ui/legacy/ListWidget.ts",
@@ -75,13 +80,12 @@
     "../../../../../../front_end/ui/legacy/Toolbar.ts",
     "../../../../../../front_end/ui/legacy/Tooltip.ts",
     "../../../../../../front_end/ui/legacy/Treeoutline.ts",
+    "../../../../../../front_end/ui/legacy/UIUserMetrics.ts",
     "../../../../../../front_end/ui/legacy/UIUtils.ts",
     "../../../../../../front_end/ui/legacy/View.ts",
     "../../../../../../front_end/ui/legacy/ViewManager.ts",
     "../../../../../../front_end/ui/legacy/ViewRegistration.ts",
     "../../../../../../front_end/ui/legacy/Widget.ts",
-    "../../../../../../front_end/ui/legacy/XElement.ts",
-    "../../../../../../front_end/ui/legacy/XLink.ts",
     "../../../../../../front_end/ui/legacy/ZoomManager.ts",
     "../../../../../../front_end/legacy/legacy-defs.d.ts",
     "../../../../../../front_end/global_typings/global_defs.d.ts",
@@ -90,9 +94,6 @@
   "references": [
     {
       "path": "../../core/common/bundle-tsconfig.json"
-    },
-    {
-      "path": "../../core/dom_extension/bundle-tsconfig.json"
     },
     {
       "path": "../../core/host/bundle-tsconfig.json"
@@ -110,10 +111,31 @@
       "path": "../../core/sdk/bundle-tsconfig.json"
     },
     {
+      "path": "../../foundation/bundle-tsconfig.json"
+    },
+    {
+      "path": "../../generated/protocol-tsconfig.json"
+    },
+    {
+      "path": "../../models/annotations/bundle-tsconfig.json"
+    },
+    {
       "path": "../../models/geometry/bundle-tsconfig.json"
     },
     {
+      "path": "../../models/greendev/bundle-tsconfig.json"
+    },
+    {
+      "path": "../../models/logs/bundle-tsconfig.json"
+    },
+    {
+      "path": "../../models/stack_trace/bundle-tsconfig.json"
+    },
+    {
       "path": "../../models/text_utils/bundle-tsconfig.json"
+    },
+    {
+      "path": "../../models/trace/bundle-tsconfig.json"
     },
     {
       "path": "theme_support/bundle-tsconfig.json"
@@ -128,7 +150,13 @@
       "path": "../components/highlighting/bundle-tsconfig.json"
     },
     {
-      "path": "../components/icon_button/bundle-tsconfig.json"
+      "path": "../dom_extension/bundle-tsconfig.json"
+    },
+    {
+      "path": "../helpers/bundle-tsconfig.json"
+    },
+    {
+      "path": "../kit/bundle-tsconfig.json"
     },
     {
       "path": "../lit/bundle-tsconfig.json"

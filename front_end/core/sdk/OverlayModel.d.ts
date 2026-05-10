@@ -6,6 +6,7 @@ import { DeferredDOMNode, DOMModel, type DOMNode } from './DOMModel.js';
 import type { RemoteObject } from './RemoteObject.js';
 import { SDKModel } from './SDKModel.js';
 import { type Target } from './Target.js';
+import { TargetManager } from './TargetManager.js';
 export interface HighlightColor {
     r: number;
     g: number;
@@ -38,11 +39,11 @@ export declare class OverlayModel extends SDKModel<EventTypes> implements Protoc
     overlayAgent: ProtocolProxyApi.OverlayApi;
     constructor(target: Target);
     static highlightObjectAsDOMNode(object: RemoteObject): void;
-    static hideDOMNodeHighlight(): void;
-    static muteHighlight(): Promise<void[]>;
-    static unmuteHighlight(): Promise<void[]>;
-    static highlightRect(rect: HighlightRect): void;
-    static clearHighlight(): void;
+    static hideDOMNodeHighlight(targetManager?: TargetManager): void;
+    static muteHighlight(targetManager?: TargetManager): Promise<void[]>;
+    static unmuteHighlight(targetManager?: TargetManager): Promise<void[]>;
+    static highlightRect(rect: HighlightRect, targetManager?: TargetManager): void;
+    static clearHighlight(targetManager?: TargetManager): void;
     getDOMModel(): DOMModel;
     highlightRect({ x, y, width, height, color, outlineColor }: HighlightRect): Promise<Protocol.ProtocolResponseWithError>;
     clearHighlight(): Promise<Protocol.ProtocolResponseWithError>;
@@ -91,6 +92,8 @@ export declare class OverlayModel extends SDKModel<EventTypes> implements Protoc
     static inspectNodeHandler: ((node: DOMNode) => Promise<void>) | null;
     getOverlayAgent(): ProtocolProxyApi.OverlayApi;
     hasStyleSheetText(url: Platform.DevToolsPath.UrlString): Promise<boolean>;
+    inspectPanelShowRequested({ backendNodeId }: Protocol.Overlay.InspectPanelShowRequestedEvent): void;
+    inspectedElementWindowRestored({ backendNodeId }: Protocol.Overlay.InspectedElementWindowRestoredEvent): void;
 }
 export declare class WindowControls {
     #private;
@@ -112,7 +115,9 @@ export declare const enum Events {
     PERSISTENT_GRID_OVERLAY_STATE_CHANGED = "PersistentGridOverlayStateChanged",
     PERSISTENT_FLEX_CONTAINER_OVERLAY_STATE_CHANGED = "PersistentFlexContainerOverlayStateChanged",
     PERSISTENT_SCROLL_SNAP_OVERLAY_STATE_CHANGED = "PersistentScrollSnapOverlayStateChanged",
-    PERSISTENT_CONTAINER_QUERY_OVERLAY_STATE_CHANGED = "PersistentContainerQueryOverlayStateChanged"
+    PERSISTENT_CONTAINER_QUERY_OVERLAY_STATE_CHANGED = "PersistentContainerQueryOverlayStateChanged",
+    INSPECT_PANEL_SHOW_REQUESTED = "InspectPanelShowRequested",
+    INSPECTED_ELEMENT_WINDOW_RESTORED = "InspectedElementWindowRestored"
 }
 export interface ChangedNodeId {
     nodeId: number;
@@ -127,6 +132,8 @@ export interface EventTypes {
     [Events.PERSISTENT_FLEX_CONTAINER_OVERLAY_STATE_CHANGED]: ChangedNodeId;
     [Events.PERSISTENT_SCROLL_SNAP_OVERLAY_STATE_CHANGED]: ChangedNodeId;
     [Events.PERSISTENT_CONTAINER_QUERY_OVERLAY_STATE_CHANGED]: ChangedNodeId;
+    [Events.INSPECT_PANEL_SHOW_REQUESTED]: number;
+    [Events.INSPECTED_ELEMENT_WINDOW_RESTORED]: number;
 }
 export interface Highlighter {
     highlightInOverlay(data: HighlightData, config: Protocol.Overlay.HighlightConfig): void;

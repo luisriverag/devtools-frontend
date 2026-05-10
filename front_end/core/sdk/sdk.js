@@ -411,6 +411,7 @@ var generatedProperties = [
       "background-repeat",
       "background-size",
       "base-palette",
+      "base-url",
       "baseline-shift",
       "baseline-source",
       "block-ellipsis",
@@ -481,7 +482,10 @@ var generatedProperties = [
       "column-height",
       "column-rule-break",
       "column-rule-color",
-      "column-rule-outset",
+      "column-rule-inset-cap-end",
+      "column-rule-inset-cap-start",
+      "column-rule-inset-junction-end",
+      "column-rule-inset-junction-start",
       "column-rule-style",
       "column-rule-visibility-items",
       "column-rule-width",
@@ -527,11 +531,13 @@ var generatedProperties = [
       "flex-basis",
       "flex-direction",
       "flex-grow",
+      "flex-line-count",
       "flex-shrink",
       "flex-wrap",
       "float",
       "flood-color",
       "flood-opacity",
+      "flow-tolerance",
       "font-display",
       "font-family",
       "font-feature-settings",
@@ -556,21 +562,27 @@ var generatedProperties = [
       "font-variation-settings",
       "font-weight",
       "forced-color-adjust",
-      "gap-rule-overlap",
+      "frame-sizing",
       "grid-auto-columns",
       "grid-auto-flow",
       "grid-auto-rows",
       "grid-column-end",
       "grid-column-start",
+      "grid-lanes-direction",
+      "grid-lanes-pack",
       "grid-row-end",
       "grid-row-start",
       "grid-template-areas",
       "grid-template-columns",
       "grid-template-rows",
+      "hanging-punctuation",
+      "hash",
       "height",
+      "hostname",
       "hyphenate-character",
       "hyphenate-limit-chars",
       "hyphens",
+      "image-animation",
       "image-orientation",
       "image-rendering",
       "inherits",
@@ -586,7 +598,6 @@ var generatedProperties = [
       "interest-delay-start",
       "interpolate-size",
       "isolation",
-      "item-tolerance",
       "justify-content",
       "justify-items",
       "justify-self",
@@ -607,6 +618,7 @@ var generatedProperties = [
       "margin-left",
       "margin-right",
       "margin-top",
+      "margin-trim",
       "marker-end",
       "marker-mid",
       "marker-start",
@@ -618,8 +630,6 @@ var generatedProperties = [
       "mask-repeat",
       "mask-size",
       "mask-type",
-      "masonry-direction",
-      "masonry-fill",
       "math-depth",
       "math-shift",
       "math-style",
@@ -660,12 +670,10 @@ var generatedProperties = [
       "overflow-y",
       "overlay",
       "override-colors",
-      "overscroll-area",
       "overscroll-behavior-block",
       "overscroll-behavior-inline",
       "overscroll-behavior-x",
       "overscroll-behavior-y",
-      "overscroll-position",
       "pad",
       "padding-block-end",
       "padding-block-start",
@@ -676,11 +684,16 @@ var generatedProperties = [
       "padding-right",
       "padding-top",
       "page",
+      "page-margin-safety",
       "page-orientation",
       "paint-order",
+      "path-length",
+      "pathname",
+      "pattern",
       "perspective",
       "perspective-origin",
       "pointer-events",
+      "port",
       "position",
       "position-anchor",
       "position-area",
@@ -689,6 +702,7 @@ var generatedProperties = [
       "position-visibility",
       "prefix",
       "print-color-adjust",
+      "protocol",
       "quotes",
       "r",
       "range",
@@ -701,13 +715,17 @@ var generatedProperties = [
       "row-gap",
       "row-rule-break",
       "row-rule-color",
-      "row-rule-outset",
+      "row-rule-inset-cap-end",
+      "row-rule-inset-cap-start",
+      "row-rule-inset-junction-end",
+      "row-rule-inset-junction-start",
       "row-rule-style",
       "row-rule-visibility-items",
       "row-rule-width",
       "ruby-align",
       "ruby-overhang",
       "ruby-position",
+      "rule-overlap",
       "rx",
       "ry",
       "scale",
@@ -733,16 +751,13 @@ var generatedProperties = [
       "scroll-snap-align",
       "scroll-snap-stop",
       "scroll-snap-type",
-      "scroll-start-block",
-      "scroll-start-inline",
-      "scroll-start-x",
-      "scroll-start-y",
       "scroll-target-group",
       "scroll-timeline-axis",
       "scroll-timeline-name",
       "scrollbar-color",
       "scrollbar-gutter",
       "scrollbar-width",
+      "search",
       "shape-image-threshold",
       "shape-margin",
       "shape-outside",
@@ -778,19 +793,19 @@ var generatedProperties = [
       "text-decoration-color",
       "text-decoration-line",
       "text-decoration-skip-ink",
+      "text-decoration-skip-spaces",
       "text-decoration-style",
       "text-decoration-thickness",
       "text-emphasis-color",
       "text-emphasis-position",
       "text-emphasis-style",
-      "text-grow",
+      "text-fit",
       "text-indent",
       "text-justify",
       "text-orientation",
       "text-overflow",
       "text-rendering",
       "text-shadow",
-      "text-shrink",
       "text-size-adjust",
       "text-spacing-trim",
       "text-transform",
@@ -799,11 +814,11 @@ var generatedProperties = [
       "text-wrap-mode",
       "text-wrap-style",
       "timeline-scope",
-      "timeline-trigger-exit-range-end",
-      "timeline-trigger-exit-range-start",
+      "timeline-trigger-activation-range-end",
+      "timeline-trigger-activation-range-start",
+      "timeline-trigger-active-range-end",
+      "timeline-trigger-active-range-start",
       "timeline-trigger-name",
-      "timeline-trigger-range-end",
-      "timeline-trigger-range-start",
       "timeline-trigger-source",
       "top",
       "touch-action",
@@ -817,6 +832,7 @@ var generatedProperties = [
       "transition-property",
       "transition-timing-function",
       "translate",
+      "trigger-scope",
       "types",
       "unicode-range",
       "user-select",
@@ -828,6 +844,7 @@ var generatedProperties = [
       "view-transition-class",
       "view-transition-group",
       "view-transition-name",
+      "view-transition-scope",
       "visibility",
       "white-space-collapse",
       "widows",
@@ -1046,7 +1063,8 @@ var generatedProperties = [
       "border-box",
       "padding-box",
       "content-box",
-      "text"
+      "text",
+      "border-area"
     ],
     "name": "background-clip"
   },
@@ -1099,6 +1117,9 @@ var generatedProperties = [
     "name": "base-palette"
   },
   {
+    "name": "base-url"
+  },
+  {
     "keywords": [
       "baseline",
       "sub",
@@ -1117,7 +1138,7 @@ var generatedProperties = [
   {
     "inherited": true,
     "keywords": [
-      "auto",
+      "ellipsis",
       "no-ellipsis"
     ],
     "name": "block-ellipsis"
@@ -1772,7 +1793,7 @@ var generatedProperties = [
     "inherited": false,
     "keywords": [
       "none",
-      "spanning-item",
+      "normal",
       "intersection"
     ],
     "name": "column-rule-break"
@@ -1784,8 +1805,69 @@ var generatedProperties = [
     "name": "column-rule-color"
   },
   {
+    "longhands": [
+      "column-rule-inset-cap-start",
+      "column-rule-inset-cap-end",
+      "column-rule-inset-junction-start",
+      "column-rule-inset-junction-end"
+    ],
+    "name": "column-rule-inset"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-cap-start",
+      "column-rule-inset-cap-end"
+    ],
+    "name": "column-rule-inset-cap"
+  },
+  {
     "inherited": false,
-    "name": "column-rule-outset"
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "column-rule-inset-cap-end"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "column-rule-inset-cap-start"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-cap-end",
+      "column-rule-inset-junction-end"
+    ],
+    "name": "column-rule-inset-end"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-junction-start",
+      "column-rule-inset-junction-end"
+    ],
+    "name": "column-rule-inset-junction"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "column-rule-inset-junction-end"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "column-rule-inset-junction-start"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-cap-start",
+      "column-rule-inset-junction-start"
+    ],
+    "name": "column-rule-inset-start"
   },
   {
     "keywords": [
@@ -1806,9 +1888,9 @@ var generatedProperties = [
     "inherited": false,
     "keywords": [
       "all",
+      "normal",
       "around",
-      "between",
-      "none"
+      "between"
     ],
     "name": "column-rule-visibility-items"
   },
@@ -1860,8 +1942,7 @@ var generatedProperties = [
       "style",
       "paint",
       "inline-size",
-      "block-size",
-      "view-transition"
+      "block-size"
     ],
     "name": "contain"
   },
@@ -1926,11 +2007,27 @@ var generatedProperties = [
   },
   {
     "keywords": [
-      "auto",
+      "normal",
       "collapse",
       "-webkit-legacy"
     ],
     "name": "continue"
+  },
+  {
+    "keywords": [
+      "normal"
+    ],
+    "longhands": [
+      "border-top-left-radius",
+      "corner-top-left-shape",
+      "border-top-right-radius",
+      "corner-top-right-shape",
+      "border-bottom-right-radius",
+      "corner-bottom-right-shape",
+      "border-bottom-left-radius",
+      "corner-bottom-left-shape"
+    ],
+    "name": "corner"
   },
   {
     "longhands": [
@@ -2055,22 +2152,6 @@ var generatedProperties = [
   },
   {
     "keywords": [
-      "normal"
-    ],
-    "longhands": [
-      "border-top-left-radius",
-      "corner-top-left-shape",
-      "border-top-right-radius",
-      "corner-top-right-shape",
-      "border-bottom-right-radius",
-      "corner-bottom-right-shape",
-      "border-bottom-left-radius",
-      "corner-bottom-left-shape"
-    ],
-    "name": "corners"
-  },
-  {
-    "keywords": [
       "none"
     ],
     "name": "counter-increment"
@@ -2181,8 +2262,8 @@ var generatedProperties = [
       "math",
       "ruby",
       "ruby-text",
-      "masonry",
-      "inline-masonry"
+      "grid-lanes",
+      "inline-grid-lanes"
     ],
     "name": "display"
   },
@@ -2291,6 +2372,9 @@ var generatedProperties = [
     "name": "flex-grow"
   },
   {
+    "name": "flex-line-count"
+  },
+  {
     "name": "flex-shrink"
   },
   {
@@ -2320,6 +2404,13 @@ var generatedProperties = [
   },
   {
     "name": "flood-opacity"
+  },
+  {
+    "keywords": [
+      "normal",
+      "infinite"
+    ],
+    "name": "flow-tolerance"
   },
   {
     "inherited": true,
@@ -2606,19 +2697,21 @@ var generatedProperties = [
     "name": "forced-color-adjust"
   },
   {
+    "keywords": [
+      "auto",
+      "content-width",
+      "content-height",
+      "content-block-size",
+      "content-inline-size"
+    ],
+    "name": "frame-sizing"
+  },
+  {
     "longhands": [
       "row-gap",
       "column-gap"
     ],
     "name": "gap"
-  },
-  {
-    "inherited": false,
-    "keywords": [
-      "row-over-column",
-      "column-over-row"
-    ],
-    "name": "gap-rule-overlap"
   },
   {
     "longhands": [
@@ -2684,6 +2777,32 @@ var generatedProperties = [
   },
   {
     "longhands": [
+      "grid-template-areas",
+      "grid-template-columns",
+      "grid-template-rows",
+      "grid-lanes-direction"
+    ],
+    "name": "grid-lanes"
+  },
+  {
+    "keywords": [
+      "normal",
+      "row",
+      "column",
+      "fill-reverse",
+      "track-reverse"
+    ],
+    "name": "grid-lanes-direction"
+  },
+  {
+    "keywords": [
+      "normal",
+      "dense"
+    ],
+    "name": "grid-lanes-pack"
+  },
+  {
+    "longhands": [
       "grid-row-start",
       "grid-row-end"
     ],
@@ -2728,6 +2847,19 @@ var generatedProperties = [
     "name": "grid-template-rows"
   },
   {
+    "inherited": true,
+    "keywords": [
+      "none",
+      "first",
+      "last",
+      "allow-end"
+    ],
+    "name": "hanging-punctuation"
+  },
+  {
+    "name": "hash"
+  },
+  {
     "keywords": [
       "auto",
       "fit-content",
@@ -2735,6 +2867,9 @@ var generatedProperties = [
       "max-content"
     ],
     "name": "height"
+  },
+  {
+    "name": "hostname"
   },
   {
     "inherited": true,
@@ -2758,6 +2893,16 @@ var generatedProperties = [
   },
   {
     "inherited": true,
+    "keywords": [
+      "normal",
+      "running",
+      "paused",
+      "stopped"
+    ],
+    "name": "image-animation"
+  },
+  {
+    "inherited": true,
     "name": "image-orientation"
   },
   {
@@ -2767,7 +2912,8 @@ var generatedProperties = [
       "optimizespeed",
       "optimizequality",
       "-webkit-optimize-contrast",
-      "pixelated"
+      "pixelated",
+      "crisp-edges"
     ],
     "name": "image-rendering"
   },
@@ -2862,13 +3008,6 @@ var generatedProperties = [
       "isolate"
     ],
     "name": "isolation"
-  },
-  {
-    "keywords": [
-      "normal",
-      "infinite"
-    ],
-    "name": "item-tolerance"
   },
   {
     "name": "justify-content"
@@ -3037,6 +3176,9 @@ var generatedProperties = [
     "name": "margin-top"
   },
   {
+    "name": "margin-trim"
+  },
+  {
     "inherited": true,
     "longhands": [
       "marker-start",
@@ -3125,38 +3267,6 @@ var generatedProperties = [
       "alpha"
     ],
     "name": "mask-type"
-  },
-  {
-    "longhands": [
-      "grid-template-areas",
-      "grid-template-columns",
-      "masonry-direction",
-      "masonry-fill"
-    ],
-    "name": "masonry"
-  },
-  {
-    "keywords": [
-      "row",
-      "row-reverse",
-      "column",
-      "column-reverse"
-    ],
-    "name": "masonry-direction"
-  },
-  {
-    "keywords": [
-      "normal",
-      "reverse"
-    ],
-    "name": "masonry-fill"
-  },
-  {
-    "longhands": [
-      "masonry-direction",
-      "masonry-fill"
-    ],
-    "name": "masonry-flow"
   },
   {
     "inherited": true,
@@ -3435,12 +3545,6 @@ var generatedProperties = [
     "name": "override-colors"
   },
   {
-    "keywords": [
-      "none"
-    ],
-    "name": "overscroll-area"
-  },
-  {
     "longhands": [
       "overscroll-behavior-x",
       "overscroll-behavior-y"
@@ -3456,6 +3560,7 @@ var generatedProperties = [
   {
     "keywords": [
       "auto",
+      "chain",
       "contain",
       "none"
     ],
@@ -3464,16 +3569,11 @@ var generatedProperties = [
   {
     "keywords": [
       "auto",
+      "chain",
       "contain",
       "none"
     ],
     "name": "overscroll-behavior-y"
-  },
-  {
-    "keywords": [
-      "none"
-    ],
-    "name": "overscroll-position"
   },
   {
     "name": "pad"
@@ -3550,6 +3650,14 @@ var generatedProperties = [
     "name": "page-break-inside"
   },
   {
+    "keywords": [
+      "none",
+      "clamp",
+      "add"
+    ],
+    "name": "page-margin-safety"
+  },
+  {
     "name": "page-orientation"
   },
   {
@@ -3561,6 +3669,18 @@ var generatedProperties = [
       "markers"
     ],
     "name": "paint-order"
+  },
+  {
+    "keywords": [
+      "none"
+    ],
+    "name": "path-length"
+  },
+  {
+    "name": "pathname"
+  },
+  {
+    "name": "pattern"
   },
   {
     "keywords": [
@@ -3610,6 +3730,9 @@ var generatedProperties = [
     "name": "pointer-events"
   },
   {
+    "name": "port"
+  },
+  {
     "keywords": [
       "static",
       "relative",
@@ -3621,7 +3744,8 @@ var generatedProperties = [
   },
   {
     "keywords": [
-      "auto"
+      "auto",
+      "none"
     ],
     "name": "position-anchor"
   },
@@ -3657,7 +3781,9 @@ var generatedProperties = [
       "none",
       "flip-block",
       "flip-inline",
-      "flip-start"
+      "flip-start",
+      "flip-x",
+      "flip-y"
     ],
     "name": "position-try-fallbacks"
   },
@@ -3689,6 +3815,9 @@ var generatedProperties = [
       "exact"
     ],
     "name": "print-color-adjust"
+  },
+  {
+    "name": "protocol"
   },
   {
     "inherited": true,
@@ -3760,7 +3889,7 @@ var generatedProperties = [
     "inherited": false,
     "keywords": [
       "none",
-      "spanning-item",
+      "normal",
       "intersection"
     ],
     "name": "row-rule-break"
@@ -3772,8 +3901,69 @@ var generatedProperties = [
     "name": "row-rule-color"
   },
   {
+    "longhands": [
+      "row-rule-inset-cap-start",
+      "row-rule-inset-cap-end",
+      "row-rule-inset-junction-start",
+      "row-rule-inset-junction-end"
+    ],
+    "name": "row-rule-inset"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-cap-start",
+      "row-rule-inset-cap-end"
+    ],
+    "name": "row-rule-inset-cap"
+  },
+  {
     "inherited": false,
-    "name": "row-rule-outset"
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "row-rule-inset-cap-end"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "row-rule-inset-cap-start"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-cap-end",
+      "row-rule-inset-junction-end"
+    ],
+    "name": "row-rule-inset-end"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-junction-start",
+      "row-rule-inset-junction-end"
+    ],
+    "name": "row-rule-inset-junction"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "row-rule-inset-junction-end"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "overlap-join"
+    ],
+    "name": "row-rule-inset-junction-start"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-cap-start",
+      "row-rule-inset-junction-start"
+    ],
+    "name": "row-rule-inset-start"
   },
   {
     "keywords": [
@@ -3794,9 +3984,9 @@ var generatedProperties = [
     "inherited": false,
     "keywords": [
       "all",
+      "normal",
       "around",
-      "between",
-      "none"
+      "between"
     ],
     "name": "row-rule-visibility-items"
   },
@@ -3822,7 +4012,7 @@ var generatedProperties = [
     "inherited": true,
     "keywords": [
       "auto",
-      "none"
+      "spaces"
     ],
     "name": "ruby-overhang"
   },
@@ -3861,10 +4051,60 @@ var generatedProperties = [
   },
   {
     "longhands": [
-      "row-rule-outset",
-      "column-rule-outset"
+      "row-rule-inset-cap-start",
+      "row-rule-inset-cap-end",
+      "row-rule-inset-junction-start",
+      "row-rule-inset-junction-end",
+      "column-rule-inset-cap-start",
+      "column-rule-inset-cap-end",
+      "column-rule-inset-junction-start",
+      "column-rule-inset-junction-end"
     ],
-    "name": "rule-outset"
+    "name": "rule-inset"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-cap-start",
+      "row-rule-inset-cap-end",
+      "column-rule-inset-cap-start",
+      "column-rule-inset-cap-end"
+    ],
+    "name": "rule-inset-cap"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-cap-end",
+      "column-rule-inset-junction-end",
+      "row-rule-inset-cap-end",
+      "row-rule-inset-junction-end"
+    ],
+    "name": "rule-inset-end"
+  },
+  {
+    "longhands": [
+      "row-rule-inset-junction-start",
+      "row-rule-inset-junction-end",
+      "column-rule-inset-junction-start",
+      "column-rule-inset-junction-end"
+    ],
+    "name": "rule-inset-junction"
+  },
+  {
+    "longhands": [
+      "column-rule-inset-cap-start",
+      "column-rule-inset-junction-start",
+      "row-rule-inset-cap-start",
+      "row-rule-inset-junction-start"
+    ],
+    "name": "rule-inset-start"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "row-over-column",
+      "column-over-row"
+    ],
+    "name": "rule-overlap"
   },
   {
     "longhands": [
@@ -3872,6 +4112,13 @@ var generatedProperties = [
       "row-rule-style"
     ],
     "name": "rule-style"
+  },
+  {
+    "longhands": [
+      "column-rule-visibility-items",
+      "row-rule-visibility-items"
+    ],
+    "name": "rule-visibility-items"
   },
   {
     "longhands": [
@@ -4060,25 +4307,6 @@ var generatedProperties = [
     "name": "scroll-snap-type"
   },
   {
-    "longhands": [
-      "scroll-start-block",
-      "scroll-start-inline"
-    ],
-    "name": "scroll-start"
-  },
-  {
-    "name": "scroll-start-block"
-  },
-  {
-    "name": "scroll-start-inline"
-  },
-  {
-    "name": "scroll-start-x"
-  },
-  {
-    "name": "scroll-start-y"
-  },
-  {
     "keywords": [
       "none",
       "auto"
@@ -4122,6 +4350,9 @@ var generatedProperties = [
       "none"
     ],
     "name": "scrollbar-width"
+  },
+  {
+    "name": "search"
   },
   {
     "name": "shape-image-threshold"
@@ -4355,9 +4586,20 @@ var generatedProperties = [
     "inherited": true,
     "keywords": [
       "none",
-      "auto"
+      "auto",
+      "all"
     ],
     "name": "text-decoration-skip-ink"
+  },
+  {
+    "inherited": true,
+    "keywords": [
+      "none",
+      "start",
+      "end",
+      "all"
+    ],
+    "name": "text-decoration-skip-spaces"
   },
   {
     "keywords": [
@@ -4401,7 +4643,7 @@ var generatedProperties = [
     "name": "text-emphasis-style"
   },
   {
-    "name": "text-grow"
+    "name": "text-fit"
   },
   {
     "inherited": true,
@@ -4451,9 +4693,6 @@ var generatedProperties = [
     "name": "text-shadow"
   },
   {
-    "name": "text-shrink"
-  },
-  {
     "inherited": true,
     "keywords": [
       "none",
@@ -4482,11 +4721,12 @@ var generatedProperties = [
   {
     "inherited": true,
     "keywords": [
+      "none",
       "capitalize",
       "uppercase",
       "lowercase",
       "full-width",
-      "none",
+      "full-size-kana",
       "math-auto"
     ],
     "name": "text-transform"
@@ -4542,27 +4782,41 @@ var generatedProperties = [
     "longhands": [
       "timeline-trigger-name",
       "timeline-trigger-source",
-      "timeline-trigger-range-start",
-      "timeline-trigger-range-end",
-      "timeline-trigger-exit-range-start",
-      "timeline-trigger-exit-range-end"
+      "timeline-trigger-activation-range-start",
+      "timeline-trigger-activation-range-end",
+      "timeline-trigger-active-range-start",
+      "timeline-trigger-active-range-end"
     ],
     "name": "timeline-trigger"
   },
   {
-    "name": "timeline-trigger-exit-range-end"
+    "longhands": [
+      "timeline-trigger-activation-range-start",
+      "timeline-trigger-activation-range-end"
+    ],
+    "name": "timeline-trigger-activation-range"
   },
   {
-    "name": "timeline-trigger-exit-range-start"
+    "name": "timeline-trigger-activation-range-end"
+  },
+  {
+    "name": "timeline-trigger-activation-range-start"
+  },
+  {
+    "longhands": [
+      "timeline-trigger-active-range-start",
+      "timeline-trigger-active-range-end"
+    ],
+    "name": "timeline-trigger-active-range"
+  },
+  {
+    "name": "timeline-trigger-active-range-end"
+  },
+  {
+    "name": "timeline-trigger-active-range-start"
   },
   {
     "name": "timeline-trigger-name"
-  },
-  {
-    "name": "timeline-trigger-range-end"
-  },
-  {
-    "name": "timeline-trigger-range-start"
   },
   {
     "keywords": [
@@ -4667,6 +4921,13 @@ var generatedProperties = [
     "name": "translate"
   },
   {
+    "keywords": [
+      "none",
+      "all"
+    ],
+    "name": "trigger-scope"
+  },
+  {
     "name": "types"
   },
   {
@@ -4749,6 +5010,14 @@ var generatedProperties = [
       "auto"
     ],
     "name": "view-transition-name"
+  },
+  {
+    "inherited": false,
+    "keywords": [
+      "none",
+      "all"
+    ],
+    "name": "view-transition-scope"
   },
   {
     "inherited": true,
@@ -5072,7 +5341,8 @@ var generatedPropertyValues = {
       "border-box",
       "padding-box",
       "content-box",
-      "text"
+      "text",
+      "border-area"
     ]
   },
   "background-color": {
@@ -5116,7 +5386,7 @@ var generatedPropertyValues = {
   },
   "block-ellipsis": {
     "values": [
-      "auto",
+      "ellipsis",
       "no-ellipsis"
     ]
   },
@@ -5437,13 +5707,33 @@ var generatedPropertyValues = {
   "column-rule-break": {
     "values": [
       "none",
-      "spanning-item",
+      "normal",
       "intersection"
     ]
   },
   "column-rule-color": {
     "values": [
       "currentcolor"
+    ]
+  },
+  "column-rule-inset-cap-end": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "column-rule-inset-cap-start": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "column-rule-inset-junction-end": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "column-rule-inset-junction-start": {
+    "values": [
+      "overlap-join"
     ]
   },
   "column-rule-style": {
@@ -5463,9 +5753,9 @@ var generatedPropertyValues = {
   "column-rule-visibility-items": {
     "values": [
       "all",
+      "normal",
       "around",
-      "between",
-      "none"
+      "between"
     ]
   },
   "column-rule-width": {
@@ -5503,8 +5793,7 @@ var generatedPropertyValues = {
       "style",
       "paint",
       "inline-size",
-      "block-size",
-      "view-transition"
+      "block-size"
     ]
   },
   "contain-intrinsic-height": {
@@ -5540,9 +5829,14 @@ var generatedPropertyValues = {
   },
   "continue": {
     "values": [
-      "auto",
+      "normal",
       "collapse",
       "-webkit-legacy"
+    ]
+  },
+  "corner": {
+    "values": [
+      "normal"
     ]
   },
   "corner-bottom-left-shape": {
@@ -5583,11 +5877,6 @@ var generatedPropertyValues = {
       "round",
       "squircle",
       "square"
-    ]
-  },
-  "corners": {
-    "values": [
-      "normal"
     ]
   },
   "counter-increment": {
@@ -5685,8 +5974,8 @@ var generatedPropertyValues = {
       "math",
       "ruby",
       "ruby-text",
-      "masonry",
-      "inline-masonry"
+      "grid-lanes",
+      "inline-grid-lanes"
     ]
   },
   "dominant-baseline": {
@@ -5772,6 +6061,12 @@ var generatedPropertyValues = {
   "flood-color": {
     "values": [
       "currentcolor"
+    ]
+  },
+  "flow-tolerance": {
+    "values": [
+      "normal",
+      "infinite"
     ]
   },
   "font-feature-settings": {
@@ -5960,10 +6255,13 @@ var generatedPropertyValues = {
       "preserve-parent-color"
     ]
   },
-  "gap-rule-overlap": {
+  "frame-sizing": {
     "values": [
-      "row-over-column",
-      "column-over-row"
+      "auto",
+      "content-width",
+      "content-height",
+      "content-block-size",
+      "content-inline-size"
     ]
   },
   "grid-auto-columns": {
@@ -5996,6 +6294,21 @@ var generatedPropertyValues = {
       "auto"
     ]
   },
+  "grid-lanes-direction": {
+    "values": [
+      "normal",
+      "row",
+      "column",
+      "fill-reverse",
+      "track-reverse"
+    ]
+  },
+  "grid-lanes-pack": {
+    "values": [
+      "normal",
+      "dense"
+    ]
+  },
   "grid-row-end": {
     "values": [
       "auto"
@@ -6021,6 +6334,14 @@ var generatedPropertyValues = {
       "none"
     ]
   },
+  "hanging-punctuation": {
+    "values": [
+      "none",
+      "first",
+      "last",
+      "allow-end"
+    ]
+  },
   "height": {
     "values": [
       "auto",
@@ -6041,13 +6362,22 @@ var generatedPropertyValues = {
       "auto"
     ]
   },
+  "image-animation": {
+    "values": [
+      "normal",
+      "running",
+      "paused",
+      "stopped"
+    ]
+  },
   "image-rendering": {
     "values": [
       "auto",
       "optimizespeed",
       "optimizequality",
       "-webkit-optimize-contrast",
-      "pixelated"
+      "pixelated",
+      "crisp-edges"
     ]
   },
   "initial-letter": {
@@ -6078,12 +6408,6 @@ var generatedPropertyValues = {
     "values": [
       "auto",
       "isolate"
-    ]
-  },
-  "item-tolerance": {
-    "values": [
-      "normal",
-      "infinite"
     ]
   },
   "left": {
@@ -6212,20 +6536,6 @@ var generatedPropertyValues = {
     "values": [
       "luminance",
       "alpha"
-    ]
-  },
-  "masonry-direction": {
-    "values": [
-      "row",
-      "row-reverse",
-      "column",
-      "column-reverse"
-    ]
-  },
-  "masonry-fill": {
-    "values": [
-      "normal",
-      "reverse"
     ]
   },
   "math-shift": {
@@ -6401,14 +6711,10 @@ var generatedPropertyValues = {
       "auto"
     ]
   },
-  "overscroll-area": {
-    "values": [
-      "none"
-    ]
-  },
   "overscroll-behavior-x": {
     "values": [
       "auto",
+      "chain",
       "contain",
       "none"
     ]
@@ -6416,12 +6722,8 @@ var generatedPropertyValues = {
   "overscroll-behavior-y": {
     "values": [
       "auto",
+      "chain",
       "contain",
-      "none"
-    ]
-  },
-  "overscroll-position": {
-    "values": [
       "none"
     ]
   },
@@ -6430,12 +6732,24 @@ var generatedPropertyValues = {
       "auto"
     ]
   },
+  "page-margin-safety": {
+    "values": [
+      "none",
+      "clamp",
+      "add"
+    ]
+  },
   "paint-order": {
     "values": [
       "normal",
       "fill",
       "stroke",
       "markers"
+    ]
+  },
+  "path-length": {
+    "values": [
+      "none"
     ]
   },
   "perspective": {
@@ -6469,7 +6783,8 @@ var generatedPropertyValues = {
   },
   "position-anchor": {
     "values": [
-      "auto"
+      "auto",
+      "none"
     ]
   },
   "position-area": {
@@ -6496,7 +6811,9 @@ var generatedPropertyValues = {
       "none",
       "flip-block",
       "flip-inline",
-      "flip-start"
+      "flip-start",
+      "flip-x",
+      "flip-y"
     ]
   },
   "position-try-order": {
@@ -6561,13 +6878,33 @@ var generatedPropertyValues = {
   "row-rule-break": {
     "values": [
       "none",
-      "spanning-item",
+      "normal",
       "intersection"
     ]
   },
   "row-rule-color": {
     "values": [
       "currentcolor"
+    ]
+  },
+  "row-rule-inset-cap-end": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "row-rule-inset-cap-start": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "row-rule-inset-junction-end": {
+    "values": [
+      "overlap-join"
+    ]
+  },
+  "row-rule-inset-junction-start": {
+    "values": [
+      "overlap-join"
     ]
   },
   "row-rule-style": {
@@ -6587,9 +6924,9 @@ var generatedPropertyValues = {
   "row-rule-visibility-items": {
     "values": [
       "all",
+      "normal",
       "around",
-      "between",
-      "none"
+      "between"
     ]
   },
   "row-rule-width": {
@@ -6610,13 +6947,19 @@ var generatedPropertyValues = {
   "ruby-overhang": {
     "values": [
       "auto",
-      "none"
+      "spaces"
     ]
   },
   "ruby-position": {
     "values": [
       "over",
       "under"
+    ]
+  },
+  "rule-overlap": {
+    "values": [
+      "row-over-column",
+      "column-over-row"
     ]
   },
   "rx": {
@@ -6862,7 +7205,16 @@ var generatedPropertyValues = {
   "text-decoration-skip-ink": {
     "values": [
       "none",
-      "auto"
+      "auto",
+      "all"
+    ]
+  },
+  "text-decoration-skip-spaces": {
+    "values": [
+      "none",
+      "start",
+      "end",
+      "all"
     ]
   },
   "text-decoration-style": {
@@ -6935,11 +7287,12 @@ var generatedPropertyValues = {
   },
   "text-transform": {
     "values": [
+      "none",
       "capitalize",
       "uppercase",
       "lowercase",
       "full-width",
-      "none",
+      "full-size-kana",
       "math-auto"
     ]
   },
@@ -7042,6 +7395,12 @@ var generatedPropertyValues = {
       "step-end"
     ]
   },
+  "trigger-scope": {
+    "values": [
+      "none",
+      "all"
+    ]
+  },
   "unicode-bidi": {
     "values": [
       "normal",
@@ -7093,6 +7452,12 @@ var generatedPropertyValues = {
     "values": [
       "none",
       "auto"
+    ]
+  },
+  "view-transition-scope": {
+    "values": [
+      "none",
+      "all"
     ]
   },
   "visibility": {
@@ -7788,10 +8153,6 @@ var CSSMetadata = class _CSSMetadata {
     propertyName = propertyName.toLowerCase();
     return bezierAwareProperties.has(propertyName) || this.isCustomProperty(propertyName);
   }
-  isFontAwareProperty(propertyName) {
-    propertyName = propertyName.toLowerCase();
-    return fontAwareProperties.has(propertyName) || this.isCustomProperty(propertyName);
-  }
   isCustomProperty(propertyName) {
     return propertyName.startsWith("--");
   }
@@ -7893,6 +8254,7 @@ var CSSWideKeywords = [
   "initial",
   "revert",
   "revert-layer",
+  "revert-rule",
   "unset"
 ];
 var PositionTryOrderKeywords = [
@@ -7970,7 +8332,18 @@ var valuePresets = /* @__PURE__ */ new Map([
       ["perspective", "perspective(|10px|)"]
     ])
   ],
-  ["corner-shape", cornerShapeValuePresetMap]
+  ["corner-shape", cornerShapeValuePresetMap],
+  [
+    "font-variant-alternates",
+    /* @__PURE__ */ new Map([
+      ["stylistic", "stylistic(||)"],
+      ["styleset", "styleset(||)"],
+      ["character-variant", "character-variant(||)"],
+      ["swash", "swash(||)"],
+      ["ornaments", "ornaments(||)"],
+      ["annotation", "annotation(||)"]
+    ])
+  ]
 ]);
 var distanceProperties = /* @__PURE__ */ new Set([
   "background-position",
@@ -8003,7 +8376,6 @@ var bezierAwareProperties = /* @__PURE__ */ new Set([
   "-webkit-transition",
   "-webkit-transition-timing-function"
 ]);
-var fontAwareProperties = /* @__PURE__ */ new Set(["font-size", "line-height", "font-weight", "font-family", "letter-spacing"]);
 var colorAwareProperties = /* @__PURE__ */ new Set([
   "accent-color",
   "background",
@@ -8118,11 +8490,68 @@ var textEmphasisStyle = /* @__PURE__ */ new Set([
   '"\u2764\uFE0F"'
   // <string>
 ]);
+var listStyleTypeValues = /* @__PURE__ */ new Set([
+  "disc",
+  "circle",
+  "square",
+  "decimal",
+  "decimal-leading-zero",
+  "arabic-indic",
+  "bengali",
+  "cambodian",
+  "khmer",
+  "devanagari",
+  "gujarati",
+  "gurmukhi",
+  "kannada",
+  "lao",
+  "malayalam",
+  "mongolian",
+  "myanmar",
+  "oriya",
+  "persian",
+  "urdu",
+  "telugu",
+  "tibetan",
+  "thai",
+  "lower-roman",
+  "upper-roman",
+  "lower-greek",
+  "lower-alpha",
+  "lower-latin",
+  "upper-alpha",
+  "upper-latin",
+  "cjk-earthly-branch",
+  "cjk-heavenly-stem",
+  "ethiopic-halehame",
+  "ethiopic-halehame-am",
+  "ethiopic-halehame-ti-er",
+  "ethiopic-halehame-ti-et",
+  "hangul",
+  "hangul-consonant",
+  "korean-hangul-formal",
+  "korean-hanja-formal",
+  "korean-hanja-informal",
+  "hebrew",
+  "armenian",
+  "lower-armenian",
+  "upper-armenian",
+  "georgian",
+  "cjk-ideographic",
+  "simp-chinese-formal",
+  "simp-chinese-informal",
+  "trad-chinese-formal",
+  "trad-chinese-informal",
+  "hiragana",
+  "katakana",
+  "hiragana-iroha",
+  "katakana-iroha"
+]);
 var extraPropertyValues = /* @__PURE__ */ new Map([
   ["background-repeat", /* @__PURE__ */ new Set(["repeat", "repeat-x", "repeat-y", "no-repeat", "space", "round"])],
   ["content", /* @__PURE__ */ new Set(["normal", "close-quote", "no-close-quote", "no-open-quote", "open-quote"])],
   ["baseline-shift", /* @__PURE__ */ new Set(["baseline"])],
-  ["max-height", /* @__PURE__ */ new Set(["min-content", "max-content", "-webkit-fill-available", "fit-content"])],
+  ["max-height", /* @__PURE__ */ new Set(["min-content", "max-content", "-webkit-fill-available", "fit-content", "stretch"])],
   ["color", /* @__PURE__ */ new Set(["black"])],
   ["background-color", /* @__PURE__ */ new Set(["white"])],
   ["box-shadow", /* @__PURE__ */ new Set(["inset"])],
@@ -8196,7 +8625,7 @@ var extraPropertyValues = /* @__PURE__ */ new Map([
     ])
   ],
   ["zoom", /* @__PURE__ */ new Set(["normal"])],
-  ["max-width", /* @__PURE__ */ new Set(["min-content", "max-content", "-webkit-fill-available", "fit-content"])],
+  ["max-width", /* @__PURE__ */ new Set(["min-content", "max-content", "-webkit-fill-available", "fit-content", "stretch"])],
   ["-webkit-font-smoothing", /* @__PURE__ */ new Set(["antialiased", "subpixel-antialiased"])],
   [
     "border",
@@ -8251,6 +8680,10 @@ var extraPropertyValues = /* @__PURE__ */ new Map([
       "proportional-width",
       "ruby"
     ])
+  ],
+  [
+    "font-variant-alternates",
+    /* @__PURE__ */ new Set(["historical-forms", "stylistic", "styleset", "character-variant", "swash", "ornaments", "annotation"])
   ],
   ["vertical-align", /* @__PURE__ */ new Set(["top", "bottom", "-webkit-baseline-middle"])],
   ["page-break-after", /* @__PURE__ */ new Set(["left", "right", "always", "avoid"])],
@@ -8600,76 +9033,23 @@ var extraPropertyValues = /* @__PURE__ */ new Map([
     ])
   ],
   ["flex-flow", /* @__PURE__ */ new Set(["nowrap", "row", "row-reverse", "column", "column-reverse", "wrap", "wrap-reverse"])],
-  ["height", /* @__PURE__ */ new Set(["-webkit-fill-available"])],
+  ["height", /* @__PURE__ */ new Set(["-webkit-fill-available", "stretch"])],
   ["inline-size", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
   [
     "list-style",
     /* @__PURE__ */ new Set([
       "outside",
       "inside",
-      "disc",
-      "circle",
-      "square",
-      "decimal",
-      "decimal-leading-zero",
-      "arabic-indic",
-      "bengali",
-      "cambodian",
-      "khmer",
-      "devanagari",
-      "gujarati",
-      "gurmukhi",
-      "kannada",
-      "lao",
-      "malayalam",
-      "mongolian",
-      "myanmar",
-      "oriya",
-      "persian",
-      "urdu",
-      "telugu",
-      "tibetan",
-      "thai",
-      "lower-roman",
-      "upper-roman",
-      "lower-greek",
-      "lower-alpha",
-      "lower-latin",
-      "upper-alpha",
-      "upper-latin",
-      "cjk-earthly-branch",
-      "cjk-heavenly-stem",
-      "ethiopic-halehame",
-      "ethiopic-halehame-am",
-      "ethiopic-halehame-ti-er",
-      "ethiopic-halehame-ti-et",
-      "hangul",
-      "hangul-consonant",
-      "korean-hangul-formal",
-      "korean-hanja-formal",
-      "korean-hanja-informal",
-      "hebrew",
-      "armenian",
-      "lower-armenian",
-      "upper-armenian",
-      "georgian",
-      "cjk-ideographic",
-      "simp-chinese-formal",
-      "simp-chinese-informal",
-      "trad-chinese-formal",
-      "trad-chinese-informal",
-      "hiragana",
-      "katakana",
-      "hiragana-iroha",
-      "katakana-iroha"
+      ...listStyleTypeValues
     ])
   ],
+  ["list-style-type", listStyleTypeValues],
   ["max-block-size", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
   ["max-inline-size", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
   ["min-block-size", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
-  ["min-height", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
+  ["min-height", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content", "stretch"])],
   ["min-inline-size", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
-  ["min-width", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content"])],
+  ["min-width", /* @__PURE__ */ new Set(["-webkit-fill-available", "min-content", "max-content", "fit-content", "stretch"])],
   ["object-position", /* @__PURE__ */ new Set(["top", "bottom", "left", "right", "center"])],
   ["shape-outside", /* @__PURE__ */ new Set(["border-box", "content-box", "padding-box", "margin-box"])],
   [
@@ -8831,7 +9211,24 @@ var extraPropertyValues = /* @__PURE__ */ new Map([
   ["-webkit-text-stroke-width", /* @__PURE__ */ new Set(["medium", "thick", "thin"])],
   ["-webkit-transform-origin-x", /* @__PURE__ */ new Set(["left", "right", "center"])],
   ["-webkit-transform-origin-y", /* @__PURE__ */ new Set(["top", "bottom", "center"])],
-  ["width", /* @__PURE__ */ new Set(["-webkit-fill-available"])],
+  ["width", /* @__PURE__ */ new Set(["-webkit-fill-available", "stretch"])],
+  [
+    "animation-trigger",
+    /* @__PURE__ */ new Set([
+      "play",
+      "pause",
+      "play-once",
+      "play-alternate",
+      "play-forwards",
+      "play-backwards",
+      "play-pause",
+      "replay"
+    ])
+  ],
+  ["timeline-trigger-activation-range-start", /* @__PURE__ */ new Set(["normal"])],
+  ["timeline-trigger-activation-range-end", /* @__PURE__ */ new Set(["normal"])],
+  ["timeline-trigger-active-range-start", /* @__PURE__ */ new Set(["normal"])],
+  ["timeline-trigger-active-range-end", /* @__PURE__ */ new Set(["normal"])],
   ["contain-intrinsic-width", /* @__PURE__ */ new Set(["auto none", "auto 100px"])],
   ["contain-intrinsic-height", /* @__PURE__ */ new Set(["auto none", "auto 100px"])],
   ["contain-intrinsic-size", /* @__PURE__ */ new Set(["auto none", "auto 100px"])],
@@ -9159,10 +9556,10 @@ __export(NetworkRequest_exports, {
   setCookieBlockedReasonToAttribute: () => setCookieBlockedReasonToAttribute,
   setCookieBlockedReasonToUiString: () => setCookieBlockedReasonToUiString
 });
-import * as TextUtils23 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils24 from "./../../models/text_utils/text_utils.js";
 import * as Common27 from "./../common/common.js";
 import * as i18n21 from "./../i18n/i18n.js";
-import * as Platform18 from "./../platform/platform.js";
+import * as Platform17 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/CookieModel.js
 var CookieModel_exports = {};
@@ -9170,8 +9567,8 @@ __export(CookieModel_exports, {
   CookieModel: () => CookieModel
 });
 import * as Common25 from "./../common/common.js";
-import * as Platform17 from "./../platform/platform.js";
-import * as Root9 from "./../root/root.js";
+import * as Platform16 from "./../platform/platform.js";
+import * as Root10 from "./../root/root.js";
 
 // gen/front_end/core/sdk/Cookie.js
 var Cookie_exports = {};
@@ -9425,7 +9822,7 @@ var Cookie = class _Cookie {
     if (hostname === domain) {
       return true;
     }
-    if (!domain || domain[0] !== ".") {
+    if (domain?.[0] !== ".") {
       return false;
     }
     if (domain.substr(1) === hostname) {
@@ -9438,6 +9835,7 @@ var Cookie = class _Cookie {
 // gen/front_end/core/sdk/NetworkManager.js
 var NetworkManager_exports = {};
 __export(NetworkManager_exports, {
+  AppliedNetworkConditions: () => AppliedNetworkConditions,
   BlockingConditions: () => BlockingConditions,
   Events: () => Events2,
   Fast4GConditions: () => Fast4GConditions,
@@ -9464,10 +9862,9 @@ __export(NetworkManager_exports, {
 });
 import * as TextUtils from "./../../models/text_utils/text_utils.js";
 import * as Common5 from "./../common/common.js";
-import * as Host2 from "./../host/host.js";
 import * as i18n from "./../i18n/i18n.js";
 import * as Platform3 from "./../platform/platform.js";
-import * as Root2 from "./../root/root.js";
+import * as Root3 from "./../root/root.js";
 
 // gen/front_end/core/sdk/TargetManager.js
 var TargetManager_exports = {};
@@ -9480,7 +9877,7 @@ import * as Common4 from "./../common/common.js";
 import * as Host from "./../host/host.js";
 import * as Platform2 from "./../platform/platform.js";
 import { assertNotNullOrUndefined } from "./../platform/platform.js";
-import * as Root from "./../root/root.js";
+import * as Root2 from "./../root/root.js";
 
 // gen/front_end/core/sdk/Target.js
 var Target_exports = {};
@@ -9491,6 +9888,7 @@ __export(Target_exports, {
 import * as Common3 from "./../common/common.js";
 import * as Platform from "./../platform/platform.js";
 import * as ProtocolClient from "./../protocol_client/protocol_client.js";
+import * as Root from "./../root/root.js";
 var Target = class extends ProtocolClient.InspectorBackend.TargetBase {
   #targetManager;
   #name;
@@ -9517,14 +9915,16 @@ var Target = class extends ProtocolClient.InspectorBackend.TargetBase {
   #targetInfo;
   #creatingModels;
   constructor(targetManager, id, name, type, parentTarget, sessionId, suspended, connection, targetInfo) {
-    const needsNodeJSPatching = type === Type.NODE;
-    super(needsNodeJSPatching, parentTarget, sessionId, connection);
+    super(parentTarget, sessionId, connection);
     this.#targetManager = targetManager;
     this.#name = name;
     this.#capabilitiesMask = 0;
     switch (type) {
       case Type.FRAME:
-        this.#capabilitiesMask = 1 | 8192 | 2 | 4 | 8 | 16 | 32 | 128 | 256 | 1024 | 2048 | 32768 | 65536 | 131072 | 262144 | 524288;
+        this.#capabilitiesMask = 1 | 8192 | 2 | 4 | 8 | 16 | 32 | 128 | 256 | 1024 | 2048 | 32768 | 65536 | 131072 | 262144 | 524288 | 1048576;
+        if (Root.Runtime.hostConfig.devToolsWebMCPSupport?.enabled) {
+          this.#capabilitiesMask |= 2097152;
+        }
         if (parentTarget?.type() !== Type.FRAME) {
           this.#capabilitiesMask |= 4096 | 64 | 512 | 16384;
           if (Common3.ParsedURL.schemeIs(targetInfo?.url, "chrome-extension:")) {
@@ -9557,7 +9957,7 @@ var Target = class extends ProtocolClient.InspectorBackend.TargetBase {
         this.#capabilitiesMask = 4 | 8 | 524288 | 16;
         break;
       case Type.NODE:
-        this.#capabilitiesMask = 4 | 16 | 32 | 131072;
+        this.#capabilitiesMask = 4 | 16 | 32 | 131072 | 1048576;
         break;
       case Type.AUCTION_WORKLET:
         this.#capabilitiesMask = 4 | 524288;
@@ -9577,18 +9977,11 @@ var Target = class extends ProtocolClient.InspectorBackend.TargetBase {
     this.#isSuspended = suspended;
     this.#targetInfo = targetInfo;
   }
-  createModels(required) {
+  /** Creates the models in the order in which they are provided */
+  createModels(models) {
     this.#creatingModels = true;
-    const registeredModels2 = Array.from(SDKModel.registeredModels.entries());
-    for (const [modelClass, info] of registeredModels2) {
-      if (info.early) {
-        this.model(modelClass);
-      }
-    }
-    for (const [modelClass, info] of registeredModels2) {
-      if (info.autostart || required.has(modelClass)) {
-        this.model(modelClass);
-      }
+    for (const model of models) {
+      this.model(model);
     }
     this.#creatingModels = false;
   }
@@ -9609,7 +10002,6 @@ var Target = class extends ProtocolClient.InspectorBackend.TargetBase {
     return this.#type;
   }
   markAsNodeJSForTest() {
-    super.markAsNodeJSForTest();
     this.#type = Type.NODE;
   }
   targetManager() {
@@ -9731,10 +10123,22 @@ var Type;
 })(Type || (Type = {}));
 
 // gen/front_end/core/sdk/TargetManager.js
-var targetManagerInstance;
 var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWrapper {
+  /**
+   * @deprecated
+   *
+   * Intended for {@link SDKModel} classes to be able to retrieve scoped singletons like
+   * the "PageResourceLoader" or the "FrameManager".
+   *
+   * This is only an intermediate step to migrate towards our "layering vision" where
+   * SDKModels don't require things from the next layer.
+   */
+  context;
   #targets;
   #observers;
+  get settings() {
+    return this.context.get(Common4.Settings.Settings);
+  }
   /* eslint-disable @typescript-eslint/no-explicit-any */
   #modelListeners;
   #modelObservers;
@@ -9745,8 +10149,13 @@ var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWra
   #scopeTarget;
   #defaultScopeSet;
   #scopeChangeListeners;
-  constructor() {
+  #overrideAutoStartModels;
+  /**
+   * @param overrideAutoStartModels If provided, then the `autostart` flag on {@link RegistrationInfo} will be ignored.
+   */
+  constructor(context, overrideAutoStartModels) {
     super();
+    this.context = context;
     this.#targets = /* @__PURE__ */ new Set();
     this.#observers = /* @__PURE__ */ new Set();
     this.#modelListeners = new Platform2.MapUtilities.Multimap();
@@ -9757,15 +10166,16 @@ var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWra
     this.#scopedObservers = /* @__PURE__ */ new WeakSet();
     this.#defaultScopeSet = false;
     this.#scopeChangeListeners = /* @__PURE__ */ new Set();
+    this.#overrideAutoStartModels = overrideAutoStartModels;
   }
   static instance({ forceNew } = { forceNew: false }) {
-    if (!targetManagerInstance || forceNew) {
-      targetManagerInstance = new _TargetManager();
+    if (!Root2.DevToolsContext.globalInstance().has(_TargetManager) || forceNew) {
+      Root2.DevToolsContext.globalInstance().set(_TargetManager, new _TargetManager(Root2.DevToolsContext.globalInstance()));
     }
-    return targetManagerInstance;
+    return Root2.DevToolsContext.globalInstance().get(_TargetManager);
   }
   static removeInstance() {
-    targetManagerInstance = void 0;
+    Root2.DevToolsContext.globalInstance().delete(_TargetManager);
   }
   onInspectedURLChange(target) {
     if (target !== this.#scopeTarget) {
@@ -9896,12 +10306,26 @@ var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWra
     this.#observers.delete(targetObserver);
     this.#scopedObservers.delete(targetObserver);
   }
+  /** @returns The set of models we create unconditionally for new targets in the order in which they should be created */
+  #autoStartModels() {
+    const earlyModels = /* @__PURE__ */ new Set();
+    const models = /* @__PURE__ */ new Set();
+    const shouldAutostart = (model, info) => this.#overrideAutoStartModels ? this.#overrideAutoStartModels.has(model) : info.autostart;
+    for (const [model, info] of SDKModel.registeredModels) {
+      if (info.early) {
+        earlyModels.add(model);
+      } else if (shouldAutostart(model, info) || this.#modelObservers.has(model)) {
+        models.add(model);
+      }
+    }
+    return [...earlyModels, ...models];
+  }
   createTarget(id, name, type, parentTarget, sessionId, waitForDebuggerInPage, connection, targetInfo) {
     const target = new Target(this, id, name, type, parentTarget, sessionId || "", this.#isSuspended, connection || null, targetInfo);
     if (waitForDebuggerInPage) {
       void target.pageAgent().invoke_waitForDebugger();
     }
-    target.createModels(new Set(this.#modelObservers.keysArray()));
+    target.createModels(this.#autoStartModels());
     this.#targets.add(target);
     const inScope = this.isInScope(target);
     for (const observer of [...this.#observers]) {
@@ -9973,7 +10397,7 @@ var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWra
     return this.#browserTarget;
   }
   async maybeAttachInitialTarget() {
-    if (!Boolean(Root.Runtime.Runtime.queryParam("browserConnection"))) {
+    if (!Boolean(Root2.Runtime.Runtime.queryParam("browserConnection"))) {
       return false;
     }
     if (!this.#browserTarget) {
@@ -9995,7 +10419,7 @@ var TargetManager = class _TargetManager extends Common4.ObjectWrapper.ObjectWra
         /* targetInfo*/
         void 0
       );
-      this.#browserTarget.createModels(new Set(this.#modelObservers.keysArray()));
+      this.#browserTarget.createModels(this.#autoStartModels());
     }
     const targetId = await Host.InspectorFrontendHost.InspectorFrontendHostInstance.initialTargetId();
     void this.#browserTarget.targetAgent().invoke_autoAttachRelated({
@@ -10104,6 +10528,10 @@ var UIStrings = {
    * @description Explanation why no content is shown for WebSocket connection.
    */
   noContentForWebSocket: "Content for WebSockets is currently not supported",
+  /**
+   * @description Explanation why no content is shown for Server-Sent Events (SSE).
+   */
+  noContentForSSE: "Content for Server-Sent Events (SSE) is currently not supported",
   /**
    * @description Explanation why no content is shown for redirect response.
    */
@@ -10216,11 +10644,11 @@ var CONNECTION_TYPES = /* @__PURE__ */ new Map([
     /* Protocol.Network.ConnectionType.Wimax */
   ]
 ]);
-function customUserNetworkConditionsSetting() {
-  return Common5.Settings.Settings.instance().moduleSetting("custom-network-conditions");
+function customUserNetworkConditionsSetting(settings = Common5.Settings.Settings.instance()) {
+  return settings.moduleSetting("custom-network-conditions");
 }
-function activeNetworkThrottlingKeySetting() {
-  return Common5.Settings.Settings.instance().createSetting(
+function activeNetworkThrottlingKeySetting(settings = Common5.Settings.Settings.instance()) {
+  return settings.createSetting(
     "active-network-condition-key",
     "NO_THROTTLING"
     /* PredefinedThrottlingConditionKey.NO_THROTTLING */
@@ -10231,7 +10659,7 @@ var NetworkManager = class _NetworkManager extends SDKModel {
   fetchDispatcher;
   #networkAgent;
   #bypassServiceWorkerSetting;
-  activeNetworkThrottlingKey = activeNetworkThrottlingKeySetting();
+  activeNetworkThrottlingKey;
   constructor(target) {
     super(target);
     this.dispatcher = new NetworkDispatcher(this);
@@ -10239,28 +10667,28 @@ var NetworkManager = class _NetworkManager extends SDKModel {
     this.#networkAgent = target.networkAgent();
     target.registerNetworkDispatcher(this.dispatcher);
     target.registerFetchDispatcher(this.fetchDispatcher);
-    if (Common5.Settings.Settings.instance().moduleSetting("cache-disabled").get()) {
+    const settings = this.target().targetManager().settings;
+    this.activeNetworkThrottlingKey = activeNetworkThrottlingKeySetting(settings);
+    if (settings.moduleSetting("cache-disabled").get()) {
       void this.#networkAgent.invoke_setCacheDisabled({ cacheDisabled: true });
-    }
-    if (Root2.Runtime.hostConfig.devToolsPrivacyUI?.enabled && Root2.Runtime.hostConfig.thirdPartyCookieControls?.managedBlockThirdPartyCookies !== true && (Common5.Settings.Settings.instance().createSetting("cookie-control-override-enabled", void 0).get() || Common5.Settings.Settings.instance().createSetting("grace-period-mitigation-disabled", void 0).get() || Common5.Settings.Settings.instance().createSetting("heuristic-mitigation-disabled", void 0).get())) {
-      this.cookieControlFlagsSettingChanged();
     }
     void this.#networkAgent.invoke_enable({
       maxPostDataSize: MAX_EAGER_POST_REQUEST_BODY_LENGTH,
-      enableDurableMessages: Root2.Runtime.hostConfig.devToolsEnableDurableMessages?.enabled,
       maxTotalBufferSize: MAX_RESPONSE_BODY_TOTAL_BUFFER_LENGTH,
       reportDirectSocketTraffic: true
     });
+    if (Root3.Runtime.hostConfig.devToolsEnableDurableMessages?.enabled) {
+      const preserveLogSetting = settings.moduleSetting("network-log.preserve-log");
+      this.#updateDurableMessages(preserveLogSetting.get());
+      preserveLogSetting.addChangeListener(this.preserveLogChanged, this);
+    }
     void this.#networkAgent.invoke_setAttachDebugStack({ enabled: true });
-    this.#bypassServiceWorkerSetting = Common5.Settings.Settings.instance().createSetting("bypass-service-worker", false);
+    this.#bypassServiceWorkerSetting = settings.createSetting("bypass-service-worker", false);
     if (this.#bypassServiceWorkerSetting.get()) {
       this.bypassServiceWorkerChanged();
     }
     this.#bypassServiceWorkerSetting.addChangeListener(this.bypassServiceWorkerChanged, this);
-    Common5.Settings.Settings.instance().moduleSetting("cache-disabled").addChangeListener(this.cacheDisabledSettingChanged, this);
-    Common5.Settings.Settings.instance().createSetting("cookie-control-override-enabled", void 0).addChangeListener(this.cookieControlFlagsSettingChanged, this);
-    Common5.Settings.Settings.instance().createSetting("grace-period-mitigation-disabled", void 0).addChangeListener(this.cookieControlFlagsSettingChanged, this);
-    Common5.Settings.Settings.instance().createSetting("heuristic-mitigation-disabled", void 0).addChangeListener(this.cookieControlFlagsSettingChanged, this);
+    settings.moduleSetting("cache-disabled").addChangeListener(this.cacheDisabledSettingChanged, this);
   }
   static forRequest(request) {
     return requestToManagerMap.get(request) || null;
@@ -10290,6 +10718,9 @@ var NetworkManager = class _NetworkManager extends SDKModel {
       return { error: i18nString(UIStrings.noContentForWebSocket) };
     }
     if (!request.finished) {
+      if (Boolean(request.eventSourceMessages()?.length)) {
+        return { error: i18nString(UIStrings.noContentForSSE) };
+      }
       await request.once(Events.FINISHED_LOADING);
     }
     if (request.isRedirect()) {
@@ -10355,11 +10786,45 @@ var NetworkManager = class _NetworkManager extends SDKModel {
       return null;
     }
     try {
-      const { postData } = await manager.#networkAgent.invoke_getRequestPostData({ requestId });
+      const { postData, base64Encoded } = await manager.#networkAgent.invoke_getRequestPostData({ requestId });
+      if (base64Encoded && postData) {
+        const binaryString = globalThis.atob(postData);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const requestContentType = request.requestContentType();
+        const charset = requestContentType ? Platform3.MimeType.parseContentType(requestContentType).charset ?? "utf-8" : "utf-8";
+        const contentEncoding = request.requestContentEncoding()?.toLowerCase();
+        if (contentEncoding) {
+          const decompressed = await _NetworkManager.#tryDecompressBody(bytes.buffer, contentEncoding, charset);
+          if (decompressed !== null) {
+            return decompressed;
+          }
+        }
+        return new TextDecoder(charset).decode(bytes);
+      }
       return postData;
     } catch (e) {
       return e.message;
     }
+  }
+  /**
+   * Attempts to decompress a compressed request body.
+   * Returns the decompressed string, or null if decompression is not applicable.
+   */
+  static async #tryDecompressBody(buffer, encoding, charset) {
+    try {
+      if (encoding.includes("gzip") && Common5.Gzip.isGzip(buffer)) {
+        return await Common5.Gzip.decompress(buffer, charset);
+      }
+      if (encoding.includes("deflate")) {
+        return await Common5.Gzip.decompressDeflate(buffer, charset);
+      }
+    } catch (e) {
+      console.warn("Failed to decompress request body:", e);
+    }
+    return null;
   }
   static connectionType(conditions) {
     if (!conditions.download && !conditions.upload) {
@@ -10396,18 +10861,22 @@ var NetworkManager = class _NetworkManager extends SDKModel {
   cacheDisabledSettingChanged({ data: enabled }) {
     void this.#networkAgent.invoke_setCacheDisabled({ cacheDisabled: enabled });
   }
-  cookieControlFlagsSettingChanged() {
-    const overridesEnabled = Boolean(Common5.Settings.Settings.instance().createSetting("cookie-control-override-enabled", void 0).get());
-    const gracePeriodEnabled = overridesEnabled ? Boolean(Common5.Settings.Settings.instance().createSetting("grace-period-mitigation-disabled", void 0).get()) : false;
-    const heuristicEnabled = overridesEnabled ? Boolean(Common5.Settings.Settings.instance().createSetting("heuristic-mitigation-disabled", void 0).get()) : false;
-    void this.#networkAgent.invoke_setCookieControls({
-      enableThirdPartyCookieRestriction: overridesEnabled,
-      disableThirdPartyCookieMetadata: gracePeriodEnabled,
-      disableThirdPartyCookieHeuristics: heuristicEnabled
-    });
+  preserveLogChanged({ data: enabled }) {
+    this.#updateDurableMessages(enabled);
+  }
+  #updateDurableMessages(enabled) {
+    if (enabled) {
+      void this.#networkAgent.invoke_configureDurableMessages({
+        maxTotalBufferSize: MAX_RESPONSE_BODY_TOTAL_BUFFER_LENGTH
+      });
+    } else {
+      void this.#networkAgent.invoke_configureDurableMessages({});
+    }
   }
   dispose() {
-    Common5.Settings.Settings.instance().moduleSetting("cache-disabled").removeChangeListener(this.cacheDisabledSettingChanged, this);
+    const settings = this.target().targetManager().settings;
+    settings.moduleSetting("cache-disabled").removeChangeListener(this.cacheDisabledSettingChanged, this);
+    settings.moduleSetting("network-log.preserve-log").removeChangeListener(this.preserveLogChanged, this);
   }
   bypassServiceWorkerChanged() {
     void this.#networkAgent.invoke_setBypassServiceWorker({ bypass: this.#bypassServiceWorkerSetting.get() });
@@ -10419,15 +10888,14 @@ var NetworkManager = class _NetworkManager extends SDKModel {
     }
     return result.status;
   }
-  async getIpProtectionProxyStatus() {
-    const result = await this.#networkAgent.invoke_getIPProtectionProxyStatus();
-    if (result.getError()) {
-      return null;
-    }
-    return result.status;
-  }
   async enableReportingApi(enable = true) {
     return await this.#networkAgent.invoke_enableReportingApi({ enable });
+  }
+  async enableDeviceBoundSessions(enable = true) {
+    return await this.#networkAgent.invoke_enableDeviceBoundSessions({ enable });
+  }
+  async deleteDeviceBoundSession(key) {
+    return await this.#networkAgent.invoke_deleteDeviceBoundSession({ key });
   }
   async loadNetworkResource(frameId, url, options) {
     const result = await this.#networkAgent.invoke_loadNetworkResource({ frameId: frameId ?? void 0, url, options });
@@ -10453,6 +10921,8 @@ var Events2;
   Events12["ReportingApiReportAdded"] = "ReportingApiReportAdded";
   Events12["ReportingApiReportUpdated"] = "ReportingApiReportUpdated";
   Events12["ReportingApiEndpointsChangedForOrigin"] = "ReportingApiEndpointsChangedForOrigin";
+  Events12["DeviceBoundSessionsAdded"] = "DeviceBoundSessionsAdded";
+  Events12["DeviceBoundSessionEventOccurred"] = "DeviceBoundSessionEventOccurred";
 })(Events2 || (Events2 = {}));
 var BlockingConditions = {
   key: "BLOCKING",
@@ -10571,7 +11041,8 @@ var NetworkDispatcher = class {
   updateNetworkRequestWithRequest(networkRequest, request) {
     networkRequest.requestMethod = request.method;
     networkRequest.setRequestHeaders(this.headersMapToHeadersArray(request.headers));
-    networkRequest.setRequestFormData(Boolean(request.hasPostData), request.postData || null);
+    const isCompressed = Boolean(networkRequest.requestContentEncoding());
+    networkRequest.setRequestFormData(Boolean(request.hasPostData), isCompressed ? null : request.postData || null);
     networkRequest.setInitialPriority(request.initialPriority);
     networkRequest.mixedContentType = request.mixedContentType || "none";
     networkRequest.setReferrerPolicy(request.referrerPolicy);
@@ -10636,11 +11107,6 @@ var NetworkDispatcher = class {
     if (response.securityDetails) {
       networkRequest.setSecurityDetails(response.securityDetails);
     }
-    if (Root2.Runtime.hostConfig.devToolsIpProtectionInDevTools?.enabled) {
-      if (response.isIpProtectionUsed) {
-        networkRequest.setIsIpProtectionUsed(response.isIpProtectionUsed);
-      }
-    }
     const newResourceType = Common5.ResourceType.ResourceType.fromMimeTypeOverride(networkRequest.mimeType);
     if (newResourceType) {
       networkRequest.setResourceType(newResourceType);
@@ -10683,7 +11149,7 @@ var NetworkDispatcher = class {
     this.getExtraInfoBuilder(requestId).addHasExtraInfo(info.hasExtraInfo);
     this.#manager.dispatchEventToListeners(Events2.ResponseReceived, { request: networkRequest, response: info.outerResponse });
   }
-  requestWillBeSent({ requestId, loaderId, documentURL, request, timestamp, wallTime, initiator, redirectHasExtraInfo, redirectResponse, type, frameId, hasUserGesture }) {
+  requestWillBeSent({ requestId, loaderId, documentURL, request, timestamp, wallTime, initiator, redirectHasExtraInfo, redirectResponse, type, frameId, hasUserGesture, renderBlockingBehavior }) {
     let networkRequest = this.#requestsById.get(requestId);
     if (networkRequest) {
       if (!redirectResponse) {
@@ -10704,6 +11170,9 @@ var NetworkDispatcher = class {
       this.#manager.dispatchEventToListeners(Events2.RequestRedirected, networkRequest);
     } else {
       networkRequest = NetworkRequest.create(requestId, request.url, documentURL, frameId ?? null, loaderId, initiator, hasUserGesture);
+      if (renderBlockingBehavior) {
+        networkRequest.setRenderBlockingBehavior(renderBlockingBehavior);
+      }
       requestToManagerMap.set(networkRequest, this.#manager);
     }
     networkRequest.hasNetworkData = true;
@@ -10874,7 +11343,7 @@ var NetworkDispatcher = class {
   }
   requestIntercepted({}) {
   }
-  requestWillBeSentExtraInfo({ requestId, associatedCookies, headers, clientSecurityState, connectTiming, siteHasCookieInOtherPartition, appliedNetworkConditionsId }) {
+  requestWillBeSentExtraInfo({ requestId, associatedCookies, headers, deviceBoundSessionUsages, clientSecurityState, connectTiming, siteHasCookieInOtherPartition, appliedNetworkConditionsId }) {
     const blockedRequestCookies = [];
     const includedRequestCookies = [];
     for (const { blockedReasons, exemptionReason, cookie } of associatedCookies) {
@@ -10888,12 +11357,18 @@ var NetworkDispatcher = class {
       blockedRequestCookies,
       includedRequestCookies,
       requestHeaders: this.headersMapToHeadersArray(headers),
+      deviceBoundSessionUsages,
       clientSecurityState,
       connectTiming,
       siteHasCookieInOtherPartition,
       appliedNetworkConditionsId
     };
     this.getExtraInfoBuilder(requestId).addRequestExtraInfo(extraRequestInfo);
+    const networkRequest = this.#requestsById.get(requestId);
+    if (appliedNetworkConditionsId && networkRequest) {
+      networkRequest.setAppliedNetworkConditions(appliedNetworkConditionsId);
+      this.updateNetworkRequest(networkRequest);
+    }
   }
   responseReceivedEarlyHints({ requestId, headers }) {
     this.getExtraInfoBuilder(requestId).setEarlyHintsHeaders(this.headersMapToHeadersArray(headers));
@@ -11001,7 +11476,8 @@ var NetworkDispatcher = class {
     }
     this.#manager.dispatchEventToListeners(Events2.RequestFinished, networkRequest);
     MultitargetNetworkManager.instance().inflightMainResourceRequests.delete(networkRequest.requestId());
-    if (Common5.Settings.Settings.instance().moduleSetting("monitoring-xhr-enabled").get() && networkRequest.resourceType().category() === Common5.ResourceType.resourceCategories.XHR) {
+    const settings = this.#manager.target().targetManager().settings;
+    if (settings.moduleSetting("monitoring-xhr-enabled").get() && networkRequest.resourceType().category() === Common5.ResourceType.resourceCategories.XHR) {
       let message;
       const failedToLoad = networkRequest.failed || networkRequest.hasErrorStatusCode();
       if (failedToLoad) {
@@ -11178,8 +11654,12 @@ var NetworkDispatcher = class {
         localPort: event.options.localPort,
         sendBufferSize: event.options.sendBufferSize,
         receiveBufferSize: event.options.receiveBufferSize,
-        dnsQueryType: event.options.dnsQueryType
-      }
+        dnsQueryType: event.options.dnsQueryType,
+        multicastLoopback: event.options.multicastLoopback,
+        multicastTimeToLive: event.options.multicastTimeToLive,
+        multicastAllowAddressSharing: event.options.multicastAllowAddressSharing
+      },
+      joinedMulticastGroups: /* @__PURE__ */ new Set()
     };
     networkRequest.setResourceType(Common5.ResourceType.resourceTypes.DirectSocket);
     networkRequest.setIssueTime(event.timestamp, event.timestamp);
@@ -11263,6 +11743,28 @@ var NetworkDispatcher = class {
     networkRequest.responseReceivedTime = event.timestamp;
     this.updateNetworkRequest(networkRequest);
   }
+  directUDPSocketJoinedMulticastGroup(event) {
+    const networkRequest = this.#requestsById.get(event.identifier);
+    if (!networkRequest?.directSocketInfo) {
+      return;
+    }
+    if (!networkRequest.directSocketInfo.joinedMulticastGroups) {
+      networkRequest.directSocketInfo.joinedMulticastGroups = /* @__PURE__ */ new Set();
+    }
+    if (!networkRequest.directSocketInfo.joinedMulticastGroups.has(event.IPAddress)) {
+      networkRequest.directSocketInfo.joinedMulticastGroups.add(event.IPAddress);
+      this.updateNetworkRequest(networkRequest);
+    }
+  }
+  directUDPSocketLeftMulticastGroup(event) {
+    const networkRequest = this.#requestsById.get(event.identifier);
+    if (!networkRequest?.directSocketInfo?.joinedMulticastGroups) {
+      return;
+    }
+    if (networkRequest.directSocketInfo.joinedMulticastGroups.delete(event.IPAddress)) {
+      this.updateNetworkRequest(networkRequest);
+    }
+  }
   trustTokenOperationDone(event) {
     const request = this.#requestsById.get(event.requestId);
     if (!request) {
@@ -11279,6 +11781,12 @@ var NetworkDispatcher = class {
   }
   reportingApiEndpointsChangedForOrigin(data) {
     this.#manager.dispatchEventToListeners(Events2.ReportingApiEndpointsChangedForOrigin, data);
+  }
+  deviceBoundSessionsAdded(_params) {
+    this.#manager.dispatchEventToListeners(Events2.DeviceBoundSessionsAdded, _params.sessions);
+  }
+  deviceBoundSessionEventOccurred(_params) {
+    this.#manager.dispatchEventToListeners(Events2.DeviceBoundSessionEventOccurred, _params);
   }
   policyUpdated() {
   }
@@ -11344,13 +11852,13 @@ var RequestCondition = class extends Common5.ObjectWrapper.ObjectWrapper {
   #enabled;
   #conditions;
   #ruleIds = /* @__PURE__ */ new Set();
-  static createFromSetting(setting) {
+  static createFromSetting(setting, settings = Common5.Settings.Settings.instance()) {
     if ("urlPattern" in setting) {
       const pattern2 = RequestURLPattern.create(setting.urlPattern) ?? {
         wildcardURL: setting.urlPattern,
         upgradedPattern: RequestURLPattern.upgradeFromWildcard(setting.urlPattern) ?? void 0
       };
-      const conditions = getPredefinedOrBlockingCondition(setting.conditions) ?? customUserNetworkConditionsSetting().get().find((condition) => condition.key === setting.conditions) ?? NoThrottlingConditions;
+      const conditions = getPredefinedOrBlockingCondition(setting.conditions) ?? customUserNetworkConditionsSetting(settings).get().find((condition) => condition.key === setting.conditions) ?? NoThrottlingConditions;
       return new this(pattern2, setting.enabled, conditions);
     }
     const pattern = {
@@ -11389,17 +11897,7 @@ var RequestCondition = class extends Common5.ObjectWrapper.ObjectWrapper {
     return this.#pattern instanceof RequestURLPattern ? this.#pattern.constructorString : this.#pattern.upgradedPattern?.constructorString ?? this.#pattern.wildcardURL;
   }
   set pattern(pattern) {
-    if (typeof pattern === "string") {
-      if (Root2.Runtime.hostConfig.devToolsIndividualRequestThrottling?.enabled) {
-        throw new Error("Should not use wildcard urls");
-      }
-      this.#pattern = {
-        wildcardURL: pattern,
-        upgradedPattern: RequestURLPattern.upgradeFromWildcard(pattern) ?? void 0
-      };
-    } else {
-      this.#pattern = pattern;
-    }
+    this.#pattern = pattern;
     this.dispatchEventToListeners(
       "request-condition-changed"
       /* RequestCondition.Events.REQUEST_CONDITION_CHANGED */
@@ -11441,16 +11939,18 @@ var RequestCondition = class extends Common5.ObjectWrapper.ObjectWrapper {
   }
 };
 var RequestConditions = class extends Common5.ObjectWrapper.ObjectWrapper {
-  #setting = Common5.Settings.Settings.instance().createSetting("network-blocked-patterns", []);
-  #conditionsEnabledSetting = Common5.Settings.Settings.instance().moduleSetting("request-blocking-enabled");
+  #setting;
+  #conditionsEnabledSetting;
   #conditions = [];
   #requestConditionsById = /* @__PURE__ */ new Map();
   #conditionsAppliedForTestPromise = Promise.resolve();
-  constructor() {
+  constructor(settings) {
     super();
+    this.#setting = settings.createSetting("network-blocked-patterns", []);
+    this.#conditionsEnabledSetting = settings.moduleSetting("request-blocking-enabled");
     for (const condition of this.#setting.get()) {
       try {
-        this.#conditions.push(RequestCondition.createFromSetting(condition));
+        this.#conditions.push(RequestCondition.createFromSetting(condition, settings));
       } catch (e) {
         console.error("Error loading throttling settings: ", e);
       }
@@ -11476,10 +11976,7 @@ var RequestConditions = class extends Common5.ObjectWrapper.ObjectWrapper {
     this.#conditionsEnabledSetting.set(enabled);
   }
   findCondition(pattern) {
-    if (Root2.Runtime.hostConfig.devToolsIndividualRequestThrottling?.enabled) {
-      return this.#conditions.find((condition) => condition.constructorString === pattern);
-    }
-    return this.#conditions.find((condition) => condition.wildcardURL === pattern);
+    return this.#conditions.find((condition) => condition.constructorString === pattern);
   }
   has(url) {
     return Boolean(this.findCondition(url));
@@ -11497,10 +11994,7 @@ var RequestConditions = class extends Common5.ObjectWrapper.ObjectWrapper {
       return;
     }
     Platform3.ArrayUtilities.swap(this.#conditions, index, index + 1);
-    this.dispatchEventToListeners(
-      "request-conditions-changed"
-      /* RequestConditions.Events.REQUEST_CONDITIONS_CHANGED */
-    );
+    this.#conditionsChanged();
   }
   increasePriority(condition) {
     const index = this.#conditions.indexOf(condition);
@@ -11508,10 +12002,7 @@ var RequestConditions = class extends Common5.ObjectWrapper.ObjectWrapper {
       return;
     }
     Platform3.ArrayUtilities.swap(this.#conditions, index - 1, index);
-    this.dispatchEventToListeners(
-      "request-conditions-changed"
-      /* RequestConditions.Events.REQUEST_CONDITIONS_CHANGED */
-    );
+    this.#conditionsChanged();
   }
   delete(condition) {
     const index = this.#conditions.indexOf(condition);
@@ -11543,80 +12034,89 @@ var RequestConditions = class extends Common5.ObjectWrapper.ObjectWrapper {
     function isNonBlockingCondition(condition) {
       return !("block" in condition);
     }
-    if (Root2.Runtime.hostConfig.devToolsIndividualRequestThrottling?.enabled) {
-      const urlPatterns = [];
-      const matchedNetworkConditions = [];
-      if (this.conditionsEnabled) {
-        for (const condition of this.#conditions) {
-          const urlPattern = condition.constructorString;
-          const conditions = condition.conditions;
-          if (!condition.enabled || !urlPattern || conditions === NoThrottlingConditions) {
-            continue;
-          }
-          const block = !isNonBlockingCondition(conditions);
-          urlPatterns.push({ urlPattern, block });
-          if (!block) {
-            const { ruleIds } = condition;
-            matchedNetworkConditions.push({ ruleIds, urlPattern, conditions });
-          }
+    const urlPatterns = [];
+    const matchedNetworkConditions = [];
+    if (this.conditionsEnabled) {
+      for (const condition of this.#conditions) {
+        const urlPattern = condition.constructorString;
+        const conditions = condition.conditions;
+        if (!condition.enabled || !urlPattern || conditions === NoThrottlingConditions) {
+          continue;
         }
-        if (globalConditions) {
-          matchedNetworkConditions.push({ conditions: globalConditions });
+        const block = !isNonBlockingCondition(conditions);
+        urlPatterns.push({ urlPattern, block });
+        if (!block) {
+          const { ruleIds } = condition;
+          matchedNetworkConditions.push({ ruleIds, urlPattern, conditions });
         }
       }
-      const promises = [];
-      for (const agent of agents) {
-        promises.push(agent.invoke_setBlockedURLs({ urlPatterns }));
-        promises.push(agent.invoke_emulateNetworkConditionsByRule({
-          offline,
-          matchedNetworkConditions: matchedNetworkConditions.map(({ urlPattern, conditions }) => ({
-            urlPattern: urlPattern ?? "",
-            latency: conditions.latency,
-            downloadThroughput: conditions.download < 0 ? 0 : conditions.download,
-            uploadThroughput: conditions.upload < 0 ? 0 : conditions.upload,
-            packetLoss: (conditions.packetLoss ?? 0) < 0 ? 0 : conditions.packetLoss,
-            packetQueueLength: conditions.packetQueueLength,
-            packetReordering: conditions.packetReordering,
-            connectionType: NetworkManager.connectionType(conditions)
-          }))
-        }).then((response) => {
-          if (!response.getError()) {
-            for (let i = 0; i < response.ruleIds.length; ++i) {
-              const ruleId = response.ruleIds[i];
-              const { ruleIds, conditions, urlPattern } = matchedNetworkConditions[i];
-              if (ruleIds) {
-                this.#requestConditionsById.set(ruleId, { urlPattern, conditions });
-                matchedNetworkConditions[i].ruleIds?.add(ruleId);
-              }
+    }
+    if (globalConditions) {
+      matchedNetworkConditions.push({ conditions: globalConditions });
+    }
+    const promises = [];
+    for (const agent of agents) {
+      promises.push(agent.invoke_setBlockedURLs({ urlPatterns }));
+      promises.push(agent.invoke_emulateNetworkConditionsByRule({
+        offline,
+        matchedNetworkConditions: matchedNetworkConditions.map(({ urlPattern, conditions }) => ({
+          urlPattern: urlPattern ?? "",
+          latency: conditions.latency,
+          downloadThroughput: conditions.download < 0 ? 0 : conditions.download,
+          uploadThroughput: conditions.upload < 0 ? 0 : conditions.upload,
+          packetLoss: (conditions.packetLoss ?? 0) < 0 ? 0 : conditions.packetLoss,
+          packetQueueLength: conditions.packetQueueLength,
+          packetReordering: conditions.packetReordering,
+          connectionType: NetworkManager.connectionType(conditions)
+        }))
+      }).then((response) => {
+        if (!response.getError()) {
+          for (let i = 0; i < response.ruleIds.length; ++i) {
+            const ruleId = response.ruleIds[i];
+            const { ruleIds, conditions, urlPattern } = matchedNetworkConditions[i];
+            if (ruleIds) {
+              this.#requestConditionsById.set(ruleId, { urlPattern, conditions });
+              matchedNetworkConditions[i].ruleIds?.add(ruleId);
             }
           }
-        }));
-        promises.push(agent.invoke_overrideNetworkState({
-          offline,
-          latency: globalConditions?.latency ?? 0,
-          downloadThroughput: !globalConditions || globalConditions.download < 0 ? 0 : globalConditions.download,
-          uploadThroughput: !globalConditions || globalConditions.upload < 0 ? 0 : globalConditions.upload
-        }));
-      }
-      this.#conditionsAppliedForTestPromise = this.#conditionsAppliedForTestPromise.then(() => Promise.all(promises));
-      return urlPatterns.length > 0;
+        }
+      }));
+      promises.push(agent.invoke_overrideNetworkState({
+        offline,
+        latency: globalConditions?.latency ?? 0,
+        downloadThroughput: globalConditions?.download ?? -1,
+        uploadThroughput: globalConditions?.upload ?? -1,
+        connectionType: globalConditions ? NetworkManager.connectionType(globalConditions) : "none"
+      }));
     }
-    const urls = this.conditionsEnabled ? this.#conditions.filter((condition) => condition.enabled && condition.wildcardURL).map((condition) => condition.wildcardURL) : [];
-    for (const agent of agents) {
-      void agent.invoke_setBlockedURLs({ urls });
-    }
-    return urls.length > 0;
+    this.#conditionsAppliedForTestPromise = this.#conditionsAppliedForTestPromise.then(() => Promise.all(promises));
+    return urlPatterns.length > 0;
   }
   conditionsAppliedForTest() {
     return this.#conditionsAppliedForTestPromise;
   }
   conditionsForId(appliedNetworkConditionsId) {
-    return this.#requestConditionsById.get(appliedNetworkConditionsId);
+    const requestConditions = this.#requestConditionsById.get(appliedNetworkConditionsId);
+    if (!requestConditions) {
+      return void 0;
+    }
+    const { conditions, urlPattern } = requestConditions;
+    return new AppliedNetworkConditions(conditions, appliedNetworkConditionsId, urlPattern);
   }
 };
 _a = RequestConditions;
-var multiTargetNetworkManagerInstance;
+var AppliedNetworkConditions = class {
+  conditions;
+  appliedNetworkConditionsId;
+  urlPattern;
+  constructor(conditions, appliedNetworkConditionsId, urlPattern) {
+    this.conditions = conditions;
+    this.appliedNetworkConditionsId = appliedNetworkConditionsId;
+    this.urlPattern = urlPattern;
+  }
+};
 var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5.ObjectWrapper.ObjectWrapper {
+  #targetManager;
   #userAgentOverride = "";
   #userAgentMetadataOverride = null;
   #customAcceptedEncodings = null;
@@ -11625,13 +12125,16 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
   inflightMainResourceRequests = /* @__PURE__ */ new Map();
   #networkConditions = NoThrottlingConditions;
   #updatingInterceptionPatternsPromise = null;
-  #requestConditions = new RequestConditions();
+  #requestConditions;
   #urlsForRequestInterceptor = new Platform3.MapUtilities.Multimap();
   #extraHeaders;
   #customUserAgent;
   #isBlocking = false;
-  constructor() {
+  constructor(targetManager) {
     super();
+    this.#targetManager = targetManager;
+    const settings = targetManager.settings;
+    this.#requestConditions = new RequestConditions(settings);
     const blockedPatternChanged = () => {
       this.updateBlockedPatterns();
       this.dispatchEventToListeners(
@@ -11641,20 +12144,20 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
     };
     this.#requestConditions.addEventListener("request-conditions-changed", blockedPatternChanged);
     this.updateBlockedPatterns();
-    TargetManager.instance().observeModels(NetworkManager, this);
+    this.#targetManager.observeModels(NetworkManager, this);
   }
   static instance(opts = { forceNew: null }) {
-    const { forceNew } = opts;
-    if (!multiTargetNetworkManagerInstance || forceNew) {
-      multiTargetNetworkManagerInstance = new _MultitargetNetworkManager();
+    const { forceNew, targetManager } = opts;
+    if (!Root3.DevToolsContext.globalInstance().has(_MultitargetNetworkManager) || forceNew) {
+      Root3.DevToolsContext.globalInstance().set(_MultitargetNetworkManager, new _MultitargetNetworkManager(targetManager ?? TargetManager.instance()));
     }
-    return multiTargetNetworkManagerInstance;
+    return Root3.DevToolsContext.globalInstance().get(_MultitargetNetworkManager);
   }
   static dispose() {
-    multiTargetNetworkManagerInstance = null;
+    Root3.DevToolsContext.globalInstance().delete(_MultitargetNetworkManager);
   }
   static patchUserAgentWithChromeVersion(uaString) {
-    const chromeVersion = Root2.Runtime.getChromeVersion();
+    const chromeVersion = Root3.Runtime.getChromeVersion();
     if (chromeVersion.length > 0) {
       const additionalAppVersion = chromeVersion.split(".", 1)[0] + ".0.100.0";
       return Platform3.StringUtilities.sprintf(uaString, chromeVersion, additionalAppVersion);
@@ -11665,7 +12168,7 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
     if (!userAgentMetadata.brands) {
       return;
     }
-    const chromeVersion = Root2.Runtime.getChromeVersion();
+    const chromeVersion = Root3.Runtime.getChromeVersion();
     if (chromeVersion.length === 0) {
       return;
     }
@@ -11701,9 +12204,6 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
     }
     this.#networkAgents.add(networkAgent);
     this.#fetchAgents.add(fetchAgent);
-    if (this.isThrottling() && !Root2.Runtime.hostConfig.devToolsIndividualRequestThrottling?.enabled) {
-      this.updateNetworkConditions(networkAgent);
-    }
   }
   modelRemoved(networkManager) {
     for (const entry of this.inflightMainResourceRequests) {
@@ -11724,13 +12224,7 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
   }
   setNetworkConditions(conditions) {
     this.#networkConditions = conditions;
-    if (Root2.Runtime.hostConfig.devToolsIndividualRequestThrottling?.enabled) {
-      this.#requestConditions.applyConditions(this.isOffline(), this.isThrottling() ? this.#networkConditions : null, ...this.#networkAgents);
-    } else {
-      for (const agent of this.#networkAgents) {
-        this.updateNetworkConditions(agent);
-      }
-    }
+    this.#requestConditions.applyConditions(this.isOffline(), this.isThrottling() ? this.#networkConditions : null, ...this.#networkAgents);
     this.dispatchEventToListeners(
       "ConditionsChanged"
       /* MultitargetNetworkManager.Events.CONDITIONS_CHANGED */
@@ -11832,21 +12326,6 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
   isBlocking() {
     return this.#isBlocking && this.requestConditions.conditionsEnabled;
   }
-  /**
-   * @deprecated Kept for layout tests
-   * TODO(pfaffe) remove
-   */
-  setBlockingEnabled(enabled) {
-    this.requestConditions.conditionsEnabled = enabled;
-  }
-  /**
-   * @deprecated Kept for layout tests
-   * TODO(pfaffe) remove
-   */
-  setBlockedPatterns(patterns) {
-    this.requestConditions.clear();
-    this.requestConditions.add(...patterns.map((pattern) => RequestCondition.createFromSetting(pattern)));
-  }
   updateBlockedPatterns() {
     this.#isBlocking = this.#requestConditions.applyConditions(this.isOffline(), this.isThrottling() ? this.#networkConditions : null, ...this.#networkAgents);
   }
@@ -11867,8 +12346,9 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
     return this.#updatingInterceptionPatternsPromise;
   }
   async updateInterceptionPatterns() {
-    if (!Common5.Settings.Settings.instance().moduleSetting("cache-disabled").get()) {
-      Common5.Settings.Settings.instance().moduleSetting("cache-disabled").set(true);
+    const settings = this.#targetManager.settings;
+    if (!settings.moduleSetting("cache-disabled").get()) {
+      settings.moduleSetting("cache-disabled").set(true);
     }
     this.#updatingInterceptionPatternsPromise = null;
     const promises = [];
@@ -11904,7 +12384,7 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
     }
   }
   async getCertificate(origin) {
-    const target = TargetManager.instance().primaryPageTarget();
+    const target = this.#targetManager.primaryPageTarget();
     if (!target) {
       return [];
     }
@@ -11913,20 +12393,6 @@ var MultitargetNetworkManager = class _MultitargetNetworkManager extends Common5
       return [];
     }
     return certificate.tableNames;
-  }
-  async loadResource(url) {
-    const headers = {};
-    const currentUserAgent = this.currentUserAgent();
-    if (currentUserAgent) {
-      headers["User-Agent"] = currentUserAgent;
-    }
-    if (Common5.Settings.Settings.instance().moduleSetting("cache-disabled").get()) {
-      headers["Cache-Control"] = "no-cache";
-    }
-    const allowRemoteFilePaths = Common5.Settings.Settings.instance().moduleSetting("network.enable-remote-file-loading").get();
-    return await new Promise((resolve) => Host2.ResourceLoader.load(url, headers, (success, _responseHeaders, content, errorDescription) => {
-      resolve({ success, content, errorDescription });
-    }, allowRemoteFilePaths));
   }
   appliedRequestConditions(requestInternal) {
     if (!requestInternal.appliedNetworkConditionsId) {
@@ -12206,23 +12672,27 @@ __export(ResourceTreeModel_exports, {
 });
 import * as Common24 from "./../common/common.js";
 import * as i18n15 from "./../i18n/i18n.js";
-import * as Platform16 from "./../platform/platform.js";
+import * as Platform15 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/DOMModel.js
 var DOMModel_exports = {};
 __export(DOMModel_exports, {
   ARIA_ATTRIBUTES: () => ARIA_ATTRIBUTES,
+  AdoptedStyleSheet: () => AdoptedStyleSheet,
   DOMDocument: () => DOMDocument,
+  DOMDocumentSnapshot: () => DOMDocumentSnapshot,
   DOMModel: () => DOMModel,
   DOMModelUndoStack: () => DOMModelUndoStack,
   DOMNode: () => DOMNode,
+  DOMNodeEvents: () => DOMNodeEvents,
   DOMNodeShortcut: () => DOMNodeShortcut,
+  DOMNodeSnapshot: () => DOMNodeSnapshot,
   DeferredDOMNode: () => DeferredDOMNode,
   Events: () => Events8
 });
 import * as Common21 from "./../common/common.js";
-import * as Platform14 from "./../platform/platform.js";
-import * as Root8 from "./../root/root.js";
+import * as Platform13 from "./../platform/platform.js";
+import * as Root9 from "./../root/root.js";
 
 // gen/front_end/core/sdk/CSSModel.js
 var CSSModel_exports = {};
@@ -12234,11 +12704,11 @@ __export(CSSModel_exports, {
   Events: () => Events5,
   InlineStyleResult: () => InlineStyleResult
 });
-import * as TextUtils17 from "./../../models/text_utils/text_utils.js";
-import * as Common14 from "./../common/common.js";
-import * as Host4 from "./../host/host.js";
+import * as TextUtils18 from "./../../models/text_utils/text_utils.js";
+import * as Common13 from "./../common/common.js";
+import * as Host3 from "./../host/host.js";
 import * as Platform10 from "./../platform/platform.js";
-import * as Root5 from "./../root/root.js";
+import * as Root6 from "./../root/root.js";
 
 // gen/front_end/core/sdk/CSSFontFace.js
 var CSSFontFace_exports = {};
@@ -12292,7 +12762,6 @@ import * as TextUtils3 from "./../../models/text_utils/text_utils.js";
 import * as Common7 from "./../common/common.js";
 import * as HostModule from "./../host/host.js";
 import * as Platform4 from "./../platform/platform.js";
-import * as Root3 from "./../root/root.js";
 
 // gen/front_end/core/sdk/CSSPropertyParser.js
 var CSSPropertyParser_exports = {};
@@ -12340,14 +12809,14 @@ __export(CSSPropertyParserMatchers_exports, {
   ColorMatcher: () => ColorMatcher,
   ColorMixMatch: () => ColorMixMatch,
   ColorMixMatcher: () => ColorMixMatcher,
+  ContrastColorMatch: () => ContrastColorMatch,
+  ContrastColorMatcher: () => ContrastColorMatcher,
   CustomFunctionMatch: () => CustomFunctionMatch,
   CustomFunctionMatcher: () => CustomFunctionMatcher,
   EnvFunctionMatch: () => EnvFunctionMatch,
   EnvFunctionMatcher: () => EnvFunctionMatcher,
-  FlexGridMasonryMatch: () => FlexGridMasonryMatch,
-  FlexGridMasonryMatcher: () => FlexGridMasonryMatcher,
-  FontMatch: () => FontMatch,
-  FontMatcher: () => FontMatcher,
+  FlexGridGridLanesMatch: () => FlexGridGridLanesMatch,
+  FlexGridGridLanesMatcher: () => FlexGridGridLanesMatcher,
   GridTemplateMatch: () => GridTemplateMatch,
   GridTemplateMatcher: () => GridTemplateMatcher,
   LengthMatch: () => LengthMatch,
@@ -12718,6 +13187,35 @@ var ColorMixMatcher = class extends matcherBase(ColorMixMatch) {
     return new ColorMixMatch(matching.ast.text(node), node, args[0], args[1], args[2]);
   }
 };
+var ContrastColorMatch = class {
+  text;
+  node;
+  color;
+  constructor(text, node, color) {
+    this.text = text;
+    this.node = node;
+    this.color = color;
+  }
+};
+var ContrastColorMatcher = class extends matcherBase(ContrastColorMatch) {
+  // clang-format on
+  accepts(propertyName) {
+    return cssMetadata().isColorAwareProperty(propertyName);
+  }
+  matches(node, matching) {
+    if (node.name !== "CallExpression" || matching.ast.text(node.getChild("Callee")) !== "contrast-color") {
+      return null;
+    }
+    if (matching.getComputedText(node) === "") {
+      return null;
+    }
+    const args = ASTUtils.callArgs(node);
+    if (args.length !== 1) {
+      return null;
+    }
+    return new ContrastColorMatch(matching.ast.text(node), node, args[0]);
+  }
+};
 var URLMatch = class {
   url;
   text;
@@ -12995,8 +13493,10 @@ var LinkableNameMatcher = class _LinkableNameMatcher extends matcherBase(Linkabl
       "animation",
       "animation-name",
       "font-palette",
-      "position-try-fallbacks",
-      "position-try"
+      "list-style",
+      "list-style-type",
+      "position-try",
+      "position-try-fallbacks"
     ];
     return names.includes(propertyName);
   }
@@ -13074,6 +13574,9 @@ var LinkableNameMatcher = class _LinkableNameMatcher extends matcherBase(Linkabl
     if (!propertyName || node.name !== "ValueName" && node.name !== "VariableName" || !isAParentDeclarationOrVarCall || node.name === "ValueName" && shouldMatchOnlyVariableName) {
       return null;
     }
+    if (cssMetadata().getPropertyValues(propertyName).includes(text)) {
+      return null;
+    }
     if (propertyName === "animation") {
       return this.matchAnimationNameInShorthand(node, matching);
     }
@@ -13147,35 +13650,6 @@ var ShadowMatcher = class extends matcherBase(ShadowMatch) {
       matching.ast.propertyName === "text-shadow" ? "textShadow" : "boxShadow"
       /* ShadowType.BOX_SHADOW */
     );
-  }
-};
-var FontMatch = class {
-  text;
-  node;
-  constructor(text, node) {
-    this.text = text;
-    this.node = node;
-  }
-};
-var FontMatcher = class extends matcherBase(FontMatch) {
-  // clang-format on
-  accepts(propertyName) {
-    return cssMetadata().isFontAwareProperty(propertyName);
-  }
-  matches(node, matching) {
-    if (node.name !== "Declaration") {
-      return null;
-    }
-    const valueNodes = ASTUtils.siblings(ASTUtils.declValue(node));
-    if (valueNodes.length === 0) {
-      return null;
-    }
-    const validNodes = matching.ast.propertyName === "font-family" ? ["ValueName", "StringLiteral", "Comment", ","] : ["Comment", "ValueName", "NumberLiteral"];
-    if (valueNodes.some((node2) => !validNodes.includes(node2.name))) {
-      return null;
-    }
-    const valueText = matching.ast.textRange(valueNodes[0], valueNodes[valueNodes.length - 1]);
-    return new FontMatch(valueText, node);
   }
 };
 var LengthMatch = class {
@@ -13276,6 +13750,9 @@ var MathFunctionMatch = class extends BaseFunctionMatch {
       case "calc":
       case "sibling-count":
       case "sibling-index":
+      case "round":
+      case "mod":
+      case "rem":
         return true;
     }
     const catchFallback = func;
@@ -13294,6 +13771,9 @@ var MathFunctionMatcher = class _MathFunctionMatcher extends matcherBase(MathFun
       case "calc":
       case "sibling-count":
       case "sibling-index":
+      case "round":
+      case "mod":
+      case "rem":
         return maybeFunc;
     }
     const catchFallback = maybeFunc;
@@ -13339,7 +13819,7 @@ var CustomFunctionMatcher = class extends matcherBase(CustomFunctionMatch) {
     return new CustomFunctionMatch(text, node, callee, args);
   }
 };
-var FlexGridMasonryMatch = class {
+var FlexGridGridLanesMatch = class {
   text;
   node;
   layoutType;
@@ -13349,11 +13829,11 @@ var FlexGridMasonryMatch = class {
     this.layoutType = layoutType;
   }
 };
-var FlexGridMasonryMatcher = class _FlexGridMasonryMatcher extends matcherBase(FlexGridMasonryMatch) {
+var FlexGridGridLanesMatcher = class _FlexGridGridLanesMatcher extends matcherBase(FlexGridGridLanesMatch) {
   // clang-format on
   static FLEX = ["flex", "inline-flex", "block flex", "inline flex"];
   static GRID = ["grid", "inline-grid", "block grid", "inline grid"];
-  static MASONRY = ["masonry", "inline-masonry", "block masonry", "inline masonry"];
+  static GRID_LANES = ["grid-lanes", "inline-grid-lanes", "block grid-lanes", "inline grid-lanes"];
   accepts(propertyName) {
     return propertyName === "display";
   }
@@ -13367,28 +13847,28 @@ var FlexGridMasonryMatcher = class _FlexGridMasonryMatcher extends matcherBase(F
     }
     const values = valueNodes.filter((node2) => node2.name !== "Important").map((node2) => matching.getComputedText(node2).trim()).filter((value) => value);
     const text = values.join(" ");
-    if (_FlexGridMasonryMatcher.FLEX.includes(text)) {
-      return new FlexGridMasonryMatch(
+    if (_FlexGridGridLanesMatcher.FLEX.includes(text)) {
+      return new FlexGridGridLanesMatch(
         matching.ast.text(node),
         node,
         "flex"
         /* LayoutType.FLEX */
       );
     }
-    if (_FlexGridMasonryMatcher.GRID.includes(text)) {
-      return new FlexGridMasonryMatch(
+    if (_FlexGridGridLanesMatcher.GRID.includes(text)) {
+      return new FlexGridGridLanesMatch(
         matching.ast.text(node),
         node,
         "grid"
         /* LayoutType.GRID */
       );
     }
-    if (_FlexGridMasonryMatcher.MASONRY.includes(text)) {
-      return new FlexGridMasonryMatch(
+    if (_FlexGridGridLanesMatcher.GRID_LANES.includes(text)) {
+      return new FlexGridGridLanesMatch(
         matching.ast.text(node),
         node,
-        "masonry"
-        /* LayoutType.MASONRY */
+        "grid-lanes"
+        /* LayoutType.GRID_LANES */
       );
     }
     return null;
@@ -13499,7 +13979,7 @@ var AnchorFunctionMatcher = class extends matcherBase(AnchorFunctionMatch) {
   matches(node, matching) {
     if (node.name === "VariableName") {
       let parent = node.parent;
-      if (!parent || parent.name !== "ArgList") {
+      if (parent?.name !== "ArgList") {
         return null;
       }
       parent = parent.parent;
@@ -14256,9 +14736,6 @@ var CSSProperty = class _CSSProperty extends Common7.ObjectWrapper.ObjectWrapper
   #matchers(matchedStyles, computedStyles) {
     const matchers = matchedStyles.propertyMatchers(this.ownerStyle, computedStyles);
     matchers.push(new CSSWideKeywordMatcher(this, matchedStyles));
-    if (Root3.Runtime.experiments.isEnabled("font-editor")) {
-      matchers.push(new FontMatcher());
-    }
     return matchers;
   }
   ensureRanges() {
@@ -14344,7 +14821,7 @@ var CSSProperty = class _CSSProperty extends Common7.ObjectWrapper.ObjectWrapper
       return true;
     }
     const range = this.range.relativeTo(this.ownerStyle.range.startLine, this.ownerStyle.range.startColumn);
-    const indentation = this.ownerStyle.cssText ? this.detectIndentation(this.ownerStyle.cssText) : Common7.Settings.Settings.instance().moduleSetting("text-editor-indent").get();
+    const indentation = this.ownerStyle.cssText ? this.detectIndentation(this.ownerStyle.cssText) : this.ownerStyle.cssModel().target().targetManager().settings.moduleSetting("text-editor-indent").get();
     const endIndentation = this.ownerStyle.cssText ? indentation.substring(0, this.ownerStyle.range.endColumn) : "";
     const text = new TextUtils3.Text.Text(this.ownerStyle.cssText || "");
     const newStyleText = text.replaceRange(range, Platform4.StringUtilities.sprintf(";%s;", propertyText));
@@ -14398,7 +14875,7 @@ var CSSProperty = class _CSSProperty extends Common7.ObjectWrapper.ObjectWrapper
       }
       if (cssMetadata().isGridAreaDefiningProperty(propertyName)) {
         const rowResult = GridAreaRowRegex.exec(token);
-        if (rowResult && rowResult.index === 0 && !propertyText.trimEnd().endsWith("]")) {
+        if (rowResult?.index === 0 && !propertyText.trimEnd().endsWith("]")) {
           propertyText = propertyText.trimEnd() + "\n" + doubleIndent;
         }
       }
@@ -14470,12 +14947,38 @@ var CSSProperty = class _CSSProperty extends Common7.ObjectWrapper.ObjectWrapper
   getLonghandProperties() {
     return this.#longhandProperties;
   }
+  ignoreErrors() {
+    function hasUnknownVendorPrefix(string) {
+      return !string.startsWith("-webkit-") && /^[-_][\w\d]+-\w/.test(string);
+    }
+    const name = this.name.toLowerCase();
+    if (name.charAt(0) === "_") {
+      return true;
+    }
+    if (name === "filter") {
+      return true;
+    }
+    if (name.startsWith("scrollbar-")) {
+      return true;
+    }
+    if (hasUnknownVendorPrefix(name)) {
+      return true;
+    }
+    const value = this.value.toLowerCase();
+    if (value.endsWith("\\9")) {
+      return true;
+    }
+    if (hasUnknownVendorPrefix(value)) {
+      return true;
+    }
+    return false;
+  }
 };
 
 // gen/front_end/core/sdk/CSSRule.js
 var CSSRule_exports = {};
 __export(CSSRule_exports, {
-  CSSFontPaletteValuesRule: () => CSSFontPaletteValuesRule,
+  CSSAtRule: () => CSSAtRule,
   CSSFunctionRule: () => CSSFunctionRule,
   CSSKeyframeRule: () => CSSKeyframeRule,
   CSSKeyframesRule: () => CSSKeyframesRule,
@@ -14484,7 +14987,7 @@ __export(CSSRule_exports, {
   CSSRule: () => CSSRule,
   CSSStyleRule: () => CSSStyleRule
 });
-import * as TextUtils12 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils13 from "./../../models/text_utils/text_utils.js";
 import * as Platform5 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/CSSContainerQuery.js
@@ -14775,12 +15278,38 @@ var Source = {
   IMPORT_RULE: "importRule"
 };
 
+// gen/front_end/core/sdk/CSSNavigation.js
+var CSSNavigation_exports = {};
+__export(CSSNavigation_exports, {
+  CSSNavigation: () => CSSNavigation
+});
+import * as TextUtils8 from "./../../models/text_utils/text_utils.js";
+var CSSNavigation = class _CSSNavigation extends CSSQuery {
+  static parseNavigationPayload(cssModel, payload) {
+    return payload.map((navigation) => new _CSSNavigation(cssModel, navigation));
+  }
+  #active = true;
+  constructor(cssModel, payload) {
+    super(cssModel);
+    this.reinitialize(payload);
+  }
+  reinitialize(payload) {
+    this.text = payload.text;
+    this.range = payload.range ? TextUtils8.TextRange.TextRange.fromObject(payload.range) : null;
+    this.styleSheetId = payload.styleSheetId;
+    this.#active = payload.active ?? true;
+  }
+  active() {
+    return this.#active;
+  }
+};
+
 // gen/front_end/core/sdk/CSSScope.js
 var CSSScope_exports = {};
 __export(CSSScope_exports, {
   CSSScope: () => CSSScope
 });
-import * as TextUtils8 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils9 from "./../../models/text_utils/text_utils.js";
 var CSSScope = class _CSSScope extends CSSQuery {
   static parseScopesPayload(cssModel, payload) {
     return payload.map((scope) => new _CSSScope(cssModel, scope));
@@ -14791,7 +15320,7 @@ var CSSScope = class _CSSScope extends CSSQuery {
   }
   reinitialize(payload) {
     this.text = payload.text;
-    this.range = payload.range ? TextUtils8.TextRange.TextRange.fromObject(payload.range) : null;
+    this.range = payload.range ? TextUtils9.TextRange.TextRange.fromObject(payload.range) : null;
     this.styleSheetId = payload.styleSheetId;
   }
   active() {
@@ -14804,7 +15333,7 @@ var CSSStartingStyle_exports = {};
 __export(CSSStartingStyle_exports, {
   CSSStartingStyle: () => CSSStartingStyle
 });
-import * as TextUtils9 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils10 from "./../../models/text_utils/text_utils.js";
 var CSSStartingStyle = class _CSSStartingStyle extends CSSQuery {
   static parseStartingStylePayload(cssModel, payload) {
     return payload.map((p) => new _CSSStartingStyle(cssModel, p));
@@ -14814,7 +15343,7 @@ var CSSStartingStyle = class _CSSStartingStyle extends CSSQuery {
     this.reinitialize(payload);
   }
   reinitialize(payload) {
-    this.range = payload.range ? TextUtils9.TextRange.TextRange.fromObject(payload.range) : null;
+    this.range = payload.range ? TextUtils10.TextRange.TextRange.fromObject(payload.range) : null;
     this.styleSheetId = payload.styleSheetId;
   }
   active() {
@@ -14828,7 +15357,7 @@ __export(CSSStyleDeclaration_exports, {
   CSSStyleDeclaration: () => CSSStyleDeclaration,
   Type: () => Type2
 });
-import * as TextUtils10 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils11 from "./../../models/text_utils/text_utils.js";
 var CSSStyleDeclaration = class {
   #cssModel;
   parentRule;
@@ -14869,7 +15398,7 @@ var CSSStyleDeclaration = class {
   }
   #reinitialize(payload) {
     this.styleSheetId = payload.styleSheetId;
-    this.range = payload.range ? TextUtils10.TextRange.TextRange.fromObject(payload.range) : null;
+    this.range = payload.range ? TextUtils11.TextRange.TextRange.fromObject(payload.range) : null;
     const shorthandEntries = payload.shorthandEntries;
     this.#shorthandValues = /* @__PURE__ */ new Map();
     this.#shorthandIsImportant = /* @__PURE__ */ new Set();
@@ -15087,7 +15616,7 @@ var CSSSupports_exports = {};
 __export(CSSSupports_exports, {
   CSSSupports: () => CSSSupports
 });
-import * as TextUtils11 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils12 from "./../../models/text_utils/text_utils.js";
 var CSSSupports = class _CSSSupports extends CSSQuery {
   static parseSupportsPayload(cssModel, payload) {
     return payload.map((supports) => new _CSSSupports(cssModel, supports));
@@ -15099,7 +15628,7 @@ var CSSSupports = class _CSSSupports extends CSSQuery {
   }
   reinitialize(payload) {
     this.text = payload.text;
-    this.range = payload.range ? TextUtils11.TextRange.TextRange.fromObject(payload.range) : null;
+    this.range = payload.range ? TextUtils12.TextRange.TextRange.fromObject(payload.range) : null;
     this.styleSheetId = payload.styleSheetId;
     this.#active = payload.active;
   }
@@ -15163,7 +15692,7 @@ var CSSValue = class {
   constructor(payload) {
     this.text = payload.text;
     if (payload.range) {
-      this.range = TextUtils12.TextRange.TextRange.fromObject(payload.range);
+      this.range = TextUtils13.TextRange.TextRange.fromObject(payload.range);
     }
     if (payload.specificity) {
       this.specificity = payload.specificity;
@@ -15186,6 +15715,7 @@ var CSSStyleRule = class _CSSStyleRule extends CSSRule {
   layers;
   ruleTypes;
   startingStyles;
+  navigations;
   wasUsed;
   constructor(cssModel, payload, wasUsed) {
     super(cssModel, {
@@ -15202,6 +15732,7 @@ var CSSStyleRule = class _CSSStyleRule extends CSSRule {
     this.supports = payload.supports ? CSSSupports.parseSupportsPayload(cssModel, payload.supports) : [];
     this.layers = payload.layers ? CSSLayer.parseLayerPayload(cssModel, payload.layers) : [];
     this.startingStyles = payload.startingStyles ? CSSStartingStyle.parseStartingStylePayload(cssModel, payload.startingStyles) : [];
+    this.navigations = payload.navigations ? CSSNavigation.parseNavigationPayload(cssModel, payload.navigations) : [];
     this.ruleTypes = payload.ruleTypes || [];
     this.wasUsed = wasUsed || false;
   }
@@ -15209,11 +15740,11 @@ var CSSStyleRule = class _CSSStyleRule extends CSSRule {
     const dummyPayload = {
       selectorList: {
         text: "",
-        selectors: [{ text: selectorText, value: void 0 }]
+        selectors: [{ text: selectorText }]
       },
       style: {
         styleSheetId: "0",
-        range: new TextUtils12.TextRange.TextRange(0, 0, 0, 0),
+        range: new TextUtils13.TextRange.TextRange(0, 0, 0, 0),
         shorthandEntries: [],
         cssProperties: []
       },
@@ -15250,7 +15781,7 @@ var CSSStyleRule = class _CSSStyleRule extends CSSRule {
     if (!firstRange || !lastRange) {
       return null;
     }
-    return new TextUtils12.TextRange.TextRange(firstRange.startLine, firstRange.startColumn, lastRange.endLine, lastRange.endColumn);
+    return new TextUtils13.TextRange.TextRange(firstRange.startLine, firstRange.startColumn, lastRange.endLine, lastRange.endColumn);
   }
   lineNumberInSource(selectorIndex) {
     const selector = this.selectors[selectorIndex];
@@ -15282,6 +15813,7 @@ var CSSStyleRule = class _CSSStyleRule extends CSSRule {
     this.containerQueries.forEach((cq) => cq.rebase(edit));
     this.scopes.forEach((scope) => scope.rebase(edit));
     this.supports.forEach((supports) => supports.rebase(edit));
+    this.navigations.forEach((navigation) => navigation.rebase(edit));
     super.rebase(edit);
   }
 };
@@ -15291,8 +15823,7 @@ var CSSPropertyRule = class extends CSSRule {
     super(cssModel, {
       origin: payload.origin,
       style: payload.style,
-      header: styleSheetHeaderForRule(cssModel, payload),
-      originTreeScopeNodeId: void 0
+      header: styleSheetHeaderForRule(cssModel, payload)
     });
     this.#name = new CSSValue(payload.propertyName);
   }
@@ -15320,19 +15851,28 @@ var CSSPropertyRule = class extends CSSRule {
     return this.cssModelInternal.setPropertyRulePropertyName(styleSheetId, range, newPropertyName);
   }
 };
-var CSSFontPaletteValuesRule = class extends CSSRule {
-  #paletteName;
+var CSSAtRule = class extends CSSRule {
+  #name;
+  #type;
+  #subsection;
   constructor(cssModel, payload) {
     super(cssModel, {
       origin: payload.origin,
       style: payload.style,
-      header: styleSheetHeaderForRule(cssModel, payload),
-      originTreeScopeNodeId: void 0
+      header: styleSheetHeaderForRule(cssModel, payload)
     });
-    this.#paletteName = new CSSValue(payload.fontPaletteName);
+    this.#name = payload.name ? new CSSValue(payload.name) : null;
+    this.#type = payload.type;
+    this.#subsection = payload.subsection ?? null;
   }
   name() {
-    return this.#paletteName;
+    return this.#name;
+  }
+  type() {
+    return this.#type;
+  }
+  subsection() {
+    return this.#subsection;
   }
 };
 var CSSKeyframesRule = class {
@@ -15356,8 +15896,7 @@ var CSSKeyframeRule = class extends CSSRule {
     super(cssModel, {
       origin: payload.origin,
       style: payload.style,
-      header: styleSheetHeaderForRule(cssModel, payload),
-      originTreeScopeNodeId: void 0
+      header: styleSheetHeaderForRule(cssModel, payload)
     });
     this.reinitializeKey(payload.keyText);
     this.#parentRuleName = parentRuleName;
@@ -15404,8 +15943,7 @@ var CSSPositionTryRule = class extends CSSRule {
     super(cssModel, {
       origin: payload.origin,
       style: payload.style,
-      header: styleSheetHeaderForRule(cssModel, payload),
-      originTreeScopeNodeId: void 0
+      header: styleSheetHeaderForRule(cssModel, payload)
     });
     this.#name = new CSSValue(payload.name);
     this.#active = payload.active;
@@ -15425,8 +15963,7 @@ var CSSFunctionRule = class extends CSSRule {
     super(cssModel, {
       origin: payload.origin,
       style: { cssProperties: [], shorthandEntries: [] },
-      header: styleSheetHeaderForRule(cssModel, payload),
-      originTreeScopeNodeId: void 0
+      header: styleSheetHeaderForRule(cssModel, payload)
     });
     this.#name = new CSSValue(payload.name);
     this.#parameters = payload.parameters.map(({ name }) => name);
@@ -15475,7 +16012,13 @@ var CSSFunctionRule = class extends CSSRule {
           supports: new CSSSupports(this.cssModelInternal, node.condition.supports)
         };
       }
-      console.error("A function rule condition must have a media, container, or supports");
+      if (node.condition.navigation) {
+        return {
+          children,
+          navigation: new CSSNavigation(this.cssModelInternal, node.condition.navigation)
+        };
+      }
+      console.error("A function rule condition must have a media, container, supports, or navigation");
       return;
     }
     console.error("A function rule node must have a style or condition");
@@ -15654,15 +16197,15 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
   #pseudoDOMCascades;
   #customHighlightPseudoDOMCascades;
   #functionRules;
+  #atRules;
   #functionRuleMap = /* @__PURE__ */ new Map();
-  #fontPaletteValuesRule;
   #environmentVariables = {};
   static async create(payload) {
     const cssMatchedStyles = new _CSSMatchedStyles(payload);
     await cssMatchedStyles.init(payload);
     return cssMatchedStyles;
   }
-  constructor({ cssModel, node, animationsPayload, parentLayoutNodeId, positionTryRules, propertyRules, cssPropertyRegistrations, fontPaletteValuesRule, activePositionFallbackIndex, functionRules }) {
+  constructor({ cssModel, node, animationsPayload, parentLayoutNodeId, positionTryRules, propertyRules, cssPropertyRegistrations, activePositionFallbackIndex, functionRules, atRules }) {
     this.#cssModel = cssModel;
     this.#node = node;
     this.#registeredProperties = [
@@ -15674,9 +16217,9 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
     }
     this.#positionTryRules = positionTryRules.map((rule) => new CSSPositionTryRule(cssModel, rule));
     this.#parentLayoutNodeId = parentLayoutNodeId;
-    this.#fontPaletteValuesRule = fontPaletteValuesRule ? new CSSFontPaletteValuesRule(cssModel, fontPaletteValuesRule) : void 0;
     this.#activePositionFallbackIndex = activePositionFallbackIndex;
     this.#functionRules = functionRules.map((rule) => new CSSFunctionRule(cssModel, rule));
+    this.#atRules = atRules.map((rule) => new CSSAtRule(cssModel, rule));
   }
   async init({ matchedPayload, inheritedPayload, inlinePayload, attributesPayload, pseudoPayload, inheritedPseudoPayload, animationStylesPayload, transitionsStylePayload, inheritedAnimatedPayload }) {
     matchedPayload = cleanUserAgentPayload(matchedPayload);
@@ -15926,10 +16469,10 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
       }
     }
     for (const [pseudoType, nodeCascade] of pseudoCascades.entries()) {
-      pseudoInheritanceCascades.set(pseudoType, new DOMInheritanceCascade(this, nodeCascade, this.#registeredProperties));
+      pseudoInheritanceCascades.set(pseudoType, new DOMInheritanceCascade(this, nodeCascade, this.#registeredProperties, this.#mainDOMCascade));
     }
     for (const [highlightName, nodeCascade] of customHighlightPseudoCascades.entries()) {
-      customHighlightPseudoInheritanceCascades.set(highlightName, new DOMInheritanceCascade(this, nodeCascade, this.#registeredProperties));
+      customHighlightPseudoInheritanceCascades.set(highlightName, new DOMInheritanceCascade(this, nodeCascade, this.#registeredProperties, this.#mainDOMCascade));
     }
     return [pseudoInheritanceCascades, customHighlightPseudoInheritanceCascades];
   }
@@ -16045,8 +16588,8 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
   functionRules() {
     return this.#functionRules;
   }
-  fontPaletteValuesRule() {
-    return this.#fontPaletteValuesRule;
+  atRules() {
+    return this.#atRules;
   }
   keyframes() {
     return this.#keyframes;
@@ -16131,6 +16674,10 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
     const domCascade = this.#styleToDOMCascade.get(property.ownerStyle);
     return domCascade ? domCascade.propertyState(property) : null;
   }
+  isPropertyOverriddenByAnimation(property) {
+    const domCascade = this.#styleToDOMCascade.get(property.ownerStyle);
+    return domCascade?.isPropertyOverriddenByAnimation(property) ?? false;
+  }
   resetActiveProperties() {
     Platform6.assertNotNullOrUndefined(this.#mainDOMCascade);
     Platform6.assertNotNullOrUndefined(this.#pseudoDOMCascades);
@@ -16148,6 +16695,7 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
       new VariableMatcher(this, style),
       new ColorMatcher(() => computedStyles?.get("color") ?? null),
       new ColorMixMatcher(),
+      new ContrastColorMatcher(),
       new URLMatcher(),
       new AngleMatcher(),
       new LinkableNameMatcher(),
@@ -16159,7 +16707,7 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
       new LinearGradientMatcher(),
       new AnchorFunctionMatcher(),
       new PositionAnchorMatcher(),
-      new FlexGridMasonryMatcher(),
+      new FlexGridGridLanesMatcher(),
       new PositionTryMatcher(),
       new LengthMatcher(),
       new MathFunctionMatcher(),
@@ -16176,22 +16724,24 @@ var CSSMatchedStyles = class _CSSMatchedStyles {
   }
 };
 var NodeCascade = class {
+  isHighlightPseudoCascade;
   #matchedStyles;
   styles;
   #isInherited;
-  #isHighlightPseudoCascade;
   propertiesState = /* @__PURE__ */ new Map();
+  propertiesOverriddenByAnimation = /* @__PURE__ */ new Set();
   activeProperties = /* @__PURE__ */ new Map();
   #node;
   constructor(matchedStyles, styles, node, isInherited, isHighlightPseudoCascade = false) {
+    this.isHighlightPseudoCascade = isHighlightPseudoCascade;
     this.#matchedStyles = matchedStyles;
     this.styles = styles;
     this.#isInherited = isInherited;
-    this.#isHighlightPseudoCascade = isHighlightPseudoCascade;
     this.#node = node;
   }
   computeActiveProperties() {
     this.propertiesState.clear();
+    this.propertiesOverriddenByAnimation.clear();
     this.activeProperties.clear();
     for (let i = this.styles.length - 1; i >= 0; i--) {
       const style = this.styles[i];
@@ -16204,8 +16754,14 @@ var NodeCascade = class {
       }
       for (const property of style.allProperties()) {
         const metadata = cssMetadata();
-        if (this.#isInherited && !this.#isHighlightPseudoCascade && !metadata.isPropertyInherited(property.name)) {
-          continue;
+        if (this.#isInherited) {
+          if (this.isHighlightPseudoCascade) {
+            if (property.name.startsWith("--")) {
+              continue;
+            }
+          } else if (!metadata.isPropertyInherited(property.name)) {
+            continue;
+          }
         }
         if (style.range && !property.range) {
           continue;
@@ -16283,6 +16839,9 @@ var NodeCascade = class {
         "Overloaded"
         /* PropertyState.OVERLOADED */
       );
+      if (propertyWithHigherSpecificity.ownerStyle.type === Type2.Animation || propertyWithHigherSpecificity.ownerStyle.type === Type2.Transition) {
+        this.propertiesOverriddenByAnimation.add(activeProperty);
+      }
     }
     this.propertiesState.set(
       propertyWithHigherSpecificity,
@@ -16367,6 +16926,7 @@ function* forEach(array, startAfter) {
 }
 var DOMInheritanceCascade = class {
   #propertiesState = /* @__PURE__ */ new Map();
+  #propertiesOverriddenByAnimation = /* @__PURE__ */ new Set();
   #availableCSSVariables = /* @__PURE__ */ new Map();
   #computedCSSVariables = /* @__PURE__ */ new Map();
   #styleToNodeCascade = /* @__PURE__ */ new Map();
@@ -16374,13 +16934,24 @@ var DOMInheritanceCascade = class {
   #nodeCascades;
   #registeredProperties;
   #matchedStyles;
-  constructor(matchedStyles, nodeCascades, registeredProperties) {
+  #fallbackCascade = null;
+  #styles = [];
+  constructor(matchedStyles, nodeCascades, registeredProperties, fallbackCascade = null) {
     this.#nodeCascades = nodeCascades;
     this.#matchedStyles = matchedStyles;
     this.#registeredProperties = registeredProperties;
+    this.#fallbackCascade = fallbackCascade;
     for (const nodeCascade of nodeCascades) {
       for (const style of nodeCascade.styles) {
         this.#styleToNodeCascade.set(style, nodeCascade);
+        this.#styles.push(style);
+      }
+    }
+    if (fallbackCascade) {
+      for (const [style, nodeCascade] of fallbackCascade.#styleToNodeCascade) {
+        if (!this.#styles.includes(style)) {
+          this.#styleToNodeCascade.set(style, nodeCascade);
+        }
       }
     }
   }
@@ -16435,6 +17006,9 @@ var DOMInheritanceCascade = class {
         }
       }
     }
+    if (this.#fallbackCascade && (!nodeCascade.isHighlightPseudoCascade || property.name.startsWith("--"))) {
+      return this.#fallbackCascade.resolveProperty(property.name, property.ownerStyle);
+    }
     return null;
   }
   #findPropertyInParentCascadeIfInherited(property) {
@@ -16476,6 +17050,12 @@ var DOMInheritanceCascade = class {
           property,
           "revert"
           /* CSSWideKeyword.REVERT */
+        );
+      case "revert-rule":
+        return this.#findPropertyInPreviousStyle(property, () => true) ?? this.resolveGlobalKeyword(
+          property,
+          "unset"
+          /* CSSWideKeyword.UNSET */
         );
       case "unset":
         return this.#findPropertyInParentCascadeIfInherited(property) ?? this.#findCustomPropertyRegistration(property.name);
@@ -16655,15 +17235,20 @@ var DOMInheritanceCascade = class {
     }
   }
   styles() {
-    return Array.from(this.#styleToNodeCascade.keys());
+    return this.#styles;
   }
   propertyState(property) {
     this.ensureInitialized();
     return this.#propertiesState.get(property) || null;
   }
+  isPropertyOverriddenByAnimation(property) {
+    this.ensureInitialized();
+    return this.#propertiesOverriddenByAnimation.has(property);
+  }
   reset() {
     this.#initialized = false;
     this.#propertiesState.clear();
+    this.#propertiesOverriddenByAnimation.clear();
     this.#availableCSSVariables.clear();
     this.#computedCSSVariables.clear();
   }
@@ -16682,6 +17267,9 @@ var DOMInheritanceCascade = class {
             "Overloaded"
             /* PropertyState.OVERLOADED */
           );
+          if (nodeCascade.propertiesOverriddenByAnimation.has(property)) {
+            this.#propertiesOverriddenByAnimation.add(property);
+          }
           continue;
         }
         const canonicalName = cssMetadata().canonicalPropertyName(property.name);
@@ -16691,6 +17279,10 @@ var DOMInheritanceCascade = class {
             "Overloaded"
             /* PropertyState.OVERLOADED */
           );
+          const activeProperty = activeProperties.get(canonicalName);
+          if (activeProperty && (activeProperty.ownerStyle.type === Type2.Animation || activeProperty.ownerStyle.type === Type2.Transition)) {
+            this.#propertiesOverriddenByAnimation.add(property);
+          }
           continue;
         }
         activeProperties.set(canonicalName, property);
@@ -16734,6 +17326,18 @@ var DOMInheritanceCascade = class {
       const initialValue = rule.initialValue();
       accumulatedCSSVariables.set(rule.propertyName(), initialValue !== null ? { value: initialValue, declaration: new CSSValueSource(rule) } : null);
     }
+    if (this.#fallbackCascade) {
+      this.#fallbackCascade.ensureInitialized();
+      for (const [cascade, available] of this.#fallbackCascade.#availableCSSVariables) {
+        this.#availableCSSVariables.set(cascade, available);
+      }
+      for (const [cascade, computed] of this.#fallbackCascade.#computedCSSVariables) {
+        this.#computedCSSVariables.set(cascade, computed);
+      }
+      for (const [key, value] of this.#fallbackCascade.#availableCSSVariables.get(this.#fallbackCascade.#nodeCascades[0]) ?? []) {
+        accumulatedCSSVariables.set(key, value);
+      }
+    }
     for (let i = this.#nodeCascades.length - 1; i >= 0; --i) {
       const nodeCascade = this.#nodeCascades[i];
       const variableNames = [];
@@ -16767,7 +17371,7 @@ var CSSStyleSheetHeader_exports = {};
 __export(CSSStyleSheetHeader_exports, {
   CSSStyleSheetHeader: () => CSSStyleSheetHeader
 });
-import * as TextUtils13 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils14 from "./../../models/text_utils/text_utils.js";
 import * as Common8 from "./../common/common.js";
 import * as i18n3 from "./../i18n/i18n.js";
 import * as Platform7 from "./../platform/platform.js";
@@ -16835,14 +17439,14 @@ var CSSStyleSheetHeader = class {
         if (originalText === null) {
           return { error: i18nString2(UIStrings2.couldNotFindTheOriginalStyle) };
         }
-        return new TextUtils13.ContentData.ContentData(
+        return new TextUtils14.ContentData.ContentData(
           originalText,
           /* isBase64=*/
           false,
           "text/css"
         );
       };
-      this.#originalContentProvider = new TextUtils13.StaticContentProvider.StaticContentProvider(this.contentURL(), this.contentType(), lazyContent);
+      this.#originalContentProvider = new TextUtils14.StaticContentProvider.StaticContentProvider(this.contentURL(), this.contentType(), lazyContent);
     }
     return this.#originalContentProvider;
   }
@@ -16912,7 +17516,7 @@ var CSSStyleSheetHeader = class {
     if (cssText === null) {
       return { error: i18nString2(UIStrings2.thereWasAnErrorRetrievingThe) };
     }
-    return new TextUtils13.ContentData.ContentData(
+    return new TextUtils14.ContentData.ContentData(
       cssText,
       /* isBase64=*/
       false,
@@ -16921,7 +17525,7 @@ var CSSStyleSheetHeader = class {
   }
   async searchInContent(query, caseSensitive, isRegex) {
     const contentData = await this.requestContentData();
-    return TextUtils13.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
+    return TextUtils14.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
   }
   isViaInspector() {
     return this.origin === "inspector";
@@ -16943,206 +17547,28 @@ var SourceMapManager_exports = {};
 __export(SourceMapManager_exports, {
   Events: () => Events4,
   SourceMapManager: () => SourceMapManager,
-  loadSourceMap: () => loadSourceMap,
   tryLoadSourceMap: () => tryLoadSourceMap
 });
-import * as Common13 from "./../common/common.js";
+import * as Common12 from "./../common/common.js";
 import * as Platform9 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/PageResourceLoader.js
 var PageResourceLoader_exports = {};
 __export(PageResourceLoader_exports, {
   PageResourceLoader: () => PageResourceLoader,
-  ResourceKey: () => ResourceKey,
-  getLoadThroughTargetSetting: () => getLoadThroughTargetSetting
+  ResourceKey: () => ResourceKey
 });
-import * as Common11 from "./../common/common.js";
-import * as Host3 from "./../host/host.js";
+import * as Common10 from "./../common/common.js";
+import * as Host2 from "./../host/host.js";
 import * as i18n5 from "./../i18n/i18n.js";
-
-// gen/front_end/core/sdk/FrameManager.js
-var FrameManager_exports = {};
-__export(FrameManager_exports, {
-  FrameManager: () => FrameManager
-});
-import * as Common9 from "./../common/common.js";
-var frameManagerInstance = null;
-var FrameManager = class _FrameManager extends Common9.ObjectWrapper.ObjectWrapper {
-  #eventListeners = /* @__PURE__ */ new WeakMap();
-  // Maps frameIds to #frames and a count of how many ResourceTreeModels contain this frame.
-  // (OOPIFs are usually first attached to a new target and then detached from their old target,
-  // therefore being contained in 2 models for a short period of time.)
-  #frames = /* @__PURE__ */ new Map();
-  #framesForTarget = /* @__PURE__ */ new Map();
-  #outermostFrame = null;
-  #transferringFramesDataCache = /* @__PURE__ */ new Map();
-  #awaitedFrames = /* @__PURE__ */ new Map();
-  constructor() {
-    super();
-    TargetManager.instance().observeModels(ResourceTreeModel, this);
-  }
-  static instance({ forceNew } = { forceNew: false }) {
-    if (!frameManagerInstance || forceNew) {
-      frameManagerInstance = new _FrameManager();
-    }
-    return frameManagerInstance;
-  }
-  static removeInstance() {
-    frameManagerInstance = null;
-  }
-  modelAdded(resourceTreeModel) {
-    const addListener = resourceTreeModel.addEventListener(Events3.FrameAdded, this.frameAdded, this);
-    const detachListener = resourceTreeModel.addEventListener(Events3.FrameDetached, this.frameDetached, this);
-    const navigatedListener = resourceTreeModel.addEventListener(Events3.FrameNavigated, this.frameNavigated, this);
-    const resourceAddedListener = resourceTreeModel.addEventListener(Events3.ResourceAdded, this.resourceAdded, this);
-    this.#eventListeners.set(resourceTreeModel, [addListener, detachListener, navigatedListener, resourceAddedListener]);
-    this.#framesForTarget.set(resourceTreeModel.target().id(), /* @__PURE__ */ new Set());
-  }
-  modelRemoved(resourceTreeModel) {
-    const listeners = this.#eventListeners.get(resourceTreeModel);
-    if (listeners) {
-      Common9.EventTarget.removeEventListeners(listeners);
-    }
-    const frameSet = this.#framesForTarget.get(resourceTreeModel.target().id());
-    if (frameSet) {
-      for (const frameId of frameSet) {
-        this.decreaseOrRemoveFrame(frameId);
-      }
-    }
-    this.#framesForTarget.delete(resourceTreeModel.target().id());
-  }
-  frameAdded(event) {
-    const frame = event.data;
-    const frameData = this.#frames.get(frame.id);
-    if (frameData) {
-      frame.setCreationStackTrace(frameData.frame.getCreationStackTraceData());
-      this.#frames.set(frame.id, { frame, count: frameData.count + 1 });
-    } else {
-      const cachedFrameAttributes = this.#transferringFramesDataCache.get(frame.id);
-      if (cachedFrameAttributes?.creationStackTrace && cachedFrameAttributes?.creationStackTraceTarget) {
-        frame.setCreationStackTrace({
-          creationStackTrace: cachedFrameAttributes.creationStackTrace,
-          creationStackTraceTarget: cachedFrameAttributes.creationStackTraceTarget
-        });
-      }
-      this.#frames.set(frame.id, { frame, count: 1 });
-      this.#transferringFramesDataCache.delete(frame.id);
-    }
-    this.resetOutermostFrame();
-    const frameSet = this.#framesForTarget.get(frame.resourceTreeModel().target().id());
-    if (frameSet) {
-      frameSet.add(frame.id);
-    }
-    this.dispatchEventToListeners("FrameAddedToTarget", { frame });
-    this.resolveAwaitedFrame(frame);
-  }
-  frameDetached(event) {
-    const { frame, isSwap } = event.data;
-    this.decreaseOrRemoveFrame(frame.id);
-    if (isSwap && !this.#frames.get(frame.id)) {
-      const traceData = frame.getCreationStackTraceData();
-      const cachedFrameAttributes = {
-        ...traceData.creationStackTrace && { creationStackTrace: traceData.creationStackTrace },
-        ...traceData.creationStackTrace && { creationStackTraceTarget: traceData.creationStackTraceTarget }
-      };
-      this.#transferringFramesDataCache.set(frame.id, cachedFrameAttributes);
-    }
-    const frameSet = this.#framesForTarget.get(frame.resourceTreeModel().target().id());
-    if (frameSet) {
-      frameSet.delete(frame.id);
-    }
-  }
-  frameNavigated(event) {
-    const frame = event.data;
-    this.dispatchEventToListeners("FrameNavigated", { frame });
-    if (frame.isOutermostFrame()) {
-      this.dispatchEventToListeners("OutermostFrameNavigated", { frame });
-    }
-  }
-  resourceAdded(event) {
-    this.dispatchEventToListeners("ResourceAdded", { resource: event.data });
-  }
-  decreaseOrRemoveFrame(frameId) {
-    const frameData = this.#frames.get(frameId);
-    if (frameData) {
-      if (frameData.count === 1) {
-        this.#frames.delete(frameId);
-        this.resetOutermostFrame();
-        this.dispatchEventToListeners("FrameRemoved", { frameId });
-      } else {
-        frameData.count--;
-      }
-    }
-  }
-  /**
-   * Looks for the outermost frame in `#frames` and sets `#outermostFrame` accordingly.
-   *
-   * Important: This method needs to be called everytime `#frames` is updated.
-   */
-  resetOutermostFrame() {
-    const outermostFrames = this.getAllFrames().filter((frame) => frame.isOutermostFrame());
-    this.#outermostFrame = outermostFrames.length > 0 ? outermostFrames[0] : null;
-  }
-  /**
-   * Returns the ResourceTreeFrame with a given frameId.
-   * When a frame is being detached a new ResourceTreeFrame but with the same
-   * frameId is created. Consequently getFrame() will return a different
-   * ResourceTreeFrame after detachment. Callers of getFrame() should therefore
-   * immediately use the function return value and not store it for later use.
-   */
-  getFrame(frameId) {
-    const frameData = this.#frames.get(frameId);
-    if (frameData) {
-      return frameData.frame;
-    }
-    return null;
-  }
-  getAllFrames() {
-    return Array.from(this.#frames.values(), (frameData) => frameData.frame);
-  }
-  getOutermostFrame() {
-    return this.#outermostFrame;
-  }
-  async getOrWaitForFrame(frameId, notInTarget) {
-    const frame = this.getFrame(frameId);
-    if (frame && (!notInTarget || notInTarget !== frame.resourceTreeModel().target())) {
-      return frame;
-    }
-    return await new Promise((resolve) => {
-      const waiting = this.#awaitedFrames.get(frameId);
-      if (waiting) {
-        waiting.push({ notInTarget, resolve });
-      } else {
-        this.#awaitedFrames.set(frameId, [{ notInTarget, resolve }]);
-      }
-    });
-  }
-  resolveAwaitedFrame(frame) {
-    const waiting = this.#awaitedFrames.get(frame.id);
-    if (!waiting) {
-      return;
-    }
-    const newWaiting = waiting.filter(({ notInTarget, resolve }) => {
-      if (!notInTarget || notInTarget !== frame.resourceTreeModel().target()) {
-        resolve(frame);
-        return false;
-      }
-      return true;
-    });
-    if (newWaiting.length > 0) {
-      this.#awaitedFrames.set(frame.id, newWaiting);
-    } else {
-      this.#awaitedFrames.delete(frame.id);
-    }
-  }
-};
+import * as Root4 from "./../root/root.js";
 
 // gen/front_end/core/sdk/IOModel.js
 var IOModel_exports = {};
 __export(IOModel_exports, {
   IOModel: () => IOModel
 });
-import * as Common10 from "./../common/common.js";
+import * as Common9 from "./../common/common.js";
 
 // gen/front_end/core/sdk/RemoteObject.js
 var RemoteObject_exports = {};
@@ -17203,6 +17629,10 @@ var RemoteObject = class _RemoteObject {
     }
     const matches = object.description?.match(descriptionLengthParenRegex);
     return matches ? parseInt(matches[1], 10) : 0;
+  }
+  static isEmptyArray(object) {
+    const matches = object.description?.match(descriptionLengthParenRegex);
+    return Boolean(matches?.[1] === "0");
   }
   static unserializableDescription(object) {
     if (typeof object === "number") {
@@ -17584,7 +18014,7 @@ var RemoteObjectImpl = class extends RemoteObject {
     return Boolean(this.#objectId) && this.type === "object" && this.subtype === "node";
   }
   isLinearMemoryInspectable() {
-    return this.type === "object" && this.subtype !== void 0 && ["webassemblymemory", "typedarray", "dataview", "arraybuffer"].includes(this.subtype);
+    return this.type === "object" && this.subtype !== void 0 && ["webassemblymemory", "typedarray", "dataview", "arraybuffer"].includes(this.subtype) && !RemoteObject.isEmptyArray(this);
   }
 };
 var ScopeRemoteObject = class extends RemoteObjectImpl {
@@ -17794,6 +18224,9 @@ var LocalJSONObject = class extends RemoteObject {
     if (this.#value instanceof Date) {
       return "date";
     }
+    if (this.#value instanceof Error) {
+      return "error";
+    }
     return void 0;
   }
   get hasChildren() {
@@ -17891,7 +18324,7 @@ var RemoteArray = class _RemoteArray {
     this.#object = object;
   }
   static objectAsArray(object) {
-    if (!object || object.type !== "object" || object.subtype !== "array" && object.subtype !== "typedarray") {
+    if (object?.type !== "object" || object.subtype !== "array" && object.subtype !== "typedarray") {
       throw new Error("Object is empty or not an array");
     }
     return new _RemoteArray(object);
@@ -18041,15 +18474,12 @@ var IOModel = class extends SDKModel {
       return null;
     }
     if (result.base64Encoded) {
-      return Common10.Base64.decode(result.data);
+      return Common9.Base64.decode(result.data);
     }
     return result.data;
   }
   async close(handle) {
-    const result = await this.target().ioAgent().invoke_close({ handle });
-    if (result.getError()) {
-      console.error("Could not close stream.");
-    }
+    await this.target().ioAgent().invoke_close({ handle });
   }
   async resolveBlob(objectOrObjectId) {
     const objectId = objectOrObjectId instanceof RemoteObject ? objectOrObjectId.objectId : objectOrObjectId;
@@ -18125,32 +18555,36 @@ var ResourceKey = class {
     this.key = key;
   }
 };
-var pageResourceLoader = null;
-var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrapper.ObjectWrapper {
+var PageResourceLoader = class _PageResourceLoader extends Common10.ObjectWrapper.ObjectWrapper {
+  #targetManager;
+  #settings;
+  #userAgentProvider;
   #currentlyLoading = 0;
   #currentlyLoadingPerTarget = /* @__PURE__ */ new Map();
   #maxConcurrentLoads;
   #pageResources = /* @__PURE__ */ new Map();
   #queuedLoads = [];
   #loadOverride;
-  constructor(loadOverride, maxConcurrentLoads) {
+  constructor(targetManager, settings, userAgentProvider, loadOverride, maxConcurrentLoads = 500) {
     super();
+    this.#targetManager = targetManager;
+    this.#settings = settings;
+    this.#userAgentProvider = userAgentProvider;
     this.#maxConcurrentLoads = maxConcurrentLoads;
-    TargetManager.instance().addModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
+    this.#targetManager.addModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
     this.#loadOverride = loadOverride;
   }
-  static instance({ forceNew, loadOverride, maxConcurrentLoads } = {
+  static instance({ forceNew, targetManager, settings, userAgentProvider, loadOverride, maxConcurrentLoads } = {
     forceNew: false,
-    loadOverride: null,
-    maxConcurrentLoads: 500
+    loadOverride: null
   }) {
-    if (!pageResourceLoader || forceNew) {
-      pageResourceLoader = new _PageResourceLoader(loadOverride, maxConcurrentLoads);
+    if (forceNew) {
+      Root4.DevToolsContext.globalInstance().set(_PageResourceLoader, new _PageResourceLoader(targetManager ?? TargetManager.instance(), settings ?? Common10.Settings.Settings.instance(), userAgentProvider ?? MultitargetNetworkManager.instance(), loadOverride, maxConcurrentLoads));
     }
-    return pageResourceLoader;
+    return Root4.DevToolsContext.globalInstance().get(_PageResourceLoader);
   }
   static removeInstance() {
-    pageResourceLoader = null;
+    Root4.DevToolsContext.globalInstance().delete(_PageResourceLoader);
   }
   onPrimaryPageChanged(event) {
     const { frame: mainFrame, type } = event.data;
@@ -18178,7 +18612,7 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
     return this.#pageResources;
   }
   getScopedResourcesLoaded() {
-    return new Map([...this.#pageResources].filter(([_, pageResource]) => TargetManager.instance().isInScope(pageResource.initiator.target) || isExtensionInitiator(pageResource.initiator)));
+    return new Map([...this.#pageResources].filter(([_, pageResource]) => this.#targetManager.isInScope(pageResource.initiator.target) || isExtensionInitiator(pageResource.initiator)));
   }
   /**
    * Loading is the number of currently loading and queued items. Resources is the total number of resources,
@@ -18189,11 +18623,10 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
     return { loading: this.#currentlyLoading, queued: this.#queuedLoads.length, resources: this.#pageResources.size };
   }
   getScopedNumberOfResources() {
-    const targetManager = TargetManager.instance();
     let loadingCount = 0;
     for (const [targetId, count] of this.#currentlyLoadingPerTarget) {
-      const target = targetManager.targetById(targetId);
-      if (targetManager.isInScope(target)) {
+      const target = this.#targetManager.targetById(targetId);
+      if (this.#targetManager.isInScope(target)) {
         loadingCount += count;
       }
     }
@@ -18252,7 +18685,13 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
       throw new Error("Invalid initiator");
     }
     const key = _PageResourceLoader.makeKey(url, initiator);
-    const pageResource = { success: null, size: null, duration: null, errorMessage: void 0, url, initiator };
+    const pageResource = {
+      success: null,
+      size: null,
+      duration: null,
+      url,
+      initiator
+    };
     this.#pageResources.set(key, pageResource);
     this.dispatchEventToListeners(
       "Update"
@@ -18295,54 +18734,66 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
     if (this.#loadOverride) {
       return await this.#loadOverride(url);
     }
-    const parsedURL = new Common11.ParsedURL.ParsedURL(url);
-    const eligibleForLoadFromTarget = getLoadThroughTargetSetting().get() && parsedURL && parsedURL.scheme !== "file" && parsedURL.scheme !== "data" && parsedURL.scheme !== "devtools";
-    Host3.userMetrics.developerResourceScheme(this.getDeveloperResourceScheme(parsedURL));
+    const parsedURL = new Common10.ParsedURL.ParsedURL(url);
+    const eligibleForLoadFromTarget = this.getLoadThroughTargetSetting().get() && parsedURL && parsedURL.scheme !== "file" && parsedURL.scheme !== "data" && parsedURL.scheme !== "devtools" && initiator.target;
+    Host2.userMetrics.developerResourceScheme(this.getDeveloperResourceScheme(parsedURL));
     if (eligibleForLoadFromTarget) {
+      let mustEnforceCSP = false;
+      const isHttp = parsedURL.scheme === "http" || parsedURL.scheme === "https";
+      if (isHttp && initiator.target) {
+        const networkManager = initiator.target.model(NetworkManager);
+        if (networkManager) {
+          let status = await networkManager.getSecurityIsolationStatus(initiator.frameId);
+          if (!status && initiator.frameId) {
+            status = await networkManager.getSecurityIsolationStatus(null);
+          }
+          if (status?.csp) {
+            for (const csp of status.csp) {
+              const directives = csp.effectiveDirectives;
+              if (directives.includes("connect-src") || directives.includes("default-src")) {
+                mustEnforceCSP = true;
+                break;
+              }
+            }
+          }
+        }
+      }
       try {
-        if (initiator.target) {
-          Host3.userMetrics.developerResourceLoaded(
-            0
-            /* Host.UserMetrics.DeveloperResourceLoaded.LOAD_THROUGH_PAGE_VIA_TARGET */
-          );
-          const result2 = await this.loadFromTarget(initiator.target, initiator.frameId, url, isBinary);
-          return result2;
-        }
-        const frame = FrameManager.instance().getFrame(initiator.frameId);
-        if (frame) {
-          Host3.userMetrics.developerResourceLoaded(
-            1
-            /* Host.UserMetrics.DeveloperResourceLoaded.LOAD_THROUGH_PAGE_VIA_FRAME */
-          );
-          const result2 = await this.loadFromTarget(frame.resourceTreeModel().target(), initiator.frameId, url, isBinary);
-          return result2;
-        }
+        Host2.userMetrics.developerResourceLoaded(
+          0
+          /* Host.UserMetrics.DeveloperResourceLoaded.LOAD_THROUGH_PAGE_VIA_TARGET */
+        );
+        const result2 = await this.loadFromTarget(initiator.target, initiator.frameId, url, isBinary);
+        return result2;
       } catch (e) {
         if (e instanceof Error) {
-          Host3.userMetrics.developerResourceLoaded(
+          Host2.userMetrics.developerResourceLoaded(
             2
             /* Host.UserMetrics.DeveloperResourceLoaded.LOAD_THROUGH_PAGE_FAILURE */
           );
-          if (e.message.includes("CSP violation")) {
+          if (mustEnforceCSP || e.message.includes("CSP violation")) {
             return {
               success: false,
               content: "",
-              errorDescription: { statusCode: 0, netError: void 0, netErrorName: void 0, message: e.message, urlValid: void 0 }
+              errorDescription: {
+                statusCode: 0,
+                message: e.message
+              }
             };
           }
         }
       }
-      Host3.userMetrics.developerResourceLoaded(
+      Host2.userMetrics.developerResourceLoaded(
         3
         /* Host.UserMetrics.DeveloperResourceLoaded.LOAD_THROUGH_PAGE_FALLBACK */
       );
     } else {
-      const code = getLoadThroughTargetSetting().get() ? 6 : 5;
-      Host3.userMetrics.developerResourceLoaded(code);
+      const code = this.getLoadThroughTargetSetting().get() ? 6 : 5;
+      Host2.userMetrics.developerResourceLoaded(code);
     }
-    const result = await MultitargetNetworkManager.instance().loadResource(url);
+    const result = await this.loadFromHostBindings(url);
     if (eligibleForLoadFromTarget && !result.success) {
-      Host3.userMetrics.developerResourceLoaded(
+      Host2.userMetrics.developerResourceLoaded(
         7
         /* Host.UserMetrics.DeveloperResourceLoaded.FALLBACK_FAILURE */
       );
@@ -18374,7 +18825,7 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
   async loadFromTarget(target, frameId, url, isBinary) {
     const networkManager = target.model(NetworkManager);
     const ioModel = target.model(IOModel);
-    const disableCache = Common11.Settings.Settings.instance().moduleSetting("cache-disabled").get();
+    const disableCache = this.#settings.moduleSetting("cache-disabled").get();
     const resource = await networkManager.loadNetworkResource(frameId, url, { disableCache, includeCredentials: true });
     try {
       const content = resource.stream ? isBinary ? await ioModel.readToBuffer(resource.stream) : await ioModel.readToString(resource.stream) : "";
@@ -18385,8 +18836,7 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
           statusCode: resource.httpStatusCode || 0,
           netError: resource.netError,
           netErrorName: resource.netErrorName,
-          message: Host3.ResourceLoader.netErrorToMessage(resource.netError, resource.httpStatusCode, resource.netErrorName) || "",
-          urlValid: void 0
+          message: Host2.ResourceLoader.netErrorToMessage(resource.netError, resource.httpStatusCode, resource.netErrorName) || ""
         }
       };
     } finally {
@@ -18395,10 +18845,24 @@ var PageResourceLoader = class _PageResourceLoader extends Common11.ObjectWrappe
       }
     }
   }
+  async loadFromHostBindings(url) {
+    const headers = {};
+    const currentUserAgent = this.#userAgentProvider.currentUserAgent();
+    if (currentUserAgent) {
+      headers["User-Agent"] = currentUserAgent;
+    }
+    if (this.#settings.moduleSetting("cache-disabled").get()) {
+      headers["Cache-Control"] = "no-cache";
+    }
+    const allowRemoteFilePaths = this.#settings.moduleSetting("network.enable-remote-file-loading").get();
+    return await new Promise((resolve) => Host2.ResourceLoader.load(url, headers, (success, _responseHeaders, content, errorDescription) => {
+      resolve({ success, content, errorDescription });
+    }, allowRemoteFilePaths));
+  }
+  getLoadThroughTargetSetting() {
+    return this.#settings.createSetting("load-through-target", true);
+  }
 };
-function getLoadThroughTargetSetting() {
-  return Common11.Settings.Settings.instance().createSetting("load-through-target", true);
-}
 
 // gen/front_end/core/sdk/SourceMap.js
 var SourceMap_exports = {};
@@ -18408,11 +18872,11 @@ __export(SourceMap_exports, {
   TokenIterator: () => TokenIterator,
   parseSourceMap: () => parseSourceMap
 });
-import * as TextUtils16 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils17 from "./../../models/text_utils/text_utils.js";
 import * as ScopesCodec from "./../../third_party/source-map-scopes-codec/source-map-scopes-codec.js";
-import * as Common12 from "./../common/common.js";
+import * as Common11 from "./../common/common.js";
 import * as Platform8 from "./../platform/platform.js";
-import * as Root4 from "./../root/root.js";
+import * as Root5 from "./../root/root.js";
 
 // gen/front_end/core/sdk/ScopeTreeCache.js
 var ScopeTreeCache_exports = {};
@@ -18420,13 +18884,16 @@ __export(ScopeTreeCache_exports, {
   scopeTreeForScript: () => scopeTreeForScript
 });
 import * as Formatter from "./../../models/formatter/formatter.js";
-import * as TextUtils15 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils16 from "./../../models/text_utils/text_utils.js";
 var scopeTrees = /* @__PURE__ */ new WeakMap();
 function scopeTreeForScript(script) {
+  if (script.isWasm()) {
+    return Promise.resolve(null);
+  }
   let promise = scopeTrees.get(script);
   if (promise === void 0) {
     promise = script.requestContentData().then((content) => {
-      if (TextUtils15.ContentData.ContentData.isError(content)) {
+      if (TextUtils16.ContentData.ContentData.isError(content)) {
         return null;
       }
       const sourceType = script.isModule ? "module" : "script";
@@ -18742,41 +19209,129 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
     this.#generatedRanges = scopeInfo.ranges;
   }
   /**
-   * If the source map does not contain any scopes information, this factory function attempts to create bare bones scope information
+   * If the source map does not contain any scopes information, this factory function attempts to create scope information
    * via the script's AST combined with the mappings.
    *
    * We create the generated ranges from the scope tree and for each range we create an original scope that matches the bounds 1:1.
-   * We don't map the bounds via mappings as mappings are often iffy and it's not strictly required to translate stack traces where we
-   * map call-sites separately.
    */
   static createFromAst(sourceMap, scopeTree, text) {
-    const { scope, range } = convertScope(scopeTree, void 0, void 0);
-    return new _SourceMapScopesInfo(sourceMap, { scopes: [scope], ranges: [range] });
-    function convertScope(node, parentScope, parentRange) {
-      const start = positionFromOffset(node.start);
-      const end = positionFromOffset(node.end);
-      const isStackFrame = node.kind === 2;
-      const scope2 = {
-        start,
-        end,
-        name: sourceMap.findEntry(start.line, start.column, 0)?.name,
-        isStackFrame,
+    const numSourceUrls = sourceMap.sourceURLs().length;
+    const scopeBySourceUrl = [];
+    for (let i = 0; i < numSourceUrls; i++) {
+      const scope = {
+        start: { line: 0, column: 0 },
+        end: { line: Number.POSITIVE_INFINITY, column: Number.POSITIVE_INFINITY },
+        isStackFrame: false,
         variables: [],
         children: []
       };
-      const range2 = {
+      scopeBySourceUrl.push(scope);
+    }
+    const stack = [{ node: scopeTree }];
+    let rootRange = void 0;
+    while (stack.length > 0) {
+      const popped = stack.pop();
+      if (!popped) {
+        break;
+      }
+      const { node, parentRange, parentScopeHint } = popped;
+      const start = positionFromOffset(node.start);
+      const end = positionFromOffset(node.end);
+      const startEntry = sourceMap.findEntry(start.line, start.column);
+      const endEntry = sourceMap.findEntry(end.line, end.column);
+      const sourceIndex = startEntry?.sourceIndex;
+      const canMapOriginalPosition = startEntry && endEntry && sourceIndex !== void 0 && startEntry.sourceIndex === endEntry.sourceIndex && startEntry.sourceIndex !== void 0 && sourceIndex >= 0 && sourceIndex < numSourceUrls;
+      const isStackFrame = node.kind === 2 || node.kind === 4;
+      let name = void 0;
+      for (const offset of node.nameMappingLocations ?? []) {
+        const position = positionFromOffset(offset);
+        const entry = sourceMap.findEntryExact(position.line, position.column);
+        if (entry?.name !== void 0) {
+          name = entry.name;
+          break;
+        }
+      }
+      let scope;
+      if (canMapOriginalPosition) {
+        scope = {
+          start: { line: startEntry.sourceLineNumber, column: startEntry.sourceColumnNumber },
+          end: { line: endEntry.sourceLineNumber, column: endEntry.sourceColumnNumber },
+          name: name ?? node.name,
+          isStackFrame,
+          variables: [],
+          children: []
+        };
+      }
+      const range = {
         start,
         end,
-        originalScope: scope2,
+        originalScope: scope,
         isStackFrame,
         isHidden: false,
         values: [],
         children: []
       };
-      parentRange?.children.push(range2);
-      parentScope?.children.push(scope2);
-      node.children.forEach((child) => convertScope(child, scope2, range2));
-      return { scope: scope2, range: range2 };
+      if (!rootRange) {
+        rootRange = range;
+      }
+      parentRange?.children.push(range);
+      let nextParentScopeHint = parentScopeHint;
+      if (canMapOriginalPosition && scope) {
+        const rootScope = scopeBySourceUrl[sourceIndex];
+        const startSearchFrom = parentScopeHint && containsOriginal(parentScopeHint, scope) ? parentScopeHint : rootScope;
+        insertInScope(startSearchFrom, scope);
+        nextParentScopeHint = scope;
+      }
+      for (let i = node.children.length - 1; i >= 0; --i) {
+        stack.push({ node: node.children[i], parentRange: range, parentScopeHint: nextParentScopeHint });
+      }
+    }
+    return new _SourceMapScopesInfo(sourceMap, { scopes: scopeBySourceUrl, ranges: rootRange ? [rootRange] : [] });
+    function insertInScope(rootScope, newScope) {
+      let parent = rootScope;
+      while (true) {
+        let deeperParent = null;
+        for (const child of parent.children) {
+          if (containsOriginal(child, newScope)) {
+            deeperParent = child;
+            break;
+          }
+        }
+        if (deeperParent) {
+          parent = deeperParent;
+        } else {
+          break;
+        }
+      }
+      const childrenToKeep = [];
+      for (const child of parent.children) {
+        if (containsOriginal(newScope, child)) {
+          newScope.children.push(child);
+          child.parent = newScope;
+        } else {
+          childrenToKeep.push(child);
+        }
+      }
+      const insertIndex = childrenToKeep.findIndex((child) => compareScopes(newScope, child) < 0);
+      if (insertIndex === -1) {
+        childrenToKeep.push(newScope);
+      } else {
+        childrenToKeep.splice(insertIndex, 0, newScope);
+      }
+      parent.children = childrenToKeep;
+      newScope.parent = parent;
+    }
+    function containsOriginal(outer, inner) {
+      return comparePositions2(outer.start, inner.start) <= 0 && comparePositions2(outer.end, inner.end) >= 0;
+    }
+    function compareScopes(a, b) {
+      return comparePositions2(a.start, b.start);
+    }
+    function comparePositions2(a, b) {
+      if (a.line !== b.line) {
+        return a.line - b.line;
+      }
+      return a.column - b.column;
     }
     function positionFromOffset(offset) {
       const location = text.positionFromOffset(offset);
@@ -18797,7 +19352,8 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
     return Boolean(this.#originalScopes[sourceIdx]);
   }
   isEmpty() {
-    return !this.#originalScopes.length && !this.#generatedRanges.length;
+    const noScopes = this.#originalScopes.every((scope) => scope === null);
+    return noScopes && !this.#generatedRanges.length;
   }
   addOriginalScopesAtIndex(sourceIdx, scope) {
     if (!this.#originalScopes[sourceIdx]) {
@@ -18864,28 +19420,6 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
         break;
       }
     }
-    return result;
-  }
-  /**
-   * Takes a V8 provided call frame and expands any inlined frames into virtual call frames.
-   *
-   * For call frames where nothing was inlined, the result contains only a single element,
-   * the provided frame but with the original name.
-   *
-   * For call frames where we are paused in inlined code, this function returns a list of
-   * call frames from "inner to outer". This is the call frame at index 0
-   * signifies the top of this stack trace fragment.
-   *
-   * The rest are "virtual" call frames and will have an "inlineFrameIndex" set in ascending
-   * order, so the condition `result[index] === result[index].inlineFrameIndex` always holds.
-   */
-  expandCallFrame(callFrame) {
-    const { originalFunctionName, inlinedFunctions } = this.findInlinedFunctions(callFrame.location().lineNumber, callFrame.location().columnNumber);
-    const result = [];
-    for (const [index, fn] of inlinedFunctions.entries()) {
-      result.push(callFrame.createVirtualCallFrame(index, fn.name));
-    }
-    result.push(callFrame.createVirtualCallFrame(result.length, originalFunctionName));
     return result;
   }
   /**
@@ -18998,7 +19532,14 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
   /**
    * Returns the authored function name of the function containing the provided generated position.
    */
-  findOriginalFunctionName({ line, column }) {
+  findOriginalFunctionName(position) {
+    const originalInnerMostScope = this.findOriginalFunctionScope(position)?.scope;
+    return this.#findFunctionNameInOriginalScopeChain(originalInnerMostScope);
+  }
+  /**
+   * Returns the authored function scope of the function containing the provided generated position.
+   */
+  findOriginalFunctionScope({ line, column }) {
     let originalInnerMostScope;
     if (this.#generatedRanges.length > 0) {
       const rangeChain = this.#findGeneratedRangeChain(line, column);
@@ -19010,7 +19551,20 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
       }
       originalInnerMostScope = this.#findOriginalScopeChain({ sourceIndex: entry.sourceIndex, line: entry.sourceLineNumber, column: entry.sourceColumnNumber }).at(-1);
     }
-    return this.#findFunctionNameInOriginalScopeChain(originalInnerMostScope) ?? null;
+    if (!originalInnerMostScope) {
+      return null;
+    }
+    const functionScope = this.#findFunctionScopeInOriginalScopeChain(originalInnerMostScope);
+    if (!functionScope) {
+      return null;
+    }
+    let rootScope = functionScope;
+    while (rootScope.parent) {
+      rootScope = rootScope.parent;
+    }
+    const sourceIndex = this.#originalScopes.indexOf(rootScope);
+    const url = sourceIndex !== -1 ? this.#sourceMap.sourceURLForSourceIndex(sourceIndex) : void 0;
+    return functionScope ? { scope: functionScope, url } : null;
   }
   /**
    * Given an original position, this returns all the surrounding original scopes from outer
@@ -19033,13 +19587,20 @@ var SourceMapScopesInfo = class _SourceMapScopesInfo {
     })([scope]);
     return result;
   }
-  #findFunctionNameInOriginalScopeChain(innerOriginalScope) {
+  #findFunctionScopeInOriginalScopeChain(innerOriginalScope) {
     for (let originalScope = innerOriginalScope; originalScope; originalScope = originalScope.parent) {
       if (originalScope.isStackFrame) {
-        return originalScope.name ?? "";
+        return originalScope;
       }
     }
     return null;
+  }
+  #findFunctionNameInOriginalScopeChain(innerOriginalScope) {
+    const functionScope = this.#findFunctionScopeInOriginalScopeChain(innerOriginalScope);
+    if (!functionScope) {
+      return null;
+    }
+    return functionScope.name ?? "";
   }
   /**
    * Returns one or more original stack frames for this single "raw frame" or call-site.
@@ -19137,7 +19698,7 @@ var SourceMap = class {
   #script;
   #scopesInfo = null;
   #debugId;
-  scopesFallbackPromiseForTest;
+  #scopesFallbackPromise;
   /**
    * Implements Source Map V3 model. See https://github.com/google/closure-compiler/wiki/Source-Maps
    * for format description.
@@ -19147,11 +19708,11 @@ var SourceMap = class {
     this.#script = script;
     this.#compiledURL = compiledURL;
     this.#sourceMappingURL = sourceMappingURL;
-    this.#baseURL = Common12.ParsedURL.schemeIs(sourceMappingURL, "data:") ? compiledURL : sourceMappingURL;
+    this.#baseURL = Common11.ParsedURL.schemeIs(sourceMappingURL, "data:") ? compiledURL : sourceMappingURL;
     this.#debugId = "debugId" in payload ? payload.debugId : void 0;
     if ("sections" in this.#json) {
       if (this.#json.sections.find((section) => "url" in section)) {
-        Common12.Console.Console.instance().warn(`SourceMap "${sourceMappingURL}" contains unsupported "URL" field in one of its sections.`);
+        Common11.Console.Console.instance().warn(`SourceMap "${sourceMappingURL}" contains unsupported "URL" field in one of its sections.`);
       }
     }
     this.eachSection(this.parseSources.bind(this));
@@ -19166,8 +19727,9 @@ var SourceMap = class {
     }
     const sourceIdx = this.#sourceIndex(scriptUrl);
     if (sourceIdx >= 0) {
-      if (!this.#scopesInfo) {
+      if (!this.#scopesInfo || this.#scopesFallbackPromise !== void 0) {
         this.#scopesInfo = new SourceMapScopesInfo(this, { scopes: [], ranges: [] });
+        this.#scopesFallbackPromise = void 0;
       }
       if (!this.#scopesInfo.hasOriginalScopes(sourceIdx)) {
         const originalScopes = buildOriginalScopes(ranges);
@@ -19206,6 +19768,10 @@ var SourceMap = class {
     this.#ensureSourceMapProcessed();
     return this.#scopesInfo !== null && !this.#scopesInfo.isEmpty();
   }
+  waitForScopeInfo() {
+    this.#ensureSourceMapProcessed();
+    return this.#scopesFallbackPromise ?? Promise.resolve();
+  }
   findEntry(lineNumber, columnNumber, inlineFrameIndex) {
     this.#ensureSourceMapProcessed();
     if (inlineFrameIndex && this.#scopesInfo !== null) {
@@ -19221,13 +19787,20 @@ var SourceMap = class {
         sourceIndex: callsite.sourceIndex,
         sourceURL: this.sourceURLs()[callsite.sourceIndex],
         sourceLineNumber: callsite.line,
-        sourceColumnNumber: callsite.column,
-        name: void 0
+        sourceColumnNumber: callsite.column
       };
     }
     const mappings = this.mappings();
     const index = Platform8.ArrayUtilities.upperBound(mappings, void 0, (_, entry) => lineNumber - entry.lineNumber || columnNumber - entry.columnNumber);
     return index ? mappings[index - 1] : null;
+  }
+  /** Returns the entry at the given position but only if an entry exists for that exact position */
+  findEntryExact(lineNumber, columnNumber) {
+    const entry = this.findEntry(lineNumber, columnNumber);
+    if (entry?.lineNumber === lineNumber && entry.columnNumber === columnNumber) {
+      return entry;
+    }
+    return null;
   }
   findEntryRanges(lineNumber, columnNumber) {
     const mappings = this.mappings();
@@ -19242,7 +19815,7 @@ var SourceMap = class {
     }
     const endLine = endIndex < mappings.length ? mappings[endIndex].lineNumber : 2 ** 31 - 1;
     const endColumn = endIndex < mappings.length ? mappings[endIndex].columnNumber : 2 ** 31 - 1;
-    const range = new TextUtils16.TextRange.TextRange(mappings[startIndex].lineNumber, mappings[startIndex].columnNumber, endLine, endColumn);
+    const range = new TextUtils17.TextRange.TextRange(mappings[startIndex].lineNumber, mappings[startIndex].columnNumber, endLine, endColumn);
     const reverseMappings = this.reversedMappings(sourceURL);
     const startSourceLine = mappings[startIndex].sourceLineNumber;
     const startSourceColumn = mappings[startIndex].sourceColumnNumber;
@@ -19252,7 +19825,7 @@ var SourceMap = class {
     }
     const endSourceLine = endReverseIndex < reverseMappings.length ? mappings[reverseMappings[endReverseIndex]].sourceLineNumber : 2 ** 31 - 1;
     const endSourceColumn = endReverseIndex < reverseMappings.length ? mappings[reverseMappings[endReverseIndex]].sourceColumnNumber : 2 ** 31 - 1;
-    const sourceRange = new TextUtils16.TextRange.TextRange(startSourceLine, startSourceColumn, endSourceLine, endSourceColumn);
+    const sourceRange = new TextUtils17.TextRange.TextRange(startSourceLine, startSourceColumn, endSourceLine, endSourceColumn);
     return { range, sourceRange, sourceURL };
   }
   sourceLineMapping(sourceURL, lineNumber, columnNumber) {
@@ -19302,7 +19875,7 @@ var SourceMap = class {
       const startColumn = mappings[startIndex].columnNumber;
       const endLine = endIndex < mappings.length ? mappings[endIndex].lineNumber : 2 ** 31 - 1;
       const endColumn = endIndex < mappings.length ? mappings[endIndex].columnNumber : 2 ** 31 - 1;
-      ranges.push(new TextUtils16.TextRange.TextRange(startLine, startColumn, endLine, endColumn));
+      ranges.push(new TextUtils17.TextRange.TextRange(startLine, startColumn, endLine, endColumn));
     }
     return ranges;
   }
@@ -19333,7 +19906,7 @@ var SourceMap = class {
       try {
         this.eachSection(this.parseMap.bind(this));
         if (!this.hasScopeInfo()) {
-          this.scopesFallbackPromiseForTest = this.#buildScopesFallback().then((info) => {
+          this.#scopesFallbackPromise = this.#buildScopesFallback().then((info) => {
             this.#scopesInfo = info;
           });
         }
@@ -19397,14 +19970,14 @@ var SourceMap = class {
     const ignoreList = new Set(sourceMap.ignoreList ?? sourceMap.x_google_ignoreList);
     for (let i = 0; i < sourceMap.sources.length; ++i) {
       let href = sourceMap.sources[i];
-      if (Common12.ParsedURL.ParsedURL.isRelativeURL(href)) {
+      if (Common11.ParsedURL.ParsedURL.isRelativeURL(href)) {
         if (sourceRoot && !sourceRoot.endsWith("/") && href && !href.startsWith("/")) {
           href = sourceRoot.concat("/", href);
         } else {
           href = sourceRoot.concat(href);
         }
       }
-      const url = Common12.ParsedURL.ParsedURL.completeURL(this.#baseURL, href) || href;
+      const url = Common11.ParsedURL.ParsedURL.completeURL(this.#baseURL, href) || href;
       const source = sourceMap.sourcesContent?.[i];
       const sourceInfo = {
         sourceURL: url,
@@ -19460,10 +20033,7 @@ var SourceMap = class {
       nameIndex += tokenIter.nextVLQ();
       this.mappings().push(new SourceMapEntry(lineNumber, columnNumber, sourceIndex, sourceURL, sourceLineNumber, sourceColumnNumber, names[nameIndex]));
     }
-    if (Root4.Runtime.experiments.isEnabled(
-      "use-source-map-scopes"
-      /* Root.Runtime.ExperimentName.USE_SOURCE_MAP_SCOPES */
-    )) {
+    if (Root5.Runtime.experiments.isEnabled(Root5.ExperimentNames.ExperimentName.USE_SOURCE_MAP_SCOPES)) {
       if (!this.#scopesInfo) {
         this.#scopesInfo = new SourceMapScopesInfo(this, { scopes: [], ranges: [] });
       }
@@ -19533,14 +20103,14 @@ var SourceMap = class {
     const ranges = [];
     for (let reverseIndex = startReverseIndex; reverseIndex < endReverseIndex; ++reverseIndex) {
       const startIndex = reverseMappings[reverseIndex], endIndex = startIndex + 1;
-      const range = TextUtils16.TextRange.TextRange.createUnboundedFromLocation(mappings[startIndex].lineNumber, mappings[startIndex].columnNumber);
+      const range = TextUtils17.TextRange.TextRange.createUnboundedFromLocation(mappings[startIndex].lineNumber, mappings[startIndex].columnNumber);
       if (endIndex < mappings.length) {
         range.endLine = mappings[endIndex].lineNumber;
         range.endColumn = mappings[endIndex].columnNumber;
       }
       ranges.push(range);
     }
-    ranges.sort(TextUtils16.TextRange.TextRange.comparator);
+    ranges.sort(TextUtils17.TextRange.TextRange.comparator);
     let j = 0;
     for (let i = 1; i < ranges.length; ++i) {
       if (ranges[j].immediatelyPrecedes(ranges[i])) {
@@ -19578,13 +20148,13 @@ var SourceMap = class {
     }
     let current = null;
     if ((mappings[0].lineNumber !== 0 || mappings[0].columnNumber !== 0) && options?.isStartMatching) {
-      current = TextUtils16.TextRange.TextRange.createUnboundedFromLocation(0, 0);
+      current = TextUtils17.TextRange.TextRange.createUnboundedFromLocation(0, 0);
       ranges.push(current);
     }
     for (const { sourceURL, lineNumber, columnNumber } of mappings) {
       const ignoreListHint = sourceURL && predicate(sourceURL);
       if (!current && ignoreListHint) {
-        current = TextUtils16.TextRange.TextRange.createUnboundedFromLocation(lineNumber, columnNumber);
+        current = TextUtils17.TextRange.TextRange.createUnboundedFromLocation(lineNumber, columnNumber);
         ranges.push(current);
         continue;
       }
@@ -19610,13 +20180,6 @@ var SourceMap = class {
   compatibleForURL(sourceURL, other) {
     return this.embeddedContentByURL(sourceURL) === other.embeddedContentByURL(sourceURL) && this.hasIgnoreListHint(sourceURL) === other.hasIgnoreListHint(sourceURL);
   }
-  expandCallFrame(frame) {
-    this.#ensureSourceMapProcessed();
-    if (this.#scopesInfo === null) {
-      return [frame];
-    }
-    return this.#scopesInfo.expandCallFrame(frame);
-  }
   resolveScopeChain(frame) {
     this.#ensureSourceMapProcessed();
     if (this.#scopesInfo === null) {
@@ -19627,6 +20190,10 @@ var SourceMap = class {
   findOriginalFunctionName(position) {
     this.#ensureSourceMapProcessed();
     return this.#scopesInfo?.findOriginalFunctionName(position) ?? null;
+  }
+  findOriginalFunctionScope(position) {
+    this.#ensureSourceMapProcessed();
+    return this.#scopesInfo?.findOriginalFunctionScope(position) ?? null;
   }
   isOutlinedFrame(generatedLine, generatedColumn) {
     this.#ensureSourceMapProcessed();
@@ -19674,7 +20241,7 @@ var TokenIterator = class {
         throw new Error("Unexpected end of input while decodling VLQ number!");
       }
       const charCode = this.nextCharCode();
-      digit = Common12.Base64.BASE64_CODES[charCode];
+      digit = Common11.Base64.BASE64_CODES[charCode];
       if (charCode !== 65 && digit === 0) {
         throw new Error(`Unexpected char '${String.fromCharCode(charCode)}' encountered while decoding`);
       }
@@ -19709,6 +20276,9 @@ __export(SourceMapCache_exports, {
 var SourceMapCache = class _SourceMapCache {
   static #INSTANCE = new _SourceMapCache("devtools-source-map-cache");
   static instance() {
+    if (typeof window === "undefined") {
+      return IN_MEMORY_INSTANCE;
+    }
     return this.#INSTANCE;
   }
   static createForTest(name) {
@@ -19743,9 +20313,20 @@ var SourceMapCache = class _SourceMapCache {
     await window.caches.delete(this.#name);
   }
 };
+var IN_MEMORY_INSTANCE = new class {
+  #cache = /* @__PURE__ */ new Map();
+  async set(debugId, sourceMap) {
+    this.#cache.set(debugId, sourceMap);
+  }
+  async get(debugId) {
+    return this.#cache.get(debugId) ?? null;
+  }
+  async disposeForTest() {
+  }
+}();
 
 // gen/front_end/core/sdk/SourceMapManager.js
-var SourceMapManager = class _SourceMapManager extends Common13.ObjectWrapper.ObjectWrapper {
+var SourceMapManager = class _SourceMapManager extends Common12.ObjectWrapper.ObjectWrapper {
   #target;
   #factory;
   #isEnabled = true;
@@ -19777,7 +20358,7 @@ var SourceMapManager = class _SourceMapManager extends Common13.ObjectWrapper.Ob
     return target?.inspectedURL() ?? Platform9.DevToolsPath.EmptyUrlString;
   }
   static resolveRelativeSourceURL(target, url) {
-    url = Common13.ParsedURL.ParsedURL.completeURL(_SourceMapManager.getBaseUrl(target), url) ?? url;
+    url = Common12.ParsedURL.ParsedURL.completeURL(_SourceMapManager.getBaseUrl(target), url) ?? url;
     return url;
   }
   sourceMapForClient(client) {
@@ -19805,12 +20386,11 @@ var SourceMapManager = class _SourceMapManager extends Common13.ObjectWrapper.Ob
     let clientData = {
       relativeSourceURL,
       relativeSourceMapURL,
-      sourceMap: void 0,
       sourceMapPromise: Promise.resolve(void 0)
     };
     if (this.#isEnabled) {
       const sourceURL = _SourceMapManager.resolveRelativeSourceURL(this.#target, relativeSourceURL);
-      const sourceMapURL = Common13.ParsedURL.ParsedURL.completeURL(sourceURL, relativeSourceMapURL);
+      const sourceMapURL = Common12.ParsedURL.ParsedURL.completeURL(sourceURL, relativeSourceMapURL);
       if (sourceMapURL) {
         if (this.#attachingClient) {
           console.error("Attaching source map may cancel previously attaching source map");
@@ -19820,7 +20400,8 @@ var SourceMapManager = class _SourceMapManager extends Common13.ObjectWrapper.Ob
         if (this.#attachingClient === client) {
           this.#attachingClient = null;
           const initiator = client.createPageResourceLoadInitiator();
-          clientData.sourceMapPromise = loadSourceMap(sourceMapURL, client.debugId(), initiator).then((payload) => {
+          const resourceLoader = this.#target.targetManager().context.get(PageResourceLoader);
+          clientData.sourceMapPromise = loadSourceMap(resourceLoader, sourceMapURL, client.debugId(), initiator).then((payload) => {
             const sourceMap = this.#factory(sourceURL, sourceMapURL, payload, client);
             if (this.#clientData.get(client) === clientData) {
               clientData.sourceMap = sourceMap;
@@ -19874,10 +20455,10 @@ var SourceMapManager = class _SourceMapManager extends Common13.ObjectWrapper.Ob
     }
   }
   waitForSourceMapsProcessedForTest() {
-    return Promise.all(this.#sourceMaps.keys().map((sourceMap) => sourceMap.scopesFallbackPromiseForTest));
+    return Promise.all(this.#sourceMaps.keys().map((sourceMap) => sourceMap.waitForScopeInfo()));
   }
 };
-async function loadSourceMap(url, debugId, initiator) {
+async function loadSourceMap(resourceLoader, url, debugId, initiator) {
   try {
     if (debugId) {
       const cachedSourceMap = await SourceMapCache.instance().get(debugId);
@@ -19885,7 +20466,7 @@ async function loadSourceMap(url, debugId, initiator) {
         return cachedSourceMap;
       }
     }
-    const { content } = await PageResourceLoader.instance().loadResource(url, initiator);
+    const { content } = await resourceLoader.loadResource(url, initiator);
     const sourceMap = parseSourceMap(content);
     if ("debugId" in sourceMap && sourceMap.debugId) {
       await SourceMapCache.instance().set(sourceMap.debugId, sourceMap).catch();
@@ -19895,9 +20476,9 @@ async function loadSourceMap(url, debugId, initiator) {
     throw new Error(`Could not load content for ${url}: ${cause.message}`, { cause });
   }
 }
-async function tryLoadSourceMap(url, initiator) {
+async function tryLoadSourceMap(resourceLoader, url, initiator) {
   try {
-    return await loadSourceMap(url, null, initiator);
+    return await loadSourceMap(resourceLoader, url, null, initiator);
   } catch (cause) {
     console.error(cause);
     return null;
@@ -19920,7 +20501,7 @@ var CSSModel = class _CSSModel extends SDKModel {
   #resourceTreeModel;
   #sourceMapManager;
   #styleLoader;
-  #stylePollingThrottler = new Common14.Throttler.Throttler(StylePollingInterval);
+  #stylePollingThrottler = new Common13.Throttler.Throttler(StylePollingInterval);
   #styleSheetIdsForURL = /* @__PURE__ */ new Map();
   #styleSheetIdToHeader = /* @__PURE__ */ new Map();
   #cachedMatchedCascadeNode = null;
@@ -19945,8 +20526,9 @@ var CSSModel = class _CSSModel extends SDKModel {
     if (!target.suspended()) {
       void this.enable();
     }
-    this.#sourceMapManager.setEnabled(Common14.Settings.Settings.instance().moduleSetting("css-source-maps-enabled").get());
-    Common14.Settings.Settings.instance().moduleSetting("css-source-maps-enabled").addChangeListener((event) => this.#sourceMapManager.setEnabled(event.data));
+    const settings = this.target().targetManager().settings;
+    this.#sourceMapManager.setEnabled(settings.moduleSetting("css-source-maps-enabled").get());
+    settings.moduleSetting("css-source-maps-enabled").addChangeListener((event) => this.#sourceMapManager.setEnabled(event.data));
   }
   async colorScheme() {
     if (!this.#colorScheme) {
@@ -20031,7 +20613,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { styles } = await this.agent.invoke_setStyleTexts({ edits: [{ styleSheetId, range: range.serializeToObject(), text }] });
-      if (!styles || styles.length !== 1) {
+      if (styles?.length !== 1) {
         return false;
       }
       this.#domModel.markUndoableState(!majorChange);
@@ -20044,7 +20626,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
   }
   async setSelectorText(styleSheetId, range, text) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { selectorList } = await this.agent.invoke_setRuleSelector({ styleSheetId, range, selector: text });
@@ -20061,7 +20643,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
   }
   async setPropertyRulePropertyName(styleSheetId, range, text) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { propertyName } = await this.agent.invoke_setPropertyRulePropertyName({ styleSheetId, range, propertyName: text });
@@ -20078,7 +20660,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
   }
   async setKeyframeKey(styleSheetId, range, text) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { keyText } = await this.agent.invoke_setKeyframeKey({ styleSheetId, range, keyText: text });
@@ -20144,7 +20726,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     if (!node) {
       return null;
     }
-    const shouldGetAnimatedStyles = Root5.Runtime.hostConfig.devToolsAnimationStylesInStylesTab?.enabled;
+    const shouldGetAnimatedStyles = Root6.Runtime.hostConfig.devToolsAnimationStylesInStylesTab?.enabled;
     const [matchedStylesResponse, animatedStylesResponse] = await Promise.all([
       this.agent.invoke_getMatchedStylesForNode({ nodeId }),
       shouldGetAnimatedStyles ? this.agent.invoke_getAnimatedStylesForNode({ nodeId }) : void 0
@@ -20167,7 +20749,7 @@ var CSSModel = class _CSSModel extends SDKModel {
       propertyRules: matchedStylesResponse.cssPropertyRules ?? [],
       functionRules: matchedStylesResponse.cssFunctionRules ?? [],
       cssPropertyRegistrations: matchedStylesResponse.cssPropertyRegistrations ?? [],
-      fontPaletteValuesRule: matchedStylesResponse.cssFontPaletteValuesRule,
+      atRules: matchedStylesResponse.cssAtRules ?? [],
       activePositionFallbackIndex: matchedStylesResponse.activePositionFallbackIndex ?? -1,
       animationStylesPayload: animatedStylesResponse?.animationStyles || [],
       inheritedAnimatedPayload: animatedStylesResponse?.inherited || [],
@@ -20185,6 +20767,12 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
     return await this.#styleLoader.computedStylePromise(nodeId);
   }
+  async getComputedStyleExtraFields(nodeId) {
+    if (!this.isEnabled()) {
+      await this.enable();
+    }
+    return await this.#styleLoader.extraFieldsPromise(nodeId);
+  }
   async getLayoutPropertiesFromComputedStyle(nodeId) {
     const styles = await this.getComputedStyle(nodeId);
     if (!styles) {
@@ -20194,7 +20782,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     const isFlex = display === "flex" || display === "inline-flex";
     const isGrid = display === "grid" || display === "inline-grid";
     const isSubgrid = (isGrid && (styles.get("grid-template-columns")?.startsWith("subgrid") || styles.get("grid-template-rows")?.startsWith("subgrid"))) ?? false;
-    const isMasonry = display === "masonry" || display === "inline-masonry";
+    const isGridLanes = display === "grid-lanes" || display === "inline-grid-lanes";
     const containerType = styles.get("container-type");
     const isContainer = Boolean(containerType) && containerType !== "" && containerType !== "normal";
     const hasScroll = Boolean(styles.get("scroll-snap-type")) && styles.get("scroll-snap-type") !== "none";
@@ -20202,8 +20790,8 @@ var CSSModel = class _CSSModel extends SDKModel {
       isFlex,
       isGrid,
       isSubgrid,
-      isMasonry,
-      isContainer,
+      isGridLanes,
+      containerType: isContainer ? containerType : void 0,
       hasScroll
     };
   }
@@ -20288,7 +20876,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     return node.marker(PseudoStateMarker) || [];
   }
   async setMediaText(styleSheetId, range, newMediaText) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { media } = await this.agent.invoke_setMediaText({ styleSheetId, range, text: newMediaText });
@@ -20305,7 +20893,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
   }
   async setContainerQueryText(styleSheetId, range, newContainerQueryText) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { containerQuery } = await this.agent.invoke_setContainerQueryText({ styleSheetId, range, text: newContainerQueryText });
@@ -20322,7 +20910,7 @@ var CSSModel = class _CSSModel extends SDKModel {
     }
   }
   async setSupportsText(styleSheetId, range, newSupportsText) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { supports } = await this.agent.invoke_setSupportsText({ styleSheetId, range, text: newSupportsText });
@@ -20338,8 +20926,25 @@ var CSSModel = class _CSSModel extends SDKModel {
       return false;
     }
   }
+  async setNavigationText(styleSheetId, range, newNavigationText) {
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
+    try {
+      await this.ensureOriginalStyleSheetText(styleSheetId);
+      const { navigation } = await this.agent.invoke_setNavigationText({ styleSheetId, range, text: newNavigationText });
+      if (!navigation) {
+        return false;
+      }
+      this.#domModel.markUndoableState();
+      const edit = new Edit(styleSheetId, range, newNavigationText, navigation);
+      this.fireStyleSheetChanged(styleSheetId, edit);
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
   async setScopeText(styleSheetId, range, newScopeText) {
-    Host4.userMetrics.actionTaken(Host4.UserMetrics.Action.StyleRuleEdited);
+    Host3.userMetrics.actionTaken(Host3.UserMetrics.Action.StyleRuleEdited);
     try {
       await this.ensureOriginalStyleSheetText(styleSheetId);
       const { scope } = await this.agent.invoke_setScopeText({ styleSheetId, range, text: newScopeText });
@@ -20663,7 +21268,7 @@ var Edit = class {
   constructor(styleSheetId, oldRange, newText, payload) {
     this.styleSheetId = styleSheetId;
     this.oldRange = oldRange;
-    this.newRange = TextUtils17.TextRange.TextRange.fromEdit(oldRange, newText);
+    this.newRange = TextUtils18.TextRange.TextRange.fromEdit(oldRange, newText);
     this.newText = newText;
     this.payload = payload;
   }
@@ -20718,24 +21323,32 @@ var ComputedStyleLoader = class {
   constructor(cssModel) {
     this.#cssModel = cssModel;
   }
-  computedStylePromise(nodeId) {
+  #getResponsePromise(nodeId) {
     let promise = this.#nodeIdToPromise.get(nodeId);
     if (promise) {
       return promise;
     }
-    promise = this.#cssModel.getAgent().invoke_getComputedStyleForNode({ nodeId }).then(({ computedStyle }) => {
+    promise = this.#cssModel.getAgent().invoke_getComputedStyleForNode({ nodeId }).then(({ computedStyle, extraFields }) => {
       this.#nodeIdToPromise.delete(nodeId);
       if (!computedStyle?.length) {
-        return null;
+        return { style: null, extraFields };
       }
       const result = /* @__PURE__ */ new Map();
       for (const property of computedStyle) {
         result.set(property.name, property.value);
       }
-      return result;
+      return { style: result, extraFields };
     });
     this.#nodeIdToPromise.set(nodeId, promise);
     return promise;
+  }
+  async computedStylePromise(nodeId) {
+    const computedStyleWithExtraFields = await this.#getResponsePromise(nodeId);
+    return computedStyleWithExtraFields.style;
+  }
+  async extraFieldsPromise(nodeId) {
+    const computedStyleWithExtraFields = await this.#getResponsePromise(nodeId);
+    return computedStyleWithExtraFields.extraFields;
   }
 };
 var InlineStyleResult = class {
@@ -20746,7 +21359,7 @@ var InlineStyleResult = class {
     this.attributesStyle = attributesStyle;
   }
 };
-var CSSPropertyTracker = class extends Common14.ObjectWrapper.ObjectWrapper {
+var CSSPropertyTracker = class extends Common13.ObjectWrapper.ObjectWrapper {
   #cssModel;
   #properties;
   constructor(cssModel, propertiesToTrack) {
@@ -20767,6 +21380,183 @@ var CSSPropertyTracker = class extends Common14.ObjectWrapper.ObjectWrapper {
 var StylePollingInterval = 1e3;
 SDKModel.register(CSSModel, { capabilities: 2, autostart: true });
 
+// gen/front_end/core/sdk/FrameManager.js
+var FrameManager_exports = {};
+__export(FrameManager_exports, {
+  FrameManager: () => FrameManager
+});
+import * as Common14 from "./../common/common.js";
+import * as Root7 from "./../root/root.js";
+var FrameManager = class _FrameManager extends Common14.ObjectWrapper.ObjectWrapper {
+  #eventListeners = /* @__PURE__ */ new WeakMap();
+  // Maps frameIds to #frames and a count of how many ResourceTreeModels contain this frame.
+  // (OOPIFs are usually first attached to a new target and then detached from their old target,
+  // therefore being contained in 2 models for a short period of time.)
+  #frames = /* @__PURE__ */ new Map();
+  #framesForTarget = /* @__PURE__ */ new Map();
+  #outermostFrame = null;
+  #transferringFramesDataCache = /* @__PURE__ */ new Map();
+  #awaitedFrames = /* @__PURE__ */ new Map();
+  constructor(targetManager) {
+    super();
+    targetManager.observeModels(ResourceTreeModel, this);
+  }
+  static instance({ forceNew } = { forceNew: false }) {
+    if (!Root7.DevToolsContext.globalInstance().has(_FrameManager) || forceNew) {
+      Root7.DevToolsContext.globalInstance().set(_FrameManager, new _FrameManager(TargetManager.instance()));
+    }
+    return Root7.DevToolsContext.globalInstance().get(_FrameManager);
+  }
+  static removeInstance() {
+    Root7.DevToolsContext.globalInstance().delete(_FrameManager);
+  }
+  modelAdded(resourceTreeModel) {
+    const addListener = resourceTreeModel.addEventListener(Events3.FrameAdded, this.frameAdded, this);
+    const detachListener = resourceTreeModel.addEventListener(Events3.FrameDetached, this.frameDetached, this);
+    const navigatedListener = resourceTreeModel.addEventListener(Events3.FrameNavigated, this.frameNavigated, this);
+    const resourceAddedListener = resourceTreeModel.addEventListener(Events3.ResourceAdded, this.resourceAdded, this);
+    this.#eventListeners.set(resourceTreeModel, [addListener, detachListener, navigatedListener, resourceAddedListener]);
+    this.#framesForTarget.set(resourceTreeModel.target().id(), /* @__PURE__ */ new Set());
+  }
+  modelRemoved(resourceTreeModel) {
+    const listeners = this.#eventListeners.get(resourceTreeModel);
+    if (listeners) {
+      Common14.EventTarget.removeEventListeners(listeners);
+    }
+    const frameSet = this.#framesForTarget.get(resourceTreeModel.target().id());
+    if (frameSet) {
+      for (const frameId of frameSet) {
+        this.decreaseOrRemoveFrame(frameId);
+      }
+    }
+    this.#framesForTarget.delete(resourceTreeModel.target().id());
+  }
+  frameAdded(event) {
+    const frame = event.data;
+    const frameData = this.#frames.get(frame.id);
+    if (frameData) {
+      frame.setCreationStackTrace(frameData.frame.getCreationStackTraceData());
+      this.#frames.set(frame.id, { frame, count: frameData.count + 1 });
+    } else {
+      const cachedFrameAttributes = this.#transferringFramesDataCache.get(frame.id);
+      if (cachedFrameAttributes?.creationStackTrace && cachedFrameAttributes?.creationStackTraceTarget) {
+        frame.setCreationStackTrace({
+          creationStackTrace: cachedFrameAttributes.creationStackTrace,
+          creationStackTraceTarget: cachedFrameAttributes.creationStackTraceTarget
+        });
+      }
+      this.#frames.set(frame.id, { frame, count: 1 });
+      this.#transferringFramesDataCache.delete(frame.id);
+    }
+    this.resetOutermostFrame();
+    const frameSet = this.#framesForTarget.get(frame.resourceTreeModel().target().id());
+    if (frameSet) {
+      frameSet.add(frame.id);
+    }
+    this.dispatchEventToListeners("FrameAddedToTarget", { frame });
+    this.resolveAwaitedFrame(frame);
+  }
+  frameDetached(event) {
+    const { frame, isSwap } = event.data;
+    this.decreaseOrRemoveFrame(frame.id);
+    if (isSwap && !this.#frames.get(frame.id)) {
+      const traceData = frame.getCreationStackTraceData();
+      const cachedFrameAttributes = {
+        ...traceData.creationStackTrace && { creationStackTrace: traceData.creationStackTrace },
+        ...traceData.creationStackTrace && { creationStackTraceTarget: traceData.creationStackTraceTarget }
+      };
+      this.#transferringFramesDataCache.set(frame.id, cachedFrameAttributes);
+    }
+    const frameSet = this.#framesForTarget.get(frame.resourceTreeModel().target().id());
+    if (frameSet) {
+      frameSet.delete(frame.id);
+    }
+  }
+  frameNavigated(event) {
+    const frame = event.data;
+    this.dispatchEventToListeners("FrameNavigated", { frame });
+    if (frame.isOutermostFrame()) {
+      this.dispatchEventToListeners("OutermostFrameNavigated", { frame });
+    }
+  }
+  resourceAdded(event) {
+    this.dispatchEventToListeners("ResourceAdded", { resource: event.data });
+  }
+  decreaseOrRemoveFrame(frameId) {
+    const frameData = this.#frames.get(frameId);
+    if (frameData) {
+      if (frameData.count === 1) {
+        this.#frames.delete(frameId);
+        this.resetOutermostFrame();
+        this.dispatchEventToListeners("FrameRemoved", { frameId });
+      } else {
+        frameData.count--;
+      }
+    }
+  }
+  /**
+   * Looks for the outermost frame in `#frames` and sets `#outermostFrame` accordingly.
+   *
+   * Important: This method needs to be called everytime `#frames` is updated.
+   */
+  resetOutermostFrame() {
+    const outermostFrames = this.getAllFrames().filter((frame) => frame.isOutermostFrame());
+    this.#outermostFrame = outermostFrames.length > 0 ? outermostFrames[0] : null;
+  }
+  /**
+   * Returns the ResourceTreeFrame with a given frameId.
+   * When a frame is being detached a new ResourceTreeFrame but with the same
+   * frameId is created. Consequently getFrame() will return a different
+   * ResourceTreeFrame after detachment. Callers of getFrame() should therefore
+   * immediately use the function return value and not store it for later use.
+   */
+  getFrame(frameId) {
+    const frameData = this.#frames.get(frameId);
+    if (frameData) {
+      return frameData.frame;
+    }
+    return null;
+  }
+  getAllFrames() {
+    return Array.from(this.#frames.values(), (frameData) => frameData.frame);
+  }
+  getOutermostFrame() {
+    return this.#outermostFrame;
+  }
+  async getOrWaitForFrame(frameId, notInTarget) {
+    const frame = this.getFrame(frameId);
+    if (frame && (!notInTarget || notInTarget !== frame.resourceTreeModel().target())) {
+      return frame;
+    }
+    return await new Promise((resolve) => {
+      const waiting = this.#awaitedFrames.get(frameId);
+      if (waiting) {
+        waiting.push({ notInTarget, resolve });
+      } else {
+        this.#awaitedFrames.set(frameId, [{ notInTarget, resolve }]);
+      }
+    });
+  }
+  resolveAwaitedFrame(frame) {
+    const waiting = this.#awaitedFrames.get(frame.id);
+    if (!waiting) {
+      return;
+    }
+    const newWaiting = waiting.filter(({ notInTarget, resolve }) => {
+      if (!notInTarget || notInTarget !== frame.resourceTreeModel().target()) {
+        resolve(frame);
+        return false;
+      }
+      return true;
+    });
+    if (newWaiting.length > 0) {
+      this.#awaitedFrames.set(frame.id, newWaiting);
+    } else {
+      this.#awaitedFrames.delete(frame.id);
+    }
+  }
+};
+
 // gen/front_end/core/sdk/OverlayModel.js
 var OverlayModel_exports = {};
 __export(OverlayModel_exports, {
@@ -20776,7 +21566,6 @@ __export(OverlayModel_exports, {
 });
 import * as Common20 from "./../common/common.js";
 import * as i18n13 from "./../i18n/i18n.js";
-import * as Root7 from "./../root/root.js";
 
 // gen/front_end/core/sdk/DebuggerModel.js
 var DebuggerModel_exports = {};
@@ -20795,10 +21584,8 @@ __export(DebuggerModel_exports, {
   sortAndMergeRanges: () => sortAndMergeRanges
 });
 import * as Common17 from "./../common/common.js";
-import * as Host6 from "./../host/host.js";
 import * as i18n11 from "./../i18n/i18n.js";
-import * as Platform12 from "./../platform/platform.js";
-import * as Root6 from "./../root/root.js";
+import * as Root8 from "./../root/root.js";
 
 // gen/front_end/core/sdk/RuntimeModel.js
 var RuntimeModel_exports = {};
@@ -20808,7 +21595,7 @@ __export(RuntimeModel_exports, {
   RuntimeModel: () => RuntimeModel
 });
 import * as Common15 from "./../common/common.js";
-import * as Host5 from "./../host/host.js";
+import * as Host4 from "./../host/host.js";
 
 // gen/front_end/core/sdk/HeapProfilerModel.js
 var HeapProfilerModel_exports = {};
@@ -20816,17 +21603,14 @@ __export(HeapProfilerModel_exports, {
   HeapProfilerModel: () => HeapProfilerModel
 });
 var HeapProfilerModel = class extends SDKModel {
-  #enabled;
+  #enabled = false;
   #heapProfilerAgent;
   #runtimeModel;
-  #samplingProfilerDepth;
   constructor(target) {
     super(target);
     target.registerHeapProfilerDispatcher(new HeapProfilerDispatcher(this));
-    this.#enabled = false;
     this.#heapProfilerAgent = target.heapProfilerAgent();
     this.#runtimeModel = target.model(RuntimeModel);
-    this.#samplingProfilerDepth = 0;
   }
   debuggerModel() {
     return this.#runtimeModel.debuggerModel();
@@ -20842,23 +21626,14 @@ var HeapProfilerModel = class extends SDKModel {
     await this.#heapProfilerAgent.invoke_enable();
   }
   async startSampling(samplingRateInBytes) {
-    if (this.#samplingProfilerDepth++) {
-      return false;
-    }
     const defaultSamplingIntervalInBytes = 16384;
     const response = await this.#heapProfilerAgent.invoke_startSampling({ samplingInterval: samplingRateInBytes || defaultSamplingIntervalInBytes });
     return Boolean(response.getError());
   }
   async stopSampling() {
-    if (!this.#samplingProfilerDepth) {
-      throw new Error("Sampling profiler is not running.");
-    }
-    if (--this.#samplingProfilerDepth) {
-      return await this.getSamplingProfile();
-    }
     const response = await this.#heapProfilerAgent.invoke_stopSampling();
     if (response.getError()) {
-      return null;
+      throw new Error("Sampling profiler is not running.");
     }
     return response.profile;
   }
@@ -20892,7 +21667,12 @@ var HeapProfilerModel = class extends SDKModel {
     return Boolean(response.getError());
   }
   async takeHeapSnapshot(heapSnapshotOptions) {
-    await this.#heapProfilerAgent.invoke_takeHeapSnapshot(heapSnapshotOptions);
+    await this.target().targetManager().suspendAllTargets("heap-snapshot");
+    try {
+      await this.#heapProfilerAgent.invoke_takeHeapSnapshot(heapSnapshotOptions);
+    } finally {
+      await this.target().targetManager().resumeAllTargets();
+    }
   }
   async startTrackingHeapObjects(recordAllocationStacks) {
     const response = await this.#heapProfilerAgent.invoke_startTrackingHeapObjects({ trackAllocations: recordAllocationStacks });
@@ -20951,10 +21731,11 @@ var RuntimeModel = class extends SDKModel {
     this.agent = target.runtimeAgent();
     this.target().registerRuntimeDispatcher(new RuntimeDispatcher(this));
     void this.agent.invoke_enable();
-    if (Common15.Settings.Settings.instance().moduleSetting("custom-formatters").get()) {
+    const settings = this.target().targetManager().context.get(Common15.Settings.Settings);
+    if (settings.moduleSetting("custom-formatters").get()) {
       void this.agent.invoke_setCustomObjectFormatterEnabled({ enabled: true });
     }
-    Common15.Settings.Settings.instance().moduleSetting("custom-formatters").addChangeListener(this.customFormattersStateChanged.bind(this));
+    settings.moduleSetting("custom-formatters").addChangeListener(this.customFormattersStateChanged.bind(this));
   }
   static isSideEffectFailure(response) {
     const exceptionDetails = "exceptionDetails" in response && response.exceptionDetails;
@@ -21126,7 +21907,8 @@ var RuntimeModel = class extends SDKModel {
       }
     }
     if (object.isNode()) {
-      void Common15.Revealer.reveal(object).then(object.release.bind(object));
+      const omitFocus = hints !== null && typeof hints === "object" && "omitFocus" in hints && Boolean(hints.omitFocus);
+      void Common15.Revealer.reveal(object, omitFocus).then(object.release.bind(object));
       return;
     }
     if (object.type === "function") {
@@ -21153,16 +21935,16 @@ var RuntimeModel = class extends SDKModel {
   }
   copyRequested(object) {
     if (!object.objectId) {
-      Host5.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(object.unserializableValue() || object.value);
+      Host4.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(object.unserializableValue() || object.value);
       return;
     }
-    const indent = Common15.Settings.Settings.instance().moduleSetting("text-editor-indent").get();
+    const indent = this.target().targetManager().context.get(Common15.Settings.Settings).moduleSetting("text-editor-indent").get();
     void object.callFunctionJSON(toStringForClipboard, [{
       value: {
         subtype: object.subtype,
         indent
       }
-    }]).then(Host5.InspectorFrontendHost.InspectorFrontendHostInstance.copyText.bind(Host5.InspectorFrontendHost.InspectorFrontendHostInstance));
+    }]).then(Host4.InspectorFrontendHost.InspectorFrontendHostInstance.copyText.bind(Host4.InspectorFrontendHost.InspectorFrontendHostInstance));
     function toStringForClipboard(data) {
       const subtype = data.subtype;
       const indent2 = data.indent;
@@ -21463,7 +22245,8 @@ __export(Script_exports, {
   disassembleWasm: () => disassembleWasm,
   sourceURLRegex: () => sourceURLRegex
 });
-import * as TextUtils18 from "./../../models/text_utils/text_utils.js";
+import * as Platform11 from "./../platform/platform.js";
+import * as TextUtils19 from "./../../models/text_utils/text_utils.js";
 import * as Common16 from "./../common/common.js";
 import * as i18n9 from "./../i18n/i18n.js";
 var UIStrings5 = {
@@ -21588,7 +22371,7 @@ var Script = class _Script {
     }
     const { scriptSource, bytecode } = result;
     if (bytecode) {
-      return new TextUtils18.ContentData.ContentData(
+      return new TextUtils19.ContentData.ContentData(
         bytecode,
         /* isBase64 */
         true,
@@ -21599,7 +22382,7 @@ var Script = class _Script {
     if (this.hasSourceURL && Common16.ParsedURL.schemeIs(this.sourceURL, "snippet:")) {
       content = _Script.trimSourceURLComment(content);
     }
-    return new TextUtils18.ContentData.ContentData(
+    return new TextUtils19.ContentData.ContentData(
       content,
       /* isBase64 */
       false,
@@ -21645,7 +22428,7 @@ var Script = class _Script {
     for (let i = 0; i < functionBodyOffsets.length; i += 2) {
       functionBodyRanges.push({ start: functionBodyOffsets[i], end: functionBodyOffsets[i + 1] });
     }
-    return new TextUtils18.WasmDisassembly.WasmDisassembly(lines.concat(...lineChunks), bytecodeOffsets.concat(...bytecodeOffsetChunks), functionBodyRanges);
+    return new TextUtils19.WasmDisassembly.WasmDisassembly(lines.concat(...lineChunks), bytecodeOffsets.concat(...bytecodeOffsetChunks), functionBodyRanges);
   }
   requestContentData() {
     if (!this.#contentPromise) {
@@ -21697,14 +22480,14 @@ var Script = class _Script {
     return await response.arrayBuffer();
   }
   originalContentProvider() {
-    return new TextUtils18.StaticContentProvider.StaticContentProvider(this.contentURL(), this.contentType(), () => this.requestContentData());
+    return new TextUtils19.StaticContentProvider.StaticContentProvider(this.contentURL(), this.contentType(), () => this.requestContentData());
   }
   async searchInContent(query, caseSensitive, isRegex) {
     if (!this.scriptId) {
       return [];
     }
     const matches = await this.debuggerModel.target().debuggerAgent().invoke_searchInContent({ scriptId: this.scriptId, query, caseSensitive, isRegex });
-    return TextUtils18.TextUtils.performSearchInSearchMatches(matches.result || [], query, caseSensitive, isRegex);
+    return TextUtils19.TextUtils.performSearchInSearchMatches(matches.result || [], query, caseSensitive, isRegex);
   }
   appendSourceURLCommentIfNeeded(source) {
     if (!this.hasSourceURL) {
@@ -21715,7 +22498,7 @@ var Script = class _Script {
   async editSource(newSource) {
     newSource = _Script.trimSourceURLComment(newSource);
     newSource = this.appendSourceURLCommentIfNeeded(newSource);
-    const oldSource = TextUtils18.ContentData.ContentData.textOr(await this.requestContentData(), null);
+    const oldSource = TextUtils19.ContentData.ContentData.textOr(await this.requestContentData(), null);
     if (oldSource === newSource) {
       return {
         changed: false,
@@ -21728,7 +22511,7 @@ var Script = class _Script {
       throw new Error(`Script#editSource failed for script with id ${this.scriptId}: ${response.getError()}`);
     }
     if (!response.getError() && response.status === "Ok") {
-      this.#contentPromise = Promise.resolve(new TextUtils18.ContentData.ContentData(
+      this.#contentPromise = Promise.resolve(new TextUtils19.ContentData.ContentData(
         newSource,
         /* isBase64 */
         false,
@@ -21820,7 +22603,7 @@ function frameIdForScript(script) {
 }
 var sourceURLRegex = /^[\x20\t]*\/\/[@#] sourceURL=\s*(\S*?)\s*$/;
 async function disassembleWasm(content) {
-  const worker = Common16.Worker.WorkerWrapper.fromURL(new URL("../../entrypoints/wasmparser_worker/wasmparser_worker-entrypoint.js", import.meta.url));
+  const worker = Platform11.HostRuntime.HOST_RUNTIME.createWorker(new URL("../../entrypoints/wasmparser_worker/wasmparser_worker-entrypoint.js", import.meta.url).toString());
   const promise = new Promise((resolve, reject) => {
     worker.onmessage = ({ data }) => {
       if ("method" in data) {
@@ -21830,7 +22613,7 @@ async function disassembleWasm(content) {
               reject(data.error);
             } else if ("result" in data) {
               const { lines, offsets, functionBodyOffsets } = data.result;
-              resolve(new TextUtils18.WasmDisassembly.WasmDisassembly(lines, offsets, functionBodyOffsets));
+              resolve(new TextUtils19.WasmDisassembly.WasmDisassembly(lines, offsets, functionBodyOffsets));
             }
             break;
         }
@@ -21964,7 +22747,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
   #skipAllPausesTimeout = 0;
   #beforePausedCallback = null;
   #computeAutoStepRangesCallback = null;
-  #expandCallFramesCallback = null;
   evaluateOnCallFrameCallback = null;
   #synchronizeBreakpointsCallback = null;
   // We need to be able to register listeners for individual breakpoints. As such, we dispatch
@@ -21980,16 +22762,17 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     this.agent = target.debuggerAgent();
     this.#runtimeModel = target.model(RuntimeModel);
     this.#sourceMapManager = new SourceMapManager(target, (compiledURL, sourceMappingURL, payload, script) => new SourceMap(compiledURL, sourceMappingURL, payload, script));
-    Common17.Settings.Settings.instance().moduleSetting("pause-on-exception-enabled").addChangeListener(this.pauseOnExceptionStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("pause-on-caught-exception").addChangeListener(this.pauseOnExceptionStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("pause-on-uncaught-exception").addChangeListener(this.pauseOnExceptionStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("disable-async-stack-traces").addChangeListener(this.asyncStackTracesStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("breakpoints-active").addChangeListener(this.breakpointsActiveChanged, this);
+    const settings = this.target().targetManager().settings;
+    settings.moduleSetting("pause-on-exception-enabled").addChangeListener(this.pauseOnExceptionStateChanged, this);
+    settings.moduleSetting("pause-on-caught-exception").addChangeListener(this.pauseOnExceptionStateChanged, this);
+    settings.moduleSetting("pause-on-uncaught-exception").addChangeListener(this.pauseOnExceptionStateChanged, this);
+    settings.moduleSetting("disable-async-stack-traces").addChangeListener(this.asyncStackTracesStateChanged, this);
+    settings.moduleSetting("breakpoints-active").addChangeListener(this.breakpointsActiveChanged, this);
     if (!target.suspended()) {
       void this.enableDebugger();
     }
-    this.#sourceMapManager.setEnabled(Common17.Settings.Settings.instance().moduleSetting("js-source-maps-enabled").get());
-    Common17.Settings.Settings.instance().moduleSetting("js-source-maps-enabled").addChangeListener((event) => this.#sourceMapManager.setEnabled(event.data));
+    this.#sourceMapManager.setEnabled(settings.moduleSetting("js-source-maps-enabled").get());
+    settings.moduleSetting("js-source-maps-enabled").addChangeListener((event) => this.#sourceMapManager.setEnabled(event.data));
     const resourceTreeModel = target.model(ResourceTreeModel);
     if (resourceTreeModel) {
       resourceTreeModel.addEventListener(Events3.FrameNavigated, this.onFrameNavigated, this);
@@ -22036,21 +22819,19 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
       return;
     }
     this.#debuggerEnabled = true;
-    const isRemoteFrontend = Root6.Runtime.Runtime.queryParam("remoteFrontend") || Root6.Runtime.Runtime.queryParam("ws");
+    const isRemoteFrontend = Root8.Runtime.Runtime.queryParam("remoteFrontend") || Root8.Runtime.Runtime.queryParam("ws");
     const maxScriptsCacheSize = isRemoteFrontend ? 1e7 : 1e8;
     const enablePromise = this.agent.invoke_enable({ maxScriptsCacheSize });
     let instrumentationPromise;
-    if (Root6.Runtime.experiments.isEnabled(
-      "instrumentation-breakpoints"
-      /* Root.Runtime.ExperimentName.INSTRUMENTATION_BREAKPOINTS */
-    )) {
+    if (Root8.Runtime.experiments.isEnabled(Root8.ExperimentNames.ExperimentName.INSTRUMENTATION_BREAKPOINTS)) {
       instrumentationPromise = this.agent.invoke_setInstrumentationBreakpoint({
         instrumentation: "beforeScriptExecution"
       });
     }
     this.pauseOnExceptionStateChanged();
     void this.asyncStackTracesStateChanged();
-    if (!Common17.Settings.Settings.instance().moduleSetting("breakpoints-active").get()) {
+    const settings = this.target().targetManager().settings;
+    if (!settings.moduleSetting("breakpoints-active").get()) {
       this.breakpointsActiveChanged();
     }
     this.dispatchEventToListeners(Events7.DebuggerWasEnabled, this);
@@ -22058,7 +22839,7 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     this.registerDebugger(enableResult);
   }
   async syncDebuggerId() {
-    const isRemoteFrontend = Root6.Runtime.Runtime.queryParam("remoteFrontend") || Root6.Runtime.Runtime.queryParam("ws");
+    const isRemoteFrontend = Root8.Runtime.Runtime.queryParam("remoteFrontend") || Root8.Runtime.Runtime.queryParam("ws");
     const maxScriptsCacheSize = isRemoteFrontend ? 1e7 : 1e8;
     const enablePromise = this.agent.invoke_enable({ maxScriptsCacheSize });
     void enablePromise.then(this.registerDebugger.bind(this));
@@ -22128,9 +22909,10 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     this.#skipAllPausesTimeout = window.setTimeout(this.skipAllPauses.bind(this, false), timeout);
   }
   pauseOnExceptionStateChanged() {
-    const pauseOnCaughtEnabled = Common17.Settings.Settings.instance().moduleSetting("pause-on-caught-exception").get();
+    const settings = this.target().targetManager().settings;
+    const pauseOnCaughtEnabled = settings.moduleSetting("pause-on-caught-exception").get();
     let state;
-    const pauseOnUncaughtEnabled = Common17.Settings.Settings.instance().moduleSetting("pause-on-uncaught-exception").get();
+    const pauseOnUncaughtEnabled = settings.moduleSetting("pause-on-uncaught-exception").get();
     if (pauseOnCaughtEnabled && pauseOnUncaughtEnabled) {
       state = "all";
     } else if (pauseOnCaughtEnabled) {
@@ -22144,12 +22926,14 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
   }
   asyncStackTracesStateChanged() {
     const maxAsyncStackChainDepth = 32;
-    const enabled = !Common17.Settings.Settings.instance().moduleSetting("disable-async-stack-traces").get() && this.#debuggerEnabled;
+    const settings = this.target().targetManager().settings;
+    const enabled = !settings.moduleSetting("disable-async-stack-traces").get() && this.#debuggerEnabled;
     const maxDepth = enabled ? maxAsyncStackChainDepth : 0;
     return this.agent.invoke_setAsyncCallStackDepth({ maxDepth });
   }
   breakpointsActiveChanged() {
-    void this.agent.invoke_setBreakpointsActive({ active: Common17.Settings.Settings.instance().moduleSetting("breakpoints-active").get() });
+    const settings = this.target().targetManager().settings;
+    void this.agent.invoke_setBreakpointsActive({ active: settings.moduleSetting("breakpoints-active").get() });
   }
   setComputeAutoStepRangesCallback(callback) {
     this.#computeAutoStepRangesCallback = callback;
@@ -22211,14 +22995,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     void this.agent.invoke_pause();
   }
   async setBreakpointByURL(url, lineNumber, columnNumber, condition) {
-    let urlRegex;
-    if (this.target().type() === Type.NODE && Common17.ParsedURL.schemeIs(url, "file:")) {
-      const platformPath = Common17.ParsedURL.ParsedURL.urlToRawPathString(url, Host6.Platform.isWin());
-      urlRegex = `${Platform12.StringUtilities.escapeForRegExp(platformPath)}|${Platform12.StringUtilities.escapeForRegExp(url)}`;
-      if (Host6.Platform.isWin() && platformPath.match(/^.:\\/)) {
-        urlRegex = `[${platformPath[0].toUpperCase()}${platformPath[0].toLowerCase()}]` + urlRegex.substr(1);
-      }
-    }
     let minColumnNumber = 0;
     const scripts = this.#scriptsBySourceURL.get(url) || [];
     for (let i = 0, l = scripts.length; i < l; ++i) {
@@ -22230,8 +23006,7 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     columnNumber = Math.max(columnNumber || 0, minColumnNumber);
     const response = await this.agent.invoke_setBreakpointByUrl({
       lineNumber,
-      url: urlRegex ? void 0 : url,
-      urlRegex,
+      url,
       columnNumber,
       condition
     });
@@ -22339,9 +23114,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
   setBeforePausedCallback(callback) {
     this.#beforePausedCallback = callback;
   }
-  setExpandCallFramesCallback(callback) {
-    this.#expandCallFramesCallback = callback;
-  }
   setEvaluateOnCallFrameCallback(callback) {
     this.evaluateOnCallFrameCallback = callback;
   }
@@ -22358,7 +23130,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
       return;
     }
     const pausedDetails = new DebuggerPausedDetails(this, callFrames, reason, auxData, breakpointIds, asyncStackTrace, asyncStackTraceId);
-    await this.#expandCallFrames(pausedDetails);
     if (this.continueToLocationCallback) {
       const callback = this.continueToLocationCallback;
       this.continueToLocationCallback = null;
@@ -22375,28 +23146,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     } else {
       Common17.EventTarget.fireEvent("DevTools.DebuggerPaused");
     }
-  }
-  /** Delegates to the DebuggerLanguagePlugin and potential attached source maps to expand inlined call frames */
-  async #expandCallFrames(pausedDetails) {
-    if (this.#expandCallFramesCallback) {
-      pausedDetails.callFrames = await this.#expandCallFramesCallback.call(null, pausedDetails.callFrames);
-    }
-    if (!Root6.Runtime.experiments.isEnabled(
-      "use-source-map-scopes"
-      /* Root.Runtime.ExperimentName.USE_SOURCE_MAP_SCOPES */
-    )) {
-      return;
-    }
-    const finalFrames = [];
-    for (const frame of pausedDetails.callFrames) {
-      const sourceMap = await this.sourceMapManager().sourceMapForClientPromise(frame.script);
-      if (sourceMap?.hasScopeInfo()) {
-        finalFrames.push(...sourceMap.expandCallFrame(frame));
-      } else {
-        finalFrames.push(frame);
-      }
-    }
-    pausedDetails.callFrames = finalFrames;
   }
   resumedScript() {
     this.resetDebuggerPausedDetails();
@@ -22415,7 +23164,7 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     const script = new Script(this, scriptId, sourceURL, startLine, startColumn, endLine, endColumn, executionContextId, hash, isContentScript, isLiveEdit, sourceMapURL, hasSourceURLComment, length, isModule, originStackTrace, codeOffset, scriptLanguage, selectedDebugSymbol, embedderName, buildId);
     this.registerScript(script);
     this.dispatchEventToListeners(Events7.ParsedScriptSource, script);
-    if (script.sourceMapURL && !hasSyntaxError) {
+    if ((!selectedDebugSymbol || selectedDebugSymbol.type === "SourceMap") && script.sourceMapURL && !hasSyntaxError) {
       this.#sourceMapManager.attachSourceMap(script, script.sourceURL, script.sourceMapURL);
     }
     const isDiscardable = hasSyntaxError && script.isAnonymousScript();
@@ -22431,9 +23180,6 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     this.#sourceMapManager.attachSourceMap(script, script.sourceURL, script.sourceMapURL);
   }
   async setDebugInfoURL(script, _externalURL) {
-    if (this.#expandCallFramesCallback && this.#debuggerPausedDetails) {
-      this.#debuggerPausedDetails.callFrames = await this.#expandCallFramesCallback.call(null, this.#debuggerPausedDetails.callFrames);
-    }
     this.dispatchEventToListeners(Events7.DebugInfoAttached, script);
   }
   executionContextDestroyed(executionContext) {
@@ -22540,7 +23286,7 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
       let functionName = null;
       if (response.properties) {
         for (const prop of response.properties) {
-          if (prop.name === "name" && prop.value && prop.value.type === "string") {
+          if (prop.name === "name" && prop.value?.type === "string") {
             functionName = prop.value;
           }
         }
@@ -22577,9 +23323,10 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
     if (this.#debuggerId) {
       debuggerIdToModel.delete(this.#debuggerId);
     }
-    Common17.Settings.Settings.instance().moduleSetting("pause-on-exception-enabled").removeChangeListener(this.pauseOnExceptionStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("pause-on-caught-exception").removeChangeListener(this.pauseOnExceptionStateChanged, this);
-    Common17.Settings.Settings.instance().moduleSetting("disable-async-stack-traces").removeChangeListener(this.asyncStackTracesStateChanged, this);
+    const settings = this.target().targetManager().settings;
+    settings.moduleSetting("pause-on-exception-enabled").removeChangeListener(this.pauseOnExceptionStateChanged, this);
+    settings.moduleSetting("pause-on-caught-exception").removeChangeListener(this.pauseOnExceptionStateChanged, this);
+    settings.moduleSetting("disable-async-stack-traces").removeChangeListener(this.asyncStackTracesStateChanged, this);
   }
   async suspendModel() {
     await this.disableDebugger();
@@ -22599,7 +23346,8 @@ var DebuggerModel = class _DebuggerModel extends SDKModel {
    * Important: This iterator will not yield the "synchronous" part of the stack trace, only the async parent chain.
    */
   async *iterateAsyncParents(stackTraceOrPausedDetails) {
-    let stackTrace = stackTraceOrPausedDetails instanceof DebuggerPausedDetails ? {
+    const isPausedDetails = (details) => !("parent" in details) && !("parentId" in details);
+    let stackTrace = isPausedDetails(stackTraceOrPausedDetails) ? {
       callFrames: [],
       parent: stackTraceOrPausedDetails.asyncStackTrace,
       parentId: stackTraceOrPausedDetails.asyncStackTraceId
@@ -22750,7 +23498,6 @@ var CallFrame = class _CallFrame {
   functionName;
   #functionLocation;
   #returnValue;
-  missingDebugInfoDetails;
   exception;
   canBeRestarted;
   constructor(debuggerModel, script, payload, inlineFrameIndex, functionName, exception = null) {
@@ -22762,7 +23509,6 @@ var CallFrame = class _CallFrame {
     this.#localScope = null;
     this.inlineFrameIndex = inlineFrameIndex || 0;
     this.functionName = functionName ?? payload.functionName;
-    this.missingDebugInfoDetails = null;
     this.canBeRestarted = Boolean(payload.canBeRestarted);
     this.exception = exception;
     for (let i = 0; i < payload.scopeChain.length; ++i) {
@@ -23033,7 +23779,7 @@ __export(OverlayPersistentHighlighter_exports, {
   OverlayPersistentHighlighter: () => OverlayPersistentHighlighter
 });
 import * as Common19 from "./../common/common.js";
-import * as Platform13 from "./../platform/platform.js";
+import * as Platform12 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/OverlayColorGenerator.js
 var OverlayColorGenerator_exports = {};
@@ -23085,7 +23831,7 @@ var OverlayColorGenerator = class {
 var OverlayPersistentHighlighter = class {
   #model;
   #colors = /* @__PURE__ */ new Map();
-  #persistentHighlightSetting = Common19.Settings.Settings.instance().createLocalSetting("persistent-highlight-setting", []);
+  #persistentHighlightSetting;
   #gridHighlights = /* @__PURE__ */ new Map();
   #scrollSnapHighlights = /* @__PURE__ */ new Map();
   #flexHighlights = /* @__PURE__ */ new Map();
@@ -23096,14 +23842,19 @@ var OverlayPersistentHighlighter = class {
   /**
    * @see `front_end/core/sdk/sdk-meta.ts`
    */
-  #showGridLineLabelsSetting = Common19.Settings.Settings.instance().moduleSetting("show-grid-line-labels");
-  #extendGridLinesSetting = Common19.Settings.Settings.instance().moduleSetting("extend-grid-lines");
-  #showGridAreasSetting = Common19.Settings.Settings.instance().moduleSetting("show-grid-areas");
-  #showGridTrackSizesSetting = Common19.Settings.Settings.instance().moduleSetting("show-grid-track-sizes");
+  #showGridLineLabelsSetting;
+  #extendGridLinesSetting;
+  #showGridAreasSetting;
+  #showGridTrackSizesSetting;
   #callbacks;
-  constructor(model, callbacks) {
+  constructor(model, settings, callbacks) {
     this.#model = model;
     this.#callbacks = callbacks;
+    this.#persistentHighlightSetting = settings.createLocalSetting("persistent-highlight-setting", []);
+    this.#showGridLineLabelsSetting = settings.moduleSetting("show-grid-line-labels");
+    this.#extendGridLinesSetting = settings.moduleSetting("extend-grid-lines");
+    this.#showGridAreasSetting = settings.moduleSetting("show-grid-areas");
+    this.#showGridTrackSizesSetting = settings.moduleSetting("show-grid-track-sizes");
     this.#showGridLineLabelsSetting.addChangeListener(this.onSettingChange, this);
     this.#extendGridLinesSetting.addChangeListener(this.onSettingChange, this);
     this.#showGridAreasSetting.addChangeListener(this.onSettingChange, this);
@@ -23402,7 +24153,7 @@ var OverlayPersistentHighlighter = class {
     this.#containerQueryHighlights = /* @__PURE__ */ new Map();
     this.#isolatedElementHighlights = /* @__PURE__ */ new Map();
     const document2 = await this.#model.getDOMModel().requestDocument();
-    const currentURL = document2 ? document2.documentURL : Platform13.DevToolsPath.EmptyUrlString;
+    const currentURL = document2 ? document2.documentURL : Platform12.DevToolsPath.EmptyUrlString;
     await Promise.all(this.#persistentHighlightSetting.get().map(async (persistentHighlight) => {
       if (persistentHighlight.url === currentURL) {
         return await this.#model.getDOMModel().pushNodeByPathToFrontend(persistentHighlight.path).then((nodeId) => {
@@ -23438,7 +24189,7 @@ var OverlayPersistentHighlighter = class {
   }
   currentUrl() {
     const domDocument = this.#model.getDOMModel().existingDocument();
-    return domDocument ? domDocument.documentURL : Platform13.DevToolsPath.EmptyUrlString;
+    return domDocument ? domDocument.documentURL : Platform12.DevToolsPath.EmptyUrlString;
   }
   getPersistentHighlightSettingForOneType(highlights, type) {
     const persistentHighlights = [];
@@ -23524,30 +24275,43 @@ var OverlayModel = class _OverlayModel extends SDKModel {
     this.#domModel = target.model(DOMModel);
     target.registerOverlayDispatcher(this);
     this.overlayAgent = target.overlayAgent();
+    const settings = this.target().targetManager().settings;
     this.#debuggerModel = target.model(DebuggerModel);
     if (this.#debuggerModel) {
-      Common20.Settings.Settings.instance().moduleSetting("disable-paused-state-overlay").addChangeListener(this.updatePausedInDebuggerMessage, this);
+      settings.moduleSetting("disable-paused-state-overlay").addChangeListener(this.updatePausedInDebuggerMessage, this);
       this.#debuggerModel.addEventListener(Events7.DebuggerPaused, this.updatePausedInDebuggerMessage, this);
       this.#debuggerModel.addEventListener(Events7.DebuggerResumed, this.updatePausedInDebuggerMessage, this);
       this.#debuggerModel.addEventListener(Events7.GlobalObjectCleared, this.updatePausedInDebuggerMessage, this);
     }
     this.#defaultHighlighter = new DefaultHighlighter(this);
     this.#highlighter = this.#defaultHighlighter;
-    this.#showPaintRectsSetting = Common20.Settings.Settings.instance().moduleSetting("show-paint-rects");
-    this.#showLayoutShiftRegionsSetting = Common20.Settings.Settings.instance().moduleSetting("show-layout-shift-regions");
-    this.#showAdHighlightsSetting = Common20.Settings.Settings.instance().moduleSetting("show-ad-highlights");
-    this.#showDebugBordersSetting = Common20.Settings.Settings.instance().moduleSetting("show-debug-borders");
-    this.#showFPSCounterSetting = Common20.Settings.Settings.instance().moduleSetting("show-fps-counter");
-    this.#showScrollBottleneckRectsSetting = Common20.Settings.Settings.instance().moduleSetting("show-scroll-bottleneck-rects");
+    this.#showPaintRectsSetting = settings.moduleSetting("show-paint-rects");
+    this.#showLayoutShiftRegionsSetting = settings.moduleSetting("show-layout-shift-regions");
+    this.#showAdHighlightsSetting = settings.moduleSetting("show-ad-highlights");
+    this.#showDebugBordersSetting = settings.moduleSetting("show-debug-borders");
+    this.#showFPSCounterSetting = settings.moduleSetting("show-fps-counter");
+    this.#showScrollBottleneckRectsSetting = settings.moduleSetting("show-scroll-bottleneck-rects");
     if (!target.suspended()) {
       void this.overlayAgent.invoke_enable();
       void this.wireAgentToSettings();
     }
-    this.#persistentHighlighter = new OverlayPersistentHighlighter(this, {
-      onGridOverlayStateChanged: ({ nodeId, enabled }) => this.dispatchEventToListeners("PersistentGridOverlayStateChanged", { nodeId, enabled }),
-      onFlexOverlayStateChanged: ({ nodeId, enabled }) => this.dispatchEventToListeners("PersistentFlexContainerOverlayStateChanged", { nodeId, enabled }),
-      onContainerQueryOverlayStateChanged: ({ nodeId, enabled }) => this.dispatchEventToListeners("PersistentContainerQueryOverlayStateChanged", { nodeId, enabled }),
-      onScrollSnapOverlayStateChanged: ({ nodeId, enabled }) => this.dispatchEventToListeners("PersistentScrollSnapOverlayStateChanged", { nodeId, enabled })
+    this.#persistentHighlighter = new OverlayPersistentHighlighter(this, settings, {
+      onGridOverlayStateChanged: ({ nodeId, enabled }) => {
+        this.#domModel.nodeForId(nodeId)?.dispatchEventToListeners(DOMNodeEvents.GRID_OVERLAY_STATE_CHANGED, { enabled });
+        this.dispatchEventToListeners("PersistentGridOverlayStateChanged", { nodeId, enabled });
+      },
+      onFlexOverlayStateChanged: ({ nodeId, enabled }) => {
+        this.#domModel.nodeForId(nodeId)?.dispatchEventToListeners(DOMNodeEvents.FLEX_CONTAINER_OVERLAY_STATE_CHANGED, { enabled });
+        this.dispatchEventToListeners("PersistentFlexContainerOverlayStateChanged", { nodeId, enabled });
+      },
+      onContainerQueryOverlayStateChanged: ({ nodeId, enabled }) => {
+        this.#domModel.nodeForId(nodeId)?.dispatchEventToListeners(DOMNodeEvents.CONTAINER_QUERY_OVERLAY_STATE_CHANGED, { enabled });
+        this.dispatchEventToListeners("PersistentContainerQueryOverlayStateChanged", { nodeId, enabled });
+      },
+      onScrollSnapOverlayStateChanged: ({ nodeId, enabled }) => {
+        this.#domModel.nodeForId(nodeId)?.dispatchEventToListeners(DOMNodeEvents.SCROLL_SNAP_OVERLAY_STATE_CHANGED, { enabled });
+        this.dispatchEventToListeners("PersistentScrollSnapOverlayStateChanged", { nodeId, enabled });
+      }
     });
     this.#domModel.addEventListener(Events8.NodeRemoved, () => {
       if (!this.#persistentHighlighter) {
@@ -23573,24 +24337,24 @@ var OverlayModel = class _OverlayModel extends SDKModel {
       domModel.overlayModel().highlightInOverlay({ object, selectorList: void 0 });
     }
   }
-  static hideDOMNodeHighlight() {
-    for (const overlayModel of TargetManager.instance().models(_OverlayModel)) {
+  static hideDOMNodeHighlight(targetManager = TargetManager.instance()) {
+    for (const overlayModel of targetManager.models(_OverlayModel)) {
       overlayModel.delayedHideHighlight(0);
     }
   }
-  static async muteHighlight() {
-    return await Promise.all(TargetManager.instance().models(_OverlayModel).map((model) => model.suspendModel()));
+  static async muteHighlight(targetManager = TargetManager.instance()) {
+    return await Promise.all(targetManager.models(_OverlayModel).map((model) => model.suspendModel()));
   }
-  static async unmuteHighlight() {
-    return await Promise.all(TargetManager.instance().models(_OverlayModel).map((model) => model.resumeModel()));
+  static async unmuteHighlight(targetManager = TargetManager.instance()) {
+    return await Promise.all(targetManager.models(_OverlayModel).map((model) => model.resumeModel()));
   }
-  static highlightRect(rect) {
-    for (const overlayModel of TargetManager.instance().models(_OverlayModel)) {
+  static highlightRect(rect, targetManager = TargetManager.instance()) {
+    for (const overlayModel of targetManager.models(_OverlayModel)) {
       void overlayModel.highlightRect(rect);
     }
   }
-  static clearHighlight() {
-    for (const overlayModel of TargetManager.instance().models(_OverlayModel)) {
+  static clearHighlight(targetManager = TargetManager.instance()) {
+    for (const overlayModel of targetManager.models(_OverlayModel)) {
       void overlayModel.clearHighlight();
     }
   }
@@ -23659,7 +24423,8 @@ var OverlayModel = class _OverlayModel extends SDKModel {
     if (this.target().suspended()) {
       return;
     }
-    const message = this.#debuggerModel && this.#debuggerModel.isPaused() && !Common20.Settings.Settings.instance().moduleSetting("disable-paused-state-overlay").get() ? i18nString7(UIStrings7.pausedInDebugger) : void 0;
+    const settings = this.target().targetManager().settings;
+    const message = this.#debuggerModel && this.#debuggerModel.isPaused() && !settings.moduleSetting("disable-paused-state-overlay").get() ? i18nString7(UIStrings7.pausedInDebugger) : void 0;
     void this.overlayAgent.invoke_setPausedInDebuggerMessage({ message });
   }
   setHighlighter(highlighter) {
@@ -23856,7 +24621,8 @@ var OverlayModel = class _OverlayModel extends SDKModel {
     this.setShowViewportSizeOnResize(!show);
   }
   buildHighlightConfig(mode = "all", showDetailedToolip = false) {
-    const showRulers = Common20.Settings.Settings.instance().moduleSetting("show-metrics-rulers").get();
+    const settings = this.target().targetManager().settings;
+    const showRulers = settings.moduleSetting("show-metrics-rulers").get();
     const highlightConfig = {
       showInfo: mode === "all" || mode === "container-outline",
       showRulers,
@@ -23866,7 +24632,7 @@ var OverlayModel = class _OverlayModel extends SDKModel {
       gridHighlightConfig: {},
       flexContainerHighlightConfig: {},
       flexItemHighlightConfig: {},
-      contrastAlgorithm: Root7.Runtime.experiments.isEnabled("apca") ? "apca" : "aa"
+      contrastAlgorithm: settings.moduleSetting("apca").get() ? "apca" : "aa"
     };
     if (mode === "all" || mode === "content") {
       highlightConfig.contentColor = Common20.Color.PageHighlight.Content.toProtocolRGBA();
@@ -24101,6 +24867,12 @@ var OverlayModel = class _OverlayModel extends SDKModel {
   async hasStyleSheetText(url) {
     return await this.#windowControls.initializeStyleSheetText(url);
   }
+  inspectPanelShowRequested({ backendNodeId }) {
+    this.dispatchEventToListeners("InspectPanelShowRequested", backendNodeId);
+  }
+  inspectedElementWindowRestored({ backendNodeId }) {
+    this.dispatchEventToListeners("InspectedElementWindowRestored", backendNodeId);
+  }
 };
 var WindowControls = class _WindowControls {
   #cssModel;
@@ -24293,7 +25065,17 @@ var ARIA_ATTRIBUTES = /* @__PURE__ */ new Set([
   "aria-valuenow",
   "aria-valuetext"
 ]);
-var DOMNode = class _DOMNode {
+var DOMNodeEvents;
+(function(DOMNodeEvents2) {
+  DOMNodeEvents2["TOP_LAYER_INDEX_CHANGED"] = "TopLayerIndexChanged";
+  DOMNodeEvents2["SCROLLABLE_FLAG_UPDATED"] = "ScrollableFlagUpdated";
+  DOMNodeEvents2["AD_RELATED_STATE_UPDATED"] = "AdRelatedStateUpdated";
+  DOMNodeEvents2["GRID_OVERLAY_STATE_CHANGED"] = "GridOverlayStateChanged";
+  DOMNodeEvents2["FLEX_CONTAINER_OVERLAY_STATE_CHANGED"] = "FlexContainerOverlayStateChanged";
+  DOMNodeEvents2["SCROLL_SNAP_OVERLAY_STATE_CHANGED"] = "ScrollSnapOverlayStateChanged";
+  DOMNodeEvents2["CONTAINER_QUERY_OVERLAY_STATE_CHANGED"] = "ContainerQueryOverlayStateChanged";
+})(DOMNodeEvents || (DOMNodeEvents = {}));
+var DOMNode = class _DOMNode extends Common21.ObjectWrapper.ObjectWrapper {
   #domModel;
   #agent;
   ownerDocument;
@@ -24346,7 +25128,18 @@ var DOMNode = class _DOMNode {
    */
   detached = false;
   #retainedNodes;
+  #adoptedStyleSheets = [];
+  /**
+   * 1-based index of the node in the top layer. Only set
+   * for non-backdrop nodes.
+   */
+  #topLayerIndex = -1;
+  /**
+   * Set if a DOMNode is ad related.
+   */
+  #adProvenance;
   constructor(domModel) {
+    super();
     this.#domModel = domModel;
     this.#agent = this.#domModel.getAgent();
   }
@@ -24361,6 +25154,7 @@ var DOMNode = class _DOMNode {
     this.#isInShadowTree = isInShadowTree;
     this.id = payload.nodeId;
     this.#backendNodeId = payload.backendNodeId;
+    this.#frameOwnerFrameId = payload.frameId || null;
     this.#domModel.registerNode(this);
     this.#nodeType = payload.nodeType;
     this.#nodeName = payload.nodeName;
@@ -24369,7 +25163,6 @@ var DOMNode = class _DOMNode {
     this.#pseudoType = payload.pseudoType;
     this.#pseudoIdentifier = payload.pseudoIdentifier;
     this.#shadowRootType = payload.shadowRootType;
-    this.#frameOwnerFrameId = payload.frameId || null;
     this.#xmlVersion = payload.xmlVersion;
     this.#isSVGNode = Boolean(payload.isSVG);
     this.#isScrollable = Boolean(payload.isScrollable);
@@ -24380,6 +25173,9 @@ var DOMNode = class _DOMNode {
     }
     if (payload.attributes) {
       this.setAttributesPayload(payload.attributes);
+    }
+    if (payload.adoptedStyleSheets) {
+      this.#adoptedStyleSheets = this.toAdoptedStyleSheets(payload.adoptedStyleSheets);
     }
     this.childNodeCountInternal = payload.childNodeCount || 0;
     if (payload.shadowRoots) {
@@ -24419,6 +25215,9 @@ var DOMNode = class _DOMNode {
       this.setChildrenPayload(payload.children);
     }
     this.setPseudoElements(payload.pseudoElements);
+    if (payload.adProvenance) {
+      this.#adProvenance = payload.adProvenance;
+    }
     if (this.#nodeType === Node.ELEMENT_NODE) {
       if (this.ownerDocument && !this.ownerDocument.documentElement && this.#nodeName === "HTML") {
         this.ownerDocument.documentElement = this;
@@ -24440,13 +25239,32 @@ var DOMNode = class _DOMNode {
     const childModel = frame.resourceTreeModel()?.target().model(DOMModel);
     return await (childModel?.requestDocument() || null);
   }
-  isAdFrameNode() {
-    if (this.isIframe() && this.#frameOwnerFrameId) {
-      const frame = FrameManager.instance().getFrame(this.#frameOwnerFrameId);
-      if (!frame) {
-        return false;
-      }
-      return frame.adFrameType() !== "none";
+  setTopLayerIndex(idx) {
+    const oldIndex = this.#topLayerIndex;
+    this.#topLayerIndex = idx;
+    if (oldIndex !== idx) {
+      this.dispatchEventToListeners(DOMNodeEvents.TOP_LAYER_INDEX_CHANGED);
+    }
+  }
+  topLayerIndex() {
+    return this.#topLayerIndex;
+  }
+  adProvenance() {
+    if (this.#adProvenance !== void 0) {
+      return this.#adProvenance;
+    }
+    if (!this.isIframe() || !this.#frameOwnerFrameId) {
+      return void 0;
+    }
+    const frame = FrameManager.instance().getFrame(this.#frameOwnerFrameId);
+    if (frame && frame.adFrameType() !== "none") {
+      return {};
+    }
+    return void 0;
+  }
+  isRootNode() {
+    if (this.nodeType() === Node.ELEMENT_NODE && this.nodeName() === "HTML") {
+      return true;
     }
     return false;
   }
@@ -24500,6 +25318,14 @@ var DOMNode = class _DOMNode {
   }
   setIsScrollable(isScrollable) {
     this.#isScrollable = isScrollable;
+    this.dispatchEventToListeners(DOMNodeEvents.SCROLLABLE_FLAG_UPDATED);
+    if (this.nodeName() === "#document") {
+      this.ownerDocument?.documentElement?.setIsScrollable(isScrollable);
+    }
+  }
+  setIsAdRelated(adProvenance) {
+    this.#adProvenance = adProvenance;
+    this.dispatchEventToListeners(DOMNodeEvents.AD_RELATED_STATE_UPDATED);
   }
   setAffectedByStartingStyles(affectedByStartingStyles) {
     this.#affectedByStartingStyles = affectedByStartingStyles;
@@ -24770,6 +25596,7 @@ var DOMNode = class _DOMNode {
     });
   }
   async getSubtree(depth, pierce) {
+    console.assert(depth > 0, "Do not fetch an infinite subtree to avoid crashing the renderer for large documents");
     const response = await this.#agent.invoke_requestChildNodes({ nodeId: this.id, depth, pierce });
     return response.getError() ? null : this.childrenInternal;
   }
@@ -24867,7 +25694,7 @@ var DOMNode = class _DOMNode {
         continue;
       }
       const oldAttribute = oldAttributesMap.get(name);
-      if (!oldAttribute || oldAttribute.value !== value) {
+      if (oldAttribute?.value !== value) {
         attributesChanged = true;
       }
     }
@@ -24939,6 +25766,16 @@ var DOMNode = class _DOMNode {
         this.#pseudoElements.set(pseudoType, [node]);
       }
     }
+  }
+  toAdoptedStyleSheets(ids) {
+    return ids.map((id) => new AdoptedStyleSheet(id, this));
+  }
+  setAdoptedStyleSheets(ids) {
+    this.#adoptedStyleSheets = this.toAdoptedStyleSheets(ids);
+    this.#domModel.dispatchEventToListeners(Events8.AdoptedStyleSheetsModified, this);
+  }
+  get adoptedStyleSheetsForNode() {
+    return this.#adoptedStyleSheets;
   }
   setDistributedNodePayloads(payloads) {
     this.#distributedNodes = [];
@@ -25072,13 +25909,17 @@ var DOMNode = class _DOMNode {
     return null;
   }
   highlight(mode) {
-    this.#domModel.overlayModel().highlightInOverlay({ node: this, selectorList: void 0 }, mode);
+    this.#domModel.overlayModel().highlightInOverlay({ node: this }, mode);
   }
   highlightForTwoSeconds() {
-    this.#domModel.overlayModel().highlightInOverlayForTwoSeconds({ node: this, selectorList: void 0 });
+    this.#domModel.overlayModel().highlightInOverlayForTwoSeconds({ node: this });
   }
   async resolveToObject(objectGroup, executionContextId) {
-    const { object } = await this.#agent.invoke_resolveNode({ nodeId: this.id, backendNodeId: void 0, executionContextId, objectGroup });
+    const { object } = await this.#agent.invoke_resolveNode({
+      nodeId: this.id,
+      executionContextId,
+      objectGroup
+    });
     return object && this.#domModel.runtimeModelInternal.createRemoteObject(object) || null;
   }
   async boxModel() {
@@ -25192,6 +26033,102 @@ var DOMNode = class _DOMNode {
     }
     return this.domModel().nodeForId(response.nodeId);
   }
+  async takeSnapshot(ownerDocumentSnapshot) {
+    const snapshot = this instanceof DOMDocument ? new DOMDocumentSnapshot(this.domModel(), {
+      nodeId: this.id,
+      backendNodeId: this.backendNodeId(),
+      nodeType: this.nodeType(),
+      nodeName: this.nodeName(),
+      localName: this.localName(),
+      nodeValue: this.nodeValueInternal
+    }) : new DOMNodeSnapshot(this.domModel());
+    snapshot.id = this.id;
+    snapshot.#backendNodeId = this.#backendNodeId;
+    snapshot.#frameOwnerFrameId = this.#frameOwnerFrameId;
+    snapshot.#nodeType = this.#nodeType;
+    snapshot.#nodeName = this.#nodeName;
+    snapshot.#localName = this.#localName;
+    snapshot.nodeValueInternal = this.nodeValueInternal;
+    snapshot.#pseudoType = this.#pseudoType;
+    snapshot.#pseudoIdentifier = this.#pseudoIdentifier;
+    snapshot.#shadowRootType = this.#shadowRootType;
+    snapshot.#xmlVersion = this.#xmlVersion;
+    snapshot.#isSVGNode = this.#isSVGNode;
+    snapshot.#isScrollable = this.#isScrollable;
+    snapshot.#affectedByStartingStyles = this.#affectedByStartingStyles;
+    snapshot.ownerDocument = ownerDocumentSnapshot || (snapshot instanceof DOMDocument ? snapshot : this.ownerDocument);
+    snapshot.#isInShadowTree = this.#isInShadowTree;
+    snapshot.childNodeCountInternal = this.childNodeCountInternal;
+    if (snapshot instanceof DOMDocument && this instanceof DOMDocument) {
+      snapshot.documentURL = this.documentURL;
+      snapshot.baseURL = this.baseURL;
+    }
+    if (!this.childrenInternal && this.childNodeCountInternal > 0) {
+      await this.getSubtree(1, false);
+    }
+    for (const [name, attr] of this.#attributes) {
+      snapshot.#attributes.set(name, { name: attr.name, value: attr.value, _node: snapshot });
+    }
+    if (this.childrenInternal) {
+      snapshot.childrenInternal = [];
+      for (const child of this.childrenInternal) {
+        const childSnapshot = await child.takeSnapshot(snapshot.ownerDocument || void 0);
+        childSnapshot.parentNode = snapshot;
+        childSnapshot.ownerDocument = snapshot instanceof DOMDocument ? snapshot : snapshot.ownerDocument;
+        snapshot.childrenInternal.push(childSnapshot);
+        if (childSnapshot.ownerDocument instanceof DOMDocument) {
+          if (childSnapshot.nodeName() === "HTML" && !childSnapshot.ownerDocument.documentElement) {
+            childSnapshot.ownerDocument.documentElement = childSnapshot;
+          }
+          if (childSnapshot.nodeName() === "BODY" && !childSnapshot.ownerDocument.body) {
+            childSnapshot.ownerDocument.body = childSnapshot;
+          }
+        }
+      }
+    }
+    for (const root of this.shadowRootsInternal) {
+      const rootSnapshot = await root.takeSnapshot(snapshot.ownerDocument || void 0);
+      rootSnapshot.parentNode = snapshot;
+      rootSnapshot.ownerDocument = snapshot.ownerDocument;
+      snapshot.shadowRootsInternal.push(rootSnapshot);
+    }
+    if (this.templateContentInternal) {
+      const templateSnapshot = await this.templateContentInternal.takeSnapshot(snapshot.ownerDocument || void 0);
+      templateSnapshot.parentNode = snapshot;
+      templateSnapshot.ownerDocument = snapshot.ownerDocument;
+      snapshot.templateContentInternal = templateSnapshot;
+    }
+    if (this.contentDocumentInternal) {
+      const contentDocSnapshot = await this.contentDocumentInternal.takeSnapshot();
+      contentDocSnapshot.parentNode = snapshot;
+      snapshot.contentDocumentInternal = contentDocSnapshot;
+    }
+    if (this.#importedDocument) {
+      const importedDocSnapshot = await this.#importedDocument.takeSnapshot(snapshot.ownerDocument || void 0);
+      importedDocSnapshot.parentNode = snapshot;
+      importedDocSnapshot.ownerDocument = snapshot.ownerDocument;
+      snapshot.#importedDocument = importedDocSnapshot;
+    }
+    for (const [pseudoType, nodes] of this.#pseudoElements) {
+      const snapshots = [];
+      for (const node of nodes) {
+        const pseudoSnapshot = await node.takeSnapshot(snapshot.ownerDocument || void 0);
+        pseudoSnapshot.parentNode = snapshot;
+        pseudoSnapshot.ownerDocument = snapshot.ownerDocument;
+        snapshots.push(pseudoSnapshot);
+      }
+      snapshot.#pseudoElements.set(pseudoType, snapshots);
+    }
+    if (this.#distributedNodes) {
+      snapshot.#distributedNodes = [...this.#distributedNodes];
+    }
+    snapshot.assignedSlot = this.assignedSlot;
+    snapshot.#retainedNodes = this.#retainedNodes;
+    if (this.#adoptedStyleSheets.length) {
+      snapshot.setAdoptedStyleSheets(this.#adoptedStyleSheets.map((sheet) => sheet.id));
+    }
+    return snapshot;
+  }
   classNames() {
     const classes = this.getAttribute("class");
     return classes ? classes.split(/\s+/) : [];
@@ -25233,10 +26170,14 @@ var DOMNodeShortcut = class {
   nodeType;
   nodeName;
   deferredNode;
-  constructor(target, backendNodeId, nodeType, nodeName) {
+  // Shortctus to elements that children of the element this shortcut is for.
+  // Currently, use for backdrop elements in the top layer.«
+  childShortcuts = [];
+  constructor(target, backendNodeId, nodeType, nodeName, childShortcuts = []) {
     this.nodeType = nodeType;
     this.nodeName = nodeName;
     this.deferredNode = new DeferredDOMNode(target, backendNodeId);
+    this.childShortcuts = childShortcuts;
   }
 };
 var DOMDocument = class extends DOMNode {
@@ -25253,9 +26194,21 @@ var DOMDocument = class extends DOMNode {
     this.baseURL = payload.baseURL || "";
   }
 };
+var AdoptedStyleSheet = class {
+  id;
+  parent;
+  constructor(id, parent) {
+    this.id = id;
+    this.parent = parent;
+  }
+  get cssModel() {
+    return this.parent.domModel().cssModel();
+  }
+};
 var DOMModel = class _DOMModel extends SDKModel {
   agent;
   idToDOMNode = /* @__PURE__ */ new Map();
+  frameIdToOwnerNode = /* @__PURE__ */ new Map();
   #document = null;
   #attributeLoadNodeIds = /* @__PURE__ */ new Set();
   runtimeModelInternal;
@@ -25264,15 +26217,20 @@ var DOMModel = class _DOMModel extends SDKModel {
   #frameOwnerNode;
   #loadNodeAttributesTimeout;
   #searchId;
+  #topLayerThrottler = new Common21.Throttler.Throttler(100);
+  #topLayerNodes = [];
+  #resourceTreeModel = null;
   constructor(target) {
     super(target);
     this.agent = target.domAgent();
     target.registerDOMDispatcher(new DOMDispatcher(this));
     this.runtimeModelInternal = target.model(RuntimeModel);
+    this.#resourceTreeModel = target.model(ResourceTreeModel);
+    this.#resourceTreeModel?.addEventListener(Events3.DocumentOpened, this.onDocumentOpened, this);
     if (!target.suspended()) {
       void this.agent.invoke_enable({});
     }
-    if (Root8.Runtime.experiments.isEnabled("capture-node-creation-stacks")) {
+    if (Root9.Runtime.experiments.isEnabled(Root9.ExperimentNames.ExperimentName.CAPTURE_NODE_CREATION_STACKS)) {
       void this.agent.invoke_setNodeStackTracesEnabled({ enable: true });
     }
   }
@@ -25285,8 +26243,8 @@ var DOMModel = class _DOMModel extends SDKModel {
   overlayModel() {
     return this.target().model(OverlayModel);
   }
-  static cancelSearch() {
-    for (const domModel of TargetManager.instance().models(_DOMModel)) {
+  static cancelSearch(targetManager = TargetManager.instance()) {
+    for (const domModel of targetManager.models(_DOMModel)) {
       domModel.cancelSearch();
     }
   }
@@ -25301,6 +26259,18 @@ var DOMModel = class _DOMModel extends SDKModel {
         return;
       }
       this.dispatchEventToListeners(Events8.DOMMutated, node2);
+    }
+  }
+  onDocumentOpened(event) {
+    const frame = event.data;
+    const node = this.frameIdToOwnerNode.get(frame.id);
+    if (node) {
+      const contentDocument = node.contentDocument();
+      if (contentDocument && contentDocument.documentURL !== frame.url) {
+        contentDocument.documentURL = frame.url;
+        contentDocument.baseURL = frame.url;
+        this.dispatchEventToListeners(Events8.DocumentURLChanged, contentDocument);
+      }
     }
   }
   requestDocument() {
@@ -25448,6 +26418,7 @@ var DOMModel = class _DOMModel extends SDKModel {
   }
   setDocument(payload) {
     this.idToDOMNode = /* @__PURE__ */ new Map();
+    this.frameIdToOwnerNode = /* @__PURE__ */ new Map();
     if (payload && "nodeId" in payload) {
       this.#document = new DOMDocument(this, payload);
     } else {
@@ -25560,13 +26531,26 @@ var DOMModel = class _DOMModel extends SDKModel {
     this.dispatchEventToListeners(Events8.NodeInserted, node);
     this.scheduleMutationEvent(node);
   }
+  adoptedStyleSheetsModified(parentId, styleSheets) {
+    const parent = this.idToDOMNode.get(parentId);
+    if (!parent) {
+      return;
+    }
+    parent.setAdoptedStyleSheets(styleSheets);
+  }
   scrollableFlagUpdated(nodeId, isScrollable) {
     const node = this.nodeForId(nodeId);
     if (!node || node.isScrollable() === isScrollable) {
       return;
     }
     node.setIsScrollable(isScrollable);
-    this.dispatchEventToListeners(Events8.ScrollableFlagUpdated, { node });
+  }
+  adRelatedStateUpdated(nodeId, adProvenance) {
+    const node = this.nodeForId(nodeId);
+    if (!node) {
+      return;
+    }
+    node.setIsAdRelated(adProvenance);
   }
   affectedByStartingStylesFlagUpdated(nodeId, affectedByStartingStyles) {
     const node = this.nodeForId(nodeId);
@@ -25575,9 +26559,6 @@ var DOMModel = class _DOMModel extends SDKModel {
     }
     node.setAffectedByStartingStyles(affectedByStartingStyles);
     this.dispatchEventToListeners(Events8.AffectedByStartingStylesFlagUpdated, { node });
-  }
-  topLayerElementsUpdated() {
-    this.dispatchEventToListeners(Events8.TopLayerElementsChanged);
   }
   pseudoElementRemoved(parentId, pseudoElementId) {
     const parent = this.idToDOMNode.get(parentId);
@@ -25604,6 +26585,10 @@ var DOMModel = class _DOMModel extends SDKModel {
   }
   unbind(node) {
     this.idToDOMNode.delete(node.id);
+    const frameId = node.frameOwnerFrameId();
+    if (frameId) {
+      this.frameIdToOwnerNode.delete(frameId);
+    }
     const children = node.children();
     for (let i = 0; children && i < children.length; ++i) {
       this.unbind(children[i]);
@@ -25645,7 +26630,7 @@ var DOMModel = class _DOMModel extends SDKModel {
       return null;
     }
     const { nodeIds } = await this.agent.invoke_getSearchResults({ searchId: this.#searchId, fromIndex: index, toIndex: index + 1 });
-    return nodeIds && nodeIds.length === 1 ? this.nodeForId(nodeIds[0]) : null;
+    return nodeIds?.length === 1 ? this.nodeForId(nodeIds[0]) : null;
   }
   cancelSearch() {
     if (!this.#searchId) {
@@ -25665,6 +26650,63 @@ var DOMModel = class _DOMModel extends SDKModel {
   }
   getTopLayerElements() {
     return this.agent.invoke_getTopLayerElements().then(({ nodeIds }) => nodeIds);
+  }
+  topLayerElementsUpdated() {
+    void this.#topLayerThrottler.schedule(async () => {
+      const result = await this.agent.invoke_getTopLayerElements();
+      if (result.getError()) {
+        return;
+      }
+      const previousDocs = /* @__PURE__ */ new Set();
+      for (const node of this.#topLayerNodes) {
+        node.setTopLayerIndex(-1);
+        if (node.ownerDocument) {
+          previousDocs.add(node.ownerDocument);
+        }
+      }
+      this.#topLayerNodes.splice(0);
+      const nodes = result.nodeIds.map((id) => this.idToDOMNode.get(id)).filter((node) => Boolean(node));
+      const nodesByDocument = /* @__PURE__ */ new Map();
+      for (const node of nodes) {
+        const document2 = node.ownerDocument;
+        if (!document2) {
+          continue;
+        }
+        if (!nodesByDocument.has(document2)) {
+          nodesByDocument.set(document2, []);
+        }
+        nodesByDocument.get(document2)?.push(node);
+      }
+      for (const [document2, nodes2] of nodesByDocument) {
+        let topLayerIdx = 1;
+        const documentShortcuts = [];
+        for (const [idx, node] of nodes2.entries()) {
+          if (node.nodeName() === "::backdrop") {
+            continue;
+          }
+          const childShortcuts = [];
+          const previousNode = result.nodeIds[idx - 1] ? this.idToDOMNode.get(result.nodeIds[idx - 1]) : null;
+          if (previousNode && previousNode.nodeName() === "::backdrop") {
+            childShortcuts.push(new DOMNodeShortcut(this.target(), previousNode.backendNodeId(), 0, previousNode.nodeName()));
+          }
+          const shortcut = new DOMNodeShortcut(this.target(), node.backendNodeId(), 0, node.nodeName(), childShortcuts);
+          node.setTopLayerIndex(topLayerIdx++);
+          this.#topLayerNodes.push(node);
+          documentShortcuts.push(shortcut);
+          previousDocs.delete(document2);
+        }
+        this.dispatchEventToListeners(Events8.TopLayerElementsChanged, {
+          document: document2,
+          documentShortcuts
+        });
+      }
+      for (const document2 of previousDocs) {
+        this.dispatchEventToListeners(Events8.TopLayerElementsChanged, {
+          document: document2,
+          documentShortcuts: []
+        });
+      }
+    });
   }
   getDetachedDOMNodes() {
     return this.agent.invoke_getDetachedDomNodes().then(({ detachedNodes }) => detachedNodes);
@@ -25699,6 +26741,7 @@ var DOMModel = class _DOMModel extends SDKModel {
     await this.agent.invoke_enable({});
   }
   dispose() {
+    this.#resourceTreeModel?.removeEventListener(Events3.DocumentOpened, this.onDocumentOpened, this);
     DOMModelUndoStack.instance().dispose(this);
   }
   parentModel() {
@@ -25710,6 +26753,10 @@ var DOMModel = class _DOMModel extends SDKModel {
   }
   registerNode(node) {
     this.idToDOMNode.set(node.id, node);
+    const frameId = node.frameOwnerFrameId();
+    if (frameId) {
+      this.frameIdToOwnerNode.set(frameId, node);
+    }
   }
 };
 var Events8;
@@ -25718,6 +26765,7 @@ var Events8;
   Events12["AttrRemoved"] = "AttrRemoved";
   Events12["CharacterDataModified"] = "CharacterDataModified";
   Events12["DOMMutated"] = "DOMMutated";
+  Events12["DocumentURLChanged"] = "DocumentURLChanged";
   Events12["NodeInserted"] = "NodeInserted";
   Events12["NodeRemoved"] = "NodeRemoved";
   Events12["DocumentUpdated"] = "DocumentUpdated";
@@ -25725,8 +26773,8 @@ var Events8;
   Events12["DistributedNodesChanged"] = "DistributedNodesChanged";
   Events12["MarkersChanged"] = "MarkersChanged";
   Events12["TopLayerElementsChanged"] = "TopLayerElementsChanged";
-  Events12["ScrollableFlagUpdated"] = "ScrollableFlagUpdated";
   Events12["AffectedByStartingStylesFlagUpdated"] = "AffectedByStartingStylesFlagUpdated";
+  Events12["AdoptedStyleSheetsModified"] = "AdoptedStyleSheetsModified";
 })(Events8 || (Events8 = {}));
 var DOMDispatcher = class {
   #domModel;
@@ -25741,6 +26789,9 @@ var DOMDispatcher = class {
   }
   attributeRemoved({ nodeId, name }) {
     this.#domModel.attributeRemoved(nodeId, name);
+  }
+  adoptedStyleSheetsModified({ nodeId, adoptedStyleSheets }) {
+    this.#domModel.adoptedStyleSheetsModified(nodeId, adoptedStyleSheets);
   }
   inlineStyleInvalidated({ nodeIds }) {
     this.#domModel.inlineStyleInvalidated(nodeIds);
@@ -25783,6 +26834,9 @@ var DOMDispatcher = class {
   }
   affectedByStartingStylesFlagUpdated({ nodeId, affectedByStartingStyles }) {
     this.#domModel.affectedByStartingStylesFlagUpdated(nodeId, affectedByStartingStyles);
+  }
+  adRelatedStateUpdated({ nodeId, adProvenance }) {
+    this.#domModel.adRelatedStateUpdated(nodeId, adProvenance);
   }
 };
 var domModelUndoStackInstance = null;
@@ -25843,7 +26897,7 @@ var DOMModelUndoStack = class _DOMModelUndoStack {
         ++shift;
       }
     }
-    Platform14.ArrayUtilities.removeElement(this.#stack, model);
+    Platform13.ArrayUtilities.removeElement(this.#stack, model);
     this.#index -= shift;
     if (this.#lastModelWithMinorChange === model) {
       this.#lastModelWithMinorChange = null;
@@ -25851,15 +26905,69 @@ var DOMModelUndoStack = class _DOMModelUndoStack {
   }
 };
 SDKModel.register(DOMModel, { capabilities: 2, autostart: true });
+var DOMNodeSnapshot = class extends DOMNode {
+  init(_doc, _isInShadowTree, _payload, _retainedNodes) {
+  }
+  setNodeName(_name, _callback) {
+  }
+  setNodeValue(_value, _callback) {
+  }
+  setAttribute(_name, _text, _callback) {
+  }
+  setAttributeValue(_name, _value, _callback) {
+  }
+  removeAttribute(_name) {
+    return Promise.resolve();
+  }
+  setOuterHTML(_html, _callback) {
+  }
+  removeNode(_callback) {
+    return Promise.resolve();
+  }
+  copyTo(_targetNode, _anchorNode, _callback) {
+  }
+  moveTo(_targetNode, _anchorNode, _callback) {
+  }
+  setAsInspectedNode() {
+    return Promise.resolve();
+  }
+};
+var DOMDocumentSnapshot = class extends DOMDocument {
+  init(_doc, _isInShadowTree, _payload, _retainedNodes) {
+  }
+  setNodeName(_name, _callback) {
+  }
+  setNodeValue(_value, _callback) {
+  }
+  setAttribute(_name, _text, _callback) {
+  }
+  setAttributeValue(_name, _value, _callback) {
+  }
+  removeAttribute(_name) {
+    return Promise.resolve();
+  }
+  setOuterHTML(_html, _callback) {
+  }
+  removeNode(_callback) {
+    return Promise.resolve();
+  }
+  copyTo(_targetNode, _anchorNode, _callback) {
+  }
+  moveTo(_targetNode, _anchorNode, _callback) {
+  }
+  setAsInspectedNode() {
+    return Promise.resolve();
+  }
+};
 
 // gen/front_end/core/sdk/Resource.js
 var Resource_exports = {};
 __export(Resource_exports, {
   Resource: () => Resource
 });
-import * as TextUtils20 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils21 from "./../../models/text_utils/text_utils.js";
 import * as Common22 from "./../common/common.js";
-import * as Platform15 from "./../platform/platform.js";
+import * as Platform14 from "./../platform/platform.js";
 var Resource = class {
   #resourceTreeModel;
   #request;
@@ -25889,7 +26997,7 @@ var Resource = class {
     this.#type = type || Common22.ResourceType.resourceTypes.Other;
     this.#mimeType = mimeType;
     this.#isGenerated = false;
-    this.#lastModified = lastModified && Platform15.DateUtilities.isValid(lastModified) ? lastModified : null;
+    this.#lastModified = lastModified && Platform14.DateUtilities.isValid(lastModified) ? lastModified : null;
     this.#contentSize = contentSize;
   }
   lastModified() {
@@ -25898,7 +27006,7 @@ var Resource = class {
     }
     const lastModifiedHeader = this.#request.responseLastModified();
     const date = lastModifiedHeader ? new Date(lastModifiedHeader) : null;
-    this.#lastModified = date && Platform15.DateUtilities.isValid(date) ? date : null;
+    this.#lastModified = date && Platform14.DateUtilities.isValid(date) ? date : null;
     return this.#lastModified;
   }
   contentSize() {
@@ -25967,7 +27075,7 @@ var Resource = class {
       return await this.#pendingContentData;
     }
     this.#pendingContentData = this.innerRequestContent().then((contentData) => {
-      if (!TextUtils20.ContentData.ContentData.isError(contentData)) {
+      if (!TextUtils21.ContentData.ContentData.isError(contentData)) {
         this.#contentData = contentData;
       }
       this.#pendingContentData = null;
@@ -25986,14 +27094,15 @@ var Resource = class {
       return await this.request.searchInContent(query, caseSensitive, isRegex);
     }
     const result = await this.#resourceTreeModel.target().pageAgent().invoke_searchInResource({ frameId: this.frameId, url: this.url, query, caseSensitive, isRegex });
-    return TextUtils20.TextUtils.performSearchInSearchMatches(result.result || [], query, caseSensitive, isRegex);
+    return TextUtils21.TextUtils.performSearchInSearchMatches(result.result || [], query, caseSensitive, isRegex);
   }
   async populateImageSource(image) {
     const contentData = await this.requestContentData();
-    if (TextUtils20.ContentData.ContentData.isError(contentData)) {
+    if (TextUtils21.ContentData.ContentData.isError(contentData)) {
       return;
     }
-    image.src = contentData.asDataUrl() ?? this.#url;
+    const imageSrc = contentData.asImagePreviewUrl();
+    image.src = imageSrc ?? "";
   }
   async innerRequestContent() {
     if (this.request) {
@@ -26004,7 +27113,7 @@ var Resource = class {
     if (error) {
       return { error };
     }
-    return new TextUtils20.ContentData.ContentData(response.content, response.base64Encoded, this.mimeType);
+    return new TextUtils21.ContentData.ContentData(response.content, response.base64Encoded, this.mimeType);
   }
   frame() {
     return this.#frameId ? this.#resourceTreeModel.frameForId(this.#frameId) : null;
@@ -26113,7 +27222,12 @@ var StorageKeyManager = class extends SDKModel {
 function parseStorageKey(storageKeyString) {
   const components = storageKeyString.split("^");
   const origin = Common23.ParsedURL.ParsedURL.extractOrigin(components[0]);
-  const storageKey = { origin, components: /* @__PURE__ */ new Map() };
+  const storageKey = {
+    // For file:// URLs, extracting the origin collapses it to "file://".
+    // Node.js uses the full file URL as the StorageKey, so keep the original URL here.
+    origin: origin === "file://" ? components[0] : origin,
+    components: /* @__PURE__ */ new Map()
+  };
   for (let i = 1; i < components.length; ++i) {
     storageKey.components.set(components[i].charAt(0), components[i].substring(1));
   }
@@ -26298,10 +27412,13 @@ var ResourceTreeModel = class _ResourceTreeModel extends SDKModel {
   documentOpened(framePayload) {
     this.frameNavigated(framePayload, void 0);
     const frame = this.framesInternal.get(framePayload.id);
-    if (frame && !frame.getResourcesMap().get(framePayload.url)) {
-      const frameResource = this.createResourceFromFramePayload(framePayload, framePayload.url, Common24.ResourceType.resourceTypes.Document, framePayload.mimeType, null, null);
-      frameResource.isGenerated = true;
-      frame.addResource(frameResource);
+    if (frame) {
+      this.dispatchEventToListeners(Events3.DocumentOpened, frame);
+      if (!frame.getResourcesMap().get(framePayload.url)) {
+        const frameResource = this.createResourceFromFramePayload(framePayload, framePayload.url, Common24.ResourceType.resourceTypes.Document, framePayload.mimeType, null, null);
+        frameResource.isGenerated = true;
+        frame.addResource(frameResource);
+      }
     }
   }
   frameDetached(frameId, isSwap) {
@@ -26580,6 +27697,7 @@ var Events3;
   Events12["FrameDetached"] = "FrameDetached";
   Events12["FrameResized"] = "FrameResized";
   Events12["FrameWillNavigate"] = "FrameWillNavigate";
+  Events12["DocumentOpened"] = "DocumentOpened";
   Events12["PrimaryPageChanged"] = "PrimaryPageChanged";
   Events12["ResourceAdded"] = "ResourceAdded";
   Events12["WillLoadCachedResources"] = "WillLoadCachedResources";
@@ -26616,9 +27734,7 @@ var ResourceTreeFrame = class {
   #childFrames = /* @__PURE__ */ new Set();
   resourcesMap = /* @__PURE__ */ new Map();
   backForwardCacheDetails = {
-    restoredFromCache: void 0,
-    explanations: [],
-    explanationsTree: void 0
+    explanations: []
   };
   constructor(model, parentFrame, frameId, payload, creationStackTrace) {
     this.#model = model;
@@ -26626,11 +27742,11 @@ var ResourceTreeFrame = class {
     this.#id = frameId;
     this.#loaderId = payload?.loaderId ?? "";
     this.#name = payload?.name;
-    this.#url = payload && payload.url || Platform16.DevToolsPath.EmptyUrlString;
+    this.#url = payload && payload.url || Platform15.DevToolsPath.EmptyUrlString;
     this.#domainAndRegistry = payload?.domainAndRegistry || "";
     this.#securityOrigin = payload?.securityOrigin ?? null;
     this.#securityOriginDetails = payload?.securityOriginDetails;
-    this.#unreachableUrl = payload && payload.unreachableUrl || Platform16.DevToolsPath.EmptyUrlString;
+    this.#unreachableUrl = payload && payload.unreachableUrl || Platform15.DevToolsPath.EmptyUrlString;
     this.#adFrameStatus = payload?.adFrameStatus;
     this.#secureContextType = payload?.secureContextType ?? null;
     this.#crossOriginIsolatedContextType = payload?.crossOriginIsolatedContextType ?? null;
@@ -26672,15 +27788,13 @@ var ResourceTreeFrame = class {
       /* forceFetch */
       true
     );
-    this.#unreachableUrl = framePayload.unreachableUrl || Platform16.DevToolsPath.EmptyUrlString;
+    this.#unreachableUrl = framePayload.unreachableUrl || Platform15.DevToolsPath.EmptyUrlString;
     this.#adFrameStatus = framePayload?.adFrameStatus;
     this.#secureContextType = framePayload.secureContextType;
     this.#crossOriginIsolatedContextType = framePayload.crossOriginIsolatedContextType;
     this.#gatedAPIFeatures = framePayload.gatedAPIFeatures;
     this.backForwardCacheDetails = {
-      restoredFromCache: void 0,
-      explanations: [],
-      explanationsTree: void 0
+      explanations: []
     };
     const mainResource = this.resourcesMap.get(this.#url);
     this.resourcesMap.clear();
@@ -26787,7 +27901,7 @@ var ResourceTreeFrame = class {
    * https://chromium.googlesource.com/chromium/src/+/HEAD/docs/frame_trees.md
    */
   isPrimaryFrame() {
-    return !this.#sameTargetParentFrame && this.#model.target() === TargetManager.instance().primaryPageTarget();
+    return !this.#sameTargetParentFrame && this.#model.target() === this.#model.target().targetManager().primaryPageTarget();
   }
   removeChildFrame(frame, isSwap) {
     this.#childFrames.delete(frame);
@@ -26814,7 +27928,7 @@ var ResourceTreeFrame = class {
   }
   addRequest(request) {
     let resource = this.resourcesMap.get(request.url());
-    if (resource && resource.request === request) {
+    if (resource?.request === request) {
       return;
     }
     resource = new Resource(this.#model, request, request.url(), request.documentURL, request.frameId, request.loaderId, request.resourceType(), request.mimeType, null, null);
@@ -27090,7 +28204,8 @@ var CookieModel = class extends SDKModel {
     if (cookie.expires()) {
       expires = Math.floor(Date.parse(`${cookie.expires()}`) / 1e3);
     }
-    const enabled = Root9.Runtime.experiments.isEnabled("experimental-cookie-features");
+    const schemeBindingEnabled = Boolean(Root10.Runtime.hostConfig.devToolsEnableOriginBoundCookies?.schemeBindingEnabled);
+    const portBindingEnabled = Boolean(Root10.Runtime.hostConfig.devToolsEnableOriginBoundCookies?.portBindingEnabled);
     const preserveUnset = (scheme) => scheme === "Unset" ? scheme : void 0;
     const protocolCookie = {
       name: cookie.name(),
@@ -27104,8 +28219,8 @@ var CookieModel = class extends SDKModel {
       expires,
       priority: cookie.priority(),
       partitionKey: cookie.partitionKey(),
-      sourceScheme: enabled ? cookie.sourceScheme() : preserveUnset(cookie.sourceScheme()),
-      sourcePort: enabled ? cookie.sourcePort() : void 0
+      sourceScheme: schemeBindingEnabled ? cookie.sourceScheme() : preserveUnset(cookie.sourceScheme()),
+      sourcePort: portBindingEnabled ? cookie.sourcePort() : void 0
     };
     const response = await this.target().networkAgent().invoke_setCookie(protocolCookie);
     const error = response.getError();
@@ -27131,7 +28246,6 @@ var CookieModel = class extends SDKModel {
     this.#cookieToBlockedReasons.clear();
     await Promise.all(cookies.map((cookie) => networkAgent.invoke_deleteCookies({
       name: cookie.name(),
-      url: void 0,
       domain: cookie.domain(),
       path: cookie.path(),
       partitionKey: cookie.partitionKey()
@@ -27167,7 +28281,7 @@ var CookieModel = class extends SDKModel {
     return this.#refreshThrottler.schedule(() => this.#refresh());
   }
   #refresh() {
-    const resourceURLs = new Platform17.MapUtilities.Multimap();
+    const resourceURLs = new Platform16.MapUtilities.Multimap();
     function populateResourceURLs(resource) {
       const documentURL = Common25.ParsedURL.ParsedURL.fromString(resource.documentURL);
       if (documentURL) {
@@ -27423,7 +28537,7 @@ function getStatusText(statusCode) {
 }
 
 // gen/front_end/core/sdk/ServerSentEvents.js
-import * as TextUtils22 from "./../../models/text_utils/text_utils.js";
+import * as TextUtils23 from "./../../models/text_utils/text_utils.js";
 
 // gen/front_end/core/sdk/ServerSentEventsProtocol.js
 var ServerSentEventsProtocol_exports = {};
@@ -27445,6 +28559,9 @@ var ServerSentEventsParser = class {
   }
   async addBase64Chunk(raw) {
     await this.#decoder.addBase64Chunk(raw);
+  }
+  addTextChunk(chunk) {
+    this.#onTextChunk(chunk);
   }
   #onTextChunk(chunk) {
     let start = 0;
@@ -27509,7 +28626,7 @@ var Base64TextDecoder = class {
     void this.#decoder.readable.pipeTo(new WritableStream({ write: onTextChunk }));
   }
   async addBase64Chunk(chunk) {
-    const binString = window.atob(chunk);
+    const binString = globalThis.atob(chunk);
     const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0));
     await this.#writer.ready;
     await this.#writer.write(bytes);
@@ -27530,7 +28647,7 @@ var ServerSentEvents = class {
       this.#lastDataReceivedTime = request.pseudoWallTime(request.startTime);
       this.#parser = new ServerSentEventsParser(this.#onParserEvent.bind(this), request.charset() ?? void 0);
       void this.#request.requestStreamingContent().then((streamingContentData) => {
-        if (!TextUtils22.StreamingContentData.isError(streamingContentData)) {
+        if (!TextUtils23.StreamingContentData.isError(streamingContentData)) {
           void this.#parser?.addBase64Chunk(streamingContentData.content().base64);
           streamingContentData.addEventListener("ChunkAdded", ({ data: { chunk } }) => {
             this.#lastDataReceivedTime = request.pseudoWallTime(request.endTime);
@@ -27831,10 +28948,6 @@ var UIStrings9 = {
    */
   schemefulSameSiteUnspecifiedTreatedAsLax: 'This cookie didn\'t specify a "`SameSite`" attribute when it was stored, was defaulted to "`SameSite=Lax"`, and was blocked because the request was cross-site and was not initiated by a top-level navigation. This request is considered cross-site because the URL has a different scheme than the current site.',
   /**
-   * @description Tooltip to explain why a cookie was blocked due to SameParty
-   */
-  samePartyFromCrossPartyContext: "This cookie was blocked because it had the \"`SameParty`\" attribute but the request was cross-party. The request was considered cross-party because the domain of the resource's URL and the domains of the resource's enclosing frames/documents are neither owners nor members in the same First-Party Set.",
-  /**
    * @description Tooltip to explain why a cookie was blocked due to exceeding the maximum size
    */
   nameValuePairExceedsMaxSize: "This cookie was blocked because it was too large. The combined size of the name and value must be less than or equal to 4096 characters.",
@@ -27871,14 +28984,6 @@ var UIStrings9 = {
    * @description Tooltip to explain why a cookie was blocked due to Schemeful Same-Site
    */
   thisSetcookieDidntSpecifyASamesite: 'This `Set-Cookie` header didn\'t specify a "`SameSite`" attribute, was defaulted to "`SameSite=Lax"`, and was blocked because it came from a cross-site response which was not the response to a top-level navigation. This response is considered cross-site because the URL has a different scheme than the current site.',
-  /**
-   * @description Tooltip to explain why a cookie was blocked due to SameParty
-   */
-  thisSetcookieWasBlockedBecauseItHadTheSameparty: "This attempt to set a cookie via a `Set-Cookie` header was blocked because it had the \"`SameParty`\" attribute but the request was cross-party. The request was considered cross-party because the domain of the resource's URL and the domains of the resource's enclosing frames/documents are neither owners nor members in the same First-Party Set.",
-  /**
-   * @description Tooltip to explain why a cookie was blocked due to SameParty
-   */
-  thisSetcookieWasBlockedBecauseItHadTheSamepartyAttribute: 'This attempt to set a cookie via a `Set-Cookie` header was blocked because it had the "`SameParty`" attribute but also had other conflicting attributes. Chrome requires cookies that use the "`SameParty`" attribute to also have the "Secure" attribute, and to not be restricted to "`SameSite=Strict`".',
   /**
    * @description Tooltip to explain why an attempt to set a cookie via a `Set-Cookie` HTTP header on a request's response was blocked.
    */
@@ -27973,6 +29078,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   #startTime = -1;
   #endTime = -1;
   #blockedReason = void 0;
+  #renderBlockingBehavior;
   #corsErrorStatus = void 0;
   statusCode = 0;
   statusText = "";
@@ -28015,6 +29121,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   #exemptedResponseCookies = [];
   #responseCookiesPartitionKey = null;
   #responseCookiesPartitionKeyOpaque = null;
+  #deviceBoundSessionUsages = [];
   #siteHasCookieInOtherPartition = false;
   localizedFailDescription = null;
   #url;
@@ -28063,7 +29170,6 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   responseReceivedPromiseResolve;
   directSocketInfo;
   #directSocketChunks = [];
-  #isIpProtectionUsed;
   #isAdRelated;
   #appliedNetworkConditionsId;
   constructor(requestId, backendRequestId, url, documentURL, frameId, loaderId, initiator, hasUserGesture) {
@@ -28076,14 +29182,13 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     this.#loaderId = loaderId;
     this.#initiator = initiator;
     this.#hasUserGesture = hasUserGesture;
-    this.#isIpProtectionUsed = false;
     this.#isAdRelated = false;
   }
   static create(backendRequestId, url, documentURL, frameId, loaderId, initiator, hasUserGesture) {
     return new _NetworkRequest(backendRequestId, backendRequestId, url, documentURL, frameId, loaderId, initiator, hasUserGesture);
   }
   static createForSocket(backendRequestId, requestURL, initiator) {
-    return new _NetworkRequest(backendRequestId, backendRequestId, requestURL, Platform18.DevToolsPath.EmptyUrlString, null, null, initiator || null);
+    return new _NetworkRequest(backendRequestId, backendRequestId, requestURL, Platform17.DevToolsPath.EmptyUrlString, null, null, initiator || null);
   }
   static createWithoutBackendRequest(requestId, url, documentURL, initiator) {
     return new _NetworkRequest(requestId, void 0, url, documentURL, null, null, initiator);
@@ -28291,6 +29396,12 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   setBlockedReason(reason) {
     this.#blockedReason = reason;
   }
+  setRenderBlockingBehavior(renderBlocking) {
+    this.#renderBlockingBehavior = renderBlocking;
+  }
+  renderBlockingBehavior() {
+    return this.#renderBlockingBehavior;
+  }
   corsErrorStatus() {
     return this.#corsErrorStatus;
   }
@@ -28424,7 +29535,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
       this.#path = this.#parsedURL.host + this.#parsedURL.folderPathComponents;
       const networkManager = NetworkManager.forRequest(this);
       const inspectedURL = networkManager ? Common27.ParsedURL.ParsedURL.fromString(networkManager.target().inspectedURL()) : null;
-      this.#path = Platform18.StringUtilities.trimURL(this.#path, inspectedURL ? inspectedURL.host : "");
+      this.#path = Platform17.StringUtilities.trimURL(this.#path, inspectedURL ? inspectedURL.host : "");
       if (this.#parsedURL.lastPathComponent || this.#parsedURL.queryParams) {
         this.#name = this.#parsedURL.lastPathComponent + (this.#parsedURL.queryParams ? "?" + this.#parsedURL.queryParams : "");
       } else if (this.#parsedURL.folderPathComponents) {
@@ -28584,7 +29695,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     }
     this.#sortedResponseHeaders = this.responseHeaders.slice();
     return this.#sortedResponseHeaders.sort(function(a, b) {
-      return Platform18.StringUtilities.compare(a.name.toLowerCase(), b.name.toLowerCase());
+      return Platform17.StringUtilities.compare(a.name.toLowerCase(), b.name.toLowerCase());
     });
   }
   get sortedOriginalResponseHeaders() {
@@ -28593,7 +29704,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     }
     this.#sortedOriginalResponseHeaders = this.originalResponseHeaders.slice();
     return this.#sortedOriginalResponseHeaders.sort(function(a, b) {
-      return Platform18.StringUtilities.compare(a.name.toLowerCase(), b.name.toLowerCase());
+      return Platform17.StringUtilities.compare(a.name.toLowerCase(), b.name.toLowerCase());
     });
   }
   get overrideTypes() {
@@ -28795,7 +29906,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
    * --boundaryString--
    */
   parseMultipartFormDataParameters(data, boundary) {
-    const sanitizedBoundary = Platform18.StringUtilities.escapeForRegExp(boundary);
+    const sanitizedBoundary = Platform17.StringUtilities.escapeForRegExp(boundary);
     const keyValuePattern = new RegExp(
       // Header with an optional file #name.
       '^\\r\\ncontent-disposition\\s*:\\s*form-data\\s*;\\s*name="([^"]*)"(?:\\s*;\\s*filename="([^"]*)")?(?:\\r\\ncontent-type\\s*:\\s*([^\\r\\n]*))?\\r\\n\\r\\n(.*)\\r\\n$',
@@ -28850,10 +29961,10 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     }
     const contentPromise = this.finished ? this.requestContentData() : NetworkManager.streamResponseBody(this);
     this.#streamingContentData = contentPromise.then((contentData) => {
-      if (TextUtils23.ContentData.ContentData.isError(contentData)) {
+      if (TextUtils24.ContentData.ContentData.isError(contentData)) {
         return contentData;
       }
-      return TextUtils23.StreamingContentData.StreamingContentData.from(contentData);
+      return TextUtils24.StreamingContentData.StreamingContentData.from(contentData);
     });
     return this.#streamingContentData;
   }
@@ -28868,13 +29979,16 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
       return await NetworkManager.searchInRequest(this, query, caseSensitive, isRegex);
     }
     const contentData = await this.requestContentData();
-    if (TextUtils23.ContentData.ContentData.isError(contentData) || !contentData.isTextContent) {
+    if (TextUtils24.ContentData.ContentData.isError(contentData) || !contentData.isTextContent) {
       return [];
     }
-    return TextUtils23.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
+    return TextUtils24.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
   }
   requestContentType() {
     return this.requestHeaderValue("Content-Type");
+  }
+  requestContentEncoding() {
+    return this.requestHeaderValue("Content-Encoding");
   }
   hasErrorStatusCode() {
     return this.statusCode >= 400;
@@ -28899,19 +30013,11 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   }
   async populateImageSource(image) {
     const contentData = await this.requestContentData();
-    if (TextUtils23.ContentData.ContentData.isError(contentData)) {
+    if (TextUtils24.ContentData.ContentData.isError(contentData)) {
       return;
     }
-    let imageSrc = contentData.asDataUrl();
-    if (imageSrc === null && !this.#failed) {
-      const cacheControl = this.responseHeaderValue("cache-control") || "";
-      if (!cacheControl.includes("no-cache")) {
-        imageSrc = this.#url;
-      }
-    }
-    if (imageSrc !== null) {
-      image.src = imageSrc;
-    }
+    const imageSrc = contentData.asImagePreviewUrl();
+    image.src = imageSrc ?? "";
   }
   initiator() {
     return this.#initiator || null;
@@ -28981,6 +30087,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     this.setRequestHeaders(extraRequestInfo.requestHeaders);
     this.#hasExtraRequestInfo = true;
     this.setRequestHeadersText("");
+    this.#deviceBoundSessionUsages = extraRequestInfo.deviceBoundSessionUsages || [];
     this.#clientSecurityState = extraRequestInfo.clientSecurityState;
     this.#appliedNetworkConditionsId = extraRequestInfo.appliedNetworkConditionsId;
     if (extraRequestInfo.connectTiming) {
@@ -28991,6 +30098,12 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
       "ThirdPartyPhaseout"
       /* Protocol.Network.CookieBlockedReason.ThirdPartyPhaseout */
     ));
+  }
+  setAppliedNetworkConditions(appliedNetworkConditionsId) {
+    this.#appliedNetworkConditionsId = appliedNetworkConditionsId;
+  }
+  getDeviceBoundSessionUsages() {
+    return this.#deviceBoundSessionUsages;
   }
   hasExtraRequestInfo() {
     return this.#hasExtraRequestInfo;
@@ -29137,12 +30250,6 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
   isSameSite() {
     return this.#isSameSite;
   }
-  setIsIpProtectionUsed(isIpProtectionUsed) {
-    this.#isIpProtectionUsed = isIpProtectionUsed;
-  }
-  isIpProtectionUsed() {
-    return this.#isIpProtectionUsed;
-  }
   setIsAdRelated(isAdRelated) {
     this.#isAdRelated = isAdRelated;
   }
@@ -29169,7 +30276,7 @@ var NetworkRequest = class _NetworkRequest extends Common27.ObjectWrapper.Object
     this.endTime = timestamp;
     if (data) {
       void this.#streamingContentData?.then((contentData) => {
-        if (!TextUtils23.StreamingContentData.isError(contentData)) {
+        if (!TextUtils24.StreamingContentData.isError(contentData)) {
           contentData.addChunk(data);
         }
       });
@@ -29252,8 +30359,6 @@ var cookieBlockedReasonToUiString = function(blockedReason) {
       return i18nString9(UIStrings9.schemefulSameSiteLax);
     case "SchemefulSameSiteUnspecifiedTreatedAsLax":
       return i18nString9(UIStrings9.schemefulSameSiteUnspecifiedTreatedAsLax);
-    case "SamePartyFromCrossPartyContext":
-      return i18nString9(UIStrings9.samePartyFromCrossPartyContext);
     case "NameValuePairExceedsMaxSize":
       return i18nString9(UIStrings9.nameValuePairExceedsMaxSize);
     case "ThirdPartyPhaseout":
@@ -29297,10 +30402,6 @@ var setCookieBlockedReasonToUiString = function(blockedReason) {
       return i18nString9(UIStrings9.thisSetcookieWasBlockedBecauseItHadTheSamesiteStrictLax, { PH1: "SameSite=Lax" });
     case "SchemefulSameSiteUnspecifiedTreatedAsLax":
       return i18nString9(UIStrings9.thisSetcookieDidntSpecifyASamesite);
-    case "SamePartyFromCrossPartyContext":
-      return i18nString9(UIStrings9.thisSetcookieWasBlockedBecauseItHadTheSameparty);
-    case "SamePartyConflictsWithOtherAttributes":
-      return i18nString9(UIStrings9.thisSetcookieWasBlockedBecauseItHadTheSamepartyAttribute);
     case "NameValuePairExceedsMaxSize":
       return i18nString9(UIStrings9.thisSetcookieWasBlockedBecauseTheNameValuePairExceedsMaxSize);
     case "DisallowedCharacter":
@@ -29326,7 +30427,6 @@ var cookieBlockedReasonToAttribute = function(blockedReason) {
     case "SchemefulSameSiteLax":
     case "SchemefulSameSiteUnspecifiedTreatedAsLax":
       return "same-site";
-    case "SamePartyFromCrossPartyContext":
     case "NameValuePairExceedsMaxSize":
     case "UserPreferences":
     case "ThirdPartyPhaseout":
@@ -29352,8 +30452,6 @@ var setCookieBlockedReasonToAttribute = function(blockedReason) {
       return "domain";
     case "InvalidPrefix":
       return "name";
-    case "SamePartyConflictsWithOtherAttributes":
-    case "SamePartyFromCrossPartyContext":
     case "NameValuePairExceedsMaxSize":
     case "UserPreferences":
     case "ThirdPartyPhaseout":
@@ -29545,6 +30643,17 @@ var AccessibilityModel = class extends SDKModel {
     target.registerAccessibilityDispatcher(this);
     this.agent = target.accessibilityAgent();
     void this.resumeModel();
+    const domModel = target.model(DOMModel);
+    if (domModel) {
+      domModel.addEventListener(Events8.NodeRemoved, () => {
+        this.clear();
+        this.dispatchEventToListeners("TreeUpdated", {});
+      });
+      domModel.addEventListener(Events8.NodeInserted, () => {
+        this.clear();
+        this.dispatchEventToListeners("TreeUpdated", {});
+      });
+    }
   }
   clear() {
     this.#root = null;
@@ -29936,7 +31045,7 @@ var AnimationModel = class extends SDKModel {
     }
     const animation = await AnimationImpl.parsePayload(this, payload);
     const keyframesRule = animation.source().keyframesRule();
-    if (animation.type() === "WebAnimation" && keyframesRule && keyframesRule.keyframes().length === 0) {
+    if (animation.type() === "WebAnimation" && keyframesRule?.keyframes().length === 0) {
       this.#pendingAnimations.delete(animation.id());
     } else {
       this.#animationsById.set(animation.id(), animation);
@@ -29991,10 +31100,6 @@ var AnimationModel = class extends SDKModel {
   setPlaybackRate(playbackRate) {
     this.playbackRate = playbackRate;
     void this.agent.invoke_setPlaybackRate({ playbackRate });
-  }
-  async releaseAllAnimations() {
-    const animationIds = [...this.animationGroups.values()].flatMap((animationGroup) => animationGroup.animations().map((animation) => animation.id()));
-    await this.agent.invoke_releaseAnimations({ animations: animationIds });
   }
   releaseAnimations(animations) {
     void this.agent.invoke_releaseAnimations({ animations });
@@ -30454,8 +31559,7 @@ var AutofillModel_exports = {};
 __export(AutofillModel_exports, {
   AutofillModel: () => AutofillModel
 });
-import * as Common29 from "./../common/common.js";
-import * as Host7 from "./../host/host.js";
+import * as Host5 from "./../host/host.js";
 var AutofillModel = class extends SDKModel {
   agent;
   #enabled;
@@ -30463,7 +31567,8 @@ var AutofillModel = class extends SDKModel {
   constructor(target) {
     super(target);
     this.agent = target.autofillAgent();
-    this.#showTestAddressesInAutofillMenu = Common29.Settings.Settings.instance().createSetting("show-test-addresses-in-autofill-menu-on-event", false);
+    const settings = this.target().targetManager().settings;
+    this.#showTestAddressesInAutofillMenu = settings.createSetting("show-test-addresses-in-autofill-menu-on-event", false);
     this.#showTestAddressesInAutofillMenu.addChangeListener(this.#setTestAddresses, this);
     target.registerAutofillDispatcher(this);
     this.enable();
@@ -30583,7 +31688,7 @@ var AutofillModel = class extends SDKModel {
     });
   }
   enable() {
-    if (this.#enabled || Host7.InspectorFrontendHost.isUnderTest()) {
+    if (this.#enabled || Host5.InspectorFrontendHost.isUnderTest()) {
       return;
     }
     void this.agent.invoke_enable();
@@ -30591,7 +31696,7 @@ var AutofillModel = class extends SDKModel {
     this.#enabled = true;
   }
   disable() {
-    if (!this.#enabled || Host7.InspectorFrontendHost.isUnderTest()) {
+    if (!this.#enabled || Host5.InspectorFrontendHost.isUnderTest()) {
       return;
     }
     this.#enabled = false;
@@ -30640,34 +31745,295 @@ var ChildTargetManager_exports = {};
 __export(ChildTargetManager_exports, {
   ChildTargetManager: () => ChildTargetManager
 });
-import * as i18n27 from "./../i18n/i18n.js";
-import * as Common34 from "./../common/common.js";
-import * as Host9 from "./../host/host.js";
+import * as i18n23 from "./../i18n/i18n.js";
+import * as Common29 from "./../common/common.js";
+import * as Host6 from "./../host/host.js";
+var UIStrings10 = {
+  /**
+   * @description Text that refers to the main target. The main target is the primary webpage that
+   * DevTools is connected to. This text is used in various places in the UI as a label/name to inform
+   * the user which target/webpage they are currently connected to, as DevTools may connect to multiple
+   * targets at the same time in some scenarios.
+   */
+  main: "Main"
+};
+var str_10 = i18n23.i18n.registerUIStrings("core/sdk/ChildTargetManager.ts", UIStrings10);
+var i18nString10 = i18n23.i18n.getLocalizedString.bind(void 0, str_10);
+var ChildTargetManager = class _ChildTargetManager extends SDKModel {
+  #targetManager;
+  #parentTarget;
+  #targetAgent;
+  #targetInfos = /* @__PURE__ */ new Map();
+  #childTargetsBySessionId = /* @__PURE__ */ new Map();
+  #childTargetsById = /* @__PURE__ */ new Map();
+  #parentTargetId = null;
+  constructor(parentTarget) {
+    super(parentTarget);
+    this.#targetManager = parentTarget.targetManager();
+    this.#parentTarget = parentTarget;
+    this.#targetAgent = parentTarget.targetAgent();
+    parentTarget.registerTargetDispatcher(this);
+    const browserTarget = this.#targetManager.browserTarget();
+    if (browserTarget) {
+      if (browserTarget !== parentTarget) {
+        void browserTarget.targetAgent().invoke_autoAttachRelated({ targetId: parentTarget.id(), waitForDebuggerOnStart: true });
+      }
+    } else if (parentTarget.type() === Type.NODE) {
+      void this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: false });
+    } else {
+      void this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
+    }
+    if (parentTarget.parentTarget()?.type() !== Type.FRAME && !Host6.InspectorFrontendHost.isUnderTest()) {
+      void this.#targetAgent.invoke_setDiscoverTargets({ discover: true });
+      void this.#targetAgent.invoke_setRemoteLocations({ locations: [{ host: "localhost", port: 9229 }] });
+    }
+  }
+  static install(attachCallback) {
+    _ChildTargetManager.attachCallback = attachCallback;
+    SDKModel.register(_ChildTargetManager, { capabilities: 32, autostart: true });
+  }
+  childTargets() {
+    return Array.from(this.#childTargetsBySessionId.values());
+  }
+  async suspendModel() {
+    await this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: false, flatten: true });
+  }
+  async resumeModel() {
+    await this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
+  }
+  dispose() {
+    for (const sessionId of this.#childTargetsBySessionId.keys()) {
+      this.detachedFromTarget({ sessionId });
+    }
+  }
+  targetCreated({ targetInfo }) {
+    this.#targetInfos.set(targetInfo.targetId, targetInfo);
+    this.fireAvailableTargetsChanged();
+    this.dispatchEventToListeners("TargetCreated", targetInfo);
+  }
+  targetInfoChanged({ targetInfo }) {
+    this.#targetInfos.set(targetInfo.targetId, targetInfo);
+    const target = this.#childTargetsById.get(targetInfo.targetId);
+    if (target) {
+      void target.setHasCrashed(false);
+      if (target.targetInfo()?.subtype === "prerender" && !targetInfo.subtype) {
+        const resourceTreeModel = target.model(ResourceTreeModel);
+        target.updateTargetInfo(targetInfo);
+        if (resourceTreeModel?.mainFrame) {
+          resourceTreeModel.primaryPageChanged(
+            resourceTreeModel.mainFrame,
+            "Activation"
+            /* PrimaryPageChangeType.ACTIVATION */
+          );
+        }
+        target.setName(i18nString10(UIStrings10.main));
+      } else {
+        target.updateTargetInfo(targetInfo);
+      }
+    }
+    this.fireAvailableTargetsChanged();
+    this.dispatchEventToListeners("TargetInfoChanged", targetInfo);
+  }
+  targetDestroyed({ targetId }) {
+    this.#targetInfos.delete(targetId);
+    this.fireAvailableTargetsChanged();
+    this.dispatchEventToListeners("TargetDestroyed", targetId);
+  }
+  targetCrashed({ targetId }) {
+    const target = this.#childTargetsById.get(targetId);
+    if (target) {
+      target.setHasCrashed(true);
+    }
+  }
+  fireAvailableTargetsChanged() {
+    this.#targetManager.dispatchEventToListeners("AvailableTargetsChanged", [...this.#targetInfos.values()]);
+  }
+  async getParentTargetId() {
+    if (!this.#parentTargetId) {
+      this.#parentTargetId = (await this.#parentTarget.targetAgent().invoke_getTargetInfo({})).targetInfo.targetId;
+    }
+    return this.#parentTargetId;
+  }
+  async getTargetInfo() {
+    return (await this.#parentTarget.targetAgent().invoke_getTargetInfo({})).targetInfo;
+  }
+  async attachedToTarget({ sessionId, targetInfo, waitingForDebugger }) {
+    if (this.#parentTargetId === targetInfo.targetId) {
+      return;
+    }
+    let type = Type.BROWSER;
+    let targetName = "";
+    if (targetInfo.type === "worker" && targetInfo.title && targetInfo.title !== targetInfo.url) {
+      targetName = targetInfo.title;
+    } else if (!["page", "iframe", "webview"].includes(targetInfo.type)) {
+      const KNOWN_FRAME_PATTERNS = [
+        "^chrome://print/$",
+        "^chrome://file-manager/",
+        "^chrome://feedback/",
+        "^chrome://.*\\.top-chrome/$",
+        "^chrome://view-cert/$",
+        "^devtools://"
+      ];
+      if (KNOWN_FRAME_PATTERNS.some((p) => targetInfo.url.match(p))) {
+        type = Type.FRAME;
+      } else {
+        const parsedURL = Common29.ParsedURL.ParsedURL.fromString(targetInfo.url);
+        targetName = parsedURL ? parsedURL.lastPathComponentWithFragment() : "#" + ++_ChildTargetManager.lastAnonymousTargetId;
+      }
+    }
+    if (targetInfo.type === "iframe" || targetInfo.type === "webview") {
+      type = Type.FRAME;
+    } else if (targetInfo.type === "background_page" || targetInfo.type === "app" || targetInfo.type === "popup_page") {
+      type = Type.FRAME;
+    } else if (targetInfo.type === "page") {
+      type = Type.FRAME;
+    } else if (targetInfo.type === "browser_ui") {
+      type = Type.FRAME;
+    } else if (targetInfo.type === "worker") {
+      type = Type.Worker;
+    } else if (targetInfo.type === "worklet") {
+      type = Type.WORKLET;
+    } else if (targetInfo.type === "shared_worker") {
+      type = Type.SHARED_WORKER;
+    } else if (targetInfo.type === "shared_storage_worklet") {
+      type = Type.SHARED_STORAGE_WORKLET;
+    } else if (targetInfo.type === "service_worker") {
+      type = Type.ServiceWorker;
+    } else if (targetInfo.type === "auction_worklet") {
+      type = Type.AUCTION_WORKLET;
+    } else if (targetInfo.type === "node_worker") {
+      type = Type.NODE_WORKER;
+    }
+    const target = this.#targetManager.createTarget(targetInfo.targetId, targetName, type, this.#parentTarget, sessionId, void 0, void 0, targetInfo);
+    this.#childTargetsBySessionId.set(sessionId, target);
+    this.#childTargetsById.set(target.id(), target);
+    if (_ChildTargetManager.attachCallback) {
+      await _ChildTargetManager.attachCallback({ target, waitingForDebugger });
+    }
+    if (waitingForDebugger) {
+      void target.runtimeAgent().invoke_runIfWaitingForDebugger();
+    }
+    if (type !== Type.FRAME && target.hasAllCapabilities(
+      8192
+      /* Capability.STORAGE */
+    )) {
+      await this.initializeStorage(target);
+    }
+  }
+  async initializeStorage(target) {
+    const storageAgent = target.storageAgent();
+    const response = await storageAgent.invoke_getStorageKey({});
+    const storageKey = response.storageKey;
+    if (response.getError() || !storageKey) {
+      console.error(`Failed to get storage key for target ${target.id()}: ${response.getError()}`);
+      return;
+    }
+    const storageKeyManager = target.model(StorageKeyManager);
+    if (storageKeyManager) {
+      storageKeyManager.setMainStorageKey(storageKey);
+      storageKeyManager.updateStorageKeys(/* @__PURE__ */ new Set([storageKey]));
+    }
+    const securityOriginManager = target.model(SecurityOriginManager);
+    if (securityOriginManager) {
+      const origin = new URL(storageKey).origin;
+      securityOriginManager.setMainSecurityOrigin(origin, "");
+      securityOriginManager.updateSecurityOrigins(/* @__PURE__ */ new Set([origin]));
+    }
+  }
+  detachedFromTarget({ sessionId }) {
+    const target = this.#childTargetsBySessionId.get(sessionId);
+    if (target) {
+      target.dispose("target terminated");
+      this.#childTargetsBySessionId.delete(sessionId);
+      this.#childTargetsById.delete(target.id());
+    }
+  }
+  receivedMessageFromTarget({}) {
+  }
+  targetInfos() {
+    return Array.from(this.#targetInfos.values());
+  }
+  static lastAnonymousTargetId = 0;
+  static attachCallback;
+};
+
+// gen/front_end/core/sdk/CompilerSourceMappingContentProvider.js
+var CompilerSourceMappingContentProvider_exports = {};
+__export(CompilerSourceMappingContentProvider_exports, {
+  CompilerSourceMappingContentProvider: () => CompilerSourceMappingContentProvider
+});
+import * as TextUtils26 from "./../../models/text_utils/text_utils.js";
+import * as i18n25 from "./../i18n/i18n.js";
+var UIStrings11 = {
+  /**
+   * @description Error message when failing to fetch a resource referenced in a source map
+   * @example {https://example.com/sourcemap.map} PH1
+   * @example {An error occurred} PH2
+   */
+  couldNotLoadContentForSS: "Could not load content for {PH1} ({PH2})"
+};
+var str_11 = i18n25.i18n.registerUIStrings("core/sdk/CompilerSourceMappingContentProvider.ts", UIStrings11);
+var i18nString11 = i18n25.i18n.getLocalizedString.bind(void 0, str_11);
+var CompilerSourceMappingContentProvider = class {
+  #sourceURL;
+  #contentType;
+  #initiator;
+  constructor(sourceURL, contentType, initiator) {
+    this.#sourceURL = sourceURL;
+    this.#contentType = contentType;
+    this.#initiator = initiator;
+  }
+  contentURL() {
+    return this.#sourceURL;
+  }
+  contentType() {
+    return this.#contentType;
+  }
+  async requestContentData() {
+    try {
+      const { content } = await PageResourceLoader.instance().loadResource(this.#sourceURL, this.#initiator);
+      return new TextUtils26.ContentData.ContentData(
+        content,
+        /* isBase64=*/
+        false,
+        this.#contentType.canonicalMimeType()
+      );
+    } catch (e) {
+      const error = i18nString11(UIStrings11.couldNotLoadContentForSS, { PH1: this.#sourceURL, PH2: e.message });
+      console.error(error);
+      return { error };
+    }
+  }
+  async searchInContent(query, caseSensitive, isRegex) {
+    const contentData = await this.requestContentData();
+    return TextUtils26.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
+  }
+};
 
 // gen/front_end/core/sdk/Connections.js
 var Connections_exports = {};
 __export(Connections_exports, {
   MainConnection: () => MainConnection,
-  ParallelConnection: () => ParallelConnection,
-  StubConnection: () => StubConnection,
-  WebSocketConnection: () => WebSocketConnection,
+  StubTransport: () => StubTransport,
+  WebSocketTransport: () => WebSocketTransport,
   initMainConnection: () => initMainConnection
 });
-import * as i18n25 from "./../i18n/i18n.js";
+import * as i18n29 from "./../i18n/i18n.js";
 import * as Common33 from "./../common/common.js";
-import * as Host8 from "./../host/host.js";
-import * as ProtocolClient2 from "./../protocol_client/protocol_client.js";
-import * as Root11 from "./../root/root.js";
+import * as Host7 from "./../host/host.js";
+import * as ProtocolClient3 from "./../protocol_client/protocol_client.js";
+import * as Root12 from "./../root/root.js";
 
 // gen/front_end/core/sdk/RehydratingConnection.js
 var RehydratingConnection_exports = {};
 __export(RehydratingConnection_exports, {
-  RehydratingConnection: () => RehydratingConnection,
+  RehydratingConnectionTransport: () => RehydratingConnectionTransport,
   RehydratingSession: () => RehydratingSession
 });
 import * as Common32 from "./../common/common.js";
-import * as i18n23 from "./../i18n/i18n.js";
-import * as Root10 from "./../root/root.js";
+import * as i18n27 from "./../i18n/i18n.js";
+import * as ProtocolClient2 from "./../protocol_client/protocol_client.js";
+import * as Root11 from "./../root/root.js";
 
 // gen/front_end/core/sdk/EnhancedTracesParser.js
 var EnhancedTracesParser_exports = {};
@@ -31005,7 +32371,7 @@ var TraceObject = class {
       this.metadata = meta ?? {};
     } else {
       this.traceEvents = payload.traceEvents;
-      this.metadata = payload.metadata;
+      this.metadata = payload.metadata ?? {};
     }
   }
 };
@@ -31034,7 +32400,7 @@ var RevealableNetworkRequest = class _RevealableNetworkRequest {
 };
 
 // gen/front_end/core/sdk/RehydratingConnection.js
-var UIStrings10 = {
+var UIStrings12 = {
   /**
    * @description Text that appears when no source text is available for the given script
    */
@@ -31048,9 +32414,9 @@ var UIStrings10 = {
    */
   errorLoadingLog: "Error loading log"
 };
-var str_10 = i18n23.i18n.registerUIStrings("core/sdk/RehydratingConnection.ts", UIStrings10);
-var i18nString10 = i18n23.i18n.getLocalizedString.bind(void 0, str_10);
-var RehydratingConnection = class {
+var str_12 = i18n27.i18n.registerUIStrings("core/sdk/RehydratingConnection.ts", UIStrings12);
+var i18nString12 = i18n27.i18n.getLocalizedString.bind(void 0, str_12);
+var RehydratingConnectionTransport = class {
   rehydratingConnectionState = 1;
   onDisconnect = null;
   onMessage = null;
@@ -31067,9 +32433,9 @@ var RehydratingConnection = class {
   }
   /** Returns true if found a trace URL. */
   #maybeHandleLoadingFromUrl() {
-    let traceUrl = Root10.Runtime.Runtime.queryParam("traceURL");
+    let traceUrl = Root11.Runtime.Runtime.queryParam("traceURL");
     if (!traceUrl) {
-      const timelineUrl = Root10.Runtime.Runtime.queryParam("loadTimelineFromURL");
+      const timelineUrl = Root11.Runtime.Runtime.queryParam("loadTimelineFromURL");
       if (timelineUrl) {
         traceUrl = decodeURIComponent(timelineUrl);
       }
@@ -31090,7 +32456,7 @@ var RehydratingConnection = class {
     } else if (this.#rehydratingWindow !== window.top) {
       this.#rehydratingWindow.parent.postMessage({ type: "REHYDRATING_IFRAME_READY" }, "*");
     } else {
-      this.#onConnectionLost(i18nString10(UIStrings10.noHostWindow));
+      this.#onConnectionLost(i18nString12(UIStrings12.noHostWindow));
     }
   }
   /**
@@ -31104,7 +32470,7 @@ var RehydratingConnection = class {
       try {
         trace = new TraceObject(JSON.parse(traceJson));
       } catch {
-        this.#onConnectionLost(i18nString10(UIStrings10.errorLoadingLog));
+        this.#onConnectionLost(i18nString12(UIStrings12.errorLoadingLog));
         return;
       }
       void this.startHydration(trace);
@@ -31271,7 +32637,10 @@ var RehydratingSession = class extends RehydratingSessionBase {
       default:
         this.sendMessageToFrontend({
           id: data.id,
-          result: {}
+          error: {
+            message: `Command ${data.method} not implemented in RehydratingSession.`,
+            code: ProtocolClient2.CDPConnection.CDPErrorStatus.DEVTOOLS_STUB_ERROR
+          }
         });
         break;
     }
@@ -31324,7 +32693,7 @@ var RehydratingSession = class extends RehydratingSessionBase {
     this.sendMessageToFrontend({
       id,
       result: {
-        scriptSource: typeof script.sourceText === "undefined" ? i18nString10(UIStrings10.noSourceText) : script.sourceText
+        scriptSource: typeof script.sourceText === "undefined" ? i18nString12(UIStrings12.noSourceText) : script.sourceText
       }
     });
   }
@@ -31421,14 +32790,14 @@ var RehydratingSession = class extends RehydratingSessionBase {
 };
 
 // gen/front_end/core/sdk/Connections.js
-var UIStrings11 = {
+var UIStrings13 = {
   /**
    * @description Text on the remote debugging window to indicate the connection is lost
    */
   websocketDisconnected: "WebSocket disconnected"
 };
-var str_11 = i18n25.i18n.registerUIStrings("core/sdk/Connections.ts", UIStrings11);
-var i18nString11 = i18n25.i18n.getLocalizedString.bind(void 0, str_11);
+var str_13 = i18n29.i18n.registerUIStrings("core/sdk/Connections.ts", UIStrings13);
+var i18nString13 = i18n29.i18n.getLocalizedString.bind(void 0, str_13);
 var MainConnection = class {
   onMessage = null;
   #onDisconnect = null;
@@ -31437,8 +32806,8 @@ var MainConnection = class {
   #eventListeners;
   constructor() {
     this.#eventListeners = [
-      Host8.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host8.InspectorFrontendHostAPI.Events.DispatchMessage, this.dispatchMessage, this),
-      Host8.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host8.InspectorFrontendHostAPI.Events.DispatchMessageChunk, this.dispatchMessageChunk, this)
+      Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host7.InspectorFrontendHostAPI.Events.DispatchMessage, this.dispatchMessage, this),
+      Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host7.InspectorFrontendHostAPI.Events.DispatchMessageChunk, this.dispatchMessageChunk, this)
     ];
   }
   setOnMessage(onMessage) {
@@ -31449,7 +32818,7 @@ var MainConnection = class {
   }
   sendRawMessage(message) {
     if (this.onMessage) {
-      Host8.InspectorFrontendHost.InspectorFrontendHostInstance.sendMessageToBackend(message);
+      Host7.InspectorFrontendHost.InspectorFrontendHostInstance.sendMessageToBackend(message);
     }
   }
   dispatchMessage(event) {
@@ -31480,7 +32849,7 @@ var MainConnection = class {
     }
   }
 };
-var WebSocketConnection = class {
+var WebSocketTransport = class {
   #socket;
   onMessage = null;
   #onDisconnect = null;
@@ -31507,7 +32876,7 @@ var WebSocketConnection = class {
   }
   onError() {
     if (this.#onWebSocketDisconnect) {
-      this.#onWebSocketDisconnect.call(null, i18nString11(UIStrings11.websocketDisconnected));
+      this.#onWebSocketDisconnect.call(null, i18nString13(UIStrings13.websocketDisconnected));
     }
     if (this.#onDisconnect) {
       this.#onDisconnect.call(null, "connection failed");
@@ -31526,7 +32895,7 @@ var WebSocketConnection = class {
   }
   onClose() {
     if (this.#onWebSocketDisconnect) {
-      this.#onWebSocketDisconnect.call(null, i18nString11(UIStrings11.websocketDisconnected));
+      this.#onWebSocketDisconnect.call(null, i18nString13(UIStrings13.websocketDisconnected));
     }
     if (this.#onDisconnect) {
       this.#onDisconnect.call(null, "websocket closed");
@@ -31562,7 +32931,7 @@ var WebSocketConnection = class {
     });
   }
 };
-var StubConnection = class {
+var StubTransport = class {
   onMessage = null;
   #onDisconnect = null;
   setOnMessage(onMessage) {
@@ -31578,7 +32947,7 @@ var StubConnection = class {
     const messageObject = JSON.parse(message);
     const error = {
       message: "This is a stub connection, can't dispatch message.",
-      code: ProtocolClient2.InspectorBackend.DevToolsStubErrorCode,
+      code: ProtocolClient3.CDPConnection.CDPErrorStatus.DEVTOOLS_STUB_ERROR,
       data: messageObject
     };
     if (this.onMessage) {
@@ -31593,350 +32962,27 @@ var StubConnection = class {
     this.onMessage = null;
   }
 };
-var ParallelConnection = class {
-  #connection;
-  #sessionId;
-  onMessage = null;
-  #onDisconnect = null;
-  constructor(connection, sessionId) {
-    this.#connection = connection;
-    this.#sessionId = sessionId;
-  }
-  setOnMessage(onMessage) {
-    this.onMessage = onMessage;
-  }
-  setOnDisconnect(onDisconnect) {
-    this.#onDisconnect = onDisconnect;
-  }
-  getOnDisconnect() {
-    return this.#onDisconnect;
-  }
-  sendRawMessage(message) {
-    const messageObject = JSON.parse(message);
-    if (!messageObject.sessionId) {
-      messageObject.sessionId = this.#sessionId;
-    }
-    this.#connection.sendRawMessage(JSON.stringify(messageObject));
-  }
-  getSessionId() {
-    return this.#sessionId;
-  }
-  async disconnect() {
-    if (this.#onDisconnect) {
-      this.#onDisconnect.call(null, "force disconnect");
-    }
-    this.#onDisconnect = null;
-    this.onMessage = null;
-  }
-};
 async function initMainConnection(createRootTarget, onConnectionLost) {
-  ProtocolClient2.ConnectionTransport.ConnectionTransport.setFactory(createMainConnection.bind(null, onConnectionLost));
+  ProtocolClient3.ConnectionTransport.ConnectionTransport.setFactory(createMainTransport.bind(null, onConnectionLost));
   await createRootTarget();
-  Host8.InspectorFrontendHost.InspectorFrontendHostInstance.connectionReady();
+  Host7.InspectorFrontendHost.InspectorFrontendHostInstance.connectionReady();
 }
-function createMainConnection(onConnectionLost) {
-  if (Root11.Runtime.Runtime.isTraceApp()) {
-    return new RehydratingConnection(onConnectionLost);
+function createMainTransport(onConnectionLost) {
+  if (Root12.Runtime.Runtime.isTraceApp()) {
+    return new RehydratingConnectionTransport(onConnectionLost);
   }
-  const wsParam = Root11.Runtime.Runtime.queryParam("ws");
-  const wssParam = Root11.Runtime.Runtime.queryParam("wss");
+  const wsParam = Root12.Runtime.Runtime.queryParam("ws");
+  const wssParam = Root12.Runtime.Runtime.queryParam("wss");
   if (wsParam || wssParam) {
     const ws = wsParam ? `ws://${wsParam}` : `wss://${wssParam}`;
-    return new WebSocketConnection(ws, onConnectionLost);
+    return new WebSocketTransport(ws, onConnectionLost);
   }
-  const notEmbeddedOrWs = Host8.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode();
+  const notEmbeddedOrWs = Host7.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode();
   if (notEmbeddedOrWs) {
-    return new StubConnection();
+    return new StubTransport();
   }
   return new MainConnection();
 }
-
-// gen/front_end/core/sdk/ChildTargetManager.js
-var UIStrings12 = {
-  /**
-   * @description Text that refers to the main target. The main target is the primary webpage that
-   * DevTools is connected to. This text is used in various places in the UI as a label/name to inform
-   * the user which target/webpage they are currently connected to, as DevTools may connect to multiple
-   * targets at the same time in some scenarios.
-   */
-  main: "Main"
-};
-var str_12 = i18n27.i18n.registerUIStrings("core/sdk/ChildTargetManager.ts", UIStrings12);
-var i18nString12 = i18n27.i18n.getLocalizedString.bind(void 0, str_12);
-var ChildTargetManager = class _ChildTargetManager extends SDKModel {
-  #targetManager;
-  #parentTarget;
-  #targetAgent;
-  #targetInfos = /* @__PURE__ */ new Map();
-  #childTargetsBySessionId = /* @__PURE__ */ new Map();
-  #childTargetsById = /* @__PURE__ */ new Map();
-  #parallelConnections = /* @__PURE__ */ new Map();
-  #parentTargetId = null;
-  constructor(parentTarget) {
-    super(parentTarget);
-    this.#targetManager = parentTarget.targetManager();
-    this.#parentTarget = parentTarget;
-    this.#targetAgent = parentTarget.targetAgent();
-    parentTarget.registerTargetDispatcher(this);
-    const browserTarget = this.#targetManager.browserTarget();
-    if (browserTarget) {
-      if (browserTarget !== parentTarget) {
-        void browserTarget.targetAgent().invoke_autoAttachRelated({ targetId: parentTarget.id(), waitForDebuggerOnStart: true });
-      }
-    } else if (parentTarget.type() === Type.NODE) {
-      void this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: false });
-    } else {
-      void this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
-    }
-    if (parentTarget.parentTarget()?.type() !== Type.FRAME && !Host9.InspectorFrontendHost.isUnderTest()) {
-      void this.#targetAgent.invoke_setDiscoverTargets({ discover: true });
-      void this.#targetAgent.invoke_setRemoteLocations({ locations: [{ host: "localhost", port: 9229 }] });
-    }
-  }
-  static install(attachCallback) {
-    _ChildTargetManager.attachCallback = attachCallback;
-    SDKModel.register(_ChildTargetManager, { capabilities: 32, autostart: true });
-  }
-  childTargets() {
-    return Array.from(this.#childTargetsBySessionId.values());
-  }
-  async suspendModel() {
-    await this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: false, flatten: true });
-  }
-  async resumeModel() {
-    await this.#targetAgent.invoke_setAutoAttach({ autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
-  }
-  dispose() {
-    for (const sessionId of this.#childTargetsBySessionId.keys()) {
-      this.detachedFromTarget({ sessionId, targetId: void 0 });
-    }
-  }
-  targetCreated({ targetInfo }) {
-    this.#targetInfos.set(targetInfo.targetId, targetInfo);
-    this.fireAvailableTargetsChanged();
-    this.dispatchEventToListeners("TargetCreated", targetInfo);
-  }
-  targetInfoChanged({ targetInfo }) {
-    this.#targetInfos.set(targetInfo.targetId, targetInfo);
-    const target = this.#childTargetsById.get(targetInfo.targetId);
-    if (target) {
-      void target.setHasCrashed(false);
-      if (target.targetInfo()?.subtype === "prerender" && !targetInfo.subtype) {
-        const resourceTreeModel = target.model(ResourceTreeModel);
-        target.updateTargetInfo(targetInfo);
-        if (resourceTreeModel?.mainFrame) {
-          resourceTreeModel.primaryPageChanged(
-            resourceTreeModel.mainFrame,
-            "Activation"
-            /* PrimaryPageChangeType.ACTIVATION */
-          );
-        }
-        target.setName(i18nString12(UIStrings12.main));
-      } else {
-        target.updateTargetInfo(targetInfo);
-      }
-    }
-    this.fireAvailableTargetsChanged();
-    this.dispatchEventToListeners("TargetInfoChanged", targetInfo);
-  }
-  targetDestroyed({ targetId }) {
-    this.#targetInfos.delete(targetId);
-    this.fireAvailableTargetsChanged();
-    this.dispatchEventToListeners("TargetDestroyed", targetId);
-  }
-  targetCrashed({ targetId }) {
-    const target = this.#childTargetsById.get(targetId);
-    if (target) {
-      target.setHasCrashed(true);
-    }
-  }
-  fireAvailableTargetsChanged() {
-    TargetManager.instance().dispatchEventToListeners("AvailableTargetsChanged", [...this.#targetInfos.values()]);
-  }
-  async getParentTargetId() {
-    if (!this.#parentTargetId) {
-      this.#parentTargetId = (await this.#parentTarget.targetAgent().invoke_getTargetInfo({})).targetInfo.targetId;
-    }
-    return this.#parentTargetId;
-  }
-  async getTargetInfo() {
-    return (await this.#parentTarget.targetAgent().invoke_getTargetInfo({})).targetInfo;
-  }
-  async attachedToTarget({ sessionId, targetInfo, waitingForDebugger }) {
-    if (this.#parentTargetId === targetInfo.targetId) {
-      return;
-    }
-    let type = Type.BROWSER;
-    let targetName = "";
-    if (targetInfo.type === "worker" && targetInfo.title && targetInfo.title !== targetInfo.url) {
-      targetName = targetInfo.title;
-    } else if (!["page", "iframe", "webview"].includes(targetInfo.type)) {
-      const KNOWN_FRAME_PATTERNS = [
-        "^chrome://print/$",
-        "^chrome://file-manager/",
-        "^chrome://feedback/",
-        "^chrome://.*\\.top-chrome/$",
-        "^chrome://view-cert/$",
-        "^devtools://"
-      ];
-      if (KNOWN_FRAME_PATTERNS.some((p) => targetInfo.url.match(p))) {
-        type = Type.FRAME;
-      } else {
-        const parsedURL = Common34.ParsedURL.ParsedURL.fromString(targetInfo.url);
-        targetName = parsedURL ? parsedURL.lastPathComponentWithFragment() : "#" + ++_ChildTargetManager.lastAnonymousTargetId;
-      }
-    }
-    if (targetInfo.type === "iframe" || targetInfo.type === "webview") {
-      type = Type.FRAME;
-    } else if (targetInfo.type === "background_page" || targetInfo.type === "app" || targetInfo.type === "popup_page") {
-      type = Type.FRAME;
-    } else if (targetInfo.type === "page") {
-      type = Type.FRAME;
-    } else if (targetInfo.type === "browser_ui") {
-      type = Type.FRAME;
-    } else if (targetInfo.type === "worker") {
-      type = Type.Worker;
-    } else if (targetInfo.type === "worklet") {
-      type = Type.WORKLET;
-    } else if (targetInfo.type === "shared_worker") {
-      type = Type.SHARED_WORKER;
-    } else if (targetInfo.type === "shared_storage_worklet") {
-      type = Type.SHARED_STORAGE_WORKLET;
-    } else if (targetInfo.type === "service_worker") {
-      type = Type.ServiceWorker;
-    } else if (targetInfo.type === "auction_worklet") {
-      type = Type.AUCTION_WORKLET;
-    } else if (targetInfo.type === "node_worker") {
-      type = Type.NODE_WORKER;
-    }
-    const target = this.#targetManager.createTarget(targetInfo.targetId, targetName, type, this.#parentTarget, sessionId, void 0, void 0, targetInfo);
-    this.#childTargetsBySessionId.set(sessionId, target);
-    this.#childTargetsById.set(target.id(), target);
-    if (_ChildTargetManager.attachCallback) {
-      await _ChildTargetManager.attachCallback({ target, waitingForDebugger });
-    }
-    if (waitingForDebugger) {
-      void target.runtimeAgent().invoke_runIfWaitingForDebugger();
-    }
-    if (type !== Type.FRAME && target.hasAllCapabilities(
-      8192
-      /* Capability.STORAGE */
-    )) {
-      await this.initializeStorage(target);
-    }
-  }
-  async initializeStorage(target) {
-    const storageAgent = target.storageAgent();
-    const response = await storageAgent.invoke_getStorageKey({});
-    const storageKey = response.storageKey;
-    if (response.getError() || !storageKey) {
-      console.error(`Failed to get storage key for target ${target.id()}: ${response.getError()}`);
-      return;
-    }
-    const storageKeyManager = target.model(StorageKeyManager);
-    if (storageKeyManager) {
-      storageKeyManager.setMainStorageKey(storageKey);
-      storageKeyManager.updateStorageKeys(/* @__PURE__ */ new Set([storageKey]));
-    }
-    const securityOriginManager = target.model(SecurityOriginManager);
-    if (securityOriginManager) {
-      const origin = new URL(storageKey).origin;
-      securityOriginManager.setMainSecurityOrigin(origin, "");
-      securityOriginManager.updateSecurityOrigins(/* @__PURE__ */ new Set([origin]));
-    }
-  }
-  detachedFromTarget({ sessionId }) {
-    if (this.#parallelConnections.has(sessionId)) {
-      this.#parallelConnections.delete(sessionId);
-    } else {
-      const target = this.#childTargetsBySessionId.get(sessionId);
-      if (target) {
-        target.dispose("target terminated");
-        this.#childTargetsBySessionId.delete(sessionId);
-        this.#childTargetsById.delete(target.id());
-      }
-    }
-  }
-  receivedMessageFromTarget({}) {
-  }
-  async createParallelConnection(onMessage) {
-    const targetId = await this.getParentTargetId();
-    const { connection, sessionId } = await this.createParallelConnectionAndSessionForTarget(this.#parentTarget, targetId);
-    connection.setOnMessage(onMessage);
-    this.#parallelConnections.set(sessionId, connection);
-    return { connection, sessionId };
-  }
-  async createParallelConnectionAndSessionForTarget(target, targetId) {
-    const targetAgent = target.targetAgent();
-    const targetRouter = target.router();
-    const sessionId = (await targetAgent.invoke_attachToTarget({ targetId, flatten: true })).sessionId;
-    const connection = new ParallelConnection(targetRouter.connection(), sessionId);
-    targetRouter.registerSession(target, sessionId, connection);
-    connection.setOnDisconnect(() => {
-      targetRouter.unregisterSession(sessionId);
-      void targetAgent.invoke_detachFromTarget({ sessionId });
-    });
-    return { connection, sessionId };
-  }
-  targetInfos() {
-    return Array.from(this.#targetInfos.values());
-  }
-  static lastAnonymousTargetId = 0;
-  static attachCallback;
-};
-
-// gen/front_end/core/sdk/CompilerSourceMappingContentProvider.js
-var CompilerSourceMappingContentProvider_exports = {};
-__export(CompilerSourceMappingContentProvider_exports, {
-  CompilerSourceMappingContentProvider: () => CompilerSourceMappingContentProvider
-});
-import * as TextUtils25 from "./../../models/text_utils/text_utils.js";
-import * as i18n29 from "./../i18n/i18n.js";
-var UIStrings13 = {
-  /**
-   * @description Error message when failing to fetch a resource referenced in a source map
-   * @example {https://example.com/sourcemap.map} PH1
-   * @example {An error occurred} PH2
-   */
-  couldNotLoadContentForSS: "Could not load content for {PH1} ({PH2})"
-};
-var str_13 = i18n29.i18n.registerUIStrings("core/sdk/CompilerSourceMappingContentProvider.ts", UIStrings13);
-var i18nString13 = i18n29.i18n.getLocalizedString.bind(void 0, str_13);
-var CompilerSourceMappingContentProvider = class {
-  #sourceURL;
-  #contentType;
-  #initiator;
-  constructor(sourceURL, contentType, initiator) {
-    this.#sourceURL = sourceURL;
-    this.#contentType = contentType;
-    this.#initiator = initiator;
-  }
-  contentURL() {
-    return this.#sourceURL;
-  }
-  contentType() {
-    return this.#contentType;
-  }
-  async requestContentData() {
-    try {
-      const { content } = await PageResourceLoader.instance().loadResource(this.#sourceURL, this.#initiator);
-      return new TextUtils25.ContentData.ContentData(
-        content,
-        /* isBase64=*/
-        false,
-        this.#contentType.canonicalMimeType()
-      );
-    } catch (e) {
-      const error = i18nString13(UIStrings13.couldNotLoadContentForSS, { PH1: this.#sourceURL, PH2: e.message });
-      console.error(error);
-      return { error };
-    }
-  }
-  async searchInContent(query, caseSensitive, isRegex) {
-    const contentData = await this.requestContentData();
-    return TextUtils25.TextUtils.performSearchInContentData(contentData, query, caseSensitive, isRegex);
-  }
-};
 
 // gen/front_end/core/sdk/ConsoleModel.js
 var ConsoleModel_exports = {};
@@ -31947,10 +32993,10 @@ __export(ConsoleModel_exports, {
   FrontendMessageType: () => FrontendMessageType,
   MessageSourceDisplayName: () => MessageSourceDisplayName
 });
-import * as Common35 from "./../common/common.js";
-import * as Host11 from "./../host/host.js";
+import * as Common34 from "./../common/common.js";
+import * as Host9 from "./../host/host.js";
 import * as i18n33 from "./../i18n/i18n.js";
-import * as Platform19 from "./../platform/platform.js";
+import * as Platform18 from "./../platform/platform.js";
 
 // gen/front_end/core/sdk/ConsoleModelTypes.js
 var FrontendMessageType;
@@ -32066,7 +33112,7 @@ var LogModel_exports = {};
 __export(LogModel_exports, {
   LogModel: () => LogModel
 });
-import * as Host10 from "./../host/host.js";
+import * as Host8 from "./../host/host.js";
 var LogModel = class extends SDKModel {
   #logAgent;
   constructor(target) {
@@ -32074,7 +33120,7 @@ var LogModel = class extends SDKModel {
     target.registerLogDispatcher(this);
     this.#logAgent = target.logAgent();
     void this.#logAgent.invoke_enable();
-    if (!Host10.InspectorFrontendHost.isUnderTest()) {
+    if (!Host8.InspectorFrontendHost.isUnderTest()) {
       void this.#logAgent.invoke_startViolationsReport({
         config: [
           { name: "longTask", threshold: 200 },
@@ -32129,7 +33175,7 @@ var str_15 = i18n33.i18n.registerUIStrings("core/sdk/ConsoleModel.ts", UIStrings
 var i18nString15 = i18n33.i18n.getLocalizedString.bind(void 0, str_15);
 var ConsoleModel = class _ConsoleModel extends SDKModel {
   #messages = [];
-  #messagesByTimestamp = new Platform19.MapUtilities.Multimap();
+  #messagesByTimestamp = new Platform18.MapUtilities.Multimap();
   #messageByExceptionId = /* @__PURE__ */ new Map();
   #warnings = 0;
   #errors = 0;
@@ -32144,7 +33190,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
       return;
     }
     const eventListener = resourceTreeModel.addEventListener(Events3.CachedResourcesLoaded, () => {
-      Common35.EventTarget.removeEventListeners([eventListener]);
+      Common34.EventTarget.removeEventListeners([eventListener]);
       this.initTarget(target);
     });
   }
@@ -32176,7 +33222,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
     if (runtimeModel) {
       this.#messageByExceptionId.delete(runtimeModel);
     }
-    Common35.EventTarget.removeEventListeners(this.#targetListeners.get(target) || []);
+    Common34.EventTarget.removeEventListeners(this.#targetListeners.get(target) || []);
   }
   async evaluateCommandInConsole(executionContext, originatingMessage, expression, useCommandLineAPI) {
     const result = await executionContext.evaluate(
@@ -32190,15 +33236,15 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
         replMode: true,
         allowUnsafeEvalBlockedByCSP: false
       },
-      Common35.Settings.Settings.instance().moduleSetting("console-user-activation-eval").get(),
+      this.target().targetManager().settings.moduleSetting("console-user-activation-eval").get(),
       /* awaitPromise */
       false
     );
-    Host11.userMetrics.actionTaken(Host11.UserMetrics.Action.ConsoleEvaluated);
+    Host9.userMetrics.actionTaken(Host9.UserMetrics.Action.ConsoleEvaluated);
     if ("error" in result) {
       return;
     }
-    await Common35.Console.Console.instance().showPromise();
+    await Common34.Console.Console.instance().showPromise();
     this.dispatchEventToListeners(Events11.CommandEvaluated, { result: result.object, commandMessage: originatingMessage, exceptionDetails: result.exceptionDetails });
   }
   addCommandMessage(executionContext, text) {
@@ -32209,7 +33255,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
   }
   addMessage(msg) {
     msg.setPageLoadSequenceNumber(this.#pageLoadSequenceNumber);
-    if (msg.source === Common35.Console.FrontendMessageSource.ConsoleAPI && msg.type === "clear") {
+    if (msg.source === Common34.Console.FrontendMessageSource.ConsoleAPI && msg.type === "clear") {
       this.clearIfNecessary();
     }
     this.#messages.push(msg);
@@ -32277,7 +33323,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
       executionContextId: call.executionContextId,
       context: call.context
     };
-    const consoleMessage = new ConsoleMessage(runtimeModel, Common35.Console.FrontendMessageSource.ConsoleAPI, level, message, details);
+    const consoleMessage = new ConsoleMessage(runtimeModel, Common34.Console.FrontendMessageSource.ConsoleAPI, level, message, details);
     for (const msg of this.#messagesByTimestamp.get(consoleMessage.timestamp).values()) {
       if (consoleMessage.isEqual(msg)) {
         return;
@@ -32292,22 +33338,24 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
       parameters: [objects],
       executionContextId
     };
-    const consoleMessage = new ConsoleMessage(runtimeModel, Common35.Console.FrontendMessageSource.ConsoleAPI, "info", "", details);
+    const consoleMessage = new ConsoleMessage(runtimeModel, Common34.Console.FrontendMessageSource.ConsoleAPI, "info", "", details);
     this.addMessage(consoleMessage);
   }
   clearIfNecessary() {
-    if (!Common35.Settings.Settings.instance().moduleSetting("preserve-console-log").get()) {
+    const settings = this.target().targetManager().settings;
+    if (!settings.moduleSetting("preserve-console-log").get()) {
       this.clear();
     }
     ++this.#pageLoadSequenceNumber;
   }
   primaryPageChanged(event) {
-    if (Common35.Settings.Settings.instance().moduleSetting("preserve-console-log").get()) {
+    const settings = this.target().targetManager().settings;
+    if (settings.moduleSetting("preserve-console-log").get()) {
       const { frame } = event.data;
       if (frame.backForwardCacheDetails.restoredFromCache) {
-        Common35.Console.Console.instance().log(i18nString15(UIStrings15.bfcacheNavigation, { PH1: frame.url }));
+        Common34.Console.Console.instance().log(i18nString15(UIStrings15.bfcacheNavigation, { PH1: frame.url }));
       } else {
-        Common35.Console.Console.instance().log(i18nString15(UIStrings15.navigatedToS, { PH1: frame.url }));
+        Common34.Console.Console.instance().log(i18nString15(UIStrings15.navigatedToS, { PH1: frame.url }));
       }
     }
   }
@@ -32328,7 +33376,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
       lineNumber: scriptLocation.lineNumber,
       columnNumber: scriptLocation.columnNumber || 0
     }];
-    this.addMessage(new ConsoleMessage(cpuProfilerModel.runtimeModel(), Common35.Console.FrontendMessageSource.ConsoleAPI, "info", messageText, { type, stackTrace: { callFrames } }));
+    this.addMessage(new ConsoleMessage(cpuProfilerModel.runtimeModel(), Common34.Console.FrontendMessageSource.ConsoleAPI, "info", messageText, { type, stackTrace: { callFrames } }));
   }
   incrementErrorWarningCount(msg) {
     if (msg.source === "violation") {
@@ -32348,23 +33396,23 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
     return this.#messages;
   }
   // messages[] are not ordered by timestamp.
-  static allMessagesUnordered() {
+  static allMessagesUnordered(targetManager = TargetManager.instance()) {
     const messages = [];
-    for (const target of TargetManager.instance().targets()) {
+    for (const target of targetManager.targets()) {
       const targetMessages = target.model(_ConsoleModel)?.messages() || [];
       messages.push(...targetMessages);
     }
     return messages;
   }
-  static requestClearMessages() {
-    for (const logModel of TargetManager.instance().models(LogModel)) {
+  static requestClearMessages(targetManager = TargetManager.instance()) {
+    for (const logModel of targetManager.models(LogModel)) {
       logModel.requestClear();
     }
-    for (const runtimeModel of TargetManager.instance().models(RuntimeModel)) {
+    for (const runtimeModel of targetManager.models(RuntimeModel)) {
       runtimeModel.discardConsoleEntries();
       runtimeModel.releaseObjectGroup("live-expression");
     }
-    for (const target of TargetManager.instance().targets()) {
+    for (const target of targetManager.targets()) {
       target.model(_ConsoleModel)?.clear();
     }
   }
@@ -32380,9 +33428,9 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
   errors() {
     return this.#errors;
   }
-  static allErrors() {
+  static allErrors(targetManager = TargetManager.instance()) {
     let errors = 0;
-    for (const target of TargetManager.instance().targets()) {
+    for (const target of targetManager.targets()) {
       errors += target.model(_ConsoleModel)?.errors() || 0;
     }
     return errors;
@@ -32390,9 +33438,9 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
   warnings() {
     return this.#warnings;
   }
-  static allWarnings() {
+  static allWarnings(targetManager = TargetManager.instance()) {
     let warnings = 0;
-    for (const target of TargetManager.instance().targets()) {
+    for (const target of targetManager.targets()) {
       warnings += target.model(_ConsoleModel)?.warnings() || 0;
     }
     return warnings;
@@ -32419,7 +33467,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
     const globalObject = result.object;
     const callFunctionResult = await globalObject.callFunction(saveVariable, [RemoteObject.toCallArgument(remoteObject)]);
     globalObject.release();
-    if (callFunctionResult.wasThrown || !callFunctionResult.object || callFunctionResult.object.type !== "string") {
+    if (callFunctionResult.wasThrown || callFunctionResult.object?.type !== "string") {
       failedToSave(callFunctionResult.object || null);
     } else {
       const text = callFunctionResult.object.value;
@@ -32450,7 +33498,7 @@ var ConsoleModel = class _ConsoleModel extends SDKModel {
       if (result2) {
         message = message + " " + result2.description;
       }
-      Common35.Console.Console.instance().error(message);
+      Common34.Console.Console.instance().error(message);
     }
   }
 };
@@ -32510,7 +33558,6 @@ var ConsoleMessage = class _ConsoleMessage {
   #exceptionId = void 0;
   #affectedResources;
   category;
-  isCookieReportIssue = false;
   /**
    * The parent frame of the `console.log` call of logpoints or conditional breakpoints
    * if they called `console.*` explicitly. The parent frame is where V8 paused
@@ -32537,7 +33584,6 @@ var ConsoleMessage = class _ConsoleMessage {
     this.workerId = details?.workerId;
     this.#affectedResources = details?.affectedResources;
     this.category = details?.category;
-    this.isCookieReportIssue = Boolean(details?.isCookieReportIssue);
     if (!this.#executionContextId && this.#runtimeModel) {
       if (this.scriptId) {
         this.#executionContextId = this.#runtimeModel.executionContextIdForScriptId(this.scriptId);
@@ -32612,7 +33658,7 @@ var ConsoleMessage = class _ConsoleMessage {
   }
   isGroupable() {
     const isUngroupableError = this.level === "error" && (this.source === "javascript" || this.source === "network");
-    return this.source !== Common35.Console.FrontendMessageSource.ConsoleAPI && this.type !== FrontendMessageType.Command && this.type !== FrontendMessageType.Result && this.type !== FrontendMessageType.System && !isUngroupableError;
+    return this.source !== Common34.Console.FrontendMessageSource.ConsoleAPI && this.type !== FrontendMessageType.Command && this.type !== FrontendMessageType.Result && this.type !== FrontendMessageType.System && !isUngroupableError;
   }
   groupCategoryKey() {
     return [this.source, this.level, this.type, this.#pageLoadSequenceNumber].join(":");
@@ -32665,11 +33711,11 @@ var MessageSourceDisplayName = /* @__PURE__ */ new Map([
   ["xml", "xml"],
   ["javascript", "javascript"],
   ["network", "network"],
-  [Common35.Console.FrontendMessageSource.ConsoleAPI, "console-api"],
+  [Common34.Console.FrontendMessageSource.ConsoleAPI, "console-api"],
   ["storage", "storage"],
   ["appcache", "appcache"],
   ["rendering", "rendering"],
-  [Common35.Console.FrontendMessageSource.CSS, "css"],
+  [Common34.Console.FrontendMessageSource.CSS, "css"],
   ["security", "security"],
   ["deprecation", "deprecation"],
   ["worker", "worker"],
@@ -32677,7 +33723,7 @@ var MessageSourceDisplayName = /* @__PURE__ */ new Map([
   ["intervention", "intervention"],
   ["recommendation", "recommendation"],
   ["other", "other"],
-  [Common35.Console.FrontendMessageSource.ISSUE_PANEL, "issue-panel"]
+  [Common34.Console.FrontendMessageSource.ISSUE_PANEL, "issue-panel"]
 ]);
 
 // gen/front_end/core/sdk/CPUThrottlingManager.js
@@ -32692,10 +33738,9 @@ __export(CPUThrottlingManager_exports, {
   LowTierThrottlingOption: () => LowTierThrottlingOption,
   MidTierThrottlingOption: () => MidTierThrottlingOption,
   NoThrottlingOption: () => NoThrottlingOption,
-  calibrationErrorToString: () => calibrationErrorToString,
-  throttlingManager: () => throttlingManager
+  calibrationErrorToString: () => calibrationErrorToString
 });
-import * as Common37 from "./../common/common.js";
+import * as Common35 from "./../common/common.js";
 import * as i18n35 from "./../i18n/i18n.js";
 
 // gen/front_end/core/sdk/EmulationModel.js
@@ -32705,7 +33750,6 @@ __export(EmulationModel_exports, {
   EmulationModel: () => EmulationModel,
   Location: () => Location2
 });
-import * as Common36 from "./../common/common.js";
 var EmulationModel = class extends SDKModel {
   #emulationAgent;
   #deviceOrientationAgent;
@@ -32718,10 +33762,14 @@ var EmulationModel = class extends SDKModel {
   #touchEmulationAllowed;
   #customTouchEnabled;
   #touchConfiguration;
+  #screenOrientationLocked;
+  #lockedOrientation;
   constructor(target) {
     super(target);
     this.#emulationAgent = target.emulationAgent();
     this.#deviceOrientationAgent = target.deviceOrientationAgent();
+    this.#screenOrientationLocked = false;
+    this.#lockedOrientation = null;
     this.#cssModel = target.model(CSSModel);
     this.#overlayModel = target.model(OverlayModel);
     if (this.#overlayModel) {
@@ -32729,17 +33777,18 @@ var EmulationModel = class extends SDKModel {
         void this.updateTouch();
       }, this);
     }
-    const disableJavascriptSetting = Common36.Settings.Settings.instance().moduleSetting("java-script-disabled");
+    const settings = this.target().targetManager().settings;
+    const disableJavascriptSetting = settings.moduleSetting("java-script-disabled");
     disableJavascriptSetting.addChangeListener(async () => await this.#emulationAgent.invoke_setScriptExecutionDisabled({ value: disableJavascriptSetting.get() }));
     if (disableJavascriptSetting.get()) {
       void this.#emulationAgent.invoke_setScriptExecutionDisabled({ value: true });
     }
-    const touchSetting = Common36.Settings.Settings.instance().moduleSetting("emulation.touch");
+    const touchSetting = settings.moduleSetting("emulation.touch");
     touchSetting.addChangeListener(() => {
       const settingValue = touchSetting.get();
       void this.overrideEmulateTouch(settingValue === "force");
     });
-    const idleDetectionSetting = Common36.Settings.Settings.instance().moduleSetting("emulation.idle-detection");
+    const idleDetectionSetting = settings.moduleSetting("emulation.idle-detection");
     idleDetectionSetting.addChangeListener(async () => {
       const settingValue = idleDetectionSetting.get();
       if (settingValue === "none") {
@@ -32749,7 +33798,7 @@ var EmulationModel = class extends SDKModel {
       const emulationParams = JSON.parse(settingValue);
       await this.setIdleOverride(emulationParams);
     });
-    const cpuPressureDetectionSetting = Common36.Settings.Settings.instance().moduleSetting("emulation.cpu-pressure");
+    const cpuPressureDetectionSetting = settings.moduleSetting("emulation.cpu-pressure");
     cpuPressureDetectionSetting.addChangeListener(async () => {
       const settingValue = cpuPressureDetectionSetting.get();
       if (settingValue === "none") {
@@ -32763,14 +33812,14 @@ var EmulationModel = class extends SDKModel {
       }
       await this.setPressureStateOverride(settingValue);
     });
-    const mediaTypeSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media");
-    const mediaFeatureColorGamutSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-color-gamut");
-    const mediaFeaturePrefersColorSchemeSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-prefers-color-scheme");
-    const mediaFeatureForcedColorsSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-forced-colors");
-    const mediaFeaturePrefersContrastSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-prefers-contrast");
-    const mediaFeaturePrefersReducedDataSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-prefers-reduced-data");
-    const mediaFeaturePrefersReducedTransparencySetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-prefers-reduced-transparency");
-    const mediaFeaturePrefersReducedMotionSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-css-media-feature-prefers-reduced-motion");
+    const mediaTypeSetting = settings.moduleSetting("emulated-css-media");
+    const mediaFeatureColorGamutSetting = settings.moduleSetting("emulated-css-media-feature-color-gamut");
+    const mediaFeaturePrefersColorSchemeSetting = settings.moduleSetting("emulated-css-media-feature-prefers-color-scheme");
+    const mediaFeatureForcedColorsSetting = settings.moduleSetting("emulated-css-media-feature-forced-colors");
+    const mediaFeaturePrefersContrastSetting = settings.moduleSetting("emulated-css-media-feature-prefers-contrast");
+    const mediaFeaturePrefersReducedDataSetting = settings.moduleSetting("emulated-css-media-feature-prefers-reduced-data");
+    const mediaFeaturePrefersReducedTransparencySetting = settings.moduleSetting("emulated-css-media-feature-prefers-reduced-transparency");
+    const mediaFeaturePrefersReducedMotionSetting = settings.moduleSetting("emulated-css-media-feature-prefers-reduced-motion");
     this.#mediaConfiguration = /* @__PURE__ */ new Map([
       ["type", mediaTypeSetting.get()],
       ["color-gamut", mediaFeatureColorGamutSetting.get()],
@@ -32814,7 +33863,7 @@ var EmulationModel = class extends SDKModel {
       void this.updateCssMedia();
     });
     void this.updateCssMedia();
-    const autoDarkModeSetting = Common36.Settings.Settings.instance().moduleSetting("emulate-auto-dark-mode");
+    const autoDarkModeSetting = settings.moduleSetting("emulate-auto-dark-mode");
     autoDarkModeSetting.addChangeListener(() => {
       const enabled = autoDarkModeSetting.get();
       mediaFeaturePrefersColorSchemeSetting.setDisabled(enabled);
@@ -32826,31 +33875,38 @@ var EmulationModel = class extends SDKModel {
       mediaFeaturePrefersColorSchemeSetting.set("dark");
       void this.emulateAutoDarkMode(true);
     }
-    const visionDeficiencySetting = Common36.Settings.Settings.instance().moduleSetting("emulated-vision-deficiency");
+    const visionDeficiencySetting = settings.moduleSetting("emulated-vision-deficiency");
     visionDeficiencySetting.addChangeListener(() => this.emulateVisionDeficiency(visionDeficiencySetting.get()));
     if (visionDeficiencySetting.get()) {
       void this.emulateVisionDeficiency(visionDeficiencySetting.get());
     }
-    const osTextScaleSetting = Common36.Settings.Settings.instance().moduleSetting("emulated-os-text-scale");
+    const osTextScaleSetting = settings.moduleSetting("emulated-os-text-scale");
     osTextScaleSetting.addChangeListener(() => {
       void this.emulateOSTextScale(parseFloat(osTextScaleSetting.get()) || void 0);
     });
     if (osTextScaleSetting.get()) {
       void this.emulateOSTextScale(parseFloat(osTextScaleSetting.get()) || void 0);
     }
-    const localFontsDisabledSetting = Common36.Settings.Settings.instance().moduleSetting("local-fonts-disabled");
+    const localFontsDisabledSetting = settings.moduleSetting("local-fonts-disabled");
     localFontsDisabledSetting.addChangeListener(() => this.setLocalFontsDisabled(localFontsDisabledSetting.get()));
     if (localFontsDisabledSetting.get()) {
       this.setLocalFontsDisabled(localFontsDisabledSetting.get());
     }
-    const avifFormatDisabledSetting = Common36.Settings.Settings.instance().moduleSetting("avif-format-disabled");
-    const webpFormatDisabledSetting = Common36.Settings.Settings.instance().moduleSetting("webp-format-disabled");
+    const avifFormatDisabledSetting = settings.moduleSetting("avif-format-disabled");
+    const jpegXlFormatDisabledSetting = settings.moduleSetting("jpeg-xl-format-disabled");
+    const webpFormatDisabledSetting = settings.moduleSetting("webp-format-disabled");
     const updateDisabledImageFormats = () => {
       const types = [];
       if (avifFormatDisabledSetting.get()) {
         types.push(
           "avif"
           /* Protocol.Emulation.DisabledImageType.Avif */
+        );
+      }
+      if (jpegXlFormatDisabledSetting.get()) {
+        types.push(
+          "jxl"
+          /* Protocol.Emulation.DisabledImageType.Jxl */
         );
       }
       if (webpFormatDisabledSetting.get()) {
@@ -32862,8 +33918,9 @@ var EmulationModel = class extends SDKModel {
       this.setDisabledImageTypes(types);
     };
     avifFormatDisabledSetting.addChangeListener(updateDisabledImageFormats);
+    jpegXlFormatDisabledSetting.addChangeListener(updateDisabledImageFormats);
     webpFormatDisabledSetting.addChangeListener(updateDisabledImageFormats);
-    if (avifFormatDisabledSetting.get() || webpFormatDisabledSetting.get()) {
+    if (avifFormatDisabledSetting.get() || jpegXlFormatDisabledSetting.get() || webpFormatDisabledSetting.get()) {
       updateDisabledImageFormats();
     }
     this.#cpuPressureEnabled = false;
@@ -32875,6 +33932,7 @@ var EmulationModel = class extends SDKModel {
       enabled: false,
       configuration: "mobile"
     };
+    target.registerEmulationDispatcher(this);
   }
   setTouchEmulationAllowed(touchEmulationAllowed) {
     this.#touchEmulationAllowed = touchEmulationAllowed;
@@ -33076,6 +34134,20 @@ var EmulationModel = class extends SDKModel {
     ];
     return await this.emulateCSSMedia(type, features);
   }
+  // ProtocolProxyApi.EmulationDispatcher implementation
+  virtualTimeBudgetExpired() {
+  }
+  screenOrientationLockChanged(event) {
+    this.#screenOrientationLocked = event.locked;
+    this.#lockedOrientation = event.orientation ?? null;
+    this.dispatchEventToListeners("ScreenOrientationLockChanged", { locked: event.locked, orientation: event.orientation ?? null });
+  }
+  isScreenOrientationLocked() {
+    return this.#screenOrientationLocked;
+  }
+  lockedOrientation() {
+    return this.#lockedOrientation;
+  }
 };
 var Location2 = class _Location {
   static DEFAULT_ACCURACY = 150;
@@ -33133,11 +34205,11 @@ var Location2 = class _Location {
   }
   static accuracyValidator(value) {
     if (!value) {
-      return { valid: true, errorMessage: void 0 };
+      return { valid: true };
     }
     const numValue = parseFloat(value);
     const valid = /^([+-]?[\d]+(\.\d+)?|[+-]?\.\d+)$/.test(value) && numValue >= 0;
-    return { valid, errorMessage: void 0 };
+    return { valid };
   }
   toSetting() {
     return `${this.latitude}@${this.longitude}:${this.timezoneId}:${this.locale}:${this.unavailable || ""}:${this.accuracy || ""}`;
@@ -33221,29 +34293,34 @@ var str_16 = i18n35.i18n.registerUIStrings("core/sdk/CPUThrottlingManager.ts", U
 var i18nString16 = i18n35.i18n.getLocalizedString.bind(void 0, str_16);
 var i18nLazyString2 = i18n35.i18n.getLazilyComputedLocalizedString.bind(void 0, str_16);
 var throttlingManagerInstance;
-var CPUThrottlingManager = class _CPUThrottlingManager extends Common37.ObjectWrapper.ObjectWrapper {
+var CPUThrottlingManager = class _CPUThrottlingManager extends Common35.ObjectWrapper.ObjectWrapper {
+  #targetManager;
   #cpuThrottlingOption;
   #calibratedThrottlingSetting;
   #hardwareConcurrency;
   #pendingMainTargetPromise;
-  constructor() {
+  constructor(settings, targetManager) {
     super();
+    this.#targetManager = targetManager;
     this.#cpuThrottlingOption = NoThrottlingOption;
-    this.#calibratedThrottlingSetting = Common37.Settings.Settings.instance().createSetting(
+    this.#calibratedThrottlingSetting = settings.createSetting(
       "calibrated-cpu-throttling",
       {},
       "Global"
       /* Common.Settings.SettingStorageType.GLOBAL */
     );
     this.#calibratedThrottlingSetting.addChangeListener(this.#onCalibratedSettingChanged, this);
-    TargetManager.instance().observeModels(EmulationModel, this);
+    targetManager.observeModels(EmulationModel, this);
   }
   static instance(opts = { forceNew: null }) {
     const { forceNew } = opts;
     if (!throttlingManagerInstance || forceNew) {
-      throttlingManagerInstance = new _CPUThrottlingManager();
+      throttlingManagerInstance = new _CPUThrottlingManager(Common35.Settings.Settings.instance(), TargetManager.instance());
     }
     return throttlingManagerInstance;
+  }
+  static removeInstance() {
+    throttlingManagerInstance = void 0;
   }
   cpuThrottlingRate() {
     return this.#cpuThrottlingOption.rate();
@@ -33261,7 +34338,7 @@ var CPUThrottlingManager = class _CPUThrottlingManager extends Common37.ObjectWr
       this.setCPUThrottlingOption(NoThrottlingOption);
       return;
     }
-    for (const emulationModel of TargetManager.instance().models(EmulationModel)) {
+    for (const emulationModel of this.#targetManager.models(EmulationModel)) {
       void emulationModel.setCPUThrottlingRate(rate);
     }
     this.dispatchEventToListeners("RateChanged", rate);
@@ -33271,27 +34348,27 @@ var CPUThrottlingManager = class _CPUThrottlingManager extends Common37.ObjectWr
       return;
     }
     this.#cpuThrottlingOption = option;
-    for (const emulationModel of TargetManager.instance().models(EmulationModel)) {
+    for (const emulationModel of this.#targetManager.models(EmulationModel)) {
       void emulationModel.setCPUThrottlingRate(this.#cpuThrottlingOption.rate());
     }
     this.dispatchEventToListeners("RateChanged", this.#cpuThrottlingOption.rate());
   }
   setHardwareConcurrency(concurrency) {
     this.#hardwareConcurrency = concurrency;
-    for (const emulationModel of TargetManager.instance().models(EmulationModel)) {
+    for (const emulationModel of this.#targetManager.models(EmulationModel)) {
       void emulationModel.setHardwareConcurrency(concurrency);
     }
     this.dispatchEventToListeners("HardwareConcurrencyChanged", this.#hardwareConcurrency);
   }
   hasPrimaryPageTargetSet() {
     try {
-      return TargetManager.instance().primaryPageTarget() !== null;
+      return this.#targetManager.primaryPageTarget() !== null;
     } catch {
       return false;
     }
   }
   async getHardwareConcurrency() {
-    const target = TargetManager.instance().primaryPageTarget();
+    const target = this.#targetManager.primaryPageTarget();
     const existingCallback = this.#pendingMainTargetPromise;
     if (!target) {
       if (existingCallback) {
@@ -33333,9 +34410,6 @@ var CPUThrottlingManager = class _CPUThrottlingManager extends Common37.ObjectWr
   modelRemoved(_emulationModel) {
   }
 };
-function throttlingManager() {
-  return CPUThrottlingManager.instance();
-}
 var CPUThrottlingRates;
 (function(CPUThrottlingRates2) {
   CPUThrottlingRates2[CPUThrottlingRates2["NO_THROTTLING"] = 1] = "NO_THROTTLING";
@@ -33358,7 +34432,7 @@ var LowTierThrottlingOption = makeFixedPresetThrottlingOption(CPUThrottlingRates
 var ExtraSlowThrottlingOption = makeFixedPresetThrottlingOption(CPUThrottlingRates.EXTRA_SLOW);
 function makeCalibratedThrottlingOption(calibratedDeviceType) {
   const getSettingValue = () => {
-    const setting = Common37.Settings.Settings.instance().createSetting(
+    const setting = Common35.Settings.Settings.instance().createSetting(
       "calibrated-cpu-throttling",
       {},
       "Global"
@@ -33406,6 +34480,27 @@ function calibrationErrorToString(error) {
   return error;
 }
 
+// gen/front_end/core/sdk/CrashReportContextModel.js
+var CrashReportContextModel_exports = {};
+__export(CrashReportContextModel_exports, {
+  CrashReportContextModel: () => CrashReportContextModel
+});
+var CrashReportContextModel = class extends SDKModel {
+  #agent;
+  constructor(target) {
+    super(target);
+    this.#agent = target.crashReportContextAgent();
+  }
+  async getEntries() {
+    const response = await this.#agent.invoke_getEntries();
+    if (response.getError()) {
+      return null;
+    }
+    return response.entries;
+  }
+};
+SDKModel.register(CrashReportContextModel, { capabilities: 4, autostart: false });
+
 // gen/front_end/core/sdk/DOMDebuggerModel.js
 var DOMDebuggerModel_exports = {};
 __export(DOMDebuggerModel_exports, {
@@ -33416,8 +34511,7 @@ __export(DOMDebuggerModel_exports, {
   DOMEventListenerBreakpoint: () => DOMEventListenerBreakpoint,
   EventListener: () => EventListener
 });
-import * as Common38 from "./../common/common.js";
-import * as Platform20 from "./../platform/platform.js";
+import * as Platform19 from "./../platform/platform.js";
 var DOMDebuggerModel = class extends SDKModel {
   agent;
   #runtimeModel;
@@ -33433,7 +34527,7 @@ var DOMDebuggerModel = class extends SDKModel {
     this.#domModel.addEventListener(Events8.DocumentUpdated, this.documentUpdated, this);
     this.#domModel.addEventListener(Events8.NodeRemoved, this.nodeRemoved, this);
     this.#domBreakpoints = [];
-    this.#domBreakpointsSetting = Common38.Settings.Settings.instance().createLocalSetting("dom-breakpoints", []);
+    this.#domBreakpointsSetting = this.target().targetManager().settings.createLocalSetting("dom-breakpoints", []);
     if (this.#domModel.existingDocument()) {
       void this.documentUpdated();
     }
@@ -33541,7 +34635,7 @@ var DOMDebuggerModel = class extends SDKModel {
   }
   currentURL() {
     const domDocument = this.#domModel.existingDocument();
-    return domDocument ? domDocument.documentURL : Platform20.DevToolsPath.EmptyUrlString;
+    return domDocument ? domDocument.documentURL : Platform19.DevToolsPath.EmptyUrlString;
   }
   async documentUpdated() {
     if (this.suspended) {
@@ -33551,7 +34645,7 @@ var DOMDebuggerModel = class extends SDKModel {
     this.#domBreakpoints = [];
     this.dispatchEventToListeners("DOMBreakpointsRemoved", removed);
     const document2 = await this.#domModel.requestDocument();
-    const currentURL = document2 ? document2.documentURL : Platform20.DevToolsPath.EmptyUrlString;
+    const currentURL = document2 ? document2.documentURL : Platform19.DevToolsPath.EmptyUrlString;
     for (const breakpoint of this.#domBreakpointsSetting.get()) {
       if (breakpoint.url === currentURL) {
         void this.#domModel.pushNodeByPathToFrontend(breakpoint.path).then(appendBreakpoint.bind(this, breakpoint));
@@ -33650,7 +34744,7 @@ var EventListener = class {
     this.#originalHandler = originalHandler || handler;
     this.#location = location;
     const script = location.script();
-    this.#sourceURL = script ? script.contentURL() : Platform20.DevToolsPath.EmptyUrlString;
+    this.#sourceURL = script ? script.contentURL() : Platform19.DevToolsPath.EmptyUrlString;
     this.#customRemoveFunction = customRemoveFunction;
     this.#origin = origin || "Raw";
   }
@@ -33751,16 +34845,18 @@ var CSPViolationBreakpoint = class extends CategorizedBreakpoint {
 };
 var DOMEventListenerBreakpoint = class extends CategorizedBreakpoint {
   eventTargetNames;
-  constructor(eventName, eventTargetNames, category) {
+  #targetManager;
+  constructor(eventName, eventTargetNames, category, targetManager) {
     super(category, eventName);
     this.eventTargetNames = eventTargetNames;
+    this.#targetManager = targetManager;
   }
   setEnabled(enabled) {
     if (this.enabled() === enabled) {
       return;
     }
     super.setEnabled(enabled);
-    for (const model of TargetManager.instance().models(DOMDebuggerModel)) {
+    for (const model of this.#targetManager.models(DOMDebuggerModel)) {
       this.updateOnModel(model);
     }
   }
@@ -33781,8 +34877,10 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
   #xhrBreakpoints = /* @__PURE__ */ new Map();
   #cspViolationsToBreakOn = [];
   #eventListenerBreakpoints = [];
-  constructor() {
-    this.#xhrBreakpointsSetting = Common38.Settings.Settings.instance().createLocalSetting("xhr-breakpoints", []);
+  #targetManager;
+  constructor(targetManager = TargetManager.instance()) {
+    this.#targetManager = targetManager;
+    this.#xhrBreakpointsSetting = this.#targetManager.settings.createLocalSetting("xhr-breakpoints", []);
     for (const breakpoint of this.#xhrBreakpointsSetting.get()) {
       this.#xhrBreakpoints.set(breakpoint.url, breakpoint.enabled);
     }
@@ -33902,12 +35000,12 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
     this.createEventListenerBreakpoints("touch", ["touchstart", "touchmove", "touchend", "touchcancel"], ["*"]);
     this.createEventListenerBreakpoints("worker", ["message", "messageerror"], ["*"]);
     this.createEventListenerBreakpoints("xhr", ["readystatechange", "load", "loadstart", "loadend", "abort", "error", "progress", "timeout"], ["xmlhttprequest", "xmlhttprequestupload"]);
-    TargetManager.instance().observeModels(DOMDebuggerModel, this);
+    this.#targetManager.observeModels(DOMDebuggerModel, this);
   }
   static instance(opts = { forceNew: null }) {
-    const { forceNew } = opts;
+    const { forceNew, targetManager } = opts;
     if (!domDebuggerManagerInstance || forceNew) {
-      domDebuggerManagerInstance = new _DOMDebuggerManager();
+      domDebuggerManagerInstance = new _DOMDebuggerManager(targetManager);
     }
     return domDebuggerManagerInstance;
   }
@@ -33916,7 +35014,7 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
   }
   createEventListenerBreakpoints(category, eventNames, eventTargetNames) {
     for (const eventName of eventNames) {
-      this.#eventListenerBreakpoints.push(new DOMEventListenerBreakpoint(eventName, eventTargetNames, category));
+      this.#eventListenerBreakpoints.push(new DOMEventListenerBreakpoint(eventName, eventTargetNames, category, this.#targetManager));
     }
   }
   resolveEventListenerBreakpoint({ eventName, targetName }) {
@@ -33943,7 +35041,7 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
   }
   updateCSPViolationBreakpoints() {
     const violationTypes = this.#cspViolationsToBreakOn.filter((v) => v.enabled()).map((v) => v.type());
-    for (const model of TargetManager.instance().models(DOMDebuggerModel)) {
+    for (const model of this.#targetManager.models(DOMDebuggerModel)) {
       this.updateCSPViolationBreakpointsForModel(model, violationTypes);
     }
   }
@@ -33963,7 +35061,7 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
   addXHRBreakpoint(url, enabled) {
     this.#xhrBreakpoints.set(url, enabled);
     if (enabled) {
-      for (const model of TargetManager.instance().models(DOMDebuggerModel)) {
+      for (const model of this.#targetManager.models(DOMDebuggerModel)) {
         void model.agent.invoke_setXHRBreakpoint({ url });
       }
     }
@@ -33973,7 +35071,7 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
     const enabled = this.#xhrBreakpoints.get(url);
     this.#xhrBreakpoints.delete(url);
     if (enabled) {
-      for (const model of TargetManager.instance().models(DOMDebuggerModel)) {
+      for (const model of this.#targetManager.models(DOMDebuggerModel)) {
         void model.agent.invoke_removeXHRBreakpoint({ url });
       }
     }
@@ -33981,7 +35079,7 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
   }
   toggleXHRBreakpoint(url, enabled) {
     this.#xhrBreakpoints.set(url, enabled);
-    for (const model of TargetManager.instance().models(DOMDebuggerModel)) {
+    for (const model of this.#targetManager.models(DOMDebuggerModel)) {
       if (enabled) {
         void model.agent.invoke_setXHRBreakpoint({ url });
       } else {
@@ -34009,6 +35107,185 @@ var DOMDebuggerManager = class _DOMDebuggerManager {
 };
 SDKModel.register(DOMDebuggerModel, { capabilities: 2, autostart: false });
 
+// gen/front_end/core/sdk/DOMStorageModel.js
+var DOMStorageModel_exports = {};
+__export(DOMStorageModel_exports, {
+  DOMStorage: () => DOMStorage,
+  DOMStorageDispatcher: () => DOMStorageDispatcher,
+  DOMStorageModel: () => DOMStorageModel
+});
+import * as Common36 from "./../common/common.js";
+var DOMStorage = class _DOMStorage extends Common36.ObjectWrapper.ObjectWrapper {
+  model;
+  #storageKey;
+  #isLocalStorage;
+  constructor(model, storageKey, isLocalStorage) {
+    super();
+    this.model = model;
+    this.#storageKey = storageKey;
+    this.#isLocalStorage = isLocalStorage;
+  }
+  static storageId(storageKey, isLocalStorage) {
+    return { storageKey, isLocalStorage };
+  }
+  get id() {
+    return _DOMStorage.storageId(this.#storageKey, this.#isLocalStorage);
+  }
+  get storageKey() {
+    return this.#storageKey;
+  }
+  get isLocalStorage() {
+    return this.#isLocalStorage;
+  }
+  getItems() {
+    return this.model.agent.invoke_getDOMStorageItems({ storageId: this.id }).then(({ entries }) => entries);
+  }
+  setItem(key, value) {
+    void this.model.agent.invoke_setDOMStorageItem({ storageId: this.id, key, value });
+  }
+  removeItem(key) {
+    void this.model.agent.invoke_removeDOMStorageItem({ storageId: this.id, key });
+  }
+  clear() {
+    void this.model.agent.invoke_clear({ storageId: this.id });
+  }
+};
+var DOMStorageModel = class extends SDKModel {
+  #storageKeyManager;
+  #storages;
+  agent;
+  enabled;
+  constructor(target) {
+    super(target);
+    this.#storageKeyManager = target.model(StorageKeyManager);
+    this.#storages = {};
+    this.agent = target.domstorageAgent();
+  }
+  enable() {
+    if (this.enabled) {
+      return;
+    }
+    this.target().registerDOMStorageDispatcher(new DOMStorageDispatcher(this));
+    if (this.#storageKeyManager) {
+      this.#storageKeyManager.addEventListener("StorageKeyAdded", this.storageKeyAdded, this);
+      this.#storageKeyManager.addEventListener("StorageKeyRemoved", this.storageKeyRemoved, this);
+      for (const storageKey of this.#storageKeyManager.storageKeys()) {
+        this.addStorageKey(storageKey);
+      }
+    }
+    void this.agent.invoke_enable();
+    this.enabled = true;
+  }
+  clearForStorageKey(storageKey) {
+    if (!this.enabled) {
+      return;
+    }
+    for (const isLocal of [true, false]) {
+      const key = this.storageKey(storageKey, isLocal);
+      const storage = this.#storages[key];
+      if (!storage) {
+        return;
+      }
+      storage.clear();
+    }
+    this.removeStorageKey(storageKey);
+    this.addStorageKey(storageKey);
+  }
+  storageKeyAdded(event) {
+    this.addStorageKey(event.data);
+  }
+  addStorageKey(storageKey) {
+    for (const isLocal of [true, false]) {
+      const key = this.storageKey(storageKey, isLocal);
+      console.assert(!this.#storages[key]);
+      const storage = new DOMStorage(this, storageKey, isLocal);
+      this.#storages[key] = storage;
+      this.dispatchEventToListeners("DOMStorageAdded", storage);
+    }
+  }
+  storageKeyRemoved(event) {
+    this.removeStorageKey(event.data);
+  }
+  removeStorageKey(storageKey) {
+    for (const isLocal of [true, false]) {
+      const key = this.storageKey(storageKey, isLocal);
+      const storage = this.#storages[key];
+      if (!storage) {
+        continue;
+      }
+      delete this.#storages[key];
+      this.dispatchEventToListeners("DOMStorageRemoved", storage);
+    }
+  }
+  storageKey(storageKey, isLocalStorage) {
+    return JSON.stringify(DOMStorage.storageId(storageKey, isLocalStorage));
+  }
+  domStorageItemsCleared(storageId) {
+    const domStorage = this.storageForId(storageId);
+    if (!domStorage) {
+      return;
+    }
+    domStorage.dispatchEventToListeners(
+      "DOMStorageItemsCleared"
+      /* DOMStorage.Events.DOM_STORAGE_ITEMS_CLEARED */
+    );
+  }
+  domStorageItemRemoved(storageId, key) {
+    const domStorage = this.storageForId(storageId);
+    if (!domStorage) {
+      return;
+    }
+    const eventData = { key };
+    domStorage.dispatchEventToListeners("DOMStorageItemRemoved", eventData);
+  }
+  domStorageItemAdded(storageId, key, value) {
+    const domStorage = this.storageForId(storageId);
+    if (!domStorage) {
+      return;
+    }
+    const eventData = { key, value };
+    domStorage.dispatchEventToListeners("DOMStorageItemAdded", eventData);
+  }
+  domStorageItemUpdated(storageId, key, oldValue, value) {
+    const domStorage = this.storageForId(storageId);
+    if (!domStorage) {
+      return;
+    }
+    const eventData = { key, oldValue, value };
+    domStorage.dispatchEventToListeners("DOMStorageItemUpdated", eventData);
+  }
+  storageForId(storageId) {
+    console.assert(Boolean(storageId.storageKey));
+    return this.#storages[this.storageKey(storageId.storageKey || "", storageId.isLocalStorage)];
+  }
+  storages() {
+    const result = [];
+    for (const id in this.#storages) {
+      result.push(this.#storages[id]);
+    }
+    return result;
+  }
+};
+SDKModel.register(DOMStorageModel, { capabilities: 1048576, autostart: false });
+var DOMStorageDispatcher = class {
+  model;
+  constructor(model) {
+    this.model = model;
+  }
+  domStorageItemsCleared({ storageId }) {
+    this.model.domStorageItemsCleared(storageId);
+  }
+  domStorageItemRemoved({ storageId, key }) {
+    this.model.domStorageItemRemoved(storageId, key);
+  }
+  domStorageItemAdded({ storageId, key, newValue }) {
+    this.model.domStorageItemAdded(storageId, key, newValue);
+  }
+  domStorageItemUpdated({ storageId, key, oldValue, newValue }) {
+    this.model.domStorageItemUpdated(storageId, key, oldValue, newValue);
+  }
+};
+
 // gen/front_end/core/sdk/EventBreakpointsModel.js
 var EventBreakpointsModel_exports = {};
 __export(EventBreakpointsModel_exports, {
@@ -34023,12 +35300,17 @@ var EventBreakpointsModel = class extends SDKModel {
   }
 };
 var EventListenerBreakpoint = class extends CategorizedBreakpoint {
+  #targetManager;
+  constructor(category, name, targetManager) {
+    super(category, name);
+    this.#targetManager = targetManager;
+  }
   setEnabled(enabled) {
     if (this.enabled() === enabled) {
       return;
     }
     super.setEnabled(enabled);
-    for (const model of TargetManager.instance().models(EventBreakpointsModel)) {
+    for (const model of this.#targetManager.models(EventBreakpointsModel)) {
       this.updateOnModel(model);
     }
   }
@@ -34044,7 +35326,9 @@ var EventListenerBreakpoint = class extends CategorizedBreakpoint {
 var eventBreakpointManagerInstance;
 var EventBreakpointsManager = class _EventBreakpointsManager {
   #eventListenerBreakpoints = [];
-  constructor() {
+  #targetManager;
+  constructor(targetManager = TargetManager.instance()) {
+    this.#targetManager = targetManager;
     this.createInstrumentationBreakpoints("auction-worklet", [
       "beforeBidderWorkletBiddingStart",
       "beforeBidderWorkletReportingStart",
@@ -34096,18 +35380,18 @@ var EventBreakpointsManager = class _EventBreakpointsManager {
       "audioContextResumed",
       "audioContextSuspended"
     ]);
-    TargetManager.instance().observeModels(EventBreakpointsModel, this);
+    this.#targetManager.observeModels(EventBreakpointsModel, this);
   }
   static instance(opts = { forceNew: null }) {
-    const { forceNew } = opts;
+    const { forceNew, targetManager } = opts;
     if (!eventBreakpointManagerInstance || forceNew) {
-      eventBreakpointManagerInstance = new _EventBreakpointsManager();
+      eventBreakpointManagerInstance = new _EventBreakpointsManager(targetManager);
     }
     return eventBreakpointManagerInstance;
   }
   createInstrumentationBreakpoints(category, instrumentationNames) {
     for (const instrumentationName of instrumentationNames) {
-      this.#eventListenerBreakpoints.push(new EventListenerBreakpoint(category, instrumentationName));
+      this.#eventListenerBreakpoints.push(new EventListenerBreakpoint(category, instrumentationName, this.#targetManager));
     }
   }
   eventListenerBreakpoints() {
@@ -34143,9 +35427,9 @@ __export(IsolateManager_exports, {
   MemoryTrend: () => MemoryTrend,
   MemoryTrendWindowMs: () => MemoryTrendWindowMs
 });
-import * as Common39 from "./../common/common.js";
+import * as Common37 from "./../common/common.js";
 var isolateManagerInstance;
-var IsolateManager = class _IsolateManager extends Common39.ObjectWrapper.ObjectWrapper {
+var IsolateManager = class _IsolateManager extends Common37.ObjectWrapper.ObjectWrapper {
   #isolates = /* @__PURE__ */ new Map();
   /**
    * Contains null while the isolateId is being retrieved.
@@ -34153,13 +35437,15 @@ var IsolateManager = class _IsolateManager extends Common39.ObjectWrapper.Object
   #isolateIdByModel = /* @__PURE__ */ new Map();
   #observers = /* @__PURE__ */ new Set();
   #pollId = 0;
-  constructor() {
+  #targetManager;
+  constructor(targetManager = TargetManager.instance()) {
     super();
-    TargetManager.instance().observeModels(RuntimeModel, this);
+    this.#targetManager = targetManager;
+    this.#targetManager.observeModels(RuntimeModel, this);
   }
-  static instance({ forceNew } = { forceNew: false }) {
+  static instance({ forceNew, targetManager } = { forceNew: false }) {
     if (!isolateManagerInstance || forceNew) {
-      isolateManagerInstance = new _IsolateManager();
+      isolateManagerInstance = new _IsolateManager(targetManager);
     }
     return isolateManagerInstance;
   }
@@ -34191,7 +35477,7 @@ var IsolateManager = class _IsolateManager extends Common39.ObjectWrapper.Object
     this.#isolateIdByModel.set(model, isolateId);
     let isolate = this.#isolates.get(isolateId);
     if (!isolate) {
-      isolate = new Isolate(isolateId);
+      isolate = new Isolate(isolateId, this);
       this.#isolates.set(isolateId, isolate);
     }
     isolate.models().add(model);
@@ -34248,8 +35534,10 @@ var Isolate = class {
   #models;
   #usedHeapSize;
   #memoryTrend;
-  constructor(id) {
+  #manager;
+  constructor(id, manager) {
     this.#id = id;
+    this.#manager = manager;
     this.#models = /* @__PURE__ */ new Set();
     this.#usedHeapSize = 0;
     const count = MemoryTrendWindowMs / PollIntervalMs;
@@ -34276,7 +35564,7 @@ var Isolate = class {
     }
     this.#usedHeapSize = usage.usedSize + (usage.embedderHeapUsedSize ?? 0) + (usage.backingStorageSize ?? 0);
     this.#memoryTrend.add(this.#usedHeapSize);
-    IsolateManager.instance().dispatchEventToListeners("MemoryChanged", this);
+    this.#manager.dispatchEventToListeners("MemoryChanged", this);
   }
   samplesCount() {
     return this.#memoryTrend.count();
@@ -34581,7 +35869,7 @@ var PerformanceMetricsModel_exports = {};
 __export(PerformanceMetricsModel_exports, {
   PerformanceMetricsModel: () => PerformanceMetricsModel
 });
-import * as Platform21 from "./../platform/platform.js";
+import * as Platform20 from "./../platform/platform.js";
 var PerformanceMetricsModel = class extends SDKModel {
   #agent;
   #metricModes = /* @__PURE__ */ new Map([
@@ -34640,7 +35928,7 @@ var PerformanceMetricsModel = class extends SDKModel {
       let value;
       switch (this.#metricModes.get(metric.name)) {
         case "CumulativeTime":
-          value = data.lastTimestamp && data.lastValue ? Platform21.NumberUtilities.clamp((metric.value - data.lastValue) * 1e3 / (timestamp - data.lastTimestamp), 0, 1) : 0;
+          value = data.lastTimestamp && data.lastValue ? Platform20.NumberUtilities.clamp((metric.value - data.lastValue) * 1e3 / (timestamp - data.lastTimestamp), 0, 1) : 0;
           data.lastValue = metric.value;
           data.lastTimestamp = timestamp;
           break;
@@ -34697,15 +35985,30 @@ var PreloadingModel = class _PreloadingModel extends SDKModel {
     this.agent = target.preloadAgent();
     void this.agent.invoke_enable();
     const targetInfo = target.targetInfo();
-    if (targetInfo !== void 0 && targetInfo.subtype === "prerender") {
-      this.lastPrimaryPageModel = TargetManager.instance().primaryPageTarget()?.model(_PreloadingModel) || null;
+    if (targetInfo?.subtype === "prerender") {
+      this.lastPrimaryPageModel = target.targetManager().primaryPageTarget()?.model(_PreloadingModel) || null;
     }
-    TargetManager.instance().addModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
+    target.targetManager().addModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
   }
   dispose() {
     super.dispose();
-    TargetManager.instance().removeModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
+    this.target().targetManager().removeModelListener(ResourceTreeModel, Events3.PrimaryPageChanged, this.onPrimaryPageChanged, this);
     void this.agent.invoke_disable();
+  }
+  reset() {
+    this.documents.clear();
+    this.loaderIds = [];
+    this.targetJustAttached = true;
+    this.dispatchEventToListeners(
+      "ModelUpdated"
+      /* Events.MODEL_UPDATED */
+    );
+  }
+  maybeInferLoaderId(loaderId) {
+    if (this.currentLoaderId() === null) {
+      this.loaderIds = [loaderId];
+      this.targetJustAttached = false;
+    }
   }
   ensureDocumentPreloadingData(loaderId) {
     if (this.documents.get(loaderId) === void 0) {
@@ -34846,10 +36149,7 @@ var PreloadingModel = class _PreloadingModel extends SDKModel {
   onRuleSetUpdated(event) {
     const ruleSet = event.ruleSet;
     const loaderId = ruleSet.loaderId;
-    if (this.currentLoaderId() === null) {
-      this.loaderIds = [loaderId];
-      this.targetJustAttached = false;
-    }
+    this.maybeInferLoaderId(loaderId);
     this.ensureDocumentPreloadingData(loaderId);
     this.documents.get(loaderId)?.ruleSets.upsert(ruleSet);
     this.dispatchEventToListeners(
@@ -35044,7 +36344,7 @@ function makePreloadingAttemptId(key) {
       targetHint = "Self";
       break;
   }
-  return `${key.loaderId}:${action}:${key.url}:${targetHint}`;
+  return `${key.loaderId}:${action}:${key.url}:${targetHint}:${key.formSubmission ? "formSubmission" : "undefined"}`;
 }
 var PreloadPipeline = class _PreloadPipeline {
   inner;
@@ -35445,7 +36745,7 @@ __export(ServiceWorkerCacheModel_exports, {
   Cache: () => Cache,
   ServiceWorkerCacheModel: () => ServiceWorkerCacheModel
 });
-import * as Common40 from "./../common/common.js";
+import * as Common38 from "./../common/common.js";
 import * as i18n37 from "./../i18n/i18n.js";
 
 // gen/front_end/core/sdk/StorageBucketsModel.js
@@ -35558,8 +36858,6 @@ var StorageBucketsModel = class extends SDKModel {
       throw new Error(`Received an event that Storage Bucket '${bucketId}' was deleted, but it wasn't in the StorageBucketsModel.`);
     }
   }
-  attributionReportingTriggerRegistered(_event) {
-  }
   interestGroupAccessed(_event) {
   }
   interestGroupAuctionEventOccurred(_event) {
@@ -35577,12 +36875,6 @@ var StorageBucketsModel = class extends SDKModel {
   sharedStorageAccessed(_event) {
   }
   sharedStorageWorkletOperationExecutionFinished(_event) {
-  }
-  attributionReportingSourceRegistered(_event) {
-  }
-  attributionReportingReportSent(_event) {
-  }
-  attributionReportingVerboseDebugReportSent(_event) {
   }
 };
 SDKModel.register(StorageBucketsModel, { capabilities: 8192, autostart: false });
@@ -35605,7 +36897,7 @@ var ServiceWorkerCacheModel = class extends SDKModel {
   #caches = /* @__PURE__ */ new Map();
   #storageKeysTracked = /* @__PURE__ */ new Set();
   #storageBucketsUpdated = /* @__PURE__ */ new Set();
-  #throttler = new Common40.Throttler.Throttler(2e3);
+  #throttler = new Common38.Throttler.Throttler(2e3);
   #enabled = false;
   // Used by tests to remove the Throttler timeout.
   #scheduleAsSoonAsPossible = false;
@@ -35663,7 +36955,7 @@ var ServiceWorkerCacheModel = class extends SDKModel {
   async deleteCacheEntry(cache, request) {
     const response = await this.cacheAgent.invoke_deleteEntry({ cacheId: cache.cacheId, request });
     if (response.getError()) {
-      Common40.Console.Console.instance().error(i18nString17(UIStrings17.serviceworkercacheagentError, { PH1: cache.toString(), PH2: String(response.getError()) }));
+      Common38.Console.Console.instance().error(i18nString17(UIStrings17.serviceworkercacheagentError, { PH1: cache.toString(), PH2: String(response.getError()) }));
       return;
     }
   }
@@ -35793,8 +37085,6 @@ var ServiceWorkerCacheModel = class extends SDKModel {
       this.dispatchEventToListeners("CacheStorageContentUpdated", { storageBucket, cacheName });
     }
   }
-  attributionReportingTriggerRegistered(_event) {
-  }
   indexedDBListUpdated(_event) {
   }
   indexedDBContentUpdated(_event) {
@@ -35815,12 +37105,6 @@ var ServiceWorkerCacheModel = class extends SDKModel {
   }
   setThrottlerSchedulesAsSoonAsPossibleForTest() {
     this.#scheduleAsSoonAsPossible = true;
-  }
-  attributionReportingSourceRegistered(_event) {
-  }
-  attributionReportingReportSent(_event) {
-  }
-  attributionReportingVerboseDebugReportSent(_event) {
   }
 };
 var Cache = class {
@@ -35864,7 +37148,7 @@ __export(ServiceWorkerManager_exports, {
   ServiceWorkerVersion: () => ServiceWorkerVersion,
   ServiceWorkerVersionState: () => ServiceWorkerVersionState
 });
-import * as Common41 from "./../common/common.js";
+import * as Common39 from "./../common/common.js";
 import * as i18n39 from "./../i18n/i18n.js";
 var UIStrings18 = {
   /**
@@ -35928,7 +37212,7 @@ var ServiceWorkerManager = class extends SDKModel {
     target.registerServiceWorkerDispatcher(new ServiceWorkerDispatcher(this));
     this.#agent = target.serviceWorkerAgent();
     void this.enable();
-    this.#forceUpdateSetting = Common41.Settings.Settings.instance().createSetting("service-worker-update-on-reload", false);
+    this.#forceUpdateSetting = this.target().targetManager().context.get(Common39.Settings.Settings).createSetting("service-worker-update-on-reload", false);
     if (this.#forceUpdateSetting.get()) {
       this.forceUpdateSettingChanged();
     }
@@ -35990,7 +37274,7 @@ var ServiceWorkerManager = class extends SDKModel {
     if (!registration) {
       return;
     }
-    const origin = Common41.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
+    const origin = Common39.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
     await this.#agent.invoke_deliverPushMessage({ origin, registrationId, data });
   }
   async dispatchSyncEvent(registrationId, tag, lastChance) {
@@ -35998,7 +37282,7 @@ var ServiceWorkerManager = class extends SDKModel {
     if (!registration) {
       return;
     }
-    const origin = Common41.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
+    const origin = Common39.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
     await this.#agent.invoke_dispatchSyncEvent({ origin, registrationId, tag, lastChance });
   }
   async dispatchPeriodicSyncEvent(registrationId, tag) {
@@ -36006,7 +37290,7 @@ var ServiceWorkerManager = class extends SDKModel {
     if (!registration) {
       return;
     }
-    const origin = Common41.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
+    const origin = Common39.ParsedURL.ParsedURL.extractOrigin(registration.scopeURL);
     await this.#agent.invoke_dispatchPeriodicSyncEvent({ origin, registrationId, tag });
   }
   async unregister(scopeURL) {
@@ -36127,7 +37411,7 @@ var ServiceWorkerVersion = class {
   update(payload) {
     this.id = payload.versionId;
     this.scriptURL = payload.scriptURL;
-    const parsedURL = new Common41.ParsedURL.ParsedURL(payload.scriptURL);
+    const parsedURL = new Common39.ParsedURL.ParsedURL(payload.scriptURL);
     this.securityOrigin = parsedURL.securityOrigin();
     this.currentState = new ServiceWorkerVersionState(payload.runningStatus, payload.status, this.currentState, Date.now());
     this.scriptLastModified = payload.scriptLastModified;
@@ -36282,7 +37566,7 @@ var ServiceWorkerRegistration = class {
     this.#fingerprint = Symbol("fingerprint");
     this.id = payload.registrationId;
     this.scopeURL = payload.scopeURL;
-    const parsedURL = new Common41.ParsedURL.ParsedURL(payload.scopeURL);
+    const parsedURL = new Common39.ParsedURL.ParsedURL(payload.scopeURL);
     this.securityOrigin = parsedURL.securityOrigin();
     this.isDeleted = payload.isDeleted;
   }
@@ -36331,7 +37615,7 @@ var ServiceWorkerContextNamer = class {
     this.#serviceWorkerManager = serviceWorkerManager;
     serviceWorkerManager.addEventListener("RegistrationUpdated", this.registrationsUpdated, this);
     serviceWorkerManager.addEventListener("RegistrationDeleted", this.registrationsUpdated, this);
-    TargetManager.instance().addModelListener(RuntimeModel, Events6.ExecutionContextCreated, this.executionContextCreated, this);
+    this.#target.targetManager().addModelListener(RuntimeModel, Events6.ExecutionContextCreated, this.executionContextCreated, this);
   }
   registrationsUpdated() {
     this.#versionByTargetId.clear();
@@ -36360,7 +37644,7 @@ var ServiceWorkerContextNamer = class {
     return target.id();
   }
   updateAllContextLabels() {
-    for (const target of TargetManager.instance().targets()) {
+    for (const target of this.#target.targetManager().targets()) {
       const serviceWorkerTargetId = this.serviceWorkerTargetId(target);
       if (!serviceWorkerTargetId) {
         continue;
@@ -36378,7 +37662,7 @@ var ServiceWorkerContextNamer = class {
       context.setLabel("");
       return;
     }
-    const parsedUrl = Common41.ParsedURL.ParsedURL.fromString(context.origin);
+    const parsedUrl = Common39.ParsedURL.ParsedURL.fromString(context.origin);
     const label = parsedUrl ? parsedUrl.lastPathComponentWithFragment() : context.name;
     const localizedStatus = ServiceWorkerVersion.Status[version.status];
     context.setLabel(i18nString18(UIStrings18.sSS, { PH1: label, PH2: version.id, PH3: localizedStatus() }));
@@ -36466,6 +37750,7 @@ export {
   CSSMedia_exports as CSSMedia,
   CSSMetadata_exports as CSSMetadata,
   CSSModel_exports as CSSModel,
+  CSSNavigation_exports as CSSNavigation,
   CSSProperty_exports as CSSProperty,
   CSSPropertyParser_exports as CSSPropertyParser,
   CSSPropertyParserMatchers_exports as CSSPropertyParserMatchers,
@@ -36484,8 +37769,10 @@ export {
   Cookie_exports as Cookie,
   CookieModel_exports as CookieModel,
   CookieParser_exports as CookieParser,
+  CrashReportContextModel_exports as CrashReportContextModel,
   DOMDebuggerModel_exports as DOMDebuggerModel,
   DOMModel_exports as DOMModel,
+  DOMStorageModel_exports as DOMStorageModel,
   DebuggerModel_exports as DebuggerModel,
   EmulationModel_exports as EmulationModel,
   EnhancedTracesParser_exports as EnhancedTracesParser,

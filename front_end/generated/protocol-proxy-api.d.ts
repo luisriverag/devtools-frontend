@@ -38,6 +38,8 @@ declare namespace ProtocolProxyApi {
 
     Cast: CastApi;
 
+    CrashReportContext: CrashReportContextApi;
+
     DOM: DOMApi;
 
     DOMDebugger: DOMDebuggerApi;
@@ -98,6 +100,8 @@ declare namespace ProtocolProxyApi {
 
     ServiceWorker: ServiceWorkerApi;
 
+    SmartCardEmulation: SmartCardEmulationApi;
+
     Storage: StorageApi;
 
     SystemInfo: SystemInfoApi;
@@ -111,6 +115,8 @@ declare namespace ProtocolProxyApi {
     WebAudio: WebAudioApi;
 
     WebAuthn: WebAuthnApi;
+
+    WebMCP: WebMCPApi;
 
     Debugger: DebuggerApi;
 
@@ -144,6 +150,8 @@ declare namespace ProtocolProxyApi {
     CacheStorage: CacheStorageDispatcher;
 
     Cast: CastDispatcher;
+
+    CrashReportContext: CrashReportContextDispatcher;
 
     DOM: DOMDispatcher;
 
@@ -205,6 +213,8 @@ declare namespace ProtocolProxyApi {
 
     ServiceWorker: ServiceWorkerDispatcher;
 
+    SmartCardEmulation: SmartCardEmulationDispatcher;
+
     Storage: StorageDispatcher;
 
     SystemInfo: SystemInfoDispatcher;
@@ -218,6 +228,8 @@ declare namespace ProtocolProxyApi {
     WebAudio: WebAudioDispatcher;
 
     WebAuthn: WebAuthnDispatcher;
+
+    WebMCP: WebMCPDispatcher;
 
     Debugger: DebuggerDispatcher;
 
@@ -388,12 +400,6 @@ declare namespace ProtocolProxyApi {
      * `issueAdded` event.
      */
     invoke_enable(): Promise<Protocol.ProtocolResponseWithError>;
-
-    /**
-     * Runs the contrast check for the target page. Found issues are reported
-     * using Audits.issueAdded event.
-     */
-    invoke_checkContrast(params: Protocol.Audits.CheckContrastRequest): Promise<Protocol.ProtocolResponseWithError>;
 
     /**
      * Runs the form issues check for the target page. Found issues are reported
@@ -767,6 +773,8 @@ declare namespace ProtocolProxyApi {
      * to the provided property syntax, the value is parsed using combined
      * syntax as if null `propertyName` was provided. If the value cannot be
      * resolved even then, return the provided value without any changes.
+     * Note: this function currently does not resolve CSS random() function,
+     * it returns unmodified random() function parts.`
      */
     invoke_resolveValues(params: Protocol.CSS.ResolveValuesRequest): Promise<Protocol.CSS.ResolveValuesResponse>;
 
@@ -872,13 +880,22 @@ declare namespace ProtocolProxyApi {
 
     /**
      * Modifies the expression of a container query.
+     * Deprecated. Use setContainerQueryConditionText instead.
+     * @deprecated
      */
     invoke_setContainerQueryText(params: Protocol.CSS.SetContainerQueryTextRequest): Promise<Protocol.CSS.SetContainerQueryTextResponse>;
+
+    invoke_setContainerQueryConditionText(params: Protocol.CSS.SetContainerQueryConditionTextRequest): Promise<Protocol.CSS.SetContainerQueryConditionTextResponse>;
 
     /**
      * Modifies the expression of a supports at-rule.
      */
     invoke_setSupportsText(params: Protocol.CSS.SetSupportsTextRequest): Promise<Protocol.CSS.SetSupportsTextResponse>;
+
+    /**
+     * Modifies the expression of a navigation at-rule.
+     */
+    invoke_setNavigationText(params: Protocol.CSS.SetNavigationTextRequest): Promise<Protocol.CSS.SetNavigationTextResponse>;
 
     /**
      * Modifies the expression of a scope at-rule.
@@ -1035,6 +1052,16 @@ declare namespace ProtocolProxyApi {
      */
     issueUpdated(params: Protocol.Cast.IssueUpdatedEvent): void;
 
+  }
+
+  export interface CrashReportContextApi {
+    /**
+     * Returns all entries in the CrashReportContext across all frames in the page.
+     */
+    invoke_getEntries(): Promise<Protocol.CrashReportContext.GetEntriesResponse>;
+
+  }
+  export interface CrashReportContextDispatcher {
   }
 
   export interface DOMApi {
@@ -1340,6 +1367,11 @@ declare namespace ProtocolProxyApi {
     attributeModified(params: Protocol.DOM.AttributeModifiedEvent): void;
 
     /**
+     * Fired when `Element`'s adoptedStyleSheets are modified.
+     */
+    adoptedStyleSheetsModified(params: Protocol.DOM.AdoptedStyleSheetsModifiedEvent): void;
+
+    /**
      * Fired when `Element`'s attribute is removed.
      */
     attributeRemoved(params: Protocol.DOM.AttributeRemovedEvent): void;
@@ -1393,6 +1425,11 @@ declare namespace ProtocolProxyApi {
      * Fired when a node's scrollability state changes.
      */
     scrollableFlagUpdated(params: Protocol.DOM.ScrollableFlagUpdatedEvent): void;
+
+    /**
+     * Fired when a node's ad related state changes.
+     */
+    adRelatedStateUpdated(params: Protocol.DOM.AdRelatedStateUpdatedEvent): void;
 
     /**
      * Fired when a node's starting styles changes.
@@ -1821,7 +1858,8 @@ declare namespace ProtocolProxyApi {
     invoke_setSmallViewportHeightDifferenceOverride(params: Protocol.Emulation.SetSmallViewportHeightDifferenceOverrideRequest): Promise<Protocol.ProtocolResponseWithError>;
 
     /**
-     * Returns device's screen configuration.
+     * Returns device's screen configuration. In headful mode, the physical screens configuration is returned,
+     * whereas in headless mode, a virtual headless screen configuration is provided instead.
      */
     invoke_getScreenInfos(): Promise<Protocol.Emulation.GetScreenInfosResponse>;
 
@@ -1831,9 +1869,22 @@ declare namespace ProtocolProxyApi {
     invoke_addScreen(params: Protocol.Emulation.AddScreenRequest): Promise<Protocol.Emulation.AddScreenResponse>;
 
     /**
+     * Updates specified screen parameters. Only supported in headless mode.
+     */
+    invoke_updateScreen(params: Protocol.Emulation.UpdateScreenRequest): Promise<Protocol.Emulation.UpdateScreenResponse>;
+
+    /**
      * Remove screen from the device. Only supported in headless mode.
      */
     invoke_removeScreen(params: Protocol.Emulation.RemoveScreenRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Set primary screen. Only supported in headless mode.
+     * Note that this changes the coordinate system origin to the top-left
+     * of the new primary screen, updating the bounds and work areas
+     * of all existing screens accordingly.
+     */
+    invoke_setPrimaryScreen(params: Protocol.Emulation.SetPrimaryScreenRequest): Promise<Protocol.ProtocolResponseWithError>;
 
   }
   export interface EmulationDispatcher {
@@ -1841,6 +1892,13 @@ declare namespace ProtocolProxyApi {
      * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
      */
     virtualTimeBudgetExpired(): void;
+
+    /**
+     * Fired when a page calls screen.orientation.lock() or screen.orientation.unlock()
+     * while device emulation is enabled. This allows the DevTools frontend to update the
+     * emulated device orientation accordingly.
+     */
+    screenOrientationLockChanged(params: Protocol.Emulation.ScreenOrientationLockChangedEvent): void;
 
   }
 
@@ -1866,18 +1924,24 @@ declare namespace ProtocolProxyApi {
 
   export interface ExtensionsApi {
     /**
+     * Runs an extension default action.
+     */
+    invoke_triggerAction(params: Protocol.Extensions.TriggerActionRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
      * Installs an unpacked extension from the filesystem similar to
      * --load-extension CLI flags. Returns extension ID once the extension
-     * has been installed. Available if the client is connected using the
-     * --remote-debugging-pipe flag and the --enable-unsafe-extension-debugging
-     * flag is set.
+     * has been installed.
      */
     invoke_loadUnpacked(params: Protocol.Extensions.LoadUnpackedRequest): Promise<Protocol.Extensions.LoadUnpackedResponse>;
 
     /**
+     * Gets a list of all unpacked extensions.
+     */
+    invoke_getExtensions(): Promise<Protocol.Extensions.GetExtensionsResponse>;
+
+    /**
      * Uninstalls an unpacked extension (others not supported) from the profile.
-     * Available if the client is connected using the --remote-debugging-pipe flag
-     * and the --enable-unsafe-extension-debugging.
      */
     invoke_uninstall(params: Protocol.Extensions.UninstallRequest): Promise<Protocol.ProtocolResponseWithError>;
 
@@ -2452,17 +2516,6 @@ declare namespace ProtocolProxyApi {
 
   export interface NetworkApi {
     /**
-     * Returns enum representing if IP Proxy of requests is available
-     * or reason it is not active.
-     */
-    invoke_getIPProtectionProxyStatus(): Promise<Protocol.Network.GetIPProtectionProxyStatusResponse>;
-
-    /**
-     * Sets bypass IP Protection Proxy boolean.
-     */
-    invoke_setIPProtectionProxyBypassEnabled(params: Protocol.Network.SetIPProtectionProxyBypassEnabledRequest): Promise<Protocol.ProtocolResponseWithError>;
-
-    /**
      * Sets a list of content encodings that will be accepted. Empty list means no encoding is accepted.
      */
     invoke_setAcceptedEncodings(params: Protocol.Network.SetAcceptedEncodingsRequest): Promise<Protocol.ProtocolResponseWithError>;
@@ -2543,6 +2596,13 @@ declare namespace ProtocolProxyApi {
      * Enables network tracking, network events will now be delivered to the client.
      */
     invoke_enable(params: Protocol.Network.EnableRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Configures storing response bodies outside of renderer, so that these survive
+     * a cross-process navigation.
+     * If maxTotalBufferSize is not set, durable messages are disabled.
+     */
+    invoke_configureDurableMessages(params: Protocol.Network.ConfigureDurableMessagesRequest): Promise<Protocol.ProtocolResponseWithError>;
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
@@ -2661,6 +2721,21 @@ declare namespace ProtocolProxyApi {
      * Enabling triggers 'reportingApiReportAdded' for all existing reports.
      */
     invoke_enableReportingApi(params: Protocol.Network.EnableReportingApiRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Sets up tracking device bound sessions and fetching of initial set of sessions.
+     */
+    invoke_enableDeviceBoundSessions(params: Protocol.Network.EnableDeviceBoundSessionsRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Deletes a device bound session.
+     */
+    invoke_deleteDeviceBoundSession(params: Protocol.Network.DeleteDeviceBoundSessionRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Fetches the schemeful site for a specific origin.
+     */
+    invoke_fetchSchemefulSite(params: Protocol.Network.FetchSchemefulSiteRequest): Promise<Protocol.Network.FetchSchemefulSiteResponse>;
 
     /**
      * Fetches the resource and returns the content.
@@ -2808,6 +2883,10 @@ declare namespace ProtocolProxyApi {
      */
     directTCPSocketChunkReceived(params: Protocol.Network.DirectTCPSocketChunkReceivedEvent): void;
 
+    directUDPSocketJoinedMulticastGroup(params: Protocol.Network.DirectUDPSocketJoinedMulticastGroupEvent): void;
+
+    directUDPSocketLeftMulticastGroup(params: Protocol.Network.DirectUDPSocketLeftMulticastGroupEvent): void;
+
     /**
      * Fired upon direct_socket.UDPSocket creation.
      */
@@ -2882,6 +2961,16 @@ declare namespace ProtocolProxyApi {
     reportingApiReportUpdated(params: Protocol.Network.ReportingApiReportUpdatedEvent): void;
 
     reportingApiEndpointsChangedForOrigin(params: Protocol.Network.ReportingApiEndpointsChangedForOriginEvent): void;
+
+    /**
+     * Triggered when the initial set of device bound sessions is added.
+     */
+    deviceBoundSessionsAdded(params: Protocol.Network.DeviceBoundSessionsAddedEvent): void;
+
+    /**
+     * Triggered when a device bound session event occurs.
+     */
+    deviceBoundSessionEventOccurred(params: Protocol.Network.DeviceBoundSessionEventOccurredEvent): void;
 
   }
 
@@ -2984,6 +3073,8 @@ declare namespace ProtocolProxyApi {
 
     invoke_setShowContainerQueryOverlays(params: Protocol.Overlay.SetShowContainerQueryOverlaysRequest): Promise<Protocol.ProtocolResponseWithError>;
 
+    invoke_setShowInspectedElementAnchor(params: Protocol.Overlay.SetShowInspectedElementAnchorRequest): Promise<Protocol.ProtocolResponseWithError>;
+
     /**
      * Requests that backend shows paint rectangles
      */
@@ -3048,6 +3139,16 @@ declare namespace ProtocolProxyApi {
      * Fired when user asks to capture screenshot of some area on the page.
      */
     screenshotRequested(params: Protocol.Overlay.ScreenshotRequestedEvent): void;
+
+    /**
+     * Fired when user asks to show the Inspect panel.
+     */
+    inspectPanelShowRequested(params: Protocol.Overlay.InspectPanelShowRequestedEvent): void;
+
+    /**
+     * Fired when user asks to restore the Inspected Element floating window.
+     */
+    inspectedElementWindowRestored(params: Protocol.Overlay.InspectedElementWindowRestoredEvent): void;
 
     /**
      * Fired when user cancels the inspect mode.
@@ -3479,6 +3580,12 @@ declare namespace ProtocolProxyApi {
      */
     invoke_setPrerenderingAllowed(params: Protocol.Page.SetPrerenderingAllowedRequest): Promise<Protocol.ProtocolResponseWithError>;
 
+    /**
+     * Get the annotated page content for the main frame.
+     * This is an experimental command that is subject to change.
+     */
+    invoke_getAnnotatedPageContent(params: Protocol.Page.GetAnnotatedPageContentRequest): Promise<Protocol.Page.GetAnnotatedPageContentResponse>;
+
   }
   export interface PageDispatcher {
     domContentEventFired(params: Protocol.Page.DomContentEventFiredEvent): void;
@@ -3808,6 +3915,258 @@ declare namespace ProtocolProxyApi {
 
   }
 
+  export interface SmartCardEmulationApi {
+    /**
+     * Enables the |SmartCardEmulation| domain.
+     */
+    invoke_enable(): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Disables the |SmartCardEmulation| domain.
+     */
+    invoke_disable(): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardEstablishContext| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaa1b8970169fd4883a6dc4a8f43f19b67
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardestablishcontext
+     */
+    invoke_reportEstablishContextResult(params: Protocol.SmartCardEmulation.ReportEstablishContextResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardReleaseContext| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga6aabcba7744c5c9419fdd6404f73a934
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardreleasecontext
+     */
+    invoke_reportReleaseContextResult(params: Protocol.SmartCardEmulation.ReportReleaseContextResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardListReaders| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga93b07815789b3cf2629d439ecf20f0d9
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardlistreadersa
+     */
+    invoke_reportListReadersResult(params: Protocol.SmartCardEmulation.ReportListReadersResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardGetStatusChange| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga33247d5d1257d59e55647c3bb717db24
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardgetstatuschangea
+     */
+    invoke_reportGetStatusChangeResult(params: Protocol.SmartCardEmulation.ReportGetStatusChangeResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the result of a |SCardBeginTransaction| call.
+     * On success, this creates a new transaction object.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaddb835dce01a0da1d6ca02d33ee7d861
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardbegintransaction
+     */
+    invoke_reportBeginTransactionResult(params: Protocol.SmartCardEmulation.ReportBeginTransactionResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a call that returns only a result code.
+     * Used for: |SCardCancel|, |SCardDisconnect|, |SCardSetAttrib|, |SCardEndTransaction|.
+     *
+     * This maps to:
+     * 1. SCardCancel
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaacbbc0c6d6c0cbbeb4f4debf6fbeeee6
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardcancel
+     *
+     * 2. SCardDisconnect
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga4be198045c73ec0deb79e66c0ca1738a
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scarddisconnect
+     *
+     * 3. SCardSetAttrib
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga060f0038a4ddfd5dd2b8fadf3c3a2e4f
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardsetattrib
+     *
+     * 4. SCardEndTransaction
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gae8742473b404363e5c587f570d7e2f3b
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardendtransaction
+     */
+    invoke_reportPlainResult(params: Protocol.SmartCardEmulation.ReportPlainResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardConnect| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga4e515829752e0a8dbc4d630696a8d6a5
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardconnecta
+     */
+    invoke_reportConnectResult(params: Protocol.SmartCardEmulation.ReportConnectResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a call that sends back data on success.
+     * Used for |SCardTransmit|, |SCardControl|, and |SCardGetAttrib|.
+     *
+     * This maps to:
+     * 1. SCardTransmit
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga9a2d77242a271310269065e64633ab99
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardtransmit
+     *
+     * 2. SCardControl
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gac3454d4657110fd7f753b2d3d8f4e32f
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardcontrol
+     *
+     * 3. SCardGetAttrib
+     *    PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaacfec51917255b7a25b94c5104961602
+     *    Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardgetattrib
+     */
+    invoke_reportDataResult(params: Protocol.SmartCardEmulation.ReportDataResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports the successful result of a |SCardStatus| call.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gae49c3c894ad7ac12a5b896bde70d0382
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardstatusa
+     */
+    invoke_reportStatusResult(params: Protocol.SmartCardEmulation.ReportStatusResultRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Reports an error result for the given request.
+     */
+    invoke_reportError(params: Protocol.SmartCardEmulation.ReportErrorRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+  }
+  export interface SmartCardEmulationDispatcher {
+    /**
+     * Fired when |SCardEstablishContext| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaa1b8970169fd4883a6dc4a8f43f19b67
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardestablishcontext
+     */
+    establishContextRequested(params: Protocol.SmartCardEmulation.EstablishContextRequestedEvent): void;
+
+    /**
+     * Fired when |SCardReleaseContext| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga6aabcba7744c5c9419fdd6404f73a934
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardreleasecontext
+     */
+    releaseContextRequested(params: Protocol.SmartCardEmulation.ReleaseContextRequestedEvent): void;
+
+    /**
+     * Fired when |SCardListReaders| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga93b07815789b3cf2629d439ecf20f0d9
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardlistreadersa
+     */
+    listReadersRequested(params: Protocol.SmartCardEmulation.ListReadersRequestedEvent): void;
+
+    /**
+     * Fired when |SCardGetStatusChange| is called. Timeout is specified in milliseconds.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga33247d5d1257d59e55647c3bb717db24
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardgetstatuschangea
+     */
+    getStatusChangeRequested(params: Protocol.SmartCardEmulation.GetStatusChangeRequestedEvent): void;
+
+    /**
+     * Fired when |SCardCancel| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaacbbc0c6d6c0cbbeb4f4debf6fbeeee6
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardcancel
+     */
+    cancelRequested(params: Protocol.SmartCardEmulation.CancelRequestedEvent): void;
+
+    /**
+     * Fired when |SCardConnect| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga4e515829752e0a8dbc4d630696a8d6a5
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardconnecta
+     */
+    connectRequested(params: Protocol.SmartCardEmulation.ConnectRequestedEvent): void;
+
+    /**
+     * Fired when |SCardDisconnect| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga4be198045c73ec0deb79e66c0ca1738a
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scarddisconnect
+     */
+    disconnectRequested(params: Protocol.SmartCardEmulation.DisconnectRequestedEvent): void;
+
+    /**
+     * Fired when |SCardTransmit| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga9a2d77242a271310269065e64633ab99
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardtransmit
+     */
+    transmitRequested(params: Protocol.SmartCardEmulation.TransmitRequestedEvent): void;
+
+    /**
+     * Fired when |SCardControl| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gac3454d4657110fd7f753b2d3d8f4e32f
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardcontrol
+     */
+    controlRequested(params: Protocol.SmartCardEmulation.ControlRequestedEvent): void;
+
+    /**
+     * Fired when |SCardGetAttrib| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaacfec51917255b7a25b94c5104961602
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardgetattrib
+     */
+    getAttribRequested(params: Protocol.SmartCardEmulation.GetAttribRequestedEvent): void;
+
+    /**
+     * Fired when |SCardSetAttrib| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#ga060f0038a4ddfd5dd2b8fadf3c3a2e4f
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardsetattrib
+     */
+    setAttribRequested(params: Protocol.SmartCardEmulation.SetAttribRequestedEvent): void;
+
+    /**
+     * Fired when |SCardStatus| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gae49c3c894ad7ac12a5b896bde70d0382
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardstatusa
+     */
+    statusRequested(params: Protocol.SmartCardEmulation.StatusRequestedEvent): void;
+
+    /**
+     * Fired when |SCardBeginTransaction| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gaddb835dce01a0da1d6ca02d33ee7d861
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardbegintransaction
+     */
+    beginTransactionRequested(params: Protocol.SmartCardEmulation.BeginTransactionRequestedEvent): void;
+
+    /**
+     * Fired when |SCardEndTransaction| is called.
+     *
+     * This maps to:
+     * PC/SC Lite: https://pcsclite.apdu.fr/api/group__API.html#gae8742473b404363e5c587f570d7e2f3b
+     * Microsoft: https://learn.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardendtransaction
+     */
+    endTransactionRequested(params: Protocol.SmartCardEmulation.EndTransactionRequestedEvent): void;
+
+  }
+
   export interface StorageApi {
     /**
      * Returns a storage key given a frame id.
@@ -3976,33 +4335,10 @@ declare namespace ProtocolProxyApi {
     invoke_runBounceTrackingMitigations(): Promise<Protocol.Storage.RunBounceTrackingMitigationsResponse>;
 
     /**
-     * https://wicg.github.io/attribution-reporting-api/
-     */
-    invoke_setAttributionReportingLocalTestingMode(params: Protocol.Storage.SetAttributionReportingLocalTestingModeRequest): Promise<Protocol.ProtocolResponseWithError>;
-
-    /**
-     * Enables/disables issuing of Attribution Reporting events.
-     */
-    invoke_setAttributionReportingTracking(params: Protocol.Storage.SetAttributionReportingTrackingRequest): Promise<Protocol.ProtocolResponseWithError>;
-
-    /**
-     * Sends all pending Attribution Reports immediately, regardless of their
-     * scheduled report time.
-     */
-    invoke_sendPendingAttributionReports(): Promise<Protocol.Storage.SendPendingAttributionReportsResponse>;
-
-    /**
      * Returns the effective Related Website Sets in use by this profile for the browser
      * session. The effective Related Website Sets will not change during a browser session.
      */
     invoke_getRelatedWebsiteSets(): Promise<Protocol.Storage.GetRelatedWebsiteSetsResponse>;
-
-    /**
-     * Returns the list of URLs from a page and its embedded resources that match
-     * existing grace period URL pattern rules.
-     * https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period
-     */
-    invoke_getAffectedUrlsForThirdPartyCookieMetadata(params: Protocol.Storage.GetAffectedUrlsForThirdPartyCookieMetadataRequest): Promise<Protocol.Storage.GetAffectedUrlsForThirdPartyCookieMetadataResponse>;
 
     invoke_setProtectedAudienceKAnonymity(params: Protocol.Storage.SetProtectedAudienceKAnonymityRequest): Promise<Protocol.ProtocolResponseWithError>;
 
@@ -4063,14 +4399,6 @@ declare namespace ProtocolProxyApi {
     storageBucketCreatedOrUpdated(params: Protocol.Storage.StorageBucketCreatedOrUpdatedEvent): void;
 
     storageBucketDeleted(params: Protocol.Storage.StorageBucketDeletedEvent): void;
-
-    attributionReportingSourceRegistered(params: Protocol.Storage.AttributionReportingSourceRegisteredEvent): void;
-
-    attributionReportingTriggerRegistered(params: Protocol.Storage.AttributionReportingTriggerRegisteredEvent): void;
-
-    attributionReportingReportSent(params: Protocol.Storage.AttributionReportingReportSentEvent): void;
-
-    attributionReportingVerboseDebugReportSent(params: Protocol.Storage.AttributionReportingVerboseDebugReportSentEvent): void;
 
   }
 
@@ -4206,6 +4534,12 @@ declare namespace ProtocolProxyApi {
     invoke_setRemoteLocations(params: Protocol.Target.SetRemoteLocationsRequest): Promise<Protocol.ProtocolResponseWithError>;
 
     /**
+     * Gets the targetId of the DevTools page target opened for the given target
+     * (if any).
+     */
+    invoke_getDevToolsTarget(params: Protocol.Target.GetDevToolsTargetRequest): Promise<Protocol.Target.GetDevToolsTargetResponse>;
+
+    /**
      * Opens a DevTools window for the target.
      */
     invoke_openDevTools(params: Protocol.Target.OpenDevToolsRequest): Promise<Protocol.Target.OpenDevToolsResponse>;
@@ -4282,6 +4616,11 @@ declare namespace ProtocolProxyApi {
      * Gets supported tracing categories.
      */
     invoke_getCategories(): Promise<Protocol.Tracing.GetCategoriesResponse>;
+
+    /**
+     * Return a descriptor for all available tracing categories.
+     */
+    invoke_getTrackEventDescriptor(): Promise<Protocol.Tracing.GetTrackEventDescriptorResponse>;
 
     /**
      * Record a clock sync marker in the trace.
@@ -4495,6 +4834,52 @@ declare namespace ProtocolProxyApi {
      * Triggered when a credential is used in a webauthn assertion.
      */
     credentialAsserted(params: Protocol.WebAuthn.CredentialAssertedEvent): void;
+
+  }
+
+  export interface WebMCPApi {
+    /**
+     * Enables the WebMCP domain, allowing events to be sent. Enabling the domain will trigger a toolsAdded event for
+     * all currently registered tools.
+     */
+    invoke_enable(): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Disables the WebMCP domain.
+     */
+    invoke_disable(): Promise<Protocol.ProtocolResponseWithError>;
+
+    /**
+     * Invokes a registered tool.
+     */
+    invoke_invokeTool(params: Protocol.WebMCP.InvokeToolRequest): Promise<Protocol.WebMCP.InvokeToolResponse>;
+
+    /**
+     * Cancels a pending tool invocation.
+     */
+    invoke_cancelInvocation(params: Protocol.WebMCP.CancelInvocationRequest): Promise<Protocol.ProtocolResponseWithError>;
+
+  }
+  export interface WebMCPDispatcher {
+    /**
+     * Event fired when new tools are added.
+     */
+    toolsAdded(params: Protocol.WebMCP.ToolsAddedEvent): void;
+
+    /**
+     * Event fired when tools are removed.
+     */
+    toolsRemoved(params: Protocol.WebMCP.ToolsRemovedEvent): void;
+
+    /**
+     * Event fired when a tool invocation starts.
+     */
+    toolInvoked(params: Protocol.WebMCP.ToolInvokedEvent): void;
+
+    /**
+     * Event fired when a tool invocation completes or fails.
+     */
+    toolResponded(params: Protocol.WebMCP.ToolRespondedEvent): void;
 
   }
 

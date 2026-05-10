@@ -5,7 +5,6 @@ import { MapWithDefault } from '../common/MapWithDefault.js';
 import { assertNotNullOrUndefined } from '../platform/platform.js';
 import { Events as ResourceTreeModelEvents, ResourceTreeModel, } from './ResourceTreeModel.js';
 import { SDKModel } from './SDKModel.js';
-import { TargetManager } from './TargetManager.js';
 /**
  * Holds preloading related information.
  *
@@ -25,15 +24,27 @@ export class PreloadingModel extends SDKModel {
         this.agent = target.preloadAgent();
         void this.agent.invoke_enable();
         const targetInfo = target.targetInfo();
-        if (targetInfo !== undefined && targetInfo.subtype === 'prerender') {
-            this.lastPrimaryPageModel = TargetManager.instance().primaryPageTarget()?.model(PreloadingModel) || null;
+        if (targetInfo?.subtype === 'prerender') {
+            this.lastPrimaryPageModel = target.targetManager().primaryPageTarget()?.model(PreloadingModel) || null;
         }
-        TargetManager.instance().addModelListener(ResourceTreeModel, ResourceTreeModelEvents.PrimaryPageChanged, this.onPrimaryPageChanged, this);
+        target.targetManager().addModelListener(ResourceTreeModel, ResourceTreeModelEvents.PrimaryPageChanged, this.onPrimaryPageChanged, this);
     }
     dispose() {
         super.dispose();
-        TargetManager.instance().removeModelListener(ResourceTreeModel, ResourceTreeModelEvents.PrimaryPageChanged, this.onPrimaryPageChanged, this);
+        this.target().targetManager().removeModelListener(ResourceTreeModel, ResourceTreeModelEvents.PrimaryPageChanged, this.onPrimaryPageChanged, this);
         void this.agent.invoke_disable();
+    }
+    reset() {
+        this.documents.clear();
+        this.loaderIds = [];
+        this.targetJustAttached = true;
+        this.dispatchEventToListeners("ModelUpdated" /* Events.MODEL_UPDATED */);
+    }
+    maybeInferLoaderId(loaderId) {
+        if (this.currentLoaderId() === null) {
+            this.loaderIds = [loaderId];
+            this.targetJustAttached = false;
+        }
     }
     ensureDocumentPreloadingData(loaderId) {
         if (this.documents.get(loaderId) === undefined) {
@@ -178,11 +189,7 @@ export class PreloadingModel extends SDKModel {
     onRuleSetUpdated(event) {
         const ruleSet = event.ruleSet;
         const loaderId = ruleSet.loaderId;
-        // Infer current loaderId if DevTools is opned at the current page.
-        if (this.currentLoaderId() === null) {
-            this.loaderIds = [loaderId];
-            this.targetJustAttached = false;
-        }
+        this.maybeInferLoaderId(loaderId);
         this.ensureDocumentPreloadingData(loaderId);
         this.documents.get(loaderId)?.ruleSets.upsert(ruleSet);
         this.dispatchEventToListeners("ModelUpdated" /* Events.MODEL_UPDATED */);
@@ -369,7 +376,7 @@ function makePreloadingAttemptId(key) {
             targetHint = 'Self';
             break;
     }
-    return `${key.loaderId}:${action}:${key.url}:${targetHint}`;
+    return `${key.loaderId}:${action}:${key.url}:${targetHint}:${key.formSubmission ? 'formSubmission' : 'undefined'}`;
 }
 export class PreloadPipeline {
     inner;

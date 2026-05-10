@@ -4,17 +4,14 @@
 import { RuntimeModel } from './RuntimeModel.js';
 import { SDKModel } from './SDKModel.js';
 export class HeapProfilerModel extends SDKModel {
-    #enabled;
+    #enabled = false;
     #heapProfilerAgent;
     #runtimeModel;
-    #samplingProfilerDepth;
     constructor(target) {
         super(target);
         target.registerHeapProfilerDispatcher(new HeapProfilerDispatcher(this));
-        this.#enabled = false;
         this.#heapProfilerAgent = target.heapProfilerAgent();
         this.#runtimeModel = target.model(RuntimeModel);
-        this.#samplingProfilerDepth = 0;
     }
     debuggerModel() {
         return this.#runtimeModel.debuggerModel();
@@ -30,23 +27,14 @@ export class HeapProfilerModel extends SDKModel {
         await this.#heapProfilerAgent.invoke_enable();
     }
     async startSampling(samplingRateInBytes) {
-        if (this.#samplingProfilerDepth++) {
-            return false;
-        }
         const defaultSamplingIntervalInBytes = 16384;
         const response = await this.#heapProfilerAgent.invoke_startSampling({ samplingInterval: samplingRateInBytes || defaultSamplingIntervalInBytes });
         return Boolean(response.getError());
     }
     async stopSampling() {
-        if (!this.#samplingProfilerDepth) {
-            throw new Error('Sampling profiler is not running.');
-        }
-        if (--this.#samplingProfilerDepth) {
-            return await this.getSamplingProfile();
-        }
         const response = await this.#heapProfilerAgent.invoke_stopSampling();
         if (response.getError()) {
-            return null;
+            throw new Error('Sampling profiler is not running.');
         }
         return response.profile;
     }
@@ -80,7 +68,13 @@ export class HeapProfilerModel extends SDKModel {
         return Boolean(response.getError());
     }
     async takeHeapSnapshot(heapSnapshotOptions) {
-        await this.#heapProfilerAgent.invoke_takeHeapSnapshot(heapSnapshotOptions);
+        await this.target().targetManager().suspendAllTargets('heap-snapshot');
+        try {
+            await this.#heapProfilerAgent.invoke_takeHeapSnapshot(heapSnapshotOptions);
+        }
+        finally {
+            await this.target().targetManager().resumeAllTargets();
+        }
     }
     async startTrackingHeapObjects(recordAllocationStacks) {
         const response = await this.#heapProfilerAgent.invoke_startTrackingHeapObjects({ trackAllocations: recordAllocationStacks });

@@ -3,6 +3,14 @@ import * as Root from '../root/root.js';
 import type { EventDescriptor, EventTargetEvent, GenericEvents } from './EventTarget.js';
 import { ObjectWrapper } from './Object.js';
 import { getLocalizedSettingsCategory, type LearnMore, maybeRemoveSettingExtension, type RegExpSettingItem, registerSettingExtension, registerSettingsForTest, resetSettings, SettingCategory, type SettingExtensionOption, type SettingRegistration, SettingType } from './SettingRegistration.js';
+export interface SettingsCreationOptions {
+    syncedStorage: SettingsStorage;
+    globalStorage: SettingsStorage;
+    localStorage: SettingsStorage;
+    settingRegistrations: SettingRegistration[];
+    logSettingAccess?: (name: string, value: number | string | boolean) => Promise<void>;
+    runSettingsMigration?: boolean;
+}
 export declare class Settings {
     #private;
     readonly syncedStorage: SettingsStorage;
@@ -11,7 +19,7 @@ export declare class Settings {
     settingNameSet: Set<string>;
     orderValuesBySettingCategory: Map<SettingCategory, Set<number>>;
     readonly moduleSettings: Map<string, Setting<unknown>>;
-    private constructor();
+    constructor({ syncedStorage, globalStorage, localStorage, settingRegistrations, logSettingAccess, runSettingsMigration }: SettingsCreationOptions);
     getRegisteredSettings(): SettingRegistration[];
     static hasInstance(): boolean;
     static instance(opts?: {
@@ -19,7 +27,9 @@ export declare class Settings {
         syncedStorage: SettingsStorage | null;
         globalStorage: SettingsStorage | null;
         localStorage: SettingsStorage | null;
+        settingRegistrations: SettingRegistration[] | null;
         logSettingAccess?: (name: string, value: number | string | boolean) => Promise<void>;
+        runSettingsMigration?: boolean;
     }): Settings;
     static removeInstance(): void;
     private registerModuleSetting;
@@ -54,7 +64,14 @@ export interface SettingsBackingStore {
     remove(setting: string): void;
     clear(): void;
 }
-export declare const NOOP_STORAGE: SettingsBackingStore;
+export declare class InMemoryStorage implements SettingsBackingStore {
+    #private;
+    register(_setting: string): void;
+    set(key: string, value: string): void;
+    get(key: string): Promise<string>;
+    remove(key: string): void;
+    clear(): void;
+}
 export declare class SettingsStorage {
     private object;
     private readonly backingStore;
@@ -73,7 +90,7 @@ export declare class SettingsStorage {
 export declare class Deprecation {
     readonly disabled: boolean;
     readonly warning: Platform.UIString.LocalizedString;
-    readonly experiment?: Root.Runtime.Experiment;
+    readonly experiment?: Root.Runtime.Experiment | Root.Runtime.HostExperiment;
     constructor({ deprecationNotice }: SettingRegistration);
 }
 export declare class Setting<V> {
@@ -87,7 +104,7 @@ export declare class Setting<V> {
     addChangeListener(listener: (arg0: EventTargetEvent<V>) => void, thisObject?: Object): EventDescriptor;
     removeChangeListener(listener: (arg0: EventTargetEvent<V>) => void, thisObject?: Object): void;
     title(): Platform.UIString.LocalizedString;
-    setTitleFunction(titleFunction: (() => Platform.UIString.LocalizedString) | undefined): void;
+    setTitleFunction(titleFunction?: (() => Platform.UIString.LocalizedString)): void;
     setTitle(title: Platform.UIString.LocalizedString): void;
     setRequiresUserAction(requiresUserAction: boolean): void;
     disabled(): boolean;
@@ -119,78 +136,6 @@ export declare class RegExpSetting extends Setting<any> {
     set(value: string): void;
     setAsArray(value: RegExpSettingItem[]): void;
     asRegExp(): RegExp | null;
-}
-export declare class VersionController {
-    #private;
-    static readonly GLOBAL_VERSION_SETTING_NAME = "inspectorVersion";
-    static readonly SYNCED_VERSION_SETTING_NAME = "syncedInspectorVersion";
-    static readonly LOCAL_VERSION_SETTING_NAME = "localInspectorVersion";
-    static readonly CURRENT_VERSION = 40;
-    constructor();
-    /**
-     * Force re-sets all version number settings to the current version without
-     * running any migrations.
-     */
-    resetToCurrent(): void;
-    /**
-     * Runs the appropriate migrations and updates the version settings accordingly.
-     *
-     * To determine what migrations to run we take the minimum of all version number settings.
-     *
-     * IMPORTANT: All migrations must be idempotent since they might be applied multiple times.
-     */
-    updateVersion(): void;
-    private methodsToRunToUpdateVersion;
-    updateVersionFrom0To1(): void;
-    updateVersionFrom1To2(): void;
-    updateVersionFrom2To3(): void;
-    updateVersionFrom3To4(): void;
-    updateVersionFrom4To5(): void;
-    updateVersionFrom5To6(): void;
-    updateVersionFrom6To7(): void;
-    updateVersionFrom7To8(): void;
-    updateVersionFrom8To9(): void;
-    updateVersionFrom9To10(): void;
-    updateVersionFrom10To11(): void;
-    updateVersionFrom11To12(): void;
-    updateVersionFrom12To13(): void;
-    updateVersionFrom13To14(): void;
-    updateVersionFrom14To15(): void;
-    updateVersionFrom15To16(): void;
-    updateVersionFrom16To17(): void;
-    updateVersionFrom17To18(): void;
-    updateVersionFrom18To19(): void;
-    updateVersionFrom19To20(): void;
-    updateVersionFrom20To21(): void;
-    updateVersionFrom21To22(): void;
-    updateVersionFrom22To23(): void;
-    updateVersionFrom23To24(): void;
-    updateVersionFrom24To25(): void;
-    updateVersionFrom25To26(): void;
-    updateVersionFrom26To27(): void;
-    updateVersionFrom27To28(): void;
-    updateVersionFrom28To29(): void;
-    updateVersionFrom29To30(): void;
-    updateVersionFrom30To31(): void;
-    updateVersionFrom31To32(): void;
-    updateVersionFrom32To33(): void;
-    updateVersionFrom33To34(): void;
-    updateVersionFrom34To35(): void;
-    updateVersionFrom35To36(): void;
-    updateVersionFrom36To37(): void;
-    updateVersionFrom37To38(): void;
-    updateVersionFrom38To39(): void;
-    /**
-     * There are two related migrations here for handling network throttling persistence:
-     * 1. Go through all user custom throttling conditions and add a `key` property.
-     * 2. If the user has a 'preferred-network-condition' setting, take the value
-     *    of that and set the right key for the new 'active-network-condition-key'
-     *    setting. Then, remove the now-obsolete 'preferred-network-condition'
-     *    setting.
-     */
-    updateVersionFrom39To40(): void;
-    private migrateSettingsFromLocalStorage;
-    private clearBreakpointsWhenTooMany;
 }
 export declare const enum SettingStorageType {
     /** Persists with the active Chrome profile but also syncs the settings across devices via Chrome Sync. */

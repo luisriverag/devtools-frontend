@@ -1,4 +1,5 @@
 import * as Common from '../../core/common/common.js';
+import * as TextUtils from '../../models/text_utils/text_utils.js';
 import { SuggestBox, type SuggestBoxDelegate, type Suggestion } from './SuggestBox.js';
 /**
  * A custom element wrapper around TextPrompt that allows text-editing contents in-place.
@@ -14,11 +15,13 @@ import { SuggestBox, type SuggestBoxDelegate, type Suggestion } from './SuggestB
  *
  * @property completionTimeout Sets the delay for showing the autocomplete suggestion box.
  * @event commit Editing is done and the result was accepted.
- * @event expand Editing was canceled.
+ * @event cancel Editing was canceled.
  * @event beforeautocomplete This is sent before the autocomplete suggestion box is triggered and before the <datalist>
  *                           is read.
  * @attribute editing Setting/removing this attribute starts/stops editing.
  * @attribute completions Sets the `id` of the <datalist> containing the autocomplete options.
+ * @attribute placeholder Sets a placeholder that's shown in place of the text contents when editing if the text is too
+ *            large.
  */
 export declare class TextPromptElement extends HTMLElement {
     #private;
@@ -37,12 +40,14 @@ export declare namespace TextPromptElement {
         constructor();
     }
     class BeforeAutoCompleteEvent extends CustomEvent<{
-        expression?: string;
-        filter?: string;
+        expression: string;
+        filter: string;
+        force: boolean;
     }> {
         constructor(detail: {
-            expression?: string;
-            filter?: string;
+            expression: string;
+            filter: string;
+            force: boolean;
         });
     }
 }
@@ -56,7 +61,7 @@ export declare class TextPrompt extends Common.ObjectWrapper.ObjectWrapper<Event
     private proxyElement;
     private proxyElementDisplay;
     private autocompletionTimeout;
-    private queryRange;
+    protected queryRange: TextUtils.TextRange.TextRange | null;
     private previousText;
     private currentSuggestion;
     private completionRequestId;
@@ -71,7 +76,7 @@ export declare class TextPrompt extends Common.ObjectWrapper.ObjectWrapper<Event
     private boundClearAutocomplete?;
     private boundOnBlur?;
     private contentElement?;
-    private suggestBox?;
+    protected suggestBox?: SuggestBox;
     private isEditing?;
     private focusRestorer?;
     private blurListener?;
@@ -79,7 +84,7 @@ export declare class TextPrompt extends Common.ObjectWrapper.ObjectWrapper<Event
     private completeTimeout?;
     jslogContext: string | undefined;
     constructor();
-    initialize(completions: (this: null, expression: string, filter: string, force?: boolean | undefined) => Promise<Suggestion[]>, stopCharacters?: string, usesSuggestionBuilder?: boolean): void;
+    initialize(completions: (this: null, expression: string, filter: string, force: boolean) => Promise<Suggestion[]>, stopCharacters?: string, usesSuggestionBuilder?: boolean): void;
     setAutocompletionTimeout(timeout: number): void;
     renderAsBlock(): void;
     /**
@@ -93,7 +98,7 @@ export declare class TextPrompt extends Common.ObjectWrapper.ObjectWrapper<Event
      * or the |blurListener| parameter to register a "blur" event listener on the |element|
      * (since the "blur" event does not bubble.)
      */
-    attachAndStartEditing(element: Element, blurListener: (arg0: Event) => void): Element;
+    attachAndStartEditing(element: Element, blurListener?: (arg0: Event) => void): Element;
     element(): HTMLElement;
     detach(): void;
     textWithCurrentSuggestion(): string;

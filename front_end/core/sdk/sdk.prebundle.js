@@ -20,6 +20,7 @@ import * as CookieModel from './CookieModel.js';
 import * as CookieParser from './CookieParser.js';
 import * as CPUProfilerModel from './CPUProfilerModel.js';
 import * as CPUThrottlingManager from './CPUThrottlingManager.js';
+import * as CrashReportContextModel from './CrashReportContextModel.js';
 import * as CSSContainerQuery from './CSSContainerQuery.js';
 import * as CSSFontFace from './CSSFontFace.js';
 import * as CSSLayer from './CSSLayer.js';
@@ -27,6 +28,7 @@ import * as CSSMatchedStyles from './CSSMatchedStyles.js';
 import * as CSSMedia from './CSSMedia.js';
 import * as CSSMetadata from './CSSMetadata.js';
 import * as CSSModel from './CSSModel.js';
+import * as CSSNavigation from './CSSNavigation.js';
 import * as CSSProperty from './CSSProperty.js';
 import * as CSSPropertyParser from './CSSPropertyParser.js';
 import * as CSSPropertyParserMatchers from './CSSPropertyParserMatchers.js';
@@ -40,6 +42,7 @@ import * as CSSSupports from './CSSSupports.js';
 import * as DebuggerModel from './DebuggerModel.js';
 import * as DOMDebuggerModel from './DOMDebuggerModel.js';
 import * as DOMModel from './DOMModel.js';
+import * as DOMStorageModel from './DOMStorageModel.js';
 import * as EmulationModel from './EmulationModel.js';
 import * as EnhancedTracesParser from './EnhancedTracesParser.js';
 import * as EventBreakpointsModel from './EventBreakpointsModel.js';
@@ -87,6 +90,6 @@ import * as Target from './Target.js';
 import * as TargetManager from './TargetManager.js';
 import * as TraceObject from './TraceObject.js';
 import * as WebAuthnModel from './WebAuthnModel.js';
-export { AccessibilityModel, AnimationModel, AutofillModel, CategorizedBreakpoint, ChildTargetManager, CompilerSourceMappingContentProvider, Connections, ConsoleModel, Cookie, CookieModel, CookieParser, CPUProfilerModel, CPUThrottlingManager, CSSContainerQuery, CSSFontFace, CSSLayer, CSSMatchedStyles, CSSMedia, CSSMetadata, CSSModel, CSSProperty, CSSPropertyParser, CSSPropertyParserMatchers, CSSQuery, CSSRule, CSSScope, CSSStartingStyle, CSSStyleDeclaration, CSSStyleSheetHeader, CSSSupports, DebuggerModel, DOMDebuggerModel, DOMModel, EmulationModel, EnhancedTracesParser, EventBreakpointsModel, FrameAssociated, FrameManager, HeapProfilerModel, IOModel, IsolateManager, IssuesModel, LayerTreeBase, LogModel, NetworkManager, NetworkRequest, OverlayColorGenerator, OverlayModel, OverlayPersistentHighlighter, PageLoad, PageResourceLoader, PaintProfiler, PerformanceMetricsModel, PreloadingModel, RehydratingConnection, // TODO(crbug.com/444191656): Exported for tests.
+export { AccessibilityModel, AnimationModel, AutofillModel, CategorizedBreakpoint, ChildTargetManager, CompilerSourceMappingContentProvider, Connections, ConsoleModel, Cookie, CookieModel, CookieParser, CPUProfilerModel, CPUThrottlingManager, CrashReportContextModel, CSSContainerQuery, CSSFontFace, CSSLayer, CSSMatchedStyles, CSSMedia, CSSMetadata, CSSModel, CSSNavigation, CSSProperty, CSSPropertyParser, CSSPropertyParserMatchers, CSSQuery, CSSRule, CSSScope, CSSStartingStyle, CSSStyleDeclaration, CSSStyleSheetHeader, CSSSupports, DebuggerModel, DOMDebuggerModel, DOMModel, DOMStorageModel, EmulationModel, EnhancedTracesParser, EventBreakpointsModel, FrameAssociated, FrameManager, HeapProfilerModel, IOModel, IsolateManager, IssuesModel, LayerTreeBase, LogModel, NetworkManager, NetworkRequest, OverlayColorGenerator, OverlayModel, OverlayPersistentHighlighter, PageLoad, PageResourceLoader, PaintProfiler, PerformanceMetricsModel, PreloadingModel, RehydratingConnection, // TODO(crbug.com/444191656): Exported for tests.
 RemoteObject, Resource, ResourceTreeModel, RuntimeModel, ScopeTreeCache, ScreenCaptureModel, Script, SDKModel, SecurityOriginManager, ServerSentEventProtocol, ServerTiming, ServiceWorkerCacheModel, ServiceWorkerManager, SourceMap, SourceMapCache, SourceMapFunctionRanges, SourceMapManager, SourceMapScopeChainEntry, SourceMapScopesInfo, StorageBucketsModel, StorageKeyManager, Target, TargetManager, TraceObject, WebAuthnModel, };
 //# sourceMappingURL=sdk.prebundle.js.map

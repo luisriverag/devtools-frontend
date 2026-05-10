@@ -30,7 +30,8 @@ export declare const enum DefinitionKind {
 export declare const enum ScopeKind {
     BLOCK = 1,
     FUNCTION = 2,
-    GLOBAL = 3
+    GLOBAL = 3,
+    ARROW_FUNCTION = 4
 }
 export interface ScopeTreeNode {
     variables: Array<{
@@ -40,6 +41,8 @@ export interface ScopeTreeNode {
     }>;
     start: number;
     end: number;
+    nameMappingLocations?: number[];
+    name?: string;
     kind: ScopeKind;
     children: ScopeTreeNode[];
 }

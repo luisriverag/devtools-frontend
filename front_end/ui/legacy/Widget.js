@@ -27,17 +27,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import '../../core/dom_extension/dom_extension.js';
+import '../dom_extension/dom_extension.js';
 import * as Platform from '../../core/platform/platform.js';
 import * as Geometry from '../../models/geometry/geometry.js';
 import * as Lit from '../../ui/lit/lit.js';
-import { createShadowRootWithCoreStyles } from './UIUtils.js';
+import { appendStyle, deepActiveElement } from './DOMUtilities.js';
+import { cloneCustomElement, createShadowRootWithCoreStyles } from './UIUtils.js';
+const { html } = Lit;
 // Remember the original DOM mutation methods here, since we
 // will override them below to sanity check the Widget system.
-const originalAppendChild = Element.prototype.appendChild;
-const originalInsertBefore = Element.prototype.insertBefore;
-const originalRemoveChild = Element.prototype.removeChild;
-const originalRemoveChildren = Element.prototype.removeChildren;
+const originalAppendChild = Node.prototype.appendChild;
+const originalInsertBefore = Node.prototype.insertBefore;
+const originalRemoveChild = Node.prototype.removeChild;
+const originalRemoveChildren = Node.prototype.removeChildren;
 function assert(condition, message) {
     if (!condition) {
         throw new Error(message);
@@ -58,6 +60,7 @@ let currentUpdateQueue = null;
 const currentlyProcessed = new Set();
 let nextUpdateQueue = new Map();
 let pendingAnimationFrame = null;
+let overallUpdatePromise = null;
 function enqueueIntoNextUpdateQueue(widget) {
     const scheduledUpdate = nextUpdateQueue.get(widget) ?? Promise.withResolvers();
     nextUpdateQueue.delete(widget);
@@ -80,6 +83,7 @@ function enqueueWidgetUpdate(widget) {
     return enqueueIntoNextUpdateQueue(widget);
 }
 function cancelUpdate(widget) {
+    widget.cancelUpdateController();
     if (currentUpdateQueue) {
         const scheduledUpdate = currentUpdateQueue.get(widget);
         if (scheduledUpdate) {
@@ -95,84 +99,141 @@ function cancelUpdate(widget) {
 }
 function runNextUpdate() {
     pendingAnimationFrame = null;
-    currentUpdateQueue = nextUpdateQueue;
-    nextUpdateQueue = new Map();
+    if (!currentUpdateQueue) {
+        currentUpdateQueue = nextUpdateQueue;
+        nextUpdateQueue = new Map();
+    }
     for (const [widget, { resolve }] of currentUpdateQueue) {
         currentlyProcessed.add(widget);
         void (async () => {
-            await widget.performUpdate();
-            resolve();
-        })();
+            try {
+                const controller = new AbortController();
+                widget.addUpdateController(controller);
+                await widget.performUpdate(controller.signal);
+            }
+            finally {
+                resolve();
+            }
+        })().catch(e => {
+            if (e.name !== 'AbortError') {
+                console.error(`${widget.constructor.name}.performUpdate failed: `, e);
+            }
+        });
     }
-    currentUpdateQueue = null;
-    currentlyProcessed.clear();
+    currentUpdateQueue.clear();
+    queueMicrotask(() => {
+        if (currentUpdateQueue && currentUpdateQueue.size > 0) {
+            runNextUpdate();
+        }
+        else {
+            currentUpdateQueue = null;
+            currentlyProcessed.clear();
+            if (!pendingAnimationFrame && overallUpdatePromise) {
+                overallUpdatePromise.resolve();
+                overallUpdatePromise = null;
+            }
+        }
+    });
 }
-export class WidgetElement extends HTMLElement {
-    #widgetClass;
-    #widgetParams;
-    createWidget() {
-        const widget = this.#instantiateWidget();
-        if (this.#widgetParams) {
-            Object.assign(widget, this.#widgetParams);
-        }
-        widget.requestUpdate();
-        return widget;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const widgetConfigs = new WeakMap();
+export function registerWidgetConfig(element, config) {
+    if (!widgetConfigs.has(element)) {
+        setUpLifecycleTracking(element);
     }
-    #instantiateWidget() {
-        if (!this.#widgetClass) {
-            throw new Error('No widgetClass defined');
-        }
-        if (Widget.isPrototypeOf(this.#widgetClass)) {
-            const ctor = this.#widgetClass;
-            return new ctor(this);
-        }
-        const factory = this.#widgetClass;
-        return factory(this);
+    widgetConfigs.set(element, config);
+}
+function instantiateWidget(element, widgetConfig) {
+    if (!widgetConfig.widgetClass) {
+        throw new Error('No widgetClass defined');
     }
-    set widgetConfig(config) {
-        const widget = Widget.get(this);
-        if (widget) {
-            let needsUpdate = false;
-            for (const key in config.widgetParams) {
-                if (config.widgetParams.hasOwnProperty(key) && config.widgetParams[key] !== this.#widgetParams?.[key]) {
-                    needsUpdate = true;
-                }
-            }
-            if (needsUpdate) {
-                Object.assign(widget, config.widgetParams);
-                widget.requestUpdate();
-            }
-        }
-        this.#widgetClass = config.widgetClass;
-        this.#widgetParams = config.widgetParams;
+    let newWidget;
+    if (Widget.isPrototypeOf(widgetConfig.widgetClass)) {
+        const ctor = widgetConfig.widgetClass;
+        newWidget = new ctor(element);
     }
-    getWidget() {
-        return Widget.get(this);
+    else {
+        const factory = widgetConfig.widgetClass;
+        newWidget = factory(element);
     }
-    connectedCallback() {
-        const widget = Widget.getOrCreateWidget(this);
-        if (!widget.element.parentElement) {
-            widget.markAsRoot();
-        }
-        widget.show(this.parentElement, undefined, /* suppressOrphanWidgetError= */ true);
+    if (widgetConfig.widgetParams) {
+        Object.assign(newWidget, widgetConfig.widgetParams);
     }
-    disconnectedCallback() {
-        const widget = Widget.get(this);
+    newWidget.requestUpdate();
+    return newWidget;
+}
+function setUpLifecycleTracking(element) {
+    let tracker;
+    if (element instanceof WidgetElement) {
+        tracker = element;
+    }
+    else {
+        tracker = document.createElement('devtools-widget');
+        tracker.style.display = 'none';
+        element.appendChild(tracker);
+    }
+    tracker.onDisconnect = () => {
+        const widget = Widget.get(element);
         if (widget) {
             widget.setHideOnDetach();
             widget.detach();
         }
+    };
+    tracker.onConnect = () => {
+        let widget = Widget.get(element);
+        if (!widget) {
+            const config = widgetConfigs.get(element);
+            if (!config) {
+                throw new Error('No widgetConfig defined');
+            }
+            widget = instantiateWidget(element, config);
+        }
+        const parent = (element.parentNode instanceof DocumentFragment) ? element.parentNode : element.parentElementOrShadowHost();
+        if (!parent) {
+            widget.markAsRoot();
+        }
+        else {
+            widget.show(parent, undefined, /* suppressOrphanWidgetError= */ true);
+        }
+    };
+}
+export class WidgetElement extends HTMLElement {
+    onDisconnect;
+    onConnect;
+    #disconnectTimeout;
+    getWidget() {
+        return Widget.get(this);
+    }
+    connectedCallback() {
+        if (this.#disconnectTimeout) {
+            clearTimeout(this.#disconnectTimeout);
+            this.#disconnectTimeout = undefined;
+        }
+        if (this.onConnect) {
+            this.onConnect();
+            return;
+        }
+    }
+    disconnectedCallback() {
+        if (this.onDisconnect) {
+            this.#disconnectTimeout = setTimeout(() => {
+                this.onDisconnect?.();
+            }, 0);
+            return;
+        }
     }
     appendChild(child) {
-        if (child instanceof HTMLElement && child.tagName !== 'STYLE') {
-            Widget.getOrCreateWidget(child).show(this);
+        const widget = child instanceof HTMLElement ? Widget.get(child) : null;
+        if (widget) {
+            widget.show(this, undefined, /* suppressOrphanWidgetError= */ true);
             return child;
         }
         return super.appendChild(child);
     }
     insertBefore(child, referenceChild) {
-        if (child instanceof HTMLElement && child.tagName !== 'STYLE') {
-            Widget.getOrCreateWidget(child).show(this, referenceChild, true);
+        const widget = child instanceof HTMLElement ? Widget.get(child) : null;
+        if (widget) {
+            widget.show(this, referenceChild, /* suppressOrphanWidgetError= */ true);
             return child;
         }
         return super.insertBefore(child, referenceChild);
@@ -180,7 +241,7 @@ export class WidgetElement extends HTMLElement {
     removeChild(child) {
         const childWidget = Widget.get(child);
         if (childWidget) {
-            childWidget.detach();
+            childWidget.detach(/* overrideHideOnDetach= */ true);
             return child;
         }
         return super.removeChild(child);
@@ -189,22 +250,74 @@ export class WidgetElement extends HTMLElement {
         for (const child of this.children) {
             const childWidget = Widget.get(child);
             if (childWidget) {
-                childWidget.detach();
+                childWidget.detach(/* overrideHideOnDetach= */ true);
             }
         }
         super.removeChildren();
     }
     cloneNode(deep) {
-        const clone = super.cloneNode(deep);
-        if (!this.#widgetClass) {
-            throw new Error('No widgetClass defined');
+        const clone = cloneCustomElement(this, deep);
+        const config = widgetConfigs.get(this);
+        if (config) {
+            registerWidgetConfig(clone, config);
         }
-        clone.#widgetClass = this.#widgetClass;
-        clone.#widgetParams = this.#widgetParams;
         return clone;
+    }
+    focus() {
+        const widget = Widget.get(this);
+        if (widget) {
+            widget.focus();
+        }
     }
 }
 customElements.define('devtools-widget', WidgetElement);
+export class WidgetDirective extends Lit.Directive.Directive {
+    #partType;
+    constructor(partInfo) {
+        super(partInfo);
+        this.#partType = partInfo.type;
+        if (this.#partType !== Lit.Directive.PartType.CHILD && this.#partType !== Lit.Directive.PartType.ELEMENT) {
+            throw new Error('Widget directive must be used as a child or element directive.');
+        }
+    }
+    update(part, [widgetClass, widgetParams]) {
+        if (this.#partType === Lit.Directive.PartType.ELEMENT) {
+            const element = part.element;
+            const config = widgetConfig(widgetClass, widgetParams);
+            const oldConfig = widgetConfigs.get(element);
+            const widget = Widget.get(element);
+            if (widget && config.widgetParams) {
+                let needsUpdate = false;
+                for (const key in config.widgetParams) {
+                    if (Object.prototype.hasOwnProperty.call(config.widgetParams, key) &&
+                        config.widgetParams[key] !== oldConfig?.widgetParams?.[key]) {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        widget[key] = config.widgetParams[key];
+                        needsUpdate = true;
+                    }
+                }
+                if (needsUpdate) {
+                    widget.requestUpdate();
+                }
+            }
+            registerWidgetConfig(element, config);
+            return Lit.nothing;
+        }
+        return this.render(widgetClass, widgetParams);
+    }
+    render(widgetClass, widgetParams) {
+        if (this.#partType === Lit.Directive.PartType.ELEMENT) {
+            return Lit.nothing;
+        }
+        // We use `repeat` to force Lit to recreate the `<devtools-widget>` DOM node when the `widgetClass` changes.
+        // If we didn't use `repeat` and used `html` directly, Lit would reuse the same `<devtools-widget>` instance
+        // even if `widgetClass` changed (for example, in a ternary operator `condition ? widget(A) : widget(B)`).
+        // This is because the template string is the same, so Lit reuses the DOM node and only updates `.widgetConfig`,
+        // which does not properly recreate the widget instance.
+        return Lit.Directives.repeat([widgetClass], () => widgetClass, () => html `<devtools-widget ${widget(widgetClass, widgetParams)}></devtools-widget>`);
+    }
+}
+export const widget = Lit.Directive.directive(WidgetDirective);
 export function widgetRef(type, callback) {
     return Lit.Directives.ref((e) => {
         if (!(e instanceof HTMLElement)) {
@@ -220,13 +333,13 @@ export function widgetRef(type, callback) {
 const widgetCounterMap = new WeakMap();
 const widgetMap = new WeakMap();
 function incrementWidgetCounter(parentElement, childElement) {
-    const count = (widgetCounterMap.get(childElement) || 0) + (widgetMap.get(childElement) ? 1 : 0);
+    const count = (widgetCounterMap.get(childElement) || 0) + (Widget.get(childElement) ? 1 : 0);
     for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
         widgetCounterMap.set(el, (widgetCounterMap.get(el) || 0) + count);
     }
 }
 function decrementWidgetCounter(parentElement, childElement) {
-    const count = (widgetCounterMap.get(childElement) || 0) + (widgetMap.get(childElement) ? 1 : 0);
+    const count = (widgetCounterMap.get(childElement) || 0) + (Widget.get(childElement) ? 1 : 0);
     for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
         const elCounter = widgetCounterMap.get(el);
         if (elCounter) {
@@ -240,8 +353,7 @@ function decrementWidgetCounter(parentElement, childElement) {
 const UPDATE_COMPLETE = Promise.resolve();
 export class Widget {
     element;
-    contentElement;
-    defaultFocusedChild = null;
+    #contentElement;
     #shadowRoot;
     #visible = false;
     #isRoot = false;
@@ -256,6 +368,7 @@ export class Widget {
     #invalidationsRequested;
     #externallyManaged;
     #updateComplete = UPDATE_COMPLETE;
+    #updateController;
     constructor(elementOrOptions, options) {
         if (elementOrOptions instanceof HTMLElement) {
             this.element = elementOrOptions;
@@ -273,19 +386,31 @@ export class Widget {
             this.#shadowRoot = createShadowRootWithCoreStyles(this.element, {
                 delegatesFocus: options?.delegatesFocus,
             });
-            this.contentElement = document.createElement('div');
-            this.#shadowRoot.appendChild(this.contentElement);
+            if (options.useShadowDom === 'pure') {
+                this.#contentElement = this.#shadowRoot;
+            }
+            else {
+                const div = document.createElement('div');
+                this.#shadowRoot.appendChild(div);
+                this.#contentElement = div;
+            }
         }
         else {
-            this.contentElement = this.element;
+            this.#contentElement = this.element;
         }
-        if (options?.classes) {
-            this.element.classList.add(...options.classes);
+        const legacyOptions = options;
+        if (legacyOptions?.classes) {
+            this.element.classList.add(...legacyOptions.classes);
         }
-        if (options?.jslog) {
-            this.contentElement.setAttribute('jslog', options.jslog);
+        if (legacyOptions?.jslog) {
+            this.element.setAttribute('jslog', legacyOptions.jslog);
         }
-        this.contentElement.classList.add('widget');
+        if (this.contentElement instanceof HTMLElement) {
+            this.contentElement.classList.add('widget');
+        }
+        else if (options?.useShadowDom === 'pure') {
+            this.element.classList.add('widget');
+        }
         widgetMap.set(this.element, this);
     }
     /**
@@ -298,15 +423,34 @@ export class Widget {
     static get(node) {
         return widgetMap.get(node);
     }
+    static get allUpdatesComplete() {
+        if (!pendingAnimationFrame && !currentUpdateQueue) {
+            return Promise.resolve();
+        }
+        if (!overallUpdatePromise) {
+            overallUpdatePromise = Promise.withResolvers();
+        }
+        return overallUpdatePromise.promise;
+    }
     static getOrCreateWidget(element) {
         const widget = Widget.get(element);
         if (widget) {
             return widget;
         }
-        if (element instanceof WidgetElement) {
-            return element.createWidget();
+        let config = widgetConfigs.get(element);
+        if (!config) {
+            config = widgetConfig(element => new Widget(element));
         }
-        return new Widget(element);
+        return instantiateWidget(element, config);
+    }
+    get contentElement() {
+        return this.#contentElement;
+    }
+    set contentElement(contentElement) {
+        this.#contentElement = contentElement;
+    }
+    dispatchDOMEvent(event) {
+        this.element.dispatchEvent(event);
     }
     markAsRoot() {
         assert(!this.element.parentElement, 'Attempt to mark as root attached node');
@@ -459,7 +603,7 @@ export class Widget {
     }
     #showWidget(parentElement, insertBefore) {
         let currentParent = parentElement;
-        while (currentParent && !widgetMap.get(currentParent)) {
+        while (currentParent && !Widget.get(currentParent)) {
             currentParent = currentParent.parentElementOrShadowHost();
         }
         if (this.#isRoot) {
@@ -469,7 +613,7 @@ export class Widget {
             assert(currentParent && widgetMap.get(currentParent) === this.#parentWidget, 'Attempt to show under node belonging to alien widget');
         }
         const wasVisible = this.#visible;
-        if (wasVisible && this.element.parentElement === parentElement) {
+        if (wasVisible && this.element.parentNode === parentElement) {
             return;
         }
         this.#visible = true;
@@ -478,7 +622,7 @@ export class Widget {
         }
         this.element.classList.remove('hidden');
         // Reparent
-        if (this.element.parentElement !== parentElement) {
+        if (this.element.parentNode !== parentElement) {
             if (!this.#externallyManaged) {
                 incrementWidgetCounter(parentElement, this.element);
             }
@@ -488,6 +632,10 @@ export class Widget {
             else {
                 originalAppendChild.call(parentElement, this.element);
             }
+        }
+        const focusedElementsCount = this.#parentWidget?.getDefaultFocusedElements?.()?.length ?? 0;
+        if (this.element.hasAttribute('autofocus') && focusedElementsCount > 1) {
+            this.element.removeAttribute('autofocus');
         }
         if (!wasVisible && this.parentIsShowing()) {
             this.processWasShown();
@@ -556,9 +704,6 @@ export class Widget {
             const childIndex = this.#parentWidget.#children.indexOf(this);
             assert(childIndex >= 0, 'Attempt to remove non-child widget');
             this.#parentWidget.#children.splice(childIndex, 1);
-            if (this.#parentWidget.defaultFocusedChild === this) {
-                this.#parentWidget.defaultFocusedChild = null;
-            }
             this.#parentWidget.childWasDetached(this);
             this.#parentWidget = null;
         }
@@ -609,7 +754,7 @@ export class Widget {
     }
     registerRequiredCSS(...cssFiles) {
         for (const cssFile of cssFiles) {
-            Platform.DOMUtilities.appendStyle(this.#shadowRoot ?? this.element, cssFile);
+            appendStyle(this.#shadowRoot ?? this.element, cssFile);
         }
     }
     // Unused, but useful for debugging.
@@ -638,21 +783,44 @@ export class Widget {
     }
     setDefaultFocusedChild(child) {
         assert(child.#parentWidget === this, 'Attempt to set non-child widget as default focused.');
-        this.defaultFocusedChild = child;
+        const defaultFocusedElement = this.getDefaultFocusedElement();
+        if (defaultFocusedElement) {
+            defaultFocusedElement.removeAttribute('autofocus');
+        }
+        child.element.setAttribute('autofocus', '');
+    }
+    getDefaultFocusedElements() {
+        const autofocusElements = [...this.contentElement.querySelectorAll('[autofocus]')];
+        const contentElement = this.contentElement;
+        if (contentElement !== this.element) {
+            if (contentElement instanceof HTMLElement && contentElement.hasAttribute('autofocus')) {
+                autofocusElements.push(contentElement);
+            }
+            if (autofocusElements.length === 0) {
+                autofocusElements.push(...this.element.querySelectorAll('[autofocus]'));
+            }
+        }
+        return autofocusElements.filter(autofocusElement => {
+            let widgetElement = autofocusElement;
+            while (widgetElement) {
+                const widget = Widget.get(widgetElement);
+                if (widget) {
+                    if (widgetElement === autofocusElement && widget.#parentWidget === this && widget.#visible) {
+                        return true;
+                    }
+                    return widget === this;
+                }
+                widgetElement = widgetElement.parentElementOrShadowHost();
+            }
+            return false;
+        });
     }
     getDefaultFocusedElement() {
-        const autofocusElement = this.contentElement.hasAttribute('autofocus') ?
-            this.contentElement :
-            this.contentElement.querySelector('[autofocus]');
-        let widgetElement = autofocusElement;
-        while (widgetElement) {
-            const widget = Widget.get(widgetElement);
-            if (widget) {
-                return widget === this ? autofocusElement : null;
-            }
-            widgetElement = widgetElement.parentElementOrShadowHost();
+        const elements = this.getDefaultFocusedElements();
+        if (elements.length > 1) {
+            console.error('Multiple autofocus elements found', this.constructor.name, ...elements.map(e => Platform.StringUtilities.trimMiddle(e.outerHTML, 250)));
         }
-        return null;
+        return elements[0] || null;
     }
     focus() {
         if (!this.isShowing()) {
@@ -660,18 +828,34 @@ export class Widget {
         }
         const autofocusElement = this.getDefaultFocusedElement();
         if (autofocusElement) {
-            autofocusElement.focus();
+            const widget = Widget.get(autofocusElement);
+            if (widget && widget !== this) {
+                widget.focus();
+            }
+            else if (autofocusElement === this.element && autofocusElement instanceof WidgetElement) {
+                // If the autofocus element is the widget itself, we need to call the native focus method
+                // to avoid infinite recursion if the element is a WidgetElement.
+                HTMLElement.prototype.focus.call(autofocusElement);
+            }
+            else {
+                autofocusElement.focus();
+            }
             return;
         }
-        if (this.defaultFocusedChild && this.defaultFocusedChild.#visible) {
-            this.defaultFocusedChild.focus();
+        for (const child of this.#children) {
+            if (child.#visible) {
+                child.focus();
+                return;
+            }
         }
-        else {
-            for (const child of this.#children) {
-                if (child.#visible) {
-                    child.focus();
-                    return;
-                }
+        if (this.element === this.contentElement && this.element.hasAttribute('autofocus')) {
+            if (this.element instanceof WidgetElement) {
+                // If the autofocus element is the widget itself, we need to call the native focus method
+                // to avoid infinite recursion if the element is a WidgetElement.
+                HTMLElement.prototype.focus.call(this.element);
+            }
+            else {
+                this.element.focus();
             }
         }
     }
@@ -744,18 +928,14 @@ export class Widget {
         assert(!this.#parentWidget, 'Attempt to mark widget as externally managed after insertion to the DOM');
         this.#externallyManaged = true;
     }
-    /**
-     * Override this method in derived classes to perform the actual view update.
-     *
-     * This is not meant to be called directly, but invoked (indirectly) through
-     * the `requestAnimationFrame` and executed with the animation frame. Instead,
-     * use the `requestUpdate()` method to schedule an asynchronous update.
-     *
-     * @returns can either return nothing or a promise; in that latter case, the
-     *          update logic will await the resolution of the returned promise
-     *          before proceeding.
-     */
-    performUpdate() {
+    performUpdate(_signal) {
+    }
+    addUpdateController(controller) {
+        this.#updateController?.abort();
+        this.#updateController = controller;
+    }
+    cancelUpdateController() {
+        this.#updateController?.abort();
     }
     /**
      * Schedules an asynchronous update for this widget.
@@ -764,6 +944,7 @@ export class Widget {
      * frame.
      */
     requestUpdate() {
+        this.#updateController?.abort();
         this.#updateComplete = enqueueWidgetUpdate(this);
     }
     /**
@@ -787,9 +968,7 @@ export class Widget {
      * assert.isTrue(widget.someDataLoaded);
      * ```
      *
-     * @returns a promise that resolves to a `boolean` when the widget has finished
-     *          updating, the value is `true` if there are no more pending updates,
-     *          and `false` if the update cycle triggered another update.
+     * @returns a promise that resolves when the widget has finished updating.
      */
     get updateComplete() {
         return this.#updateComplete;
@@ -797,9 +976,15 @@ export class Widget {
 }
 const storedScrollPositions = new WeakMap();
 export class VBox extends Widget {
-    constructor() {
-        super(...arguments);
-        this.contentElement.classList.add('vbox');
+    constructor(elementOrOptions, options) {
+        // @ts-expect-error
+        super(elementOrOptions, options);
+        if (this.contentElement instanceof HTMLElement) {
+            this.contentElement.classList.add('vbox');
+        }
+        else {
+            this.element.classList.add('vbox');
+        }
     }
     calculateConstraints() {
         let constraints = new Geometry.Constraints();
@@ -813,9 +998,16 @@ export class VBox extends Widget {
     }
 }
 export class HBox extends Widget {
-    constructor() {
-        super(...arguments);
-        this.contentElement.classList.add('hbox');
+    constructor(elementOrOptions, options) {
+        // @ts-expect-error
+        super(elementOrOptions, options);
+        if (this.contentElement instanceof HTMLElement) {
+            this.contentElement.classList.add('hbox');
+        }
+        else {
+            this.element.classList.remove('vbox');
+            this.element.classList.add('hbox');
+        }
     }
     calculateConstraints() {
         let constraints = new Geometry.Constraints();
@@ -843,7 +1035,7 @@ export class WidgetFocusRestorer {
     previous;
     constructor(widget) {
         this.widget = widget;
-        this.previous = Platform.DOMUtilities.deepActiveElement(widget.element.ownerDocument);
+        this.previous = deepActiveElement(widget.element.ownerDocument);
         widget.focus();
     }
     restore() {
@@ -860,25 +1052,25 @@ export class WidgetFocusRestorer {
 function domOperationError(funcName) {
     return new Error(`Attempt to modify widget with native DOM method \`${funcName}\``);
 }
-Element.prototype.appendChild = function (node) {
-    if (widgetMap.get(node) && node.parentElement !== this) {
+Node.prototype.appendChild = function (node) {
+    if (widgetMap.get(node) && node.parentNode !== this) {
         throw domOperationError('appendChild');
     }
     return originalAppendChild.call(this, node);
 };
-Element.prototype.insertBefore = function (node, child) {
-    if (widgetMap.get(node) && node.parentElement !== this) {
+Node.prototype.insertBefore = function (node, child) {
+    if (widgetMap.get(node) && node.parentNode !== this) {
         throw domOperationError('insertBefore');
     }
     return originalInsertBefore.call(this, node, child);
 };
-Element.prototype.removeChild = function (child) {
+Node.prototype.removeChild = function (child) {
     if (widgetCounterMap.get(child) || widgetMap.get(child)) {
         throw domOperationError('removeChild');
     }
     return originalRemoveChild.call(this, child);
 };
-Element.prototype.removeChildren = function () {
+Node.prototype.removeChildren = function () {
     if (widgetCounterMap.get(this)) {
         throw domOperationError('removeChildren');
     }

@@ -5,11 +5,18 @@
  * Debounce utility function, ensures that the function passed in is only called once the function stops being called and the delay has expired.
  */
 export const debounce = function (func, delay) {
-    let timer = 0;
+    let timer;
     const debounced = (...args) => {
         clearTimeout(timer);
-        timer = window.setTimeout(() => func(...args), delay);
+        timer = setTimeout(() => func(...args), testDebounceOverride ? 0 : delay);
     };
     return debounced;
 };
+let testDebounceOverride = false;
+export function enableTestOverride() {
+    testDebounceOverride = true;
+}
+export function disableTestOverride() {
+    testDebounceOverride = false;
+}
 //# sourceMappingURL=Debouncer.js.map

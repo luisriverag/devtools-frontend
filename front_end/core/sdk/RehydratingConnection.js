@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 import * as Common from '../common/common.js';
 import * as i18n from '../i18n/i18n.js';
+import * as ProtocolClient from '../protocol_client/protocol_client.js';
 import * as Root from '../root/root.js';
 import * as EnhancedTraces from './EnhancedTracesParser.js';
 import { TraceObject } from './TraceObject.js';
@@ -22,7 +23,7 @@ const UIStrings = {
 };
 const str_ = i18n.i18n.registerUIStrings('core/sdk/RehydratingConnection.ts', UIStrings);
 const i18nString = i18n.i18n.getLocalizedString.bind(undefined, str_);
-export class RehydratingConnection {
+export class RehydratingConnectionTransport {
     rehydratingConnectionState = 1 /* RehydratingConnectionState.UNINITIALIZED */;
     onDisconnect = null;
     onMessage = null;
@@ -261,7 +262,10 @@ export class RehydratingSession extends RehydratingSessionBase {
             default:
                 this.sendMessageToFrontend({
                     id: data.id,
-                    result: {},
+                    error: {
+                        message: `Command ${data.method} not implemented in RehydratingSession.`,
+                        code: ProtocolClient.CDPConnection.CDPErrorStatus.DEVTOOLS_STUB_ERROR,
+                    }
                 });
                 break;
         }

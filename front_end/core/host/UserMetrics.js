@@ -3,26 +3,6 @@
 // found in the LICENSE file.
 import { InspectorFrontendHostInstance } from './InspectorFrontendHost.js';
 export class UserMetrics {
-    #panelChangedSinceLaunch;
-    #firedLaunchHistogram;
-    #launchPanelName;
-    constructor() {
-        this.#panelChangedSinceLaunch = false;
-        this.#firedLaunchHistogram = false;
-        this.#launchPanelName = '';
-    }
-    panelShown(panelName, isLaunching) {
-        const code = PanelCodes[panelName] || 0;
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.PanelShown" /* EnumeratedHistogram.PanelShown */, code, PanelCodes.MAX_VALUE);
-        InspectorFrontendHostInstance.recordUserMetricsAction('DevTools_PanelShown_' + panelName);
-        // Store that the user has changed the panel so we know launch histograms should not be fired.
-        if (!isLaunching) {
-            this.#panelChangedSinceLaunch = true;
-        }
-    }
-    settingsPanelShown(settingsViewId) {
-        this.panelShown('settings-' + settingsViewId);
-    }
     sourcesPanelFileDebugged(mediaType) {
         const code = (mediaType && MediaTypes[mediaType]) || MediaTypes.Unknown;
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.SourcesPanelFileDebugged" /* EnumeratedHistogram.SourcesPanelFileDebugged */, code, MediaTypes.MAX_VALUE);
@@ -37,34 +17,6 @@ export class UserMetrics {
     }
     actionTaken(action) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.ActionTaken" /* EnumeratedHistogram.ActionTaken */, action, Action.MAX_VALUE);
-    }
-    panelLoaded(panelName, histogramName) {
-        if (this.#firedLaunchHistogram || panelName !== this.#launchPanelName) {
-            return;
-        }
-        this.#firedLaunchHistogram = true;
-        // Use rAF and window.setTimeout to ensure the marker is fired after layout and rendering.
-        // This will give the most accurate representation of the tool being ready for a user.
-        requestAnimationFrame(() => {
-            window.setTimeout(() => {
-                // Mark the load time so that we can pinpoint it more easily in a trace.
-                performance.mark(histogramName);
-                // If the user has switched panel before we finished loading, ignore the histogram,
-                // since the launch timings will have been affected and are no longer valid.
-                if (this.#panelChangedSinceLaunch) {
-                    return;
-                }
-                // This fires the event for the appropriate launch histogram.
-                // The duration is measured as the time elapsed since the time origin of the document.
-                InspectorFrontendHostInstance.recordPerformanceHistogram(histogramName, performance.now());
-            }, 0);
-        });
-    }
-    setLaunchPanel(panelName) {
-        this.#launchPanelName = panelName;
-    }
-    performanceTraceLoad(measure) {
-        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.TraceLoad', measure.duration);
     }
     keybindSetSettingChanged(keybindSet) {
         const value = KeybindSetSettings[keybindSet] || 0;
@@ -159,44 +111,23 @@ export class UserMetrics {
             InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.SyncSetting" /* EnumeratedHistogram.SyncSetting */, settingValue, 5 /* SyncSetting.MAX_VALUE */);
         });
     }
-    recordingAssertion(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingAssertion" /* EnumeratedHistogram.RecordingAssertion */, value, 4 /* RecordingAssertion.MAX_VALUE */);
-    }
     recordingToggled(value) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingToggled" /* EnumeratedHistogram.RecordingToggled */, value, 3 /* RecordingToggled.MAX_VALUE */);
     }
     recordingReplayFinished(value) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingReplayFinished" /* EnumeratedHistogram.RecordingReplayFinished */, value, 5 /* RecordingReplayFinished.MAX_VALUE */);
     }
-    recordingReplaySpeed(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingReplaySpeed" /* EnumeratedHistogram.RecordingReplaySpeed */, value, 5 /* RecordingReplaySpeed.MAX_VALUE */);
-    }
     recordingReplayStarted(value) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingReplayStarted" /* EnumeratedHistogram.RecordingReplayStarted */, value, 4 /* RecordingReplayStarted.MAX_VALUE */);
-    }
-    recordingEdited(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingEdited" /* EnumeratedHistogram.RecordingEdited */, value, 11 /* RecordingEdited.MAX_VALUE */);
-    }
-    recordingExported(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingExported" /* EnumeratedHistogram.RecordingExported */, value, 6 /* RecordingExported.MAX_VALUE */);
-    }
-    recordingCodeToggled(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingCodeToggled" /* EnumeratedHistogram.RecordingCodeToggled */, value, 3 /* RecordingCodeToggled.MAX_VALUE */);
-    }
-    recordingCopiedToClipboard(value) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.RecordingCopiedToClipboard" /* EnumeratedHistogram.RecordingCopiedToClipboard */, value, 9 /* RecordingCopiedToClipboard.MAX_VALUE */);
     }
     lighthouseModeRun(type) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.LighthouseModeRun" /* EnumeratedHistogram.LighthouseModeRun */, type, 4 /* LighthouseModeRun.MAX_VALUE */);
     }
     lighthouseCategoryUsed(type) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.LighthouseCategoryUsed" /* EnumeratedHistogram.LighthouseCategoryUsed */, type, 6 /* LighthouseCategoryUsed.MAX_VALUE */);
+        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.LighthouseCategoryUsed" /* EnumeratedHistogram.LighthouseCategoryUsed */, type, 7 /* LighthouseCategoryUsed.MAX_VALUE */);
     }
     swatchActivated(swatch) {
         InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.SwatchActivated" /* EnumeratedHistogram.SwatchActivated */, swatch, 13 /* SwatchType.MAX_VALUE */);
-    }
-    animationPlaybackRateChanged(playbackRate) {
-        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.AnimationPlaybackRateChanged" /* EnumeratedHistogram.AnimationPlaybackRateChanged */, playbackRate, 4 /* AnimationsPlaybackRate.MAX_VALUE */);
     }
     workspacesPopulated(wallClockTimeInMilliseconds) {
         InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Workspaces.PopulateWallClocktime', wallClockTimeInMilliseconds);
@@ -224,6 +155,33 @@ export class UserMetrics {
     }
     consoleInsightTeaserGenerated(timeInMilliseconds) {
         InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.TeaserGenerationTime', timeInMilliseconds);
+    }
+    consoleInsightTeaserGeneratedMedium(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogramMedium('DevTools.Insights.TeaserGenerationTimeMedium', timeInMilliseconds);
+    }
+    consoleInsightTeaserFirstChunkGenerated(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.TeaserFirstChunkGenerationTime', timeInMilliseconds);
+    }
+    consoleInsightTeaserFirstChunkGeneratedMedium(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogramMedium('DevTools.Insights.TeaserFirstChunkGenerationTimeMedium', timeInMilliseconds);
+    }
+    consoleInsightTeaserChunkToEndMedium(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogramMedium('DevTools.Insights.TeaserChunkToEndMedium', timeInMilliseconds);
+    }
+    consoleInsightTeaserAbortedAfterFirstCharacter(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.TeaserAfterFirstCharacterAbortionTime', timeInMilliseconds);
+    }
+    consoleInsightTeaserAbortedBeforeFirstCharacter(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.TeaserBeforeFirstCharacterAbortionTime', timeInMilliseconds);
+    }
+    consoleInsightLongTeaserGenerated(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.LongTeaserGenerationTime', timeInMilliseconds);
+    }
+    consoleInsightShortTeaserGenerated(timeInMilliseconds) {
+        InspectorFrontendHostInstance.recordPerformanceHistogram('DevTools.Insights.ShortTeaserGenerationTime', timeInMilliseconds);
+    }
+    extensionEvalTarget(target) {
+        InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.ExtensionEvalTarget" /* EnumeratedHistogram.ExtensionEvalTarget */, target, 3 /* ExtensionEvalTarget.MAX_VALUE */);
     }
 }
 /**
@@ -434,7 +392,20 @@ export var Action;
     Action[Action["InsightTeaserGenerationCompleted"] = 192] = "InsightTeaserGenerationCompleted";
     Action[Action["InsightTeaserGenerationAborted"] = 193] = "InsightTeaserGenerationAborted";
     Action[Action["InsightTeaserGenerationErrored"] = 194] = "InsightTeaserGenerationErrored";
-    Action[Action["MAX_VALUE"] = 195] = "MAX_VALUE";
+    Action[Action["AiCodeGenerationSuggestionDisplayed"] = 195] = "AiCodeGenerationSuggestionDisplayed";
+    Action[Action["AiCodeGenerationSuggestionAccepted"] = 196] = "AiCodeGenerationSuggestionAccepted";
+    Action[Action["InsightTeaserModelDownloadStarted"] = 197] = "InsightTeaserModelDownloadStarted";
+    Action[Action["InsightTeaserModelDownloadCompleted"] = 198] = "InsightTeaserModelDownloadCompleted";
+    Action[Action["AiCodeGenerationError"] = 199] = "AiCodeGenerationError";
+    Action[Action["AiCodeGenerationRequestTriggered"] = 200] = "AiCodeGenerationRequestTriggered";
+    Action[Action["AiCodeCompletionRequestTriggeredFromConsole"] = 201] = "AiCodeCompletionRequestTriggeredFromConsole";
+    Action[Action["AiCodeCompletionRequestTriggeredFromSources"] = 202] = "AiCodeCompletionRequestTriggeredFromSources";
+    Action[Action["AiCodeCompletionRequestTriggeredFromStyles"] = 203] = "AiCodeCompletionRequestTriggeredFromStyles";
+    Action[Action["AiCodeGenerationRequestTriggeredFromConsole"] = 204] = "AiCodeGenerationRequestTriggeredFromConsole";
+    Action[Action["AiCodeGenerationRequestTriggeredFromSources"] = 205] = "AiCodeGenerationRequestTriggeredFromSources";
+    Action[Action["AiCodeCompletionFreCompletedFromConsole"] = 206] = "AiCodeCompletionFreCompletedFromConsole";
+    Action[Action["AiCodeCompletionFreCompletedFromSources"] = 207] = "AiCodeCompletionFreCompletedFromSources";
+    Action[Action["MAX_VALUE"] = 208] = "MAX_VALUE";
     /* eslint-enable @typescript-eslint/naming-convention */
 })(Action || (Action = {}));
 export var PanelCodes;
@@ -464,7 +435,6 @@ export var PanelCodes;
     PanelCodes[PanelCodes["changes.changes"] = 23] = "changes.changes";
     PanelCodes[PanelCodes["performance.monitor"] = 24] = "performance.monitor";
     PanelCodes[PanelCodes["release-note"] = 25] = "release-note";
-    PanelCodes[PanelCodes["live-heap-profile"] = 26] = "live-heap-profile";
     PanelCodes[PanelCodes["sources.quick"] = 27] = "sources.quick";
     PanelCodes[PanelCodes["network.blocked-urls"] = 28] = "network.blocked-urls";
     PanelCodes[PanelCodes["settings-preferences"] = 29] = "settings-preferences";
@@ -614,8 +584,6 @@ export var KeyboardShortcutAction;
     KeyboardShortcutAction[KeyboardShortcutAction["inspector-main.focus-debuggee"] = 47] = "inspector-main.focus-debuggee";
     KeyboardShortcutAction[KeyboardShortcutAction["inspector-main.hard-reload"] = 48] = "inspector-main.hard-reload";
     KeyboardShortcutAction[KeyboardShortcutAction["inspector-main.reload"] = 49] = "inspector-main.reload";
-    KeyboardShortcutAction[KeyboardShortcutAction["live-heap-profile.start-with-reload"] = 50] = "live-heap-profile.start-with-reload";
-    KeyboardShortcutAction[KeyboardShortcutAction["live-heap-profile.toggle-recording"] = 51] = "live-heap-profile.toggle-recording";
     KeyboardShortcutAction[KeyboardShortcutAction["main.debug-reload"] = 52] = "main.debug-reload";
     KeyboardShortcutAction[KeyboardShortcutAction["main.next-tab"] = 53] = "main.next-tab";
     KeyboardShortcutAction[KeyboardShortcutAction["main.previous-tab"] = 54] = "main.previous-tab";
@@ -693,27 +661,16 @@ export var DevtoolsExperiments;
 (function (DevtoolsExperiments) {
     /* eslint-disable @typescript-eslint/naming-convention */
     DevtoolsExperiments[DevtoolsExperiments["capture-node-creation-stacks"] = 1] = "capture-node-creation-stacks";
-    DevtoolsExperiments[DevtoolsExperiments["live-heap-profile"] = 11] = "live-heap-profile";
     DevtoolsExperiments[DevtoolsExperiments["protocol-monitor"] = 13] = "protocol-monitor";
-    DevtoolsExperiments[DevtoolsExperiments["sampling-heap-profiler-timeline"] = 17] = "sampling-heap-profiler-timeline";
-    DevtoolsExperiments[DevtoolsExperiments["show-option-tp-expose-internals-in-heap-snapshot"] = 18] = "show-option-tp-expose-internals-in-heap-snapshot";
     DevtoolsExperiments[DevtoolsExperiments["timeline-invalidation-tracking"] = 26] = "timeline-invalidation-tracking";
-    DevtoolsExperiments[DevtoolsExperiments["timeline-show-all-events"] = 27] = "timeline-show-all-events";
-    DevtoolsExperiments[DevtoolsExperiments["timeline-v8-runtime-call-stats"] = 28] = "timeline-v8-runtime-call-stats";
-    DevtoolsExperiments[DevtoolsExperiments["apca"] = 39] = "apca";
-    DevtoolsExperiments[DevtoolsExperiments["font-editor"] = 41] = "font-editor";
-    DevtoolsExperiments[DevtoolsExperiments["full-accessibility-tree"] = 42] = "full-accessibility-tree";
-    DevtoolsExperiments[DevtoolsExperiments["contrast-issues"] = 44] = "contrast-issues";
-    DevtoolsExperiments[DevtoolsExperiments["experimental-cookie-features"] = 45] = "experimental-cookie-features";
     DevtoolsExperiments[DevtoolsExperiments["instrumentation-breakpoints"] = 61] = "instrumentation-breakpoints";
-    DevtoolsExperiments[DevtoolsExperiments["authored-deployed-grouping"] = 63] = "authored-deployed-grouping";
-    DevtoolsExperiments[DevtoolsExperiments["just-my-code"] = 65] = "just-my-code";
     DevtoolsExperiments[DevtoolsExperiments["use-source-map-scopes"] = 76] = "use-source-map-scopes";
-    DevtoolsExperiments[DevtoolsExperiments["timeline-show-postmessage-events"] = 86] = "timeline-show-postmessage-events";
     DevtoolsExperiments[DevtoolsExperiments["timeline-debug-mode"] = 93] = "timeline-debug-mode";
+    DevtoolsExperiments[DevtoolsExperiments["durable-messages"] = 110] = "durable-messages";
+    DevtoolsExperiments[DevtoolsExperiments["jpeg-xl"] = 111] = "jpeg-xl";
     /* eslint-enable @typescript-eslint/naming-convention */
     // Increment this when new experiments are added.
-    DevtoolsExperiments[DevtoolsExperiments["MAX_VALUE"] = 110] = "MAX_VALUE";
+    DevtoolsExperiments[DevtoolsExperiments["MAX_VALUE"] = 112] = "MAX_VALUE";
 })(DevtoolsExperiments || (DevtoolsExperiments = {}));
 /** Update DevToolsIssuesPanelIssueExpanded from tools/metrics/histograms/enums.xml if new enum is added. **/
 export var IssueExpanded;
@@ -790,8 +747,7 @@ export var IssueCreated;
     IssueCreated[IssueCreated["CookieIssue::WarnSameSiteUnspecifiedCrossSiteContext::SetCookie"] = 35] = "CookieIssue::WarnSameSiteUnspecifiedCrossSiteContext::SetCookie";
     IssueCreated[IssueCreated["SharedArrayBufferIssue::TransferIssue"] = 36] = "SharedArrayBufferIssue::TransferIssue";
     IssueCreated[IssueCreated["SharedArrayBufferIssue::CreationIssue"] = 37] = "SharedArrayBufferIssue::CreationIssue";
-    IssueCreated[IssueCreated["LowTextContrastIssue"] = 41] = "LowTextContrastIssue";
-    IssueCreated[IssueCreated["CorsIssue::InsecurePrivateNetwork"] = 42] = "CorsIssue::InsecurePrivateNetwork";
+    IssueCreated[IssueCreated["CorsIssue::InsecureLocalNetwork"] = 42] = "CorsIssue::InsecureLocalNetwork";
     IssueCreated[IssueCreated["CorsIssue::InvalidHeaders"] = 44] = "CorsIssue::InvalidHeaders";
     IssueCreated[IssueCreated["CorsIssue::WildcardOriginWithCredentials"] = 45] = "CorsIssue::WildcardOriginWithCredentials";
     IssueCreated[IssueCreated["CorsIssue::PreflightResponseInvalid"] = 46] = "CorsIssue::PreflightResponseInvalid";
@@ -810,25 +766,20 @@ export var IssueCreated;
     IssueCreated[IssueCreated["DeprecationIssue"] = 60] = "DeprecationIssue";
     IssueCreated[IssueCreated["ClientHintIssue::MetaTagAllowListInvalidOrigin"] = 61] = "ClientHintIssue::MetaTagAllowListInvalidOrigin";
     IssueCreated[IssueCreated["ClientHintIssue::MetaTagModifiedHTML"] = 62] = "ClientHintIssue::MetaTagModifiedHTML";
-    IssueCreated[IssueCreated["CorsIssue::PreflightAllowPrivateNetworkError"] = 63] = "CorsIssue::PreflightAllowPrivateNetworkError";
     IssueCreated[IssueCreated["GenericIssue::CrossOriginPortalPostMessageError"] = 64] = "GenericIssue::CrossOriginPortalPostMessageError";
     IssueCreated[IssueCreated["GenericIssue::FormLabelForNameError"] = 65] = "GenericIssue::FormLabelForNameError";
     IssueCreated[IssueCreated["GenericIssue::FormDuplicateIdForInputError"] = 66] = "GenericIssue::FormDuplicateIdForInputError";
     IssueCreated[IssueCreated["GenericIssue::FormInputWithNoLabelError"] = 67] = "GenericIssue::FormInputWithNoLabelError";
     IssueCreated[IssueCreated["GenericIssue::FormAutocompleteAttributeEmptyError"] = 68] = "GenericIssue::FormAutocompleteAttributeEmptyError";
     IssueCreated[IssueCreated["GenericIssue::FormEmptyIdAndNameAttributesForInputError"] = 69] = "GenericIssue::FormEmptyIdAndNameAttributesForInputError";
-    IssueCreated[IssueCreated["GenericIssue::FormAriaLabelledByToNonExistingId"] = 70] = "GenericIssue::FormAriaLabelledByToNonExistingId";
+    IssueCreated[IssueCreated["GenericIssue::FormAriaLabelledByToNonExistingIdError"] = 70] = "GenericIssue::FormAriaLabelledByToNonExistingIdError";
     IssueCreated[IssueCreated["GenericIssue::FormInputAssignedAutocompleteValueToIdOrNameAttributeError"] = 71] = "GenericIssue::FormInputAssignedAutocompleteValueToIdOrNameAttributeError";
-    IssueCreated[IssueCreated["GenericIssue::FormLabelHasNeitherForNorNestedInput"] = 72] = "GenericIssue::FormLabelHasNeitherForNorNestedInput";
+    IssueCreated[IssueCreated["GenericIssue::FormLabelHasNeitherForNorNestedInputError"] = 72] = "GenericIssue::FormLabelHasNeitherForNorNestedInputError";
     IssueCreated[IssueCreated["GenericIssue::FormLabelForMatchesNonExistingIdError"] = 73] = "GenericIssue::FormLabelForMatchesNonExistingIdError";
     IssueCreated[IssueCreated["GenericIssue::FormHasPasswordFieldWithoutUsernameFieldError"] = 74] = "GenericIssue::FormHasPasswordFieldWithoutUsernameFieldError";
     IssueCreated[IssueCreated["GenericIssue::FormInputHasWrongButWellIntendedAutocompleteValueError"] = 75] = "GenericIssue::FormInputHasWrongButWellIntendedAutocompleteValueError";
     IssueCreated[IssueCreated["StylesheetLoadingIssue::LateImportRule"] = 76] = "StylesheetLoadingIssue::LateImportRule";
     IssueCreated[IssueCreated["StylesheetLoadingIssue::RequestFailed"] = 77] = "StylesheetLoadingIssue::RequestFailed";
-    IssueCreated[IssueCreated["CorsIssue::PreflightMissingPrivateNetworkAccessId"] = 78] = "CorsIssue::PreflightMissingPrivateNetworkAccessId";
-    IssueCreated[IssueCreated["CorsIssue::PreflightMissingPrivateNetworkAccessName"] = 79] = "CorsIssue::PreflightMissingPrivateNetworkAccessName";
-    IssueCreated[IssueCreated["CorsIssue::PrivateNetworkAccessPermissionUnavailable"] = 80] = "CorsIssue::PrivateNetworkAccessPermissionUnavailable";
-    IssueCreated[IssueCreated["CorsIssue::PrivateNetworkAccessPermissionDenied"] = 81] = "CorsIssue::PrivateNetworkAccessPermissionDenied";
     IssueCreated[IssueCreated["CookieIssue::WarnThirdPartyPhaseout::ReadCookie"] = 82] = "CookieIssue::WarnThirdPartyPhaseout::ReadCookie";
     IssueCreated[IssueCreated["CookieIssue::WarnThirdPartyPhaseout::SetCookie"] = 83] = "CookieIssue::WarnThirdPartyPhaseout::SetCookie";
     IssueCreated[IssueCreated["CookieIssue::ExcludeThirdPartyPhaseout::ReadCookie"] = 84] = "CookieIssue::ExcludeThirdPartyPhaseout::ReadCookie";
@@ -861,8 +812,9 @@ export var IssueCreated;
     IssueCreated[IssueCreated["CorsIssue::LocalNetworkAccessPermissionDenied"] = 111] = "CorsIssue::LocalNetworkAccessPermissionDenied";
     IssueCreated[IssueCreated["SRIMessageSignatureIssue::ValidationFailedIntegrityMismatch"] = 112] = "SRIMessageSignatureIssue::ValidationFailedIntegrityMismatch";
     IssueCreated[IssueCreated["ElementAccessibilityIssue::InteractiveContentSummaryDescendant"] = 113] = "ElementAccessibilityIssue::InteractiveContentSummaryDescendant";
+    IssueCreated[IssueCreated["CorsIssue::InvalidLocalNetworkAccess"] = 114] = "CorsIssue::InvalidLocalNetworkAccess";
     /* eslint-enable @typescript-eslint/naming-convention */
-    IssueCreated[IssueCreated["MAX_VALUE"] = 114] = "MAX_VALUE";
+    IssueCreated[IssueCreated["MAX_VALUE"] = 115] = "MAX_VALUE";
 })(IssueCreated || (IssueCreated = {}));
 export var Language;
 (function (Language) {

@@ -4075,7 +4075,7 @@ var JavaScriptFormatter = class {
         return "sts";
       }
     } else if (nodeType === "ObjectPattern") {
-      if (node.parent && node.parent.type === "VariableDeclarator" && AT.punctuator(token, "{")) {
+      if (node.parent?.type === "VariableDeclarator" && AT.punctuator(token, "{")) {
         return "st";
       }
       if (AT.punctuator(token, ",")) {
@@ -4104,7 +4104,7 @@ var JavaScriptFormatter = class {
       }
     } else if (nodeType === "WithStatement") {
       if (AT.punctuator(token, ")")) {
-        return node.body && node.body.type === "BlockStatement" ? "ts" : "tn>";
+        return node.body?.type === "BlockStatement" ? "ts" : "tn>";
       }
     } else if (nodeType === "SwitchStatement") {
       if (AT.punctuator(token, "{")) {
@@ -4168,10 +4168,10 @@ var JavaScriptFormatter = class {
       }
     } else if (nodeType === "IfStatement") {
       if (AT.punctuator(token, ")")) {
-        return node.consequent && node.consequent.type === "BlockStatement" ? "ts" : "tn>";
+        return node.consequent?.type === "BlockStatement" ? "ts" : "tn>";
       }
       if (AT.keyword(token, "else")) {
-        const preFormat = node.consequent && node.consequent.type === "BlockStatement" ? "st" : "n<t";
+        const preFormat = node.consequent?.type === "BlockStatement" ? "st" : "n<t";
         let postFormat = "n>";
         if (node.alternate && (node.alternate.type === "BlockStatement" || node.alternate.type === "IfStatement")) {
           postFormat = "s";
@@ -4183,7 +4183,7 @@ var JavaScriptFormatter = class {
         return "ts";
       }
     } else if (nodeType === "SequenceExpression" && AT.punctuator(token, ",")) {
-      return node.parent && node.parent.type === "SwitchCase" ? "ts" : "tn";
+      return node.parent?.type === "SwitchCase" ? "ts" : "tn";
     } else if (nodeType === "ForStatement" || nodeType === "ForOfStatement" || nodeType === "ForInStatement") {
       if (AT.punctuator(token, ";")) {
         return "ts";
@@ -4192,14 +4192,14 @@ var JavaScriptFormatter = class {
         return "sts";
       }
       if (AT.punctuator(token, ")")) {
-        return node.body && node.body.type === "BlockStatement" ? "ts" : "tn>";
+        return node.body?.type === "BlockStatement" ? "ts" : "tn>";
       }
     } else if (nodeType === "WhileStatement") {
       if (AT.punctuator(token, ")")) {
-        return node.body && node.body.type === "BlockStatement" ? "ts" : "tn>";
+        return node.body?.type === "BlockStatement" ? "ts" : "tn>";
       }
     } else if (nodeType === "DoWhileStatement") {
-      const blockBody = node.body && node.body.type === "BlockStatement";
+      const blockBody = node.body?.type === "BlockStatement";
       if (AT.keyword(token, "do")) {
         return blockBody ? "ts" : "tn>";
       }
@@ -4265,31 +4265,31 @@ var JavaScriptFormatter = class {
         return "n<";
       }
     } else if (nodeType === "BlockStatement") {
-      if (node.parent && node.parent.type === "IfStatement") {
+      if (node.parent?.type === "IfStatement") {
         const parentNode = node.parent;
         if (parentNode.alternate && parentNode.consequent === node) {
           return "";
         }
       }
-      if (node.parent && node.parent.type === "FunctionExpression" && node.parent.parent && node.parent.parent.type === "Property") {
+      if (node.parent?.type === "FunctionExpression" && node.parent.parent?.type === "Property") {
         return "";
       }
-      if (node.parent && node.parent.type === "FunctionExpression" && node.parent.parent && node.parent.parent.type === "VariableDeclarator") {
+      if (node.parent?.type === "FunctionExpression" && node.parent.parent?.type === "VariableDeclarator") {
         return "";
       }
-      if (node.parent && node.parent.type === "FunctionExpression" && node.parent.parent && node.parent.parent.type === "CallExpression") {
+      if (node.parent?.type === "FunctionExpression" && node.parent.parent?.type === "CallExpression") {
         return "";
       }
-      if (node.parent && node.parent.type === "DoWhileStatement") {
+      if (node.parent?.type === "DoWhileStatement") {
         return "";
       }
-      if (node.parent && node.parent.type === "TryStatement") {
+      if (node.parent?.type === "TryStatement") {
         const parentNode = node.parent;
         if (parentNode.block === node) {
           return "s";
         }
       }
-      if (node.parent && node.parent.type === "CatchClause") {
+      if (node.parent?.type === "CatchClause") {
         const parentNode = node.parent;
         if (parentNode.parent?.finalizer) {
           return "s";
@@ -4597,7 +4597,7 @@ var HTMLModel = class {
       this.#tokens.push(token);
       this.#updateDOM(token);
       const element = this.#stack[this.#stack.length - 1];
-      if (element && (element.name === "script" || element.name === "style") && element.openTag && element.openTag.endOffset === lastOffset) {
+      if (element && (element.name === "script" || element.name === "style") && element.openTag?.endOffset === lastOffset) {
         return AbortTokenization;
       }
       return;
@@ -4920,7 +4920,7 @@ function parseScopes(expression, sourceType = "script") {
   } catch {
     return null;
   }
-  return new ScopeVariableAnalysis(root).run();
+  return new ScopeVariableAnalysis(root, expression).run();
 }
 var Scope = class {
   variables = /* @__PURE__ */ new Map();
@@ -4928,12 +4928,16 @@ var Scope = class {
   start;
   end;
   kind;
+  name;
+  nameMappingLocations;
   children = [];
-  constructor(start, end, parent, kind) {
+  constructor(start, end, parent, kind, name, nameMappingLocations) {
     this.start = start;
     this.end = end;
     this.parent = parent;
     this.kind = kind;
+    this.name = name;
+    this.nameMappingLocations = nameMappingLocations;
     if (parent) {
       parent.children.push(this);
     }
@@ -4953,6 +4957,8 @@ var Scope = class {
       end: this.end,
       variables,
       kind: this.kind,
+      name: this.name,
+      nameMappingLocations: this.nameMappingLocations,
       children
     };
   }
@@ -5022,8 +5028,12 @@ var ScopeVariableAnalysis = class {
   #allNames = /* @__PURE__ */ new Set();
   #currentScope;
   #rootNode;
-  constructor(node) {
+  #sourceText;
+  #methodName;
+  #additionalMappingLocations = [];
+  constructor(node, sourceText) {
     this.#rootNode = node;
+    this.#sourceText = sourceText;
     this.#rootScope = new Scope(
       node.start,
       node.end,
@@ -5060,12 +5070,7 @@ var ScopeVariableAnalysis = class {
         node.elements.forEach((item) => this.#processNode(item));
         break;
       case "ArrowFunctionExpression": {
-        this.#pushScope(
-          node.start,
-          node.end,
-          2
-          /* ScopeKind.FUNCTION */
-        );
+        this.#pushScope(node.start, node.end, 4, void 0, mappingLocationsForArrowFunctions(node, this.#sourceText));
         node.params.forEach(this.#processNodeAsDefinition.bind(this, 2, false));
         if (node.body.type === "BlockStatement") {
           node.body.body.forEach(this.#processNode.bind(this));
@@ -5164,12 +5169,7 @@ var ScopeVariableAnalysis = class {
         break;
       case "FunctionDeclaration":
         this.#processNodeAsDefinition(2, false, node.id);
-        this.#pushScope(
-          node.id?.end ?? node.start,
-          node.end,
-          2
-          /* ScopeKind.FUNCTION */
-        );
+        this.#pushScope(node.id?.end ?? node.start, node.end, 2, node.id.name, mappingLocationsForFunctionDeclaration(node, this.#sourceText));
         this.#addVariable(
           "this",
           node.start,
@@ -5187,12 +5187,9 @@ var ScopeVariableAnalysis = class {
         this.#popScope(true);
         break;
       case "FunctionExpression":
-        this.#pushScope(
-          node.id?.end ?? node.start,
-          node.end,
-          2
-          /* ScopeKind.FUNCTION */
-        );
+        this.#pushScope(node.id?.end ?? node.start, node.end, 2, this.#methodName ?? node.id?.name, [...this.#additionalMappingLocations, ...mappingLocationsForFunctionExpression(node, this.#sourceText)]);
+        this.#additionalMappingLocations = [];
+        this.#methodName = void 0;
         this.#addVariable(
           "this",
           node.start,
@@ -5225,6 +5222,9 @@ var ScopeVariableAnalysis = class {
       case "MethodDefinition":
         if (node.computed) {
           this.#processNode(node.key);
+        } else {
+          this.#additionalMappingLocations = mappingLocationsForMethodDefinition(node);
+          this.#methodName = nameForMethodDefinition(node);
         }
         this.#processNode(node.value);
         break;
@@ -5261,6 +5261,9 @@ var ScopeVariableAnalysis = class {
         } else {
           if (node.computed) {
             this.#processNode(node.key);
+          } else if (node.value.type === "FunctionExpression") {
+            this.#additionalMappingLocations = mappingLocationsForMethodDefinition(node);
+            this.#methodName = nameForMethodDefinition(node);
           }
           this.#processNode(node.value);
         }
@@ -5356,8 +5359,8 @@ var ScopeVariableAnalysis = class {
   getAllNames() {
     return this.#allNames;
   }
-  #pushScope(start, end, kind) {
-    this.#currentScope = new Scope(start, end, this.#currentScope, kind);
+  #pushScope(start, end, kind, name, nameMappingLocations) {
+    this.#currentScope = new Scope(start, end, this.#currentScope, kind, name, nameMappingLocations);
   }
   #popScope(isFunctionContext) {
     if (this.#currentScope.parent === null) {
@@ -5411,6 +5414,67 @@ var ScopeVariableAnalysis = class {
     this.#processNode(decl.init ?? null);
   }
 };
+function mappingLocationsForFunctionDeclaration(node, sourceText) {
+  const result = [node.id.start];
+  const searchParenEndPos = node.params.length ? node.params[0].start : node.body.start;
+  const parenPos = indexOfCharInBounds(sourceText, "(", node.id.end, searchParenEndPos);
+  if (parenPos >= 0) {
+    result.push(parenPos);
+  }
+  return result;
+}
+function mappingLocationsForFunctionExpression(node, sourceText) {
+  const result = [];
+  if (node.id) {
+    result.push(node.id.start);
+  }
+  const searchParenStartPos = node.id ? node.id.end : node.start;
+  const searchParenEndPos = node.params.length ? node.params[0].start : node.body.start;
+  const parenPos = indexOfCharInBounds(sourceText, "(", searchParenStartPos, searchParenEndPos);
+  if (parenPos >= 0) {
+    result.push(parenPos);
+  }
+  return result;
+}
+function mappingLocationsForMethodDefinition(node) {
+  if (node.key.type === "Identifier" || node.key.type === "PrivateIdentifier") {
+    const id = node.key;
+    return [id.start];
+  }
+  return [];
+}
+function nameForMethodDefinition(node) {
+  if (node.key.type === "Identifier") {
+    return node.key.name;
+  }
+  if (node.key.type === "PrivateIdentifier") {
+    return "#" + node.key.name;
+  }
+  return void 0;
+}
+function mappingLocationsForArrowFunctions(node, sourceText) {
+  const result = [];
+  const searchParenStartPos = node.async ? node.start + 5 : node.start;
+  const searchParenEndPos = node.params.length ? node.params[0].start : node.body.start;
+  const parenPos = indexOfCharInBounds(sourceText, "(", searchParenStartPos, searchParenEndPos);
+  if (parenPos >= 0) {
+    result.push(parenPos);
+  }
+  const searchArrowStartPos = node.params.length ? node.params[node.params.length - 1].end : node.start;
+  const arrowPos = indexOfCharInBounds(sourceText, "=", searchArrowStartPos, node.body.start);
+  if (arrowPos >= 0 && sourceText[arrowPos + 1] === ">") {
+    result.push(arrowPos);
+  }
+  return result;
+}
+function indexOfCharInBounds(str, needle, start, end) {
+  for (let i = start; i < end; ++i) {
+    if (str[i] === needle) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 // gen/front_end/entrypoints/formatter_worker/Substitute.js
 function substituteExpression(expression, nameMap) {
@@ -5425,7 +5489,7 @@ function computeSubstitution(expression, nameMap) {
     checkPrivateFields: false,
     ranges: false
   });
-  const scopeVariables = new ScopeVariableAnalysis(root);
+  const scopeVariables = new ScopeVariableAnalysis(root, expression);
   scopeVariables.run();
   const freeVariables = scopeVariables.getFreeVariables();
   const result = [];
@@ -5587,23 +5651,13 @@ var CSSFormatter = class {
   constructor(builder) {
     this.#builder = builder;
     this.#lastLine = -1;
-    this.#state = {
-      eatWhitespace: void 0,
-      seenProperty: void 0,
-      inPropertyValue: void 0,
-      afterClosingBrace: void 0
-    };
+    this.#state = {};
   }
   format(text, lineEndings, fromOffset, toOffset) {
     this.#lineEndings = lineEndings;
     this.#fromOffset = fromOffset;
     this.#toOffset = toOffset;
-    this.#state = {
-      eatWhitespace: void 0,
-      seenProperty: void 0,
-      inPropertyValue: void 0,
-      afterClosingBrace: void 0
-    };
+    this.#state = {};
     this.#lastLine = -1;
     const tokenize = createTokenizer("text/css");
     const oldEnforce = this.#builder.setEnforceSpaceBetweenWords(false);

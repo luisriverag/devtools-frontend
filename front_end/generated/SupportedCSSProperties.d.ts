@@ -284,6 +284,18 @@ export const generatedPropertyValues: {
     "column-rule-color": {
         values: string[];
     };
+    "column-rule-inset-cap-end": {
+        values: string[];
+    };
+    "column-rule-inset-cap-start": {
+        values: string[];
+    };
+    "column-rule-inset-junction-end": {
+        values: string[];
+    };
+    "column-rule-inset-junction-start": {
+        values: string[];
+    };
     "column-rule-style": {
         values: string[];
     };
@@ -323,6 +335,9 @@ export const generatedPropertyValues: {
     continue: {
         values: string[];
     };
+    corner: {
+        values: string[];
+    };
     "corner-bottom-left-shape": {
         values: string[];
     };
@@ -333,9 +348,6 @@ export const generatedPropertyValues: {
         values: string[];
     };
     "corner-top-right-shape": {
-        values: string[];
-    };
-    corners: {
         values: string[];
     };
     "counter-increment": {
@@ -390,6 +402,9 @@ export const generatedPropertyValues: {
         values: string[];
     };
     "flood-color": {
+        values: string[];
+    };
+    "flow-tolerance": {
         values: string[];
     };
     "font-feature-settings": {
@@ -458,7 +473,7 @@ export const generatedPropertyValues: {
     "forced-color-adjust": {
         values: string[];
     };
-    "gap-rule-overlap": {
+    "frame-sizing": {
         values: string[];
     };
     "grid-auto-columns": {
@@ -476,6 +491,12 @@ export const generatedPropertyValues: {
     "grid-column-start": {
         values: string[];
     };
+    "grid-lanes-direction": {
+        values: string[];
+    };
+    "grid-lanes-pack": {
+        values: string[];
+    };
     "grid-row-end": {
         values: string[];
     };
@@ -491,6 +512,9 @@ export const generatedPropertyValues: {
     "grid-template-rows": {
         values: string[];
     };
+    "hanging-punctuation": {
+        values: string[];
+    };
     height: {
         values: string[];
     };
@@ -498,6 +522,9 @@ export const generatedPropertyValues: {
         values: string[];
     };
     hyphens: {
+        values: string[];
+    };
+    "image-animation": {
         values: string[];
     };
     "image-rendering": {
@@ -516,9 +543,6 @@ export const generatedPropertyValues: {
         values: string[];
     };
     isolation: {
-        values: string[];
-    };
-    "item-tolerance": {
         values: string[];
     };
     left: {
@@ -585,12 +609,6 @@ export const generatedPropertyValues: {
         values: string[];
     };
     "mask-type": {
-        values: string[];
-    };
-    "masonry-direction": {
-        values: string[];
-    };
-    "masonry-fill": {
         values: string[];
     };
     "math-shift": {
@@ -665,22 +683,22 @@ export const generatedPropertyValues: {
     overlay: {
         values: string[];
     };
-    "overscroll-area": {
-        values: string[];
-    };
     "overscroll-behavior-x": {
         values: string[];
     };
     "overscroll-behavior-y": {
         values: string[];
     };
-    "overscroll-position": {
-        values: string[];
-    };
     page: {
         values: string[];
     };
+    "page-margin-safety": {
+        values: string[];
+    };
     "paint-order": {
+        values: string[];
+    };
+    "path-length": {
         values: string[];
     };
     perspective: {
@@ -731,6 +749,18 @@ export const generatedPropertyValues: {
     "row-rule-color": {
         values: string[];
     };
+    "row-rule-inset-cap-end": {
+        values: string[];
+    };
+    "row-rule-inset-cap-start": {
+        values: string[];
+    };
+    "row-rule-inset-junction-end": {
+        values: string[];
+    };
+    "row-rule-inset-junction-start": {
+        values: string[];
+    };
     "row-rule-style": {
         values: string[];
     };
@@ -747,6 +777,9 @@ export const generatedPropertyValues: {
         values: string[];
     };
     "ruby-position": {
+        values: string[];
+    };
+    "rule-overlap": {
         values: string[];
     };
     rx: {
@@ -860,6 +893,9 @@ export const generatedPropertyValues: {
     "text-decoration-skip-ink": {
         values: string[];
     };
+    "text-decoration-skip-spaces": {
+        values: string[];
+    };
     "text-decoration-style": {
         values: string[];
     };
@@ -932,6 +968,9 @@ export const generatedPropertyValues: {
     "transition-timing-function": {
         values: string[];
     };
+    "trigger-scope": {
+        values: string[];
+    };
     "unicode-bidi": {
         values: string[];
     };
@@ -951,6 +990,9 @@ export const generatedPropertyValues: {
         values: string[];
     };
     "view-transition-name": {
+        values: string[];
+    };
+    "view-transition-scope": {
         values: string[];
     };
     visibility: {

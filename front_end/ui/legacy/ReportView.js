@@ -45,7 +45,7 @@ export class ReportView extends VBox {
         this.headerElement.classList.toggle('hidden', Boolean(title));
     }
     setSubtitle(subtitle) {
-        if (this.subtitleElement && this.subtitleElement.textContent === subtitle) {
+        if (this.subtitleElement?.textContent === subtitle) {
             return;
         }
         if (!this.subtitleElement) {
@@ -197,9 +197,6 @@ export class Section extends VBox {
     markFieldListAsGroup() {
         ARIAUtils.markAsGroup(this.fieldList);
         ARIAUtils.setLabel(this.fieldList, this.title());
-    }
-    setIconMasked(masked) {
-        this.element.classList.toggle('show-mask', masked);
     }
 }
 //# sourceMappingURL=ReportView.js.map

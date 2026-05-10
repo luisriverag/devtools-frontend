@@ -3,9 +3,9 @@ import * as Common from '../../core/common/common.js';
 import * as Host from '../../core/host/host.js';
 import * as Platform from '../../core/platform/platform.js';
 import * as Geometry from '../../models/geometry/geometry.js';
-import * as TextUtils from '../../models/text_utils/text_utils.js';
+import type * as StackTrace from '../../models/stack_trace/stack_trace.js';
 import * as Buttons from '../components/buttons/buttons.js';
-import * as IconButton from '../components/icon_button/icon_button.js';
+import { type IconData } from '../kit/kit.js';
 import * as Lit from '../lit/lit.js';
 declare global {
     interface HTMLElementTagNameMap {
@@ -16,8 +16,6 @@ declare global {
     }
 }
 declare const Directives: typeof Lit.Directives;
-export declare const highlightedSearchResultClassName = "highlighted-search-result";
-export declare const highlightedCurrentSearchResultClassName = "current-search-result";
 export declare function installDragHandle(element: Element, elementDragStart: ((arg0: MouseEvent) => boolean) | null, elementDrag: (arg0: MouseEvent) => void, elementDragEnd: ((arg0: MouseEvent) => void) | null, cursor: string | null, hoverCursor?: string | null, startDelay?: number, mouseDownPreventDefault?: boolean): void;
 export declare function elementDragStart(targetElement: Element, elementDragStart: ((arg0: MouseEvent) => boolean) | null, elementDrag: (arg0: MouseEvent) => void, elementDragEnd: ((arg0: MouseEvent) => void) | null, cursor: string | null, event: Event): void;
 export declare function isBeingEdited(node?: Node | null): boolean;
@@ -42,9 +40,7 @@ export declare function openLinkExternallyLabel(): string;
 export declare function copyLinkAddressLabel(): string;
 export declare function copyFileNameLabel(): string;
 export declare function anotherProfilerActiveLabel(): string;
-export declare function asyncStackTraceLabel(description: string | undefined, previousCallFrames: Array<{
-    functionName: string;
-}>): string;
+export declare function asyncFragmentLabel(stackTrace: StackTrace.StackTrace.StackTrace | StackTrace.StackTrace.DebuggableStackTrace, asyncFragment: StackTrace.StackTrace.AsyncFragment): string;
 export declare function addPlatformClass(element: HTMLElement): void;
 export declare function installComponentRootStyles(element: HTMLElement): void;
 export declare class ElementFocusRestorer {
@@ -53,13 +49,13 @@ export declare class ElementFocusRestorer {
     constructor(element: Element);
     restore(): void;
 }
-export declare function highlightSearchResult(element: Element, offset: number, length: number, domChanges?: HighlightChange[]): Element | null;
-export declare function highlightSearchResults(element: Element, resultRanges: TextUtils.TextRange.SourceRange[], changes?: HighlightChange[]): Element[];
 export declare function runCSSAnimationOnce(element: Element, className: string): void;
-export declare function highlightRangesWithStyleClass(element: Element, resultRanges: TextUtils.TextRange.SourceRange[], styleClass: string, changes?: HighlightChange[]): Element[];
-/** Used in chromium/src/third_party/blink/web_tests/http/tests/devtools/components/utilities-highlight-results.js **/
-export declare function applyDomChanges(domChanges: HighlightChange[]): void;
-export declare function revertDomChanges(domChanges: HighlightChange[]): void;
+declare class AnimateOnDirective extends Lit.Directive.Directive {
+    #private;
+    render(_condition: boolean, _className: string): void;
+    update(part: Lit.Directive.ElementPart, [condition, className]: [boolean, string]): void;
+}
+export declare const animateOn: (_condition: boolean, _className: string) => Lit.DirectiveResult<typeof AnimateOnDirective>;
 export declare function measurePreferredSize(element: Element, containerElement?: Element | null): Geometry.Size;
 export declare function startBatchUpdate(): void;
 export declare function endBatchUpdate(): void;
@@ -152,7 +148,7 @@ export declare class CheckboxLabel extends HTMLElement {
     #private;
     static readonly observedAttributes: string[];
     constructor();
-    static create(title?: Platform.UIString.LocalizedString, checked?: boolean, subtitle?: Platform.UIString.LocalizedString, jslogContext?: string, small?: boolean): CheckboxLabel;
+    static create(title?: Platform.UIString.LocalizedString, checked?: boolean, subtitle?: Platform.UIString.LocalizedString, jslogContext?: string, small?: boolean, tooltip?: Platform.UIString.LocalizedString): CheckboxLabel;
     attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void;
     getLabelText(): string | null;
     setLabelText(content: string): void;
@@ -176,7 +172,7 @@ export declare class CheckboxLabel extends HTMLElement {
 export declare class DevToolsIconLabel extends HTMLElement {
     #private;
     constructor();
-    set data(data: IconButton.Icon.IconData);
+    set data(data: IconData);
 }
 export declare class DevToolsSmallBubble extends HTMLElement {
     private textElement;
@@ -204,6 +200,7 @@ export declare function loadImage(url: string): Promise<HTMLImageElement | null>
  */
 export declare function createFileSelectorElement(callback: (arg0: File) => void, accept?: string): HTMLInputElement;
 export declare const MaxLengthForDisplayedURLs = 150;
+export declare const MaxLengthForDisplayedURLsInConsole = 40;
 export declare class MessageDialog {
     static show(header: string, message: string, where?: Element | Document, jslogContext?: string): Promise<void>;
 }
@@ -227,18 +224,10 @@ export interface Options {
      */
     expand?: boolean;
 }
-export interface HighlightChange {
-    node: Element | Text;
-    type: string;
-    oldText?: string;
-    newText?: string;
-    nextSibling?: Node;
-    parent?: Node;
-}
 export declare const isScrolledToBottom: (element: Element) => boolean;
-export declare function createSVGChild(element: Element, childType: string, className?: string): Element;
-export declare const enclosingNodeOrSelfWithNodeNameInArray: (initialNode: Node, nameArray: string[]) => Node | null;
-export declare const enclosingNodeOrSelfWithNodeName: (node: Node, nodeName: string) => Node | null;
+export declare function createSVGChild<K extends keyof SVGElementTagNameMap>(element: Element, childType: K, className?: string): SVGElementTagNameMap[K];
+export declare const enclosingNodeOrSelfWithNodeNameInArray: <T extends keyof HTMLElementTagNameMap>(initialNode: Node, nameArray: T[]) => HTMLElementTagNameMap[T] | null;
+export declare const enclosingNodeOrSelfWithNodeName: <T extends keyof HTMLElementTagNameMap>(node: Node, nodeName: T) => HTMLElementTagNameMap[T] | null;
 export declare const deepElementFromPoint: (document: Document | ShadowRoot | null | undefined, x: number, y: number) => Node | null;
 export declare const deepElementFromEvent: (ev: Event) => Node | null;
 export declare function registerRenderer(registration: RendererRegistration): void;
@@ -267,25 +256,6 @@ export declare function createShadowRootWithCoreStyles(element: Element, options
 }): ShadowRoot;
 export declare function resetMeasuredScrollbarWidthForTest(): void;
 export declare function measuredScrollbarWidth(document?: Document | null): number;
-/**
- * Opens the given `url` in a new Chrome tab.
- *
- * If the `url` is a Google owned documentation page (currently that includes
- * `web.dev`, `developers.google.com`, and `developer.chrome.com`), the `url`
- * will also be checked for UTM parameters:
- *
- * - If no `utm_source` search parameter is present, this method will add a new
- *   search parameter `utm_source=devtools` to `url`.
- * - If no `utm_campaign` search parameter is present, and DevTools is running
- *   within a branded build, this method will add `utm_campaign=<channel>` to
- *   the search parameters, with `<channel>` being the release channel of
- *   Chrome ("stable", "beta", "dev", or "canary").
- *
- * @param url the URL to open in a new tab.
- * @throws TypeError if `url` is not a valid URL.
- * @see https://en.wikipedia.org/wiki/UTM_parameters
- */
-export declare function openInNewTab(url: URL | string): void;
 export interface PromotionDisplayState {
     displayCount: number;
     firstRegistered: number;
@@ -321,8 +291,8 @@ type BindingEventListener = (arg: any) => any;
 export declare class InterceptBindingDirective extends Lit.Directive.Directive {
     #private;
     update(part: Lit.Directive.Part, [listener]: [BindingEventListener]): unknown;
-    render(_listener: Function): undefined;
-    static attachEventListeners(templateElement: Element, renderedElement: Element): void;
+    render(listener: Function): Function;
+    static setEventListeners(templateElement: Element, renderedElement: Element): void;
 }
 export declare const cloneCustomElement: <T extends HTMLElement>(element: T, deep?: boolean) => T;
 export declare class HTMLElementWithLightDOMTemplate extends HTMLElement {
@@ -350,7 +320,11 @@ export declare function getDevToolsBoundingElement(): HTMLElement;
  */
 export declare const bindCheckbox: (input: CheckboxLabel, setting: Common.Settings.Setting<boolean>, metric?: UserMetricOptions) => void;
 export declare const bindCheckboxImpl: (input: CheckboxLabel, apply: (value: boolean) => void, metric?: UserMetricOptions) => (value: boolean) => void;
-export declare const bindToSetting: (settingOrName: string | Common.Settings.Setting<boolean | string> | Common.Settings.RegExpSetting, stringValidator?: (newSettingValue: string) => boolean) => ReturnType<typeof Directives.ref>;
+export type BindToSettingOpts = ((newSettingValue: string) => boolean) | {
+    validator?: (newSettingValue: string) => boolean;
+    jslog?: boolean;
+};
+export declare const bindToSetting: (settingOrName: string | Common.Settings.Setting<boolean | string> | Common.Settings.RegExpSetting, optionsOrValidator?: BindToSettingOpts) => ReturnType<typeof Directives.ref>;
 /**
  * Track toggle action as a whole or
  * track on and off action separately.

@@ -84,6 +84,8 @@ export declare class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper<E
     set preserved(x: boolean);
     blockedReason(): Protocol.Network.BlockedReason | undefined;
     setBlockedReason(reason: Protocol.Network.BlockedReason): void;
+    setRenderBlockingBehavior(renderBlocking: Protocol.Network.RenderBlockingBehavior): void;
+    renderBlockingBehavior(): Protocol.Network.RenderBlockingBehavior | undefined;
     corsErrorStatus(): Protocol.Network.CorsErrorStatus | undefined;
     setCorsErrorStatus(corsErrorStatus: Protocol.Network.CorsErrorStatus): void;
     wasBlocked(): boolean;
@@ -200,6 +202,7 @@ export declare class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper<E
     contentType(): Common.ResourceType.ResourceType;
     searchInContent(query: string, caseSensitive: boolean, isRegex: boolean): Promise<TextUtils.ContentProvider.SearchMatch[]>;
     requestContentType(): string | undefined;
+    requestContentEncoding(): string | undefined;
     hasErrorStatusCode(): boolean;
     setInitialPriority(priority: Protocol.Network.ResourcePriority): void;
     initialPriority(): Protocol.Network.ResourcePriority | null;
@@ -224,6 +227,8 @@ export declare class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper<E
     charset(): string | null;
     setCharset(charset: string): void;
     addExtraRequestInfo(extraRequestInfo: ExtraRequestInfo): void;
+    setAppliedNetworkConditions(appliedNetworkConditionsId: string): void;
+    getDeviceBoundSessionUsages(): Protocol.Network.DeviceBoundSessionWithUsage[];
     hasExtraRequestInfo(): boolean;
     blockedRequestCookies(): BlockedCookieWithReason[];
     setIncludedRequestCookies(includedRequestCookies: IncludedCookieWithReason[]): void;
@@ -246,8 +251,6 @@ export declare class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper<E
     trustTokenOperationDoneEvent(): Protocol.Network.TrustTokenOperationDoneEvent | undefined;
     setIsSameSite(isSameSite: boolean): void;
     isSameSite(): boolean | null;
-    setIsIpProtectionUsed(isIpProtectionUsed: boolean): void;
-    isIpProtectionUsed(): boolean | null;
     setIsAdRelated(isAdRelated: boolean): void;
     isAdRelated(): boolean;
     getAssociatedData(key: string): object | null;
@@ -321,7 +324,7 @@ export interface BlockedCookieWithReason {
 }
 export interface IncludedCookieWithReason {
     cookie: Cookie;
-    exemptionReason: Protocol.Network.CookieExemptionReason | undefined;
+    exemptionReason?: Protocol.Network.CookieExemptionReason;
 }
 export interface ExemptedSetCookieWithReason {
     cookie: Cookie;
@@ -341,6 +344,7 @@ export interface ExtraRequestInfo {
     }>;
     requestHeaders: NameValue[];
     includedRequestCookies: IncludedCookieWithReason[];
+    deviceBoundSessionUsages?: Protocol.Network.DeviceBoundSessionWithUsage[];
     clientSecurityState?: Protocol.Network.ClientSecurityState;
     connectTiming: Protocol.Network.ConnectTiming;
     siteHasCookieInOtherPartition?: boolean;
@@ -389,6 +393,9 @@ export interface DirectSocketCreateOptions {
     sendBufferSize?: number;
     receiveBufferSize?: number;
     dnsQueryType?: Protocol.Network.DirectSocketDnsQueryType;
+    multicastLoopback?: boolean;
+    multicastTimeToLive?: number;
+    multicastAllowAddressSharing?: boolean;
 }
 export interface DirectSocketOpenInfo {
     remoteAddr?: string;
@@ -402,6 +409,7 @@ export interface DirectSocketInfo {
     errorMessage?: string;
     createOptions: DirectSocketCreateOptions;
     openInfo?: DirectSocketOpenInfo;
+    joinedMulticastGroups?: Set<string>;
 }
 export interface DirectSocketChunk {
     data: string;

@@ -5,10 +5,9 @@ import * as TextUtils from '../../models/text_utils/text_utils.js';
 import * as Common from '../common/common.js';
 import * as HostModule from '../host/host.js';
 import * as Platform from '../platform/platform.js';
-import * as Root from '../root/root.js';
 import { cssMetadata, GridAreaRowRegex } from './CSSMetadata.js';
 import { matchDeclaration, stripComments } from './CSSPropertyParser.js';
-import { CSSWideKeywordMatcher, FontMatcher } from './CSSPropertyParserMatchers.js';
+import { CSSWideKeywordMatcher } from './CSSPropertyParserMatchers.js';
 export class CSSProperty extends Common.ObjectWrapper.ObjectWrapper {
     ownerStyle;
     index;
@@ -77,9 +76,6 @@ export class CSSProperty extends Common.ObjectWrapper.ObjectWrapper {
     #matchers(matchedStyles, computedStyles) {
         const matchers = matchedStyles.propertyMatchers(this.ownerStyle, computedStyles);
         matchers.push(new CSSWideKeywordMatcher(this, matchedStyles));
-        if (Root.Runtime.experiments.isEnabled('font-editor')) {
-            matchers.push(new FontMatcher());
-        }
         return matchers;
     }
     ensureRanges() {
@@ -167,7 +163,7 @@ export class CSSProperty extends Common.ObjectWrapper.ObjectWrapper {
         const range = this.range.relativeTo(this.ownerStyle.range.startLine, this.ownerStyle.range.startColumn);
         const indentation = this.ownerStyle.cssText ?
             this.detectIndentation(this.ownerStyle.cssText) :
-            Common.Settings.Settings.instance().moduleSetting('text-editor-indent').get();
+            this.ownerStyle.cssModel().target().targetManager().settings.moduleSetting('text-editor-indent').get();
         const endIndentation = this.ownerStyle.cssText ? indentation.substring(0, this.ownerStyle.range.endColumn) : '';
         const text = new TextUtils.Text.Text(this.ownerStyle.cssText || '');
         const newStyleText = text.replaceRange(range, Platform.StringUtilities.sprintf(';%s;', propertyText));
@@ -231,7 +227,7 @@ export class CSSProperty extends Common.ObjectWrapper.ObjectWrapper {
             }
             if (cssMetadata().isGridAreaDefiningProperty(propertyName)) {
                 const rowResult = GridAreaRowRegex.exec(token);
-                if (rowResult && rowResult.index === 0 && !propertyText.trimEnd().endsWith(']')) {
+                if (rowResult?.index === 0 && !propertyText.trimEnd().endsWith(']')) {
                     propertyText = propertyText.trimEnd() + '\n' + doubleIndent;
                 }
             }
@@ -308,6 +304,36 @@ export class CSSProperty extends Common.ObjectWrapper.ObjectWrapper {
     }
     getLonghandProperties() {
         return this.#longhandProperties;
+    }
+    ignoreErrors() {
+        function hasUnknownVendorPrefix(string) {
+            return !string.startsWith('-webkit-') && /^[-_][\w\d]+-\w/.test(string);
+        }
+        const name = this.name.toLowerCase();
+        // IE hack.
+        if (name.charAt(0) === '_') {
+            return true;
+        }
+        // IE has a different format for this.
+        if (name === 'filter') {
+            return true;
+        }
+        // Common IE-specific property prefix.
+        if (name.startsWith('scrollbar-')) {
+            return true;
+        }
+        if (hasUnknownVendorPrefix(name)) {
+            return true;
+        }
+        const value = this.value.toLowerCase();
+        // IE hack.
+        if (value.endsWith('\\9')) {
+            return true;
+        }
+        if (hasUnknownVendorPrefix(value)) {
+            return true;
+        }
+        return false;
     }
 }
 //# sourceMappingURL=CSSProperty.js.map

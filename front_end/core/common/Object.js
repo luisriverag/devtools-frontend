@@ -57,30 +57,42 @@ export class ObjectWrapper {
         // new listeners.
         for (const listener of [...listeners]) {
             if (!listener.disposed) {
-                listener.listener.call(listener.thisObject, event);
+                try {
+                    listener.listener.call(listener.thisObject, event);
+                }
+                catch (err) {
+                    console.error(`Event listener for ${String(eventType)} throw an error:`, err);
+                }
             }
         }
     }
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function eventMixin(base) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     console.assert(base !== HTMLElement);
     return class EventHandling extends base {
-        #events = new ObjectWrapper();
+        // Note that the weird name is due to TSC disallowing private/protected fields in
+        // anonmous exported classes. We use a `__` prefix to prevent clashes with `base`.
+        // eslint-disable-next-line @devtools/no-underscored-properties, @typescript-eslint/naming-convention
+        __events = new ObjectWrapper();
         addEventListener(eventType, listener, thisObject) {
-            return this.#events.addEventListener(eventType, listener, thisObject);
+            return this.__events.addEventListener(eventType, listener, thisObject);
         }
         once(eventType) {
-            return this.#events.once(eventType);
+            return this.__events.once(eventType);
         }
         removeEventListener(eventType, listener, thisObject) {
-            this.#events.removeEventListener(eventType, listener, thisObject);
+            this.__events.removeEventListener(eventType, listener, thisObject);
         }
         hasEventListeners(eventType) {
-            return this.#events.hasEventListeners(eventType);
+            return this.__events.hasEventListeners(eventType);
         }
         dispatchEventToListeners(eventType, ...eventData) {
-            this.#events.dispatchEventToListeners(eventType, ...eventData);
+            this.__events.dispatchEventToListeners(eventType, ...eventData);
+            if (typeof this.dispatchDOMEvent === 'function') {
+                this.dispatchDOMEvent(new CustomEvent(eventType, { detail: eventData[0] }));
+            }
         }
     };
 }

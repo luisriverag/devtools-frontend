@@ -22,6 +22,7 @@ import * as CookieModel from './CookieModel.js';
 import * as CookieParser from './CookieParser.js';
 import * as CPUProfilerModel from './CPUProfilerModel.js';
 import * as CPUThrottlingManager from './CPUThrottlingManager.js';
+import * as CrashReportContextModel from './CrashReportContextModel.js';
 import * as CSSContainerQuery from './CSSContainerQuery.js';
 import * as CSSFontFace from './CSSFontFace.js';
 import * as CSSLayer from './CSSLayer.js';
@@ -29,6 +30,7 @@ import * as CSSMatchedStyles from './CSSMatchedStyles.js';
 import * as CSSMedia from './CSSMedia.js';
 import * as CSSMetadata from './CSSMetadata.js';
 import * as CSSModel from './CSSModel.js';
+import * as CSSNavigation from './CSSNavigation.js';
 import * as CSSProperty from './CSSProperty.js';
 import * as CSSPropertyParser from './CSSPropertyParser.js';
 import * as CSSPropertyParserMatchers from './CSSPropertyParserMatchers.js';
@@ -42,6 +44,7 @@ import * as CSSSupports from './CSSSupports.js';
 import * as DebuggerModel from './DebuggerModel.js';
 import * as DOMDebuggerModel from './DOMDebuggerModel.js';
 import * as DOMModel from './DOMModel.js';
+import * as DOMStorageModel from './DOMStorageModel.js';
 import * as EmulationModel from './EmulationModel.js';
 import * as EnhancedTracesParser from './EnhancedTracesParser.js';
 import * as EventBreakpointsModel from './EventBreakpointsModel.js';
@@ -104,6 +107,7 @@ export {
   CookieParser,
   CPUProfilerModel,
   CPUThrottlingManager,
+  CrashReportContextModel,
   CSSContainerQuery,
   CSSFontFace,
   CSSLayer,
@@ -111,6 +115,7 @@ export {
   CSSMedia,
   CSSMetadata,
   CSSModel,
+  CSSNavigation,
   CSSProperty,
   CSSPropertyParser,
   CSSPropertyParserMatchers,
@@ -124,6 +129,7 @@ export {
   DebuggerModel,
   DOMDebuggerModel,
   DOMModel,
+  DOMStorageModel,
   EmulationModel,
   EnhancedTracesParser,
   EventBreakpointsModel,

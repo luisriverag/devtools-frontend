@@ -49,6 +49,10 @@ export class RemoteObject {
         const matches = object.description?.match(descriptionLengthParenRegex);
         return matches ? parseInt(matches[1], 10) : 0;
     }
+    static isEmptyArray(object) {
+        const matches = object.description?.match(descriptionLengthParenRegex);
+        return Boolean(matches?.[1] === '0');
+    }
     static unserializableDescription(object) {
         if (typeof object === 'number') {
             const description = String(object);
@@ -452,7 +456,8 @@ export class RemoteObjectImpl extends RemoteObject {
     }
     isLinearMemoryInspectable() {
         return this.type === 'object' && this.subtype !== undefined &&
-            ['webassemblymemory', 'typedarray', 'dataview', 'arraybuffer'].includes(this.subtype);
+            ['webassemblymemory', 'typedarray', 'dataview', 'arraybuffer'].includes(this.subtype) &&
+            !RemoteObject.isEmptyArray(this);
     }
 }
 export class ScopeRemoteObject extends RemoteObjectImpl {
@@ -665,6 +670,9 @@ export class LocalJSONObject extends RemoteObject {
         if (this.#value instanceof Date) {
             return 'date';
         }
+        if (this.#value instanceof Error) {
+            return 'error';
+        }
         return undefined;
     }
     get hasChildren() {
@@ -764,7 +772,7 @@ export class RemoteArray {
         this.#object = object;
     }
     static objectAsArray(object) {
-        if (!object || object.type !== 'object' || (object.subtype !== 'array' && object.subtype !== 'typedarray')) {
+        if (object?.type !== 'object' || (object.subtype !== 'array' && object.subtype !== 'typedarray')) {
             throw new Error('Object is empty or not an array');
         }
         return new RemoteArray(object);

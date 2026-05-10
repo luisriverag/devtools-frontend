@@ -9,7 +9,6 @@ let veDebuggingEnabled = false;
 let debugOverlay = null;
 let debugPopover = null;
 const highlightedElements = [];
-const nonDomDebugElements = new WeakMap();
 let onInspect = undefined;
 function ensureDebugOverlay() {
     if (!debugOverlay) {
@@ -86,9 +85,6 @@ export function processForDebugging(loggable) {
     }
     if (loggable instanceof HTMLElement) {
         processElementForDebugging(loggable, loggingState);
-    }
-    else {
-        processNonDomLoggableForDebugging(loggable, loggingState);
     }
 }
 function showDebugPopover(content, rect) {
@@ -220,7 +216,7 @@ export function processEventForIntuitiveDebugging(event, state, extraInfo) {
     maybeLogDebugEvent(entry);
 }
 export function processEventForTestDebugging(event, state, _extraInfo) {
-    if (event !== 'SettingAccess' && event !== 'FunctionCall') {
+    if (event !== 'SettingAccess' && event !== 'FunctionCall' && event !== 'Resize') {
         lastImpressionLogEntry = null;
     }
     maybeLogDebugEvent({ interaction: event, veid: state?.veid || 0 });
@@ -329,34 +325,6 @@ function processImpressionsForAdHocAnalysisDebugLog(states) {
         const entry = { ...buildVe(state), interactions: [], time: Date.now() - sessionStartTime };
         adHocAnalysisEntries.set(state.veid, entry);
         maybeLogDebugEvent(entry);
-    }
-}
-function processNonDomLoggableForDebugging(loggable, loggingState) {
-    let debugElement = nonDomDebugElements.get(loggable);
-    if (!debugElement) {
-        debugElement = document.createElement('div');
-        debugElement.classList.add('ve-debug');
-        debugElement.style.background = 'black';
-        debugElement.style.color = 'white';
-        debugElement.style.zIndex = '100000';
-        debugElement.textContent = debugString(loggingState.config);
-        nonDomDebugElements.set(loggable, debugElement);
-        setTimeout(() => {
-            if (!loggingState.size?.width || !loggingState.size?.height) {
-                debugElement?.parentElement?.removeChild(debugElement);
-                nonDomDebugElements.delete(loggable);
-            }
-        }, 10000);
-    }
-    const parentDebugElement = parent instanceof HTMLElement ? parent : nonDomDebugElements.get(parent) || debugPopover;
-    assertNotNullOrUndefined(parentDebugElement);
-    if (!parentDebugElement.classList.contains('ve-debug')) {
-        debugElement.style.position = 'absolute';
-        parentDebugElement.insertBefore(debugElement, parentDebugElement.firstChild);
-    }
-    else {
-        debugElement.style.marginLeft = '10px';
-        parentDebugElement.appendChild(debugElement);
     }
 }
 function elementKey(config) {
@@ -651,7 +619,7 @@ export async function expectVeEvents(expectedEvents) {
     pendingEventExpectation = { expectedEvents, success, fail, unmatchedEvents: [] };
     checkPendingEventExpectation();
     const timeout = setTimeout(() => {
-        if (pendingEventExpectation?.missingEvents) {
+        if (pendingEventExpectation?.missingEvents?.length) {
             const allLogs = veDebugEventsLog.filter(ve => {
                 if ('interaction' in ve) {
                     // Very noisy in the error and not providing context
@@ -675,49 +643,63 @@ ${JSON.stringify(allLogs, null, 2)}
     });
 }
 let numMatchedEvents = 0;
+function recordUnmatchedEvent(pendingExpectation, actualEvent, expectedEvent, matchedImpressions) {
+    const unmatched = { ...actualEvent };
+    if ('impressions' in unmatched && 'impressions' in expectedEvent) {
+        unmatched.impressions = unmatched.impressions.filter(impression => {
+            const matched = expectedEvent.impressions.includes(impression);
+            if (matched) {
+                matchedImpressions.add(impression);
+            }
+            return !matched;
+        });
+    }
+    pendingExpectation.unmatchedEvents.push(unmatched);
+}
+function processMissingEvents(pendingExpectation, expectedEventIndex, matchedImpressions) {
+    pendingExpectation.missingEvents = pendingExpectation.expectedEvents.slice(expectedEventIndex);
+    for (const event of pendingExpectation.missingEvents) {
+        if ('impressions' in event) {
+            event.impressions = event.impressions.filter(impression => !matchedImpressions.has(impression));
+        }
+    }
+    pendingExpectation.missingEvents =
+        pendingExpectation.missingEvents.filter(event => !('impressions' in event) || event.impressions.length > 0);
+}
 function checkPendingEventExpectation() {
     if (!pendingEventExpectation) {
         return;
     }
-    const actualEvents = [...veDebugEventsLog];
-    let partialMatch = false;
+    const actualEvents = veDebugEventsLog;
+    let actualEventIndex = 0;
+    let matchStarted = false;
     const matchedImpressions = new Set();
     pendingEventExpectation.unmatchedEvents = [];
-    for (let i = 0; i < pendingEventExpectation.expectedEvents.length; ++i) {
-        const expectedEvent = pendingEventExpectation.expectedEvents[i];
-        while (true) {
-            if (actualEvents.length <= i) {
-                pendingEventExpectation.missingEvents = pendingEventExpectation.expectedEvents.slice(i);
-                for (const event of pendingEventExpectation.missingEvents) {
-                    if ('impressions' in event) {
-                        event.impressions = event.impressions.filter(impression => !matchedImpressions.has(impression));
-                    }
-                }
-                return;
-            }
-            if (!compareVeEvents(actualEvents[i], expectedEvent)) {
-                if (partialMatch) {
-                    const unmatched = { ...actualEvents[i] };
-                    if ('impressions' in unmatched && 'impressions' in expectedEvent) {
-                        unmatched.impressions = unmatched.impressions.filter(impression => {
-                            const matched = expectedEvent.impressions.includes(impression);
-                            if (matched) {
-                                matchedImpressions.add(impression);
-                            }
-                            return !matched;
-                        });
-                    }
-                    pendingEventExpectation.unmatchedEvents.push(unmatched);
-                }
-                actualEvents.splice(i, 1);
-            }
-            else {
-                partialMatch = true;
+    for (let expectedEventIndex = 0; expectedEventIndex < pendingEventExpectation.expectedEvents.length; ++expectedEventIndex) {
+        const expectedEvent = pendingEventExpectation.expectedEvents[expectedEventIndex];
+        let found = false;
+        while (actualEventIndex < actualEvents.length) {
+            if (compareVeEvents(actualEvents[actualEventIndex], expectedEvent)) {
+                found = true;
+                matchStarted = true;
+                actualEventIndex++;
                 break;
             }
+            if (matchStarted) {
+                recordUnmatchedEvent(pendingEventExpectation, actualEvents[actualEventIndex], expectedEvent, matchedImpressions);
+            }
+            actualEventIndex++;
+        }
+        if (!found) {
+            processMissingEvents(pendingEventExpectation, expectedEventIndex, matchedImpressions);
+            if (!pendingEventExpectation.missingEvents?.length) {
+                numMatchedEvents = actualEventIndex;
+                pendingEventExpectation.success();
+            }
+            return;
         }
     }
-    numMatchedEvents = veDebugEventsLog.length - actualEvents.length + pendingEventExpectation.expectedEvents.length;
+    numMatchedEvents = actualEventIndex;
     pendingEventExpectation.success();
 }
 function getUnmatchedVeEvents() {

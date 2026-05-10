@@ -8,10 +8,22 @@ import { assertNotNullOrUndefined } from '../platform/platform.js';
 import * as Root from '../root/root.js';
 import { SDKModel } from './SDKModel.js';
 import { Target, Type as TargetType } from './Target.js';
-let targetManagerInstance;
 export class TargetManager extends Common.ObjectWrapper.ObjectWrapper {
+    /**
+     * @deprecated
+     *
+     * Intended for {@link SDKModel} classes to be able to retrieve scoped singletons like
+     * the "PageResourceLoader" or the "FrameManager".
+     *
+     * This is only an intermediate step to migrate towards our "layering vision" where
+     * SDKModels don't require things from the next layer.
+     */
+    context;
     #targets;
     #observers;
+    get settings() {
+        return this.context.get(Common.Settings.Settings);
+    }
     /* eslint-disable @typescript-eslint/no-explicit-any */
     #modelListeners;
     #modelObservers;
@@ -22,8 +34,13 @@ export class TargetManager extends Common.ObjectWrapper.ObjectWrapper {
     #scopeTarget;
     #defaultScopeSet;
     #scopeChangeListeners;
-    constructor() {
+    #overrideAutoStartModels;
+    /**
+     * @param overrideAutoStartModels If provided, then the `autostart` flag on {@link RegistrationInfo} will be ignored.
+     */
+    constructor(context, overrideAutoStartModels) {
         super();
+        this.context = context;
         this.#targets = new Set();
         this.#observers = new Set();
         this.#modelListeners = new Platform.MapUtilities.Multimap();
@@ -34,15 +51,16 @@ export class TargetManager extends Common.ObjectWrapper.ObjectWrapper {
         this.#scopedObservers = new WeakSet();
         this.#defaultScopeSet = false;
         this.#scopeChangeListeners = new Set();
+        this.#overrideAutoStartModels = overrideAutoStartModels;
     }
     static instance({ forceNew } = { forceNew: false }) {
-        if (!targetManagerInstance || forceNew) {
-            targetManagerInstance = new TargetManager();
+        if (!Root.DevToolsContext.globalInstance().has(TargetManager) || forceNew) {
+            Root.DevToolsContext.globalInstance().set(TargetManager, new TargetManager(Root.DevToolsContext.globalInstance()));
         }
-        return targetManagerInstance;
+        return Root.DevToolsContext.globalInstance().get(TargetManager);
     }
     static removeInstance() {
-        targetManagerInstance = undefined;
+        Root.DevToolsContext.globalInstance().delete(TargetManager);
     }
     onInspectedURLChange(target) {
         if (target !== this.#scopeTarget) {
@@ -167,12 +185,27 @@ export class TargetManager extends Common.ObjectWrapper.ObjectWrapper {
         this.#observers.delete(targetObserver);
         this.#scopedObservers.delete(targetObserver);
     }
+    /** @returns The set of models we create unconditionally for new targets in the order in which they should be created */
+    #autoStartModels() {
+        const earlyModels = new Set();
+        const models = new Set();
+        const shouldAutostart = (model, info) => this.#overrideAutoStartModels ? this.#overrideAutoStartModels.has(model) : info.autostart;
+        for (const [model, info] of SDKModel.registeredModels) {
+            if (info.early) {
+                earlyModels.add(model);
+            }
+            else if (shouldAutostart(model, info) || this.#modelObservers.has(model)) {
+                models.add(model);
+            }
+        }
+        return [...earlyModels, ...models];
+    }
     createTarget(id, name, type, parentTarget, sessionId, waitForDebuggerInPage, connection, targetInfo) {
         const target = new Target(this, id, name, type, parentTarget, sessionId || '', this.#isSuspended, connection || null, targetInfo);
         if (waitForDebuggerInPage) {
             void target.pageAgent().invoke_waitForDebugger();
         }
-        target.createModels(new Set(this.#modelObservers.keysArray()));
+        target.createModels(this.#autoStartModels());
         this.#targets.add(target);
         const inScope = this.isInScope(target);
         // Iterate over a copy. #observers might be modified during iteration.
@@ -257,7 +290,7 @@ export class TargetManager extends Common.ObjectWrapper.ObjectWrapper {
         if (!this.#browserTarget) {
             this.#browserTarget = new Target(this, /* #id*/ 'main', /* #name*/ 'browser', TargetType.BROWSER, /* #parentTarget*/ null, 
             /* #sessionId */ '', /* suspended*/ false, /* #connection*/ null, /* targetInfo*/ undefined);
-            this.#browserTarget.createModels(new Set(this.#modelObservers.keysArray()));
+            this.#browserTarget.createModels(this.#autoStartModels());
         }
         const targetId = await Host.InspectorFrontendHost.InspectorFrontendHostInstance.initialTargetId();
         // Do not await for Target.autoAttachRelated to return, as it goes throguh the renderer and we don't want to block early

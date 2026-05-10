@@ -1,21 +1,22 @@
 // Copyright 2010 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-/* eslint-disable @devtools/no-imperative-dom-api */
-import './Toolbar.js';
+/* eslint-disable @devtools/no-imperative-dom-api, @devtools/no-lit-render-outside-of-view */
 import * as Common from '../../core/common/common.js';
 import * as i18n from '../../core/i18n/i18n.js';
 import * as Platform from '../../core/platform/platform.js';
+import * as Annotations from '../../models/annotations/annotations.js';
 import * as Geometry from '../../models/geometry/geometry.js';
 import * as Buttons from '../../ui/components/buttons/buttons.js';
+import { render } from '../../ui/lit/lit.js';
 import * as VisualLogging from '../../ui/visual_logging/visual_logging.js';
-import * as IconButton from '../components/icon_button/icon_button.js';
+import { createIcon, Icon } from '../kit/kit.js';
 import * as ARIAUtils from './ARIAUtils.js';
 import { ContextMenu } from './ContextMenu.js';
 import tabbedPaneStyles from './tabbedPane.css.js';
 import { Tooltip } from './Tooltip.js';
 import { installDragHandle } from './UIUtils.js';
-import { VBox } from './Widget.js';
+import { registerWidgetConfig, VBox, Widget, widgetConfig, WidgetElement } from './Widget.js';
 import { ZoomManager } from './ZoomManager.js';
 const UIStrings = {
     /**
@@ -48,6 +49,10 @@ const UIStrings = {
      */
     previewFeature: 'Preview feature',
     /**
+     * @description Indicates that a tab contains annotation(s).
+     */
+    panelContainsAnnotation: 'This panel has one or more annotations',
+    /**
      * @description Text to move a tab forwar.
      */
     moveTabRight: 'Move right',
@@ -64,7 +69,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     tabSlider;
     tabsElement;
     #contentElement;
-    tabs;
+    #tabs;
     tabsHistory;
     tabsById;
     currentTabLocked;
@@ -95,7 +100,23 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         this.contentElement.tabIndex = -1;
         this.setDefaultFocusedElement(this.contentElement);
         this.#headerElement = this.contentElement.createChild('div', 'tabbed-pane-header');
+        const leftSlot = document.createElement('slot');
+        leftSlot.name = 'left';
+        leftSlot.classList.add('tabbed-pane-left-toolbar');
+        this.#headerElement.appendChild(leftSlot);
+        leftSlot.addEventListener('slotchange', () => {
+            this.#leftToolbar = leftSlot.assignedElements()[0];
+            this.requestUpdate();
+        });
         this.headerContentsElement = this.#headerElement.createChild('div', 'tabbed-pane-header-contents');
+        const rightSlot = document.createElement('slot');
+        rightSlot.name = 'right';
+        rightSlot.classList.add('tabbed-pane-right-toolbar');
+        this.#headerElement.appendChild(rightSlot);
+        rightSlot.addEventListener('slotchange', () => {
+            this.#rightToolbar = rightSlot.assignedElements()[0];
+            this.requestUpdate();
+        });
         this.tabSlider = document.createElement('div');
         this.tabSlider.classList.add('tabbed-pane-tab-slider');
         this.tabsElement = this.headerContentsElement.createChild('div', 'tabbed-pane-header-tabs');
@@ -103,7 +124,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         this.tabsElement.addEventListener('keydown', this.keyDown.bind(this), false);
         this.#contentElement = this.contentElement.createChild('div', 'tabbed-pane-content');
         this.#contentElement.createChild('slot');
-        this.tabs = [];
+        this.#tabs = [];
         this.tabsHistory = [];
         this.tabsById = new Map();
         this.currentTabLocked = false;
@@ -113,6 +134,11 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         this.currentDevicePixelRatio = window.devicePixelRatio;
         ZoomManager.instance().addEventListener("ZoomChanged" /* ZoomManagerEvents.ZOOM_CHANGED */, this.zoomChanged, this);
         this.makeTabSlider();
+        if (Annotations.AnnotationRepository.annotationsEnabled()) {
+            Annotations.AnnotationRepository.instance().addEventListener("AnnotationAdded" /* Annotations.Events.ANNOTATION_ADDED */, this.#onUpdateAnnotations, this);
+            Annotations.AnnotationRepository.instance().addEventListener("AnnotationDeleted" /* Annotations.Events.ANNOTATION_DELETED */, this.#onUpdateAnnotations, this);
+            Annotations.AnnotationRepository.instance().addEventListener("AllAnnotationsDeleted" /* Annotations.Events.ALL_ANNOTATIONS_DELETED */, this.#onUpdateAnnotations, this);
+        }
     }
     setAccessibleName(name) {
         ARIAUtils.setLabel(this.tabsElement, name);
@@ -128,13 +154,13 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         return this.currentTab ? this.currentTab.view : null;
     }
     tabIds() {
-        return this.tabs.map(tab => tab.id);
+        return this.#tabs.map(tab => tab.id);
     }
     tabIndex(tabId) {
-        return this.tabs.findIndex(tab => tab.id === tabId);
+        return this.#tabs.findIndex(tab => tab.id === tabId);
     }
     tabViews() {
-        return this.tabs.map(tab => tab.view);
+        return this.#tabs.map(tab => tab.view);
     }
     tabView(tabId) {
         const tab = this.tabsById.get(tabId);
@@ -176,7 +202,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         return this.#contentElement;
     }
     setTabDelegate(delegate) {
-        const tabs = this.tabs.slice();
+        const tabs = this.#tabs.slice();
         for (let i = 0; i < tabs.length; ++i) {
             tabs[i].setDelegate(delegate);
         }
@@ -191,10 +217,10 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         tab.tabElement.tabIndex = -1;
         tab.tabElement.setAttribute('jslog', `${VisualLogging.panelTabHeader().track({ click: true, drag: true }).context(tab.jslogContext)}`);
         if (index !== undefined) {
-            this.tabs.splice(index, 0, tab);
+            this.#tabs.splice(index, 0, tab);
         }
         else {
-            this.tabs.push(tab);
+            this.#tabs.push(tab);
         }
         this.tabsHistory.push(tab);
         if (this.tabsHistory[0] === tab && this.isShowing()) {
@@ -229,16 +255,16 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         if (userGesture && !tab.closeable) {
             return;
         }
-        if (this.currentTab && this.currentTab.id === id) {
+        if (this.currentTab?.id === id) {
             this.hideCurrentTab();
         }
         this.tabsById.delete(id);
         this.tabsHistory.splice(this.tabsHistory.indexOf(tab), 1);
-        this.tabs.splice(this.tabs.indexOf(tab), 1);
+        this.#tabs.splice(this.#tabs.indexOf(tab), 1);
         if (tab.shown) {
             this.hideTabElement(tab);
         }
-        const eventData = { prevTabId: undefined, tabId: id, view: tab.view, isUserGesture: userGesture };
+        const eventData = { tabId: id, view: tab.view, isUserGesture: userGesture };
         this.dispatchEventToListeners(Events.TabClosed, eventData);
         return true;
     }
@@ -247,16 +273,16 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     }
     otherTabs(id) {
         const result = [];
-        for (let i = 0; i < this.tabs.length; ++i) {
-            if (this.tabs[i].id !== id) {
-                result.push(this.tabs[i].id);
+        for (let i = 0; i < this.#tabs.length; ++i) {
+            if (this.#tabs[i].id !== id) {
+                result.push(this.#tabs[i].id);
             }
         }
         return result;
     }
     tabsToTheRight(id) {
         let index = -1;
-        for (let i = 0; i < this.tabs.length; ++i) {
+        for (let i = 0; i < this.#tabs.length; ++i) {
             if (this.tabs[i].id === id) {
                 index = i;
                 break;
@@ -265,7 +291,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         if (index === -1) {
             return [];
         }
-        return this.tabs.slice(index + 1).map(function (tab) {
+        return this.#tabs.slice(index + 1).map(function (tab) {
             return tab.id;
         });
     }
@@ -293,7 +319,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
             isUserGesture: userGesture,
         };
         this.dispatchEventToListeners(Events.TabInvoked, eventData);
-        if (this.currentTab && this.currentTab.id === id) {
+        if (this.currentTab?.id === id) {
             return true;
         }
         this.suspendInvalidations();
@@ -311,17 +337,17 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         return true;
     }
     selectNextTab() {
-        const index = this.tabs.indexOf(this.currentTab);
-        const nextIndex = Platform.NumberUtilities.mod(index + 1, this.tabs.length);
-        this.selectTab(this.tabs[nextIndex].id, true);
+        const index = this.#tabs.indexOf(this.currentTab);
+        const nextIndex = Platform.NumberUtilities.mod(index + 1, this.#tabs.length);
+        this.selectTab(this.#tabs[nextIndex].id, true);
     }
     selectPrevTab() {
-        const index = this.tabs.indexOf(this.currentTab);
-        const nextIndex = Platform.NumberUtilities.mod(index - 1, this.tabs.length);
-        this.selectTab(this.tabs[nextIndex].id, true);
+        const index = this.#tabs.indexOf(this.currentTab);
+        const nextIndex = Platform.NumberUtilities.mod(index - 1, this.#tabs.length);
+        this.selectTab(this.#tabs[nextIndex].id, true);
     }
     getTabIndex(id) {
-        const index = this.tabs.indexOf(this.tabsById.get(id));
+        const index = this.#tabs.indexOf(this.tabsById.get(id));
         return index;
     }
     moveTabBackward(id, index) {
@@ -388,8 +414,8 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         }
     }
     clearMeasuredWidths() {
-        for (let i = 0; i < this.tabs.length; ++i) {
-            delete this.tabs[i].measuredWidth;
+        for (let i = 0; i < this.#tabs.length; ++i) {
+            delete this.#tabs[i].measuredWidth;
         }
     }
     changeTabTitle(id, tabTitle, tabTooltip) {
@@ -409,7 +435,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
             return;
         }
         this.suspendInvalidations();
-        const isSelected = this.currentTab && this.currentTab.id === id;
+        const isSelected = this.currentTab?.id === id;
         const shouldFocus = tab.view.hasFocus();
         if (isSelected) {
             this.hideTab(tab);
@@ -422,6 +448,59 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
             tab.view.focus();
         }
         this.resumeInvalidations();
+    }
+    get tabs() {
+        return this.#tabs.map(tab => ({
+            id: tab.id,
+            title: tab.title,
+            view: tab.view,
+            tabTooltip: tab.tooltip,
+            isCloseable: tab.closeable,
+            previewFeature: tab.previewFeature,
+            index: this.#tabs.indexOf(tab),
+            jslogContext: tab.jslogContext,
+            enabled: this.tabIsEnabled(tab.id),
+            selected: this.currentTab?.id === tab.id,
+        }));
+    }
+    set tabs(tabs) {
+        const newIds = new Set(tabs.map(tab => tab.id));
+        for (const id of this.tabsById.keys()) {
+            if (!newIds.has(id)) {
+                this.#closeTab(id);
+            }
+        }
+        let index = 0;
+        for (const tab of tabs) {
+            const existingTab = this.tabsById.get(tab.id);
+            if (existingTab) {
+                this.changeTabView(tab.id, tab.view);
+                this.changeTabTitle(tab.id, tab.title, tab.tabTooltip);
+                if (tab.jslogContext !== undefined) {
+                    existingTab.jslogContext = tab.jslogContext;
+                }
+                if (tab.isCloseable !== undefined) {
+                    existingTab.closeable = tab.isCloseable;
+                }
+                if (tab.previewFeature !== undefined) {
+                    existingTab.previewFeature = tab.previewFeature;
+                }
+                const currentIndex = this.#tabs.indexOf(existingTab);
+                if (currentIndex !== index) {
+                    this.insertBefore(existingTab, index);
+                }
+            }
+            else {
+                this.appendTab(tab.id, tab.title, tab.view, tab.tabTooltip, /* userGesture=*/ false, tab.isCloseable, tab.previewFeature, index, tab.jslogContext);
+            }
+            if (tab.enabled !== undefined) {
+                this.setTabEnabled(tab.id, tab.enabled);
+            }
+            if (tab.selected) {
+                this.selectTab(tab.id);
+            }
+            ++index;
+        }
     }
     onResize() {
         if (this.currentDevicePixelRatio !== window.devicePixelRatio) {
@@ -481,11 +560,37 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     async waitForTabElementUpdate() {
         this.performUpdate();
     }
+    updateTabAnnotationIcons() {
+        if (!Annotations.AnnotationRepository.annotationsEnabled()) {
+            return;
+        }
+        const annotations = Annotations.AnnotationRepository.instance();
+        if (!annotations) {
+            return;
+        }
+        for (const tab of this.tabs) {
+            let primaryType = -1;
+            let secondaryType = -1;
+            switch (tab.id) {
+                case 'elements':
+                    primaryType = Annotations.AnnotationType.ELEMENT_NODE;
+                    secondaryType = Annotations.AnnotationType.STYLE_RULE;
+                    break;
+                case 'network':
+                    primaryType = Annotations.AnnotationType.NETWORK_REQUEST;
+                    secondaryType = Annotations.AnnotationType.NETWORK_REQUEST_SUBPANEL_HEADERS;
+                    break;
+            }
+            const showTabAnnotationIcon = annotations.getAnnotationDataByType(primaryType).length > 0 ||
+                annotations.getAnnotationDataByType(secondaryType).length > 0;
+            this.setTabAnnotationIcon(tab.id, showTabAnnotationIcon);
+        }
+    }
     performUpdate() {
         if (!this.isShowing()) {
             return;
         }
-        if (!this.tabs.length) {
+        if (!this.#tabs.length) {
             this.#contentElement.classList.add('has-no-tabs');
             if (this.placeholderElement && !this.placeholderContainerElement) {
                 this.placeholderContainerElement = this.#contentElement.createChild('div', 'tabbed-pane-placeholder fill');
@@ -508,6 +613,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         this.updateWidths();
         this.updateTabsDropDown();
         this.updateTabSlider();
+        this.updateTabAnnotationIcons();
     }
     adjustToolbarWidth() {
         if (!this.#rightToolbar || !this.measuredDropDownButtonWidth) {
@@ -543,7 +649,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         const dropDownContainer = document.createElement('div');
         dropDownContainer.classList.add('tabbed-pane-header-tabs-drop-down-container');
         dropDownContainer.setAttribute('jslog', `${VisualLogging.dropDown('more-tabs').track({ click: true })}`);
-        const chevronIcon = IconButton.Icon.create('chevron-double-right', 'chevron-icon');
+        const chevronIcon = createIcon('chevron-double-right', 'chevron-icon');
         const moreTabsString = i18nString(UIStrings.moreTabs);
         dropDownContainer.title = moreTabsString;
         ARIAUtils.markAsMenuButton(dropDownContainer);
@@ -577,7 +683,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
                 ARIAUtils.setExpanded(this.dropDownButton, false);
             },
         });
-        for (const tab of this.tabs) {
+        for (const tab of this.#tabs) {
             if (tab.shown) {
                 continue;
             }
@@ -604,7 +710,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     }
     numberOfTabsShown() {
         let numTabsShown = 0;
-        for (const tab of this.tabs) {
+        for (const tab of this.#tabs) {
             if (tab.shown) {
                 numTabsShown++;
             }
@@ -612,24 +718,24 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         return numTabsShown;
     }
     updateTabsDropDown() {
-        const tabsToShowIndexes = this.tabsToShowIndexes(this.tabs, this.tabsHistory, this.totalWidth(), this.measuredDropDownButtonWidth || 0);
+        const tabsToShowIndexes = this.tabsToShowIndexes(this.#tabs, this.tabsHistory, this.totalWidth(), this.measuredDropDownButtonWidth || 0);
         if (this.lastSelectedOverflowTab && this.numberOfTabsShown() !== tabsToShowIndexes.length) {
             delete this.lastSelectedOverflowTab;
             this.updateTabsDropDown();
             return;
         }
-        for (let i = 0; i < this.tabs.length; ++i) {
-            if (this.tabs[i].shown && tabsToShowIndexes.indexOf(i) === -1) {
-                this.hideTabElement(this.tabs[i]);
+        for (let i = 0; i < this.#tabs.length; ++i) {
+            if (this.#tabs[i].shown && tabsToShowIndexes.indexOf(i) === -1) {
+                this.hideTabElement(this.#tabs[i]);
             }
         }
         for (let i = 0; i < tabsToShowIndexes.length; ++i) {
-            const tab = this.tabs[tabsToShowIndexes[i]];
+            const tab = this.#tabs[tabsToShowIndexes[i]];
             if (!tab.shown) {
                 this.showTabElement(i, tab);
             }
         }
-        this.maybeShowDropDown(tabsToShowIndexes.length !== this.tabs.length);
+        this.maybeShowDropDown(tabsToShowIndexes.length !== this.#tabs.length);
     }
     maybeShowDropDown(hasMoreTabs) {
         if (hasMoreTabs && !this.dropDownButton.parentElement) {
@@ -653,7 +759,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         const measuredWidths = this.measureWidths();
         const maxWidth = this.shrinkableTabs ? this.calculateMaxWidth(measuredWidths.slice(), this.totalWidth()) : Number.MAX_VALUE;
         let i = 0;
-        for (const tab of this.tabs) {
+        for (const tab of this.#tabs) {
             tab.setWidth(this.verticalTabLayout ? -1 : Math.min(maxWidth, measuredWidths[i++]));
         }
     }
@@ -661,7 +767,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         // Add all elements to measure into this.tabsElement
         this.tabsElement.style.setProperty('width', '2000px');
         const measuringTabElements = new Map();
-        for (const tab of this.tabs) {
+        for (const tab of this.#tabs) {
             if (typeof tab.measuredWidth === 'number') {
                 continue;
             }
@@ -672,7 +778,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         // Perform measurement
         for (const [measuringTabElement, tab] of measuringTabElements) {
             const width = measuringTabElement.getBoundingClientRect().width;
-            tab.measuredWidth = Math.ceil(width);
+            tab.measuredWidth = Math.ceil(width) || undefined; // Don't cache 0
         }
         // Nuke elements from the UI
         for (const measuringTabElement of measuringTabElements.keys()) {
@@ -680,7 +786,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         }
         // Combine the results.
         const measuredWidths = [];
-        for (const tab of this.tabs) {
+        for (const tab of this.#tabs) {
             measuredWidths.push(tab.measuredWidth || 0);
         }
         this.tabsElement.style.removeProperty('width');
@@ -762,9 +868,9 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
             return;
         }
         let left = 0;
-        for (let i = 0; i < this.tabs.length && this.currentTab !== this.tabs[i]; i++) {
-            if (this.tabs[i].shown) {
-                left += this.tabs[i].measuredWidth || 0;
+        for (let i = 0; i < this.#tabs.length && this.currentTab !== this.#tabs[i]; i++) {
+            if (this.#tabs[i].shown) {
+                left += this.#tabs[i].measuredWidth || 0;
             }
         }
         const sliderWidth = this.currentTab.shown ? this.currentTab.measuredWidth : this.dropDownButton.offsetWidth;
@@ -787,16 +893,20 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     }
     insertBefore(tab, index) {
         this.tabsElement.insertBefore(tab.tabElement, this.tabsElement.childNodes[index]);
-        const oldIndex = this.tabs.indexOf(tab);
-        this.tabs.splice(oldIndex, 1);
+        const oldIndex = this.#tabs.indexOf(tab);
+        this.#tabs.splice(oldIndex, 1);
         if (oldIndex < index) {
             --index;
         }
-        this.tabs.splice(index, 0, tab);
-        const eventData = { prevTabId: undefined, tabId: tab.id, view: tab.view, isUserGesture: undefined };
+        this.#tabs.splice(index, 0, tab);
+        const eventData = { tabId: tab.id, view: tab.view };
         this.dispatchEventToListeners(Events.TabOrderChanged, eventData);
     }
     leftToolbar() {
+        if (!this.#leftToolbar) {
+            const leftSlot = this.#headerElement.querySelector('slot[name="left"]');
+            this.#leftToolbar = leftSlot?.assignedElements()[0];
+        }
         if (!this.#leftToolbar) {
             this.#leftToolbar = document.createElement('devtools-toolbar');
             this.#leftToolbar.classList.add('tabbed-pane-left-toolbar');
@@ -805,6 +915,10 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
         return this.#leftToolbar;
     }
     rightToolbar() {
+        if (!this.#rightToolbar) {
+            const rightSlot = this.#headerElement.querySelector('slot[name="right"]');
+            this.#rightToolbar = rightSlot?.assignedElements()[0];
+        }
         if (!this.#rightToolbar) {
             this.#rightToolbar = document.createElement('devtools-toolbar');
             this.#rightToolbar.classList.add('tabbed-pane-right-toolbar');
@@ -815,6 +929,15 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
     setAllowTabReorder(allow, automatic) {
         this.allowTabReorder = allow;
         this.automaticReorder = automatic;
+    }
+    setTabAnnotationIcon(id, iconVisible) {
+        const tab = this.tabsById.get(id);
+        if (tab) {
+            tab.tabAnnotationIcon = iconVisible;
+        }
+    }
+    #onUpdateAnnotations() {
+        this.updateTabAnnotationIcons();
     }
     keyDown(event) {
         if (!this.currentTab) {
@@ -851,7 +974,7 @@ export class TabbedPane extends Common.ObjectWrapper.eventMixin(VBox) {
             this.dropDownButton.click();
             return;
         }
-        const tab = this.tabs.find(tab => tab.tabElement === nextTabElement);
+        const tab = this.#tabs.find(tab => tab.tabElement === nextTabElement);
         if (tab) {
             this.selectTab(tab.id, true);
         }
@@ -871,6 +994,7 @@ export var Events;
 export class TabbedPaneTab {
     closeable;
     previewFeature = false;
+    #tabAnnotationIcon = false;
     tabbedPane;
     #id;
     #title;
@@ -918,6 +1042,43 @@ export class TabbedPaneTab {
     }
     get jslogContext() {
         return this.#jslogContext ?? (this.#id === 'console-view' ? 'console' : this.#id);
+    }
+    set jslogContext(jslogContext) {
+        this.#jslogContext = jslogContext;
+    }
+    get tabAnnotationIcon() {
+        return this.#tabAnnotationIcon;
+    }
+    set tabAnnotationIcon(iconVisible) {
+        if (this.#tabAnnotationIcon === iconVisible) {
+            return;
+        }
+        this.#tabAnnotationIcon = iconVisible;
+        if (!this.#tabElement) {
+            return;
+        }
+        const iconElement = this.#tabElement.querySelector('.spark');
+        if (iconVisible) {
+            if (!iconElement) {
+                const spark = this.createTabAnnotationIcon();
+                this.#tabElement.appendChild(spark);
+                const parentRect = this.#tabElement.parentElement?.getBoundingClientRect();
+                if (!parentRect) {
+                    return;
+                }
+                const containerRect = this.tabElement.getBoundingClientRect();
+                const iconWidth = spark.getBoundingClientRect().width;
+                // Position the icon so that its right edge is at the container's right edge.
+                const x = containerRect.x - parentRect.x + containerRect.width - iconWidth;
+                spark.style.left = `${x}px`;
+            }
+        }
+        else {
+            iconElement?.remove();
+        }
+        this.#tabElement.classList.toggle('ai', iconVisible);
+        delete this.measuredWidth;
+        this.tabbedPane.requestUpdate();
     }
     isCloseable() {
         return this.closeable;
@@ -1004,8 +1165,13 @@ export class TabbedPaneTab {
         }
         const suffixElementContainer = document.createElement('span');
         suffixElementContainer.classList.add('tabbed-pane-header-tab-suffix-element');
-        const suffixElement = measuring ? this.suffixElement.cloneNode() : this.suffixElement;
-        suffixElementContainer.appendChild(suffixElement);
+        if (this.suffixElement instanceof HTMLElement) {
+            const suffixElement = measuring ? this.suffixElement.cloneNode() : this.suffixElement;
+            suffixElementContainer.appendChild(suffixElement);
+        }
+        else {
+            render(this.suffixElement, suffixElementContainer);
+        }
         titleElement.insertAdjacentElement('afterend', suffixElementContainer);
         tabSuffixElements.set(tabElement, suffixElementContainer);
     }
@@ -1038,6 +1204,11 @@ export class TabbedPaneTab {
             tabElement.appendChild(previewIcon);
             tabElement.classList.add('preview');
         }
+        if (this.tabAnnotationIcon) {
+            const tabAnnotationIcon = this.createTabAnnotationIcon();
+            tabElement.appendChild(tabAnnotationIcon);
+            tabElement.classList.add('ai');
+        }
         if (this.closeable) {
             const closeIcon = this.createCloseIconButton();
             tabElement.appendChild(closeIcon);
@@ -1059,6 +1230,15 @@ export class TabbedPaneTab {
         }
         return tabElement;
     }
+    createTabAnnotationIcon() {
+        const tabAnnotationIcon = new Icon();
+        tabAnnotationIcon.name = 'spark';
+        tabAnnotationIcon.classList.add('small');
+        tabAnnotationIcon.classList.add('spark');
+        tabAnnotationIcon.setAttribute('title', i18nString(UIStrings.panelContainsAnnotation));
+        tabAnnotationIcon.setAttribute('aria-label', i18nString(UIStrings.panelContainsAnnotation));
+        return tabAnnotationIcon;
+    }
     createCloseIconButton() {
         const closeButton = new Buttons.Button.Button();
         closeButton.data = {
@@ -1075,7 +1255,7 @@ export class TabbedPaneTab {
     createPreviewIcon() {
         const iconContainer = document.createElement('div');
         iconContainer.classList.add('preview-icon');
-        const previewIcon = new IconButton.Icon.Icon();
+        const previewIcon = new Icon();
         previewIcon.name = 'experiment';
         previewIcon.classList.add('small');
         iconContainer.appendChild(previewIcon);
@@ -1224,4 +1404,85 @@ export class TabbedPaneTab {
 }
 const tabIcons = new WeakMap();
 const tabSuffixElements = new WeakMap();
+export class TabbedPaneElement extends WidgetElement {
+    #tabObserver = new MutationObserver(() => this.#updateTabs());
+    constructor() {
+        super();
+        registerWidgetConfig(this, widgetConfig(element => {
+            const widget = new TabbedPane(element);
+            const slot = widget.contentElement.querySelector('slot:not([name])');
+            if (slot) {
+                slot.addEventListener('slotchange', () => this.#syncTabs());
+            }
+            widget.addEventListener(Events.TabSelected, () => {
+                const slot = widget.contentElement.querySelector('slot:not([name])');
+                const nodes = slot ? slot.assignedElements() : [];
+                for (const child of nodes) {
+                    if (child.id === widget.selectedTabId) {
+                        child.setAttribute('selected', '');
+                    }
+                    else {
+                        child.removeAttribute('selected');
+                    }
+                }
+                this.dispatchEvent(new CustomEvent('select', { detail: { tabId: widget.selectedTabId } }));
+            });
+            this.#syncTabs(widget);
+            return widget;
+        }));
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.#tabObserver.disconnect();
+    }
+    #syncTabs(widget = this.getWidget()) {
+        if (!widget) {
+            return;
+        }
+        this.#updateObserver(widget);
+        this.#updateTabs(widget);
+    }
+    #updateObserver(widget) {
+        this.#tabObserver.disconnect();
+        const slot = widget.contentElement.querySelector('slot:not([name])');
+        const nodes = slot ? slot.assignedElements() : [];
+        for (const child of nodes) {
+            this.#tabObserver.observe(child, { attributes: true, attributeFilter: ['title', 'jslogcontext', 'selected', 'disabled'] });
+        }
+    }
+    #updateTabs(widget = this.getWidget()) {
+        if (!widget) {
+            return;
+        }
+        const tabs = [];
+        const slot = widget.contentElement.querySelector('slot:not([name])');
+        const nodes = slot ? slot.assignedElements() : [];
+        for (const child of nodes) {
+            const id = child.id;
+            const title = child.getAttribute('title') || '';
+            const jslogContext = child.getAttribute('jslogcontext') || undefined;
+            const selected = child.hasAttribute('selected');
+            const enabled = !child.hasAttribute('disabled');
+            const view = Widget.getOrCreateWidget(child);
+            view.setHideOnDetach();
+            if (widget.selectedTabId !== id) {
+                view.hideWidget();
+                child.classList.add('hidden');
+            }
+            else {
+                view.showWidget();
+            }
+            tabs.push({
+                id,
+                title,
+                view,
+                jslogContext,
+                selected,
+                enabled,
+            });
+        }
+        widget.tabs = tabs;
+    }
+}
+customElements.define('devtools-tabbed-pane', TabbedPaneElement);
 //# sourceMappingURL=TabbedPane.js.map

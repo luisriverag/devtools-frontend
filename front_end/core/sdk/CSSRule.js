@@ -6,6 +6,7 @@ import * as Platform from '../platform/platform.js';
 import { CSSContainerQuery } from './CSSContainerQuery.js';
 import { CSSLayer } from './CSSLayer.js';
 import { CSSMedia } from './CSSMedia.js';
+import { CSSNavigation } from './CSSNavigation.js';
 import { CSSScope } from './CSSScope.js';
 import { CSSStartingStyle } from './CSSStartingStyle.js';
 import { CSSStyleDeclaration, Type } from './CSSStyleDeclaration.js';
@@ -87,6 +88,7 @@ export class CSSStyleRule extends CSSRule {
     layers;
     ruleTypes;
     startingStyles;
+    navigations;
     wasUsed;
     constructor(cssModel, payload, wasUsed) {
         super(cssModel, {
@@ -106,6 +108,7 @@ export class CSSStyleRule extends CSSRule {
         this.layers = payload.layers ? CSSLayer.parseLayerPayload(cssModel, payload.layers) : [];
         this.startingStyles =
             payload.startingStyles ? CSSStartingStyle.parseStartingStylePayload(cssModel, payload.startingStyles) : [];
+        this.navigations = payload.navigations ? CSSNavigation.parseNavigationPayload(cssModel, payload.navigations) : [];
         this.ruleTypes = payload.ruleTypes || [];
         this.wasUsed = wasUsed || false;
     }
@@ -113,7 +116,7 @@ export class CSSStyleRule extends CSSRule {
         const dummyPayload = {
             selectorList: {
                 text: '',
-                selectors: [{ text: selectorText, value: undefined }],
+                selectors: [{ text: selectorText }],
             },
             style: {
                 styleSheetId: '0',
@@ -189,6 +192,7 @@ export class CSSStyleRule extends CSSRule {
         this.containerQueries.forEach(cq => cq.rebase(edit));
         this.scopes.forEach(scope => scope.rebase(edit));
         this.supports.forEach(supports => supports.rebase(edit));
+        this.navigations.forEach(navigation => navigation.rebase(edit));
         super.rebase(edit);
     }
 }
@@ -199,7 +203,6 @@ export class CSSPropertyRule extends CSSRule {
             origin: payload.origin,
             style: payload.style,
             header: styleSheetHeaderForRule(cssModel, payload),
-            originTreeScopeNodeId: undefined,
         });
         this.#name = new CSSValue(payload.propertyName);
     }
@@ -227,19 +230,28 @@ export class CSSPropertyRule extends CSSRule {
         return this.cssModelInternal.setPropertyRulePropertyName(styleSheetId, range, newPropertyName);
     }
 }
-export class CSSFontPaletteValuesRule extends CSSRule {
-    #paletteName;
+export class CSSAtRule extends CSSRule {
+    #name;
+    #type;
+    #subsection;
     constructor(cssModel, payload) {
         super(cssModel, {
             origin: payload.origin,
             style: payload.style,
             header: styleSheetHeaderForRule(cssModel, payload),
-            originTreeScopeNodeId: undefined
         });
-        this.#paletteName = new CSSValue(payload.fontPaletteName);
+        this.#name = payload.name ? new CSSValue(payload.name) : null;
+        this.#type = payload.type;
+        this.#subsection = payload.subsection ?? null;
     }
     name() {
-        return this.#paletteName;
+        return this.#name;
+    }
+    type() {
+        return this.#type;
+    }
+    subsection() {
+        return this.#subsection;
     }
 }
 export class CSSKeyframesRule {
@@ -265,7 +277,6 @@ export class CSSKeyframeRule extends CSSRule {
             origin: payload.origin,
             style: payload.style,
             header: styleSheetHeaderForRule(cssModel, payload),
-            originTreeScopeNodeId: undefined
         });
         this.reinitializeKey(payload.keyText);
         this.#parentRuleName = parentRuleName;
@@ -314,7 +325,6 @@ export class CSSPositionTryRule extends CSSRule {
             origin: payload.origin,
             style: payload.style,
             header: styleSheetHeaderForRule(cssModel, payload),
-            originTreeScopeNodeId: undefined
         });
         this.#name = new CSSValue(payload.name);
         this.#active = payload.active;
@@ -335,7 +345,6 @@ export class CSSFunctionRule extends CSSRule {
             origin: payload.origin,
             style: { cssProperties: [], shorthandEntries: [] },
             header: styleSheetHeaderForRule(cssModel, payload),
-            originTreeScopeNodeId: undefined
         });
         this.#name = new CSSValue(payload.name);
         this.#parameters = payload.parameters.map(({ name }) => name);
@@ -384,7 +393,13 @@ export class CSSFunctionRule extends CSSRule {
                     supports: new CSSSupports(this.cssModelInternal, node.condition.supports),
                 };
             }
-            console.error('A function rule condition must have a media, container, or supports');
+            if (node.condition.navigation) {
+                return {
+                    children,
+                    navigation: new CSSNavigation(this.cssModelInternal, node.condition.navigation),
+                };
+            }
+            console.error('A function rule condition must have a media, container, supports, or navigation');
             return;
         }
         console.error('A function rule node must have a style or condition');

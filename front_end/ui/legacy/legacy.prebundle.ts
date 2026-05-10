@@ -4,24 +4,27 @@
 
 import * as ActionRegistration from './ActionRegistration.js';
 import * as ActionRegistry from './ActionRegistry.js';
+import * as App from './App.js';
+import * as AppProvider from './AppProvider.js';
 import * as ARIAUtils from './ARIAUtils.js';
 import * as Context from './Context.js';
 import * as ContextFlavorListener from './ContextFlavorListener.js';
 import * as ContextMenu from './ContextMenu.js';
 import * as Dialog from './Dialog.js';
 import * as DockController from './DockController.js';
+import * as DOMUtilities from './DOMUtilities.js';
 import * as DropTarget from './DropTarget.js';
 import * as EmptyWidget from './EmptyWidget.js';
 import * as FilterBar from './FilterBar.js';
 import * as FilterSuggestionBuilder from './FilterSuggestionBuilder.js';
 import * as ForwardedInputEventHandler from './ForwardedInputEventHandler.js';
-import * as Fragment from './Fragment.js';
 import * as GlassPane from './GlassPane.js';
 import * as Infobar from './Infobar.js';
 import * as InplaceEditor from './InplaceEditor.js';
 import inspectorCommonStyles from './inspectorCommon.css.js';
 import * as InspectorView from './InspectorView.js';
 import * as KeyboardShortcut from './KeyboardShortcut.js';
+import * as LinkContextMenuProvider from './LinkContextMenuProvider.js';
 import * as ListControl from './ListControl.js';
 import * as ListModel from './ListModel.js';
 import * as ListWidget from './ListWidget.js';
@@ -44,35 +47,37 @@ import * as TextPrompt from './TextPrompt.js';
 import * as Toolbar from './Toolbar.js';
 import * as Tooltip from './Tooltip.js';
 import * as TreeOutline from './Treeoutline.js';
+import * as UIUserMetrics from './UIUserMetrics.js';
 import * as UIUtils from './UIUtils.js';
 import * as View from './View.js';
 import * as ViewManager from './ViewManager.js';
 import * as Widget from './Widget.js';
-import * as XElement from './XElement.js';
-import * as XLink from './XLink.js';
 import * as ZoomManager from './ZoomManager.js';
 
 export {
   ActionRegistration,
   ActionRegistry,
+  App,
+  AppProvider,
   ARIAUtils,
   Context,
   ContextFlavorListener,
   ContextMenu,
   Dialog,
   DockController,
+  DOMUtilities,
   DropTarget,
   EmptyWidget,
   FilterBar,
   FilterSuggestionBuilder,
   ForwardedInputEventHandler,
-  Fragment,
   GlassPane,
   Infobar,
   InplaceEditor,
   inspectorCommonStyles,
   InspectorView,
   KeyboardShortcut,
+  LinkContextMenuProvider,
   ListControl,
   ListModel,
   ListWidget,
@@ -95,11 +100,10 @@ export {
   Toolbar,
   Tooltip,
   TreeOutline,
+  UIUserMetrics,
   UIUtils,
   View,
   ViewManager,
   Widget,
-  XElement,
-  XLink,
-  ZoomManager,
+  ZoomManager
 };

@@ -17,14 +17,19 @@ export function decode(sourceMap, options = DEFAULT_DECODE_OPTIONS) {
     return decodeMap(sourceMap, opts);
 }
 function decodeMap(sourceMap, options) {
-    if (!sourceMap.scopes || !sourceMap.names)
-        return { scopes: [], ranges: [] };
+    if (!sourceMap.scopes || !sourceMap.names) {
+        return { scopes: [], ranges: [], hasVariableAndBindingInfo: false };
+    }
     return new Decoder(sourceMap.scopes, sourceMap.names, options).decode();
 }
 function decodeIndexMap(sourceMap, options) {
-    const scopeInfo = { scopes: [], ranges: [] };
+    const scopeInfo = {
+        scopes: [],
+        ranges: [],
+        hasVariableAndBindingInfo: false,
+    };
     for (const section of sourceMap.sections) {
-        const { scopes, ranges } = decode(section.map, {
+        const { scopes, ranges, hasVariableAndBindingInfo } = decode(section.map, {
             ...options,
             generatedOffset: section.offset,
         });
@@ -32,6 +37,7 @@ function decodeIndexMap(sourceMap, options) {
             scopeInfo.scopes.push(scope);
         for (const range of ranges)
             scopeInfo.ranges.push(range);
+        scopeInfo.hasVariableAndBindingInfo ||= hasVariableAndBindingInfo;
     }
     return scopeInfo;
 }
@@ -59,6 +65,8 @@ class Decoder {
     #rangeStack = [];
     #flatOriginalScopes = [];
     #subRangeBindingsForRange = new Map();
+    #seenOriginalScopeVariables = false;
+    #seenGeneratedRangeBindings = false;
     constructor(scopes, names, options) {
         this.#encodedScopes = scopes;
         this.#names = names;
@@ -69,13 +77,12 @@ class Decoder {
     decode() {
         const iter = new TokenIterator(this.#encodedScopes);
         while (iter.hasNext()) {
-            if (iter.peek() === ",") {
-                iter.nextChar(); // Consume ",".
-                this.#scopes.push(null); // Add an EmptyItem;
-                continue;
-            }
             const tag = iter.nextUnsignedVLQ();
             switch (tag) {
+                case 0 /* Tag.EMPTY */: {
+                    this.#scopes.push(null);
+                    break;
+                }
                 case 1 /* Tag.ORIGINAL_SCOPE_START */: {
                     const item = {
                         flags: iter.nextUnsignedVLQ(),
@@ -97,6 +104,7 @@ class Decoder {
                         variableIdxs.push(iter.nextSignedVLQ());
                     }
                     this.#handleOriginalScopeVariablesItem(variableIdxs);
+                    this.#seenOriginalScopeVariables = true;
                     break;
                 }
                 case 2 /* Tag.ORIGINAL_SCOPE_END */: {
@@ -139,6 +147,7 @@ class Decoder {
                         valueIdxs.push(iter.nextUnsignedVLQ());
                     }
                     this.#handleGeneratedRangeBindingsItem(valueIdxs);
+                    this.#seenGeneratedRangeBindings = true;
                     break;
                 }
                 case 7 /* Tag.GENERATED_RANGE_SUBRANGE_BINDING */: {
@@ -152,10 +161,19 @@ class Decoder {
                         ]);
                     }
                     this.#recordGeneratedSubRangeBindingItem(variableIndex, bindings);
+                    this.#seenGeneratedRangeBindings = true;
                     break;
                 }
                 case 8 /* Tag.GENERATED_RANGE_CALL_SITE */: {
                     this.#handleGeneratedRangeCallSite(iter.nextUnsignedVLQ(), iter.nextUnsignedVLQ(), iter.nextUnsignedVLQ());
+                    break;
+                }
+                case 99 /* Tag.VENDOR_EXTENSION */: {
+                    const _extensionNameIdx = iter.nextUnsignedVLQ();
+                    break;
+                }
+                default: {
+                    this.#throwInStrictMode(`Encountered illegal item tag ${tag}`);
                     break;
                 }
             }
@@ -165,20 +183,23 @@ class Decoder {
             if (iter.hasNext())
                 iter.nextChar();
         }
-        if (iter.currentChar() === ",") {
-            // Handle trailing EmptyItem.
-            this.#scopes.push(null);
-        }
         if (this.#scopeStack.length > 0) {
             this.#throwInStrictMode("Encountered ORIGINAL_SCOPE_START without matching END!");
         }
         if (this.#rangeStack.length > 0) {
             this.#throwInStrictMode("Encountered GENERATED_RANGE_START without matching END!");
         }
-        const info = { scopes: this.#scopes, ranges: this.#ranges };
+        const info = {
+            scopes: this.#scopes,
+            ranges: this.#ranges,
+            hasVariableAndBindingInfo: this.#seenOriginalScopeVariables &&
+                this.#seenGeneratedRangeBindings,
+        };
         this.#scopes = [];
         this.#ranges = [];
         this.#flatOriginalScopes = [];
+        this.#seenOriginalScopeVariables = false;
+        this.#seenGeneratedRangeBindings = false;
         return info;
     }
     #throwInStrictMode(message) {
@@ -285,7 +306,6 @@ class Decoder {
             }
         }
         this.#rangeStack.push(range);
-        this.#subRangeBindingsForRange.clear();
     }
     #handleGeneratedRangeBindingsItem(valueIdxs) {
         const range = this.#rangeStack.at(-1);
@@ -303,11 +323,21 @@ class Decoder {
         }
     }
     #recordGeneratedSubRangeBindingItem(variableIndex, bindings) {
-        if (this.#subRangeBindingsForRange.has(variableIndex)) {
+        const range = this.#rangeStack.at(-1);
+        if (!range) {
+            this.#throwInStrictMode("Encountered GENERATED_RANGE_SUBRANGE_BINDING without surrounding GENERATED_RANGE_START");
+            return;
+        }
+        let subRangeBindings = this.#subRangeBindingsForRange.get(range);
+        if (!subRangeBindings) {
+            subRangeBindings = new Map();
+            this.#subRangeBindingsForRange.set(range, subRangeBindings);
+        }
+        if (subRangeBindings.has(variableIndex)) {
             this.#throwInStrictMode("Encountered multiple GENERATED_RANGE_SUBRANGE_BINDING items for the same variable");
             return;
         }
-        this.#subRangeBindingsForRange.set(variableIndex, bindings);
+        subRangeBindings.set(variableIndex, bindings);
     }
     #handleGeneratedRangeCallSite(sourceIndex, line, column) {
         const range = this.#rangeStack.at(-1);
@@ -349,7 +379,10 @@ class Decoder {
         }
     }
     #handleGeneratedRangeSubRangeBindings(range) {
-        for (const [variableIndex, bindings] of this.#subRangeBindingsForRange) {
+        const subRangeBindings = this.#subRangeBindingsForRange.get(range);
+        if (!subRangeBindings)
+            return;
+        for (const [variableIndex, bindings] of subRangeBindings) {
             const value = range.values[variableIndex];
             const subRanges = [];
             range.values[variableIndex] = subRanges;
@@ -360,7 +393,7 @@ class Decoder {
                 to: { line: 0, column: 0 },
                 value: value,
             });
-            for (const [binding, line, column] of bindings) {
+            for (const [line, column, binding] of bindings) {
                 lastLine += line;
                 if (line === 0) {
                     lastColumn += column;

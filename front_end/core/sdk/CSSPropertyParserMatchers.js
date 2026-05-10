@@ -383,6 +383,36 @@ export class ColorMixMatcher extends matcherBase(ColorMixMatch) {
         return new ColorMixMatch(matching.ast.text(node), node, args[0], args[1], args[2]);
     }
 }
+export class ContrastColorMatch {
+    text;
+    node;
+    color;
+    constructor(text, node, color) {
+        this.text = text;
+        this.node = node;
+        this.color = color;
+    }
+}
+// clang-format off
+export class ContrastColorMatcher extends matcherBase(ContrastColorMatch) {
+    // clang-format on
+    accepts(propertyName) {
+        return cssMetadata().isColorAwareProperty(propertyName);
+    }
+    matches(node, matching) {
+        if (node.name !== 'CallExpression' || matching.ast.text(node.getChild('Callee')) !== 'contrast-color') {
+            return null;
+        }
+        if (matching.getComputedText(node) === '') {
+            return null;
+        }
+        const args = ASTUtils.callArgs(node);
+        if (args.length !== 1) {
+            return null;
+        }
+        return new ContrastColorMatch(matching.ast.text(node), node, args[0]);
+    }
+}
 // clang-format off
 export class URLMatch {
     url;
@@ -682,8 +712,10 @@ export class LinkableNameMatcher extends matcherBase(LinkableNameMatch) {
             "animation" /* LinkableNameProperties.ANIMATION */,
             "animation-name" /* LinkableNameProperties.ANIMATION_NAME */,
             "font-palette" /* LinkableNameProperties.FONT_PALETTE */,
-            "position-try-fallbacks" /* LinkableNameProperties.POSITION_TRY_FALLBACKS */,
+            "list-style" /* LinkableNameProperties.LIST_STYLE */,
+            "list-style-type" /* LinkableNameProperties.LIST_STYLE_TYPE */,
             "position-try" /* LinkableNameProperties.POSITION_TRY */,
+            "position-try-fallbacks" /* LinkableNameProperties.POSITION_TRY_FALLBACKS */,
         ];
         return names.includes(propertyName);
     }
@@ -769,6 +801,10 @@ export class LinkableNameMatcher extends matcherBase(LinkableNameMatch) {
             !isAParentDeclarationOrVarCall || (node.name === 'ValueName' && shouldMatchOnlyVariableName)) {
             return null;
         }
+        // If it is a builtin keyword value, it is not linkable.
+        if (cssMetadata().getPropertyValues(propertyName).includes(text)) {
+            return null;
+        }
         if (propertyName === 'animation') {
             return this.matchAnimationNameInShorthand(node, matching);
         }
@@ -845,37 +881,6 @@ export class ShadowMatcher extends matcherBase(ShadowMatch) {
         return new ShadowMatch(valueText, node, matching.ast.propertyName === 'text-shadow' ? "textShadow" /* ShadowType.TEXT_SHADOW */ : "boxShadow" /* ShadowType.BOX_SHADOW */);
     }
 }
-export class FontMatch {
-    text;
-    node;
-    constructor(text, node) {
-        this.text = text;
-        this.node = node;
-    }
-}
-// clang-format off
-export class FontMatcher extends matcherBase(FontMatch) {
-    // clang-format on
-    accepts(propertyName) {
-        return cssMetadata().isFontAwareProperty(propertyName);
-    }
-    matches(node, matching) {
-        if (node.name !== 'Declaration') {
-            return null;
-        }
-        const valueNodes = ASTUtils.siblings(ASTUtils.declValue(node));
-        if (valueNodes.length === 0) {
-            return null;
-        }
-        const validNodes = matching.ast.propertyName === 'font-family' ? ['ValueName', 'StringLiteral', 'Comment', ','] :
-            ['Comment', 'ValueName', 'NumberLiteral'];
-        if (valueNodes.some(node => !validNodes.includes(node.name))) {
-            return null;
-        }
-        const valueText = matching.ast.textRange(valueNodes[0], valueNodes[valueNodes.length - 1]);
-        return new FontMatch(valueText, node);
-    }
-}
 export class LengthMatch {
     text;
     node;
@@ -926,6 +931,9 @@ export class MathFunctionMatch extends BaseFunctionMatch {
             case "calc" /* ArithmeticFunction.CALC */:
             case "sibling-count" /* ArithmeticFunction.SIBLING_COUNT */:
             case "sibling-index" /* ArithmeticFunction.SIBLING_INDEX */:
+            case "round" /* ArithmeticFunction.ROUND */:
+            case "mod" /* ArithmeticFunction.MOD */:
+            case "rem" /* ArithmeticFunction.REM */:
                 return true;
         }
         // This assignment catches missed values in the switch above.
@@ -946,6 +954,9 @@ export class MathFunctionMatcher extends matcherBase(MathFunctionMatch) {
             case "calc" /* ArithmeticFunction.CALC */:
             case "sibling-count" /* ArithmeticFunction.SIBLING_COUNT */:
             case "sibling-index" /* ArithmeticFunction.SIBLING_INDEX */:
+            case "round" /* ArithmeticFunction.ROUND */:
+            case "mod" /* ArithmeticFunction.MOD */:
+            case "rem" /* ArithmeticFunction.REM */:
                 return maybeFunc;
         }
         // This assignment catches missed values in the switch above.
@@ -993,7 +1004,7 @@ export class CustomFunctionMatcher extends matcherBase(CustomFunctionMatch) {
         return new CustomFunctionMatch(text, node, callee, args);
     }
 }
-export class FlexGridMasonryMatch {
+export class FlexGridGridLanesMatch {
     text;
     node;
     layoutType;
@@ -1004,11 +1015,11 @@ export class FlexGridMasonryMatch {
     }
 }
 // clang-format off
-export class FlexGridMasonryMatcher extends matcherBase(FlexGridMasonryMatch) {
+export class FlexGridGridLanesMatcher extends matcherBase(FlexGridGridLanesMatch) {
     // clang-format on
     static FLEX = ['flex', 'inline-flex', 'block flex', 'inline flex'];
     static GRID = ['grid', 'inline-grid', 'block grid', 'inline grid'];
-    static MASONRY = ['masonry', 'inline-masonry', 'block masonry', 'inline masonry'];
+    static GRID_LANES = ['grid-lanes', 'inline-grid-lanes', 'block grid-lanes', 'inline grid-lanes'];
     accepts(propertyName) {
         return propertyName === 'display';
     }
@@ -1024,14 +1035,14 @@ export class FlexGridMasonryMatcher extends matcherBase(FlexGridMasonryMatch) {
             .map(node => matching.getComputedText(node).trim())
             .filter(value => value);
         const text = values.join(' ');
-        if (FlexGridMasonryMatcher.FLEX.includes(text)) {
-            return new FlexGridMasonryMatch(matching.ast.text(node), node, "flex" /* LayoutType.FLEX */);
+        if (FlexGridGridLanesMatcher.FLEX.includes(text)) {
+            return new FlexGridGridLanesMatch(matching.ast.text(node), node, "flex" /* LayoutType.FLEX */);
         }
-        if (FlexGridMasonryMatcher.GRID.includes(text)) {
-            return new FlexGridMasonryMatch(matching.ast.text(node), node, "grid" /* LayoutType.GRID */);
+        if (FlexGridGridLanesMatcher.GRID.includes(text)) {
+            return new FlexGridGridLanesMatch(matching.ast.text(node), node, "grid" /* LayoutType.GRID */);
         }
-        if (FlexGridMasonryMatcher.MASONRY.includes(text)) {
-            return new FlexGridMasonryMatch(matching.ast.text(node), node, "masonry" /* LayoutType.MASONRY */);
+        if (FlexGridGridLanesMatcher.GRID_LANES.includes(text)) {
+            return new FlexGridGridLanesMatch(matching.ast.text(node), node, "grid-lanes" /* LayoutType.GRID_LANES */);
         }
         return null;
     }
@@ -1169,7 +1180,7 @@ export class AnchorFunctionMatcher extends matcherBase(AnchorFunctionMatch) {
         if (node.name === 'VariableName') {
             // Double-dashed anchor reference to be rendered with a link to its matching anchor.
             let parent = node.parent;
-            if (!parent || parent.name !== 'ArgList') {
+            if (parent?.name !== 'ArgList') {
                 return null;
             }
             parent = parent.parent;

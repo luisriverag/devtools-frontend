@@ -197,12 +197,14 @@ export type DispatchHttpRequestRequest = {
     path: string;
     method: 'GET';
     queryParams?: Record<string, string | string[]>;
+    streamId?: number;
     body?: never;
 } | {
     service: string;
     path: string;
     method: 'POST';
     queryParams?: Record<string, string | string[]>;
+    streamId?: number;
     body?: string;
 };
 interface DispatchHttpRequestSuccessResult {
@@ -244,9 +246,9 @@ export interface InspectorFrontendHostAPI {
     showItemInFolder(fileSystemPath: Platform.DevToolsPath.RawPathString): void;
     removeFileSystem(fileSystemPath: Platform.DevToolsPath.RawPathString): void;
     requestFileSystems(): void;
-    save(url: Platform.DevToolsPath.UrlString, content: string, forceSaveAs: boolean, isBase64: boolean): void;
-    append(url: Platform.DevToolsPath.UrlString, content: string): void;
-    close(url: Platform.DevToolsPath.UrlString): void;
+    save(url: Platform.DevToolsPath.RawPathString | Platform.DevToolsPath.UrlString, content: string, forceSaveAs: boolean, isBase64: boolean): void;
+    append(url: Platform.DevToolsPath.RawPathString | Platform.DevToolsPath.UrlString, content: string): void;
+    close(url: Platform.DevToolsPath.RawPathString | Platform.DevToolsPath.UrlString): void;
     searchInPath(requestId: number, fileSystemPath: Platform.DevToolsPath.RawPathString, query: string): void;
     stopIndexing(requestId: number): void;
     bringToFront(): void;
@@ -254,7 +256,7 @@ export interface InspectorFrontendHostAPI {
     /**
      * If you need to alert to the user after copying use {@link UIUtils.copyTextToClipboard}.
      */
-    copyText(text: string | null | undefined): void;
+    copyText(text?: string | null): void;
     inspectedURLChanged(url: Platform.DevToolsPath.UrlString): void;
     isolatedFileSystem(fileSystemId: string, registeredName: string): FileSystem | null;
     loadNetworkResource(url: string, headers: string, streamId: number, callback: (arg0: LoadNetworkResourceResult) => void): void;
@@ -273,6 +275,7 @@ export interface InspectorFrontendHostAPI {
     recordCountHistogram(histogramName: string, sample: number, min: number, exclusiveMax: number, bucketSize: number): void;
     recordEnumeratedHistogram(actionName: EnumeratedHistogram, actionCode: number, bucketSize: number): void;
     recordPerformanceHistogram(histogramName: string, duration: number): void;
+    recordPerformanceHistogramMedium(histogramName: string, duration: number): void;
     recordUserMetricsAction(umaName: string): void;
     recordNewBadgeUsage(featureName: string): void;
     sendMessageToBackend(message: string): void;
@@ -301,6 +304,7 @@ export interface InspectorFrontendHostAPI {
     aidaCodeComplete: (request: string, cb: (result: AidaCodeCompleteResult) => void) => void;
     dispatchHttpRequest: (request: DispatchHttpRequestRequest, cb: (result: DispatchHttpRequestResult) => void) => void;
     recordImpression(event: ImpressionEvent): void;
+    recordResize(event: ResizeEvent): void;
     recordClick(event: ClickEvent): void;
     recordHover(event: HoverEvent): void;
     recordDrag(event: DragEvent): void;
@@ -308,6 +312,8 @@ export interface InspectorFrontendHostAPI {
     recordKeyDown(event: KeyDownEvent): void;
     recordSettingAccess(event: SettingAccessEvent): void;
     recordFunctionCall(event: FunctionCallEvent): void;
+    setChromeFlag(flagName: string, value: boolean): void;
+    requestRestart(): void;
 }
 export interface AcceleratorDescriptor {
     keyCode: number;
@@ -364,11 +370,13 @@ export interface SyncInformation {
     accountImage?: string;
     /** The full name of the account used for syncing */
     accountFullName?: string;
+    /** The given name of the account used for syncing */
+    accountGivenName?: string;
     /** Whether Chrome Sync is paused, equivalent to the user being logged out automatically */
     isSyncPaused?: boolean;
 }
 /**
- * Enum for recordPerformanceHistogram
+ * Enum for recordEnumeratedHistogram
  * Warning: There is another definition of this enum in the DevTools code
  * base, keep them in sync:
  * front_end/devtools_compatibility.js
@@ -390,13 +398,7 @@ export declare const enum EnumeratedHistogram {
     DeveloperResourceScheme = "DevTools.DeveloperResourceScheme",
     Language = "DevTools.Language",
     SyncSetting = "DevTools.SyncSetting",
-    RecordingAssertion = "DevTools.RecordingAssertion",
-    RecordingCodeToggled = "DevTools.RecordingCodeToggled",
-    RecordingCopiedToClipboard = "DevTools.RecordingCopiedToClipboard",
-    RecordingEdited = "DevTools.RecordingEdited",
-    RecordingExported = "DevTools.RecordingExported",
     RecordingReplayFinished = "DevTools.RecordingReplayFinished",
-    RecordingReplaySpeed = "DevTools.RecordingReplaySpeed",
     RecordingReplayStarted = "DevTools.RecordingReplayStarted",
     RecordingToggled = "DevTools.RecordingToggled",
     SourcesPanelFileDebugged = "DevTools.SourcesPanelFileDebugged",
@@ -406,7 +408,7 @@ export declare const enum EnumeratedHistogram {
     LighthouseModeRun = "DevTools.LighthouseModeRun",
     LighthouseCategoryUsed = "DevTools.LighthouseCategoryUsed",
     SwatchActivated = "DevTools.SwatchActivated",
-    AnimationPlaybackRateChanged = "DevTools.AnimationPlaybackRateChanged",
-    BuiltInAiAvailability = "DevTools.BuiltInAiAvailability"
+    BuiltInAiAvailability = "DevTools.BuiltInAiAvailability",
+    ExtensionEvalTarget = "DevTools.ExtensionEvalTarget"
 }
 export {};

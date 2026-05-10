@@ -271,6 +271,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "accept",
   "accept-execute-code",
   "access-control-allow-origin",
+  "accessibility-default",
   "accessibility-tree",
   "accessibility.view",
   "accuracy",
@@ -348,6 +349,10 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "ai-assistance-history-images",
   "ai-assistance-patching-fre-completed",
   "ai-assistance-patching-selected-project-id",
+  "ai-assistance-recent-prompts",
+  "ai-assistance-v2-opt-in-change-dialog-seen",
+  "ai-assistance-v2-opt-in.got-it",
+  "ai-assistance-v2-opt-in.manage-settings",
   "ai-code-completion-citations",
   "ai-code-completion-citations.citation-link",
   "ai-code-completion-disclaimer",
@@ -356,7 +361,20 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "ai-code-completion-teaser-dismissed",
   "ai-code-completion-teaser.dismiss",
   "ai-code-completion-teaser.fre",
+  "ai-code-generation-disclaimer",
+  "ai-code-generation-onboarding-completed",
+  "ai-code-generation-teaser.info-button",
+  "ai-code-generation-teaser.show-disclaimer-info-tooltip",
+  "ai-code-generation-upgrade-dialog.continue",
+  "ai-code-generation-upgrade-dialog.manage-in-settings",
+  "ai-code-generation-used",
   "ai-explorer",
+  "ai-export-for-agents",
+  "ai-export-for-agents.copy-to-clipboard",
+  "ai-export-for-agents.save-as-markdown",
+  "ai-hide-walkthrough-sidebar",
+  "ai-show-walkthrough-sidebar",
+  "ai-v2-opt-in-change-dialog",
   "ai_assistance",
   "align-content",
   "align-content-center",
@@ -464,6 +482,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "animations.playback-rate-100",
   "animations.playback-rate-25",
   "animations.remove-preview",
+  "annotation",
   "annotations-hidden",
   "another_id",
   "answer",
@@ -486,6 +505,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "attribute",
   "attribute-modified",
   "attributes",
+  "attribution-reporting",
   "attribution-reporting-details",
   "auction-worklet",
   "audio-context",
@@ -554,6 +574,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "bars",
   "base-64",
   "base-palette",
+  "base-url",
   "baseline-shift",
   "baseline-source",
   "be",
@@ -672,6 +693,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "break-before",
   "break-inside",
   "break-on",
+  "breaking-change",
   "breakpoint",
   "breakpoint-group",
   "breakpoint-tooltip",
@@ -693,6 +715,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "cache-storage-view-tab",
   "cache-storage.delete-selected",
   "cache-storage.refresh",
+  "cache-widget",
   "calibrated-cpu-throttling",
   "call-tree",
   "cancel",
@@ -715,6 +738,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "changes",
   "changes.changes",
   "changes.reveal-source",
+  "character-set-widget",
   "checkbox-item",
   "checked",
   "chevron-left",
@@ -761,6 +785,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "clear-palette",
   "clear-replace-input",
   "clear-search-input",
+  "clear-speculative-loads",
   "clear-storage",
   "clear-storage-cache-storage",
   "clear-storage-cookies",
@@ -779,11 +804,14 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "close",
   "close-all",
   "close-dev-tools",
+  "close-drawer",
   "close-others",
   "close-search",
   "close-tabs-to-the-right",
+  "close-walkthrough",
   "closeable-tabs",
   "closeableTabs",
+  "cls-culprits-widget",
   "code",
   "code-completion.accordion",
   "code-disclaimer",
@@ -813,6 +841,29 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "column-rule",
   "column-rule-break",
   "column-rule-color",
+  "column-rule-edge-end-inset",
+  "column-rule-edge-end-outset",
+  "column-rule-edge-inset",
+  "column-rule-edge-inset-end",
+  "column-rule-edge-inset-start",
+  "column-rule-edge-start-inset",
+  "column-rule-edge-start-outset",
+  "column-rule-inset",
+  "column-rule-inset-cap",
+  "column-rule-inset-cap-end",
+  "column-rule-inset-cap-start",
+  "column-rule-inset-end",
+  "column-rule-inset-junction",
+  "column-rule-inset-junction-end",
+  "column-rule-inset-junction-start",
+  "column-rule-inset-start",
+  "column-rule-interior-end-inset",
+  "column-rule-interior-end-outset",
+  "column-rule-interior-inset",
+  "column-rule-interior-inset-end",
+  "column-rule-interior-inset-start",
+  "column-rule-interior-start-inset",
+  "column-rule-interior-start-outset",
   "column-rule-outset",
   "column-rule-style",
   "column-rule-visibility-items",
@@ -823,6 +874,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "columns",
   "combined-diff-view.copy",
   "comic-sans-ms",
+  "command",
   "command-editor",
   "command-input",
   "commit",
@@ -878,6 +930,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "console-view",
   "console.clear",
   "console.clear.history",
+  "console.collapse-all",
   "console.create-pin",
   "console.sidebar-selected-filter",
   "console.text-filter",
@@ -901,9 +954,18 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "content-encoding",
   "content-length",
   "content-policy",
+  "content-security-policy",
   "content-type",
   "content-visibility",
   "context",
+  "context-added",
+  "context-change-drjones-file",
+  "context-change-drjones-network-request",
+  "context-change-drjones-performance",
+  "context-change-freestyler",
+  "context-change-none",
+  "context-change-performance-insight",
+  "context-removed",
   "context3",
   "contextmenu",
   "continue",
@@ -928,6 +990,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "converter-puppeteer",
   "converter-puppeteer-firefox",
   "converter-puppeteer-replay",
+  "cookie",
   "cookie-control-override-enabled",
   "cookie-flag-controls",
   "cookie-preview",
@@ -969,6 +1032,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "copy-full-xpath",
   "copy-initiator-url",
   "copy-js-path",
+  "copy-key",
   "copy-link-address",
   "copy-object",
   "copy-outer-html",
@@ -1001,6 +1065,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "copy-visible-styled-selection",
   "copy-watch-expression-value",
   "copy-xpath",
+  "core-web-vitals",
+  "corner",
   "corner-block-end-shape",
   "corner-block-start-shape",
   "corner-bottom-left-shape",
@@ -1019,6 +1085,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "corner-top-right-shape",
   "corner-top-shape",
   "corners",
+  "cors",
   "cors-details",
   "count",
   "count-delta",
@@ -1044,6 +1111,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "cpu-throttling",
   "cpu-throttling-selector",
   "cpu-throttling-selector-calibrate",
+  "crash-report-context",
   "create-new-snippet",
   "create-profile",
   "create-recording",
@@ -1052,13 +1120,16 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "credential-id",
   "credentialId",
   "critical",
+  "cross-origin-embedder-policy",
   "cs",
   "css",
   "css-angle",
   "css-animation-name",
+  "css-animations-only-when-animations-tab-open",
   "css-font-palette",
   "css-function",
   "css-layers",
+  "css-list-style-type",
   "css-location",
   "css-overview",
   "css-overview.cancel-processing",
@@ -1172,6 +1243,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "dblclick",
   "de",
   "debug",
+  "debug-with-ai",
   "debugger",
   "debugger-paused",
   "debugger.breakpoint-input-window",
@@ -1239,6 +1311,11 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "developer-resources",
   "development-origin",
   "device",
+  "device-bound-sessions",
+  "device-bound-sessions-empty",
+  "device-bound-sessions-preserve-log",
+  "device-bound-sessions-request",
+  "device-bound-sessions-root",
   "device-fold",
   "device-frame-enable",
   "device-mode",
@@ -1262,6 +1339,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "devices",
   "devtools",
   "devtools-override",
+  "dialog-close",
   "direct-socket-chunks",
   "direct-socket-messages",
   "direction",
@@ -1289,6 +1367,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "distance",
   "dock-side",
   "document",
+  "document-latency-widget",
   "document.write",
   "documentation",
   "documents",
@@ -1304,6 +1383,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "dom-node-inserted-into-document",
   "dom-node-removed",
   "dom-node-removed-from-document",
+  "dom-size-widget",
+  "dom-snapshot",
   "dom-subtree-modified",
   "dom-window.close",
   "dom-word-wrap",
@@ -1312,6 +1393,10 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "dominant-baseline",
   "dont-show-again",
   "download",
+  "dpr-1",
+  "dpr-2",
+  "dpr-3",
+  "dpr-default",
   "drag",
   "drag-drop",
   "dragend",
@@ -1337,6 +1422,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "drjones.sources-panel-context.performance",
   "drjones.sources-panel-context.script",
   "drop",
+  "duplicate-javascript-widget",
+  "durable-messages",
   "duration",
   "durationchange",
   "dynamic-local-setting",
@@ -1366,6 +1453,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "elements.capture-area-screenshot",
   "elements.color-mix-popover",
   "elements.copy-styles",
+  "elements.css-animation-hint",
   "elements.css-color-mix",
   "elements.css-hint",
   "elements.css-property-doc",
@@ -1377,6 +1465,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "elements.dom-properties",
   "elements.duplicate-element",
   "elements.edit-as-html",
+  "elements.edit-data",
   "elements.event-listeners",
   "elements.generic-sidebar-popover",
   "elements.hide-element",
@@ -1405,6 +1494,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "em",
   "emoji",
   "emptied",
+  "empty",
   "empty-cells",
   "empty-view",
   "emulate-auto-dark-mode",
@@ -1509,7 +1599,6 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "exclude-folder-confirmation",
   "expand",
   "expand-recursively",
-  "experimental-cookie-features",
   "experimental-item",
   "experiments",
   "experiments-filter",
@@ -1596,6 +1685,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "flex-distribute",
   "flex-flow",
   "flex-grow",
+  "flex-line-count",
   "flex-shrink",
   "flex-what",
   "flex-wrap",
@@ -1607,6 +1697,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "float-64-bit",
   "flood-color",
   "flood-opacity",
+  "flow-tolerance",
   "focus",
   "focus-visible",
   "focus-within",
@@ -1615,6 +1706,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "folder",
   "font",
   "font-display",
+  "font-display-widget",
   "font-editor",
   "font-editor-documentation",
   "font-family",
@@ -1654,6 +1746,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "force-state",
   "forced-color-adjust",
   "forced-reflow",
+  "forced-reflow-widget",
   "form-data",
   "form-factors",
   "fourth",
@@ -1662,6 +1755,10 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "frame",
   "frame-creation-stack-trace",
   "frame-resource",
+  "frame-sizing",
+  "frame-viewer-chrome-window",
+  "frame-viewer-chrome-window-false",
+  "frame-viewer-chrome-window-true",
   "frame-viewer-hide-chrome-window",
   "frame-viewer-show-paints",
   "frame-viewer-show-slow-scroll-rects",
@@ -1719,14 +1816,21 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "gdp-profile",
   "gdp-sign-up-dialog",
   "gdp.ai-conversation-count",
+  "gemini-promo-dialog",
+  "gemini-promo-dialog-shown",
+  "gemini-promo-dismiss",
+  "gemini-promo-get-started",
+  "gemini-rebranding-dialog-shown",
   "gen-ai-settings-panel",
   "general",
   "generative-ai-terms-of-service",
+  "generic",
   "generic-details",
   "geolocation",
   "geolocation.get-current-position",
   "geolocation.watch-position",
   "georgia",
+  "get-devtools-mcp",
   "gl",
   "global-ai-button",
   "global-ai-button-click-count",
@@ -1736,11 +1840,23 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "gotpointercapture",
   "grace-period-link",
   "grace-period-mitigation-disabled",
+  "greendev",
+  "greendev-ai-annotations-enabled",
+  "greendev-artifact-viewer-enabled",
+  "greendev-beyond-styling-enabled",
+  "greendev-breakpoint-debugger-agent-enabled",
+  "greendev-copy-to-gemini-enabled",
+  "greendev-emulation-capabilities-enabled",
+  "greendev-in-devtools-floaty-enabled",
+  "greendev-inline-widgets-enabled",
+  "greendev-prototypes",
   "grid",
   "grid-align",
   "grid-area",
   "grid-auto-columns",
   "grid-auto-flow",
+  "grid-auto-flow-column",
+  "grid-auto-flow-row",
   "grid-auto-rows",
   "grid-column",
   "grid-column-end",
@@ -1748,6 +1864,11 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "grid-column-start",
   "grid-gap",
   "grid-how",
+  "grid-lanes",
+  "grid-lanes-direction",
+  "grid-lanes-fill",
+  "grid-lanes-flow",
+  "grid-lanes-pack",
   "grid-overlays",
   "grid-row",
   "grid-row-end",
@@ -1764,6 +1885,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "gu",
   "gutter",
   "gzip",
+  "hanging-punctuation",
   "hardware-concurrency",
   "hardware-concurrency-reset",
   "hardware-concurrency-selector",
@@ -1772,6 +1894,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "has-overrides",
   "has-profile",
   "has-touch",
+  "hash",
   "hashchange",
   "he",
   "header-editor",
@@ -1791,6 +1914,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "heap-snapshot.retaining-paths-view",
   "heap-tracking-overview",
   "heavy",
+  "heavy-ad",
   "heavy-ad-details",
   "height",
   "help",
@@ -1803,6 +1927,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "heuristic-mitigation-disabled",
   "hex",
   "hi",
+  "hidden-issues",
   "hide-all-others",
   "hide-children",
   "hide-data-urls",
@@ -1813,13 +1938,15 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "hide-issues",
   "hide-messages-from",
   "hide-network-messages",
-  "hide-network-messages-true",
   "hide-player",
   "hide-repeating-children",
   "highlight-node-on-hover-in-overlay",
   "history",
   "historyRedo",
   "historyUndo",
+  "hmac-secret",
+  "hmac-secret-mc",
+  "hostname",
   "hover",
   "hr",
   "http-only",
@@ -1848,6 +1975,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "identity",
   "ignore-this-retainer",
   "image",
+  "image-animation",
+  "image-delivery-widget",
   "image-orientation",
   "image-rendering",
   "image-url",
@@ -1860,6 +1989,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "import-har",
   "import-recording",
   "important",
+  "improvement",
   "in-range",
   "increase-priority",
   "indeterminate",
@@ -1885,6 +2015,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "inline-size",
   "inline-variable-values",
   "inline-variable-values-false",
+  "inp-breakdown-widget",
   "input",
   "insertCompositionText",
   "insertFromDrop",
@@ -1912,6 +2043,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "insights-deprecation-learn-more",
   "insights-deprecation-open-performance-panel",
   "insights-deprecation-send-feedback",
+  "insights-teaser-built-in-ai-documentation",
+  "insights-teaser-download-model",
   "insights-teaser-tell-me-more",
   "inspect",
   "inspect-prerendered-page",
@@ -1983,6 +2116,9 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "java-script-disabled-true",
   "javascript",
   "javascript-context",
+  "jpeg-xl",
+  "jpeg-xl-format-disabled",
+  "jpeg-xl-format-disabled-true",
   "jpg-header",
   "js-event-listeners",
   "js-heap-total-size",
@@ -2143,6 +2279,9 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "layout",
   "layout-count",
   "layout-shifts",
+  "lcp-breakdown",
+  "lcp-breakdown-widget",
+  "lcp-discovery-widget",
   "learn-more",
   "learn-more.ai-annotations",
   "learn-more.ai-assistance",
@@ -2157,6 +2296,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "learn-more.origin-trials",
   "leavepictureinpicture",
   "left",
+  "legacy-javascript-widget",
   "legend",
   "length",
   "length-popover",
@@ -2195,6 +2335,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lighthouse.audit.aria-treeitem-name",
   "lighthouse.audit.aria-valid-attr",
   "lighthouse.audit.aria-valid-attr-value",
+  "lighthouse.audit.autocomplete-valid",
+  "lighthouse.audit.baseline",
   "lighthouse.audit.bf-cache",
   "lighthouse.audit.bootup-time",
   "lighthouse.audit.button-name",
@@ -2301,6 +2443,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lighthouse.audit.offscreen-images",
   "lighthouse.audit.origin-isolation",
   "lighthouse.audit.paste-preventing-inputs",
+  "lighthouse.audit.presentation-role-conflict",
   "lighthouse.audit.prioritize-lcp-image",
   "lighthouse.audit.redirects",
   "lighthouse.audit.redirects-http",
@@ -2315,6 +2458,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lighthouse.audit.skip-link",
   "lighthouse.audit.speed-index",
   "lighthouse.audit.structured-data",
+  "lighthouse.audit.svg-img-alt",
   "lighthouse.audit.tabindex",
   "lighthouse.audit.table-duplicate-name",
   "lighthouse.audit.table-fake-caption",
@@ -2353,6 +2497,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lighthouse.audit.work-during-interaction",
   "lighthouse.cancel",
   "lighthouse.cat-a11y",
+  "lighthouse.cat-agentic-browsing",
   "lighthouse.cat-best-practices",
   "lighthouse.cat-perf",
   "lighthouse.cat-seo",
@@ -2361,6 +2506,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lighthouse.enable-sampling",
   "lighthouse.end-time-span",
   "lighthouse.mode",
+  "lighthouse.record",
   "lighthouse.start",
   "lighthouse.throttling",
   "lighting-color",
@@ -2426,6 +2572,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "lostpointercapture",
   "low-contrast-details",
   "low-end-mobile",
+  "low-text-contrast",
   "lt",
   "lv",
   "macos",
@@ -2433,6 +2580,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "main-menu",
   "main-selected-tab",
   "main-tab-order",
+  "main.chrome-restart-chrome",
   "main.debug-reload",
   "main.next-tab",
   "main.previous-tab",
@@ -2463,6 +2611,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "margin-left",
   "margin-right",
   "margin-top",
+  "margin-trim",
   "marker",
   "marker-end",
   "marker-mid",
@@ -2549,8 +2698,10 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "min-height",
   "min-inline-size",
   "min-width",
+  "minimize-drawer",
   "missing-debug-info",
   "mix-blend-mode",
+  "mixed-content",
   "mixed-content-details",
   "mk",
   "ml",
@@ -2560,6 +2711,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "mobile-throttling",
   "model",
   "modern",
+  "modern-http-widget",
   "monitoring-xhr-enabled",
   "monspace",
   "more",
@@ -2600,6 +2752,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "navigator-files",
   "navigator-group-by-authored",
   "navigator-group-by-folder",
+  "navigator-just-my-code",
   "navigator-network",
   "navigator-overrides",
   "navigator-snippets",
@@ -2617,6 +2770,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "network-conditions.network-offline",
   "network-conditions.network-online",
   "network-default",
+  "network-dependency-tree-widget",
   "network-direct-socket-message-filter",
   "network-event-source-message-filter",
   "network-film-strip",
@@ -2631,6 +2785,9 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "network-log.preserve-log-true",
   "network-log.record-log",
   "network-main",
+  "network-messages",
+  "network-messages-false",
+  "network-messages-true",
   "network-only-blocked-requests",
   "network-only-ip-protected-requests",
   "network-only-third-party-setting",
@@ -2685,6 +2842,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "no-override",
   "no-profile-and-eligible",
   "no-profile-and-not-eligible",
+  "no-thanks",
   "no-throttling",
   "node",
   "node-connection",
@@ -2814,6 +2972,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "page-break-after",
   "page-break-before",
   "page-break-inside",
+  "page-error",
+  "page-margin-safety",
   "page-orientation",
   "paint-order",
   "painting",
@@ -2839,6 +2999,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "patch-widget.save-all",
   "patch-widget.workspace",
   "path",
+  "path-length",
+  "pathname",
   "pattern",
   "pause",
   "pause-on-caught-exception",
@@ -2854,12 +3016,15 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "performance-full-default",
   "performance-insights",
   "performance-insights-default",
+  "performance-trace",
   "performance.history-item",
   "performance.monitor",
   "performance.sidebar-insights-category-select",
   "performance.sidebar-toggle",
   "periodic-background-sync",
   "periodic-sync-tag",
+  "permission-element",
+  "permission-element-elements",
   "persist-flame-config",
   "persistence-automatic-workspace-folders",
   "persistence-network-overrides-enabled",
@@ -2898,6 +3063,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "popover-show-delay",
   "popstate",
   "population",
+  "port",
   "portrait",
   "portrait-upside-down",
   "position",
@@ -2923,6 +3089,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "preloading-speculations",
   "preloading-status-panel",
   "preloading-status-panel-pretty-print",
+  "preloading.clear",
   "presentation",
   "preserve-console-log",
   "preserve-console-log-true",
@@ -2940,7 +3107,9 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "privacy-notice",
   "privacy-policy",
   "privacy-policy.console-insights",
+  "privacy-sandbox-update",
   "private-state-tokens",
+  "processing-instruction-value",
   "production-origin",
   "profile-loading-failed",
   "profile-options",
@@ -2999,6 +3168,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "quick-open.show",
   "quick-open.show-command-menu",
   "quickOpen.show",
+  "quirks-mode",
   "quota-override",
   "quotes",
   "r",
@@ -3020,6 +3190,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "recommendation",
   "reconnect",
   "record-allocation-stacks",
+  "record-sampling-heap-profiler-timeline",
   "recorder-panel-replay-extension",
   "recorder-panel-replay-speed",
   "recorder-preferred-copy-format",
@@ -3078,6 +3249,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "removed-count",
   "removed-size",
   "rename",
+  "render-blocking",
+  "render-blocking-widget",
   "rendering",
   "rendering-emulations",
   "rendering.toggle-prefers-color-scheme",
@@ -3108,6 +3281,10 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "request-header-sec-fetch-mode",
   "request-header-user-agent",
   "request-headers",
+  "request-info-form-data-category-expanded",
+  "request-info-query-string-category-expanded",
+  "request-info-request-payload-category-expanded",
+  "request-number",
   "request-payload",
   "request-types",
   "required",
@@ -3167,6 +3344,29 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "row-rule",
   "row-rule-break",
   "row-rule-color",
+  "row-rule-edge-end-inset",
+  "row-rule-edge-end-outset",
+  "row-rule-edge-inset",
+  "row-rule-edge-inset-end",
+  "row-rule-edge-inset-start",
+  "row-rule-edge-start-inset",
+  "row-rule-edge-start-outset",
+  "row-rule-inset",
+  "row-rule-inset-cap",
+  "row-rule-inset-cap-end",
+  "row-rule-inset-cap-start",
+  "row-rule-inset-end",
+  "row-rule-inset-junction",
+  "row-rule-inset-junction-end",
+  "row-rule-inset-junction-start",
+  "row-rule-inset-start",
+  "row-rule-interior-end-inset",
+  "row-rule-interior-end-outset",
+  "row-rule-interior-inset",
+  "row-rule-interior-inset-end",
+  "row-rule-interior-inset-start",
+  "row-rule-interior-start-inset",
+  "row-rule-interior-start-outset",
   "row-rule-outset",
   "row-rule-style",
   "row-rule-visibility-items",
@@ -3180,10 +3380,19 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "rule",
   "rule-break",
   "rule-color",
+  "rule-edge-inset",
+  "rule-inset",
+  "rule-inset-cap",
+  "rule-inset-end",
+  "rule-inset-junction",
+  "rule-inset-start",
+  "rule-interior-inset",
   "rule-outset",
+  "rule-overlap",
   "rule-set",
   "rule-set-details",
   "rule-style",
+  "rule-visibility-items",
   "rule-width",
   "rulers-enable",
   "run",
@@ -3203,6 +3412,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "save-image",
   "save-name",
   "save-player-info",
+  "save-trace-explanation",
   "scale",
   "scheme",
   "sci",
@@ -3210,6 +3420,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "screen",
   "screen-rotation",
   "screencast-enabled",
+  "screenshots",
   "script",
   "script-blocked-by-csp",
   "script-first-statement",
@@ -3313,6 +3524,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "selected-context-filter-enabled",
   "selected-context-filter-enabled-true",
   "selected-profile-type",
+  "selective-permissions-intervention-details",
   "selector",
   "selector-aria",
   "selector-attribute",
@@ -3431,6 +3643,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "show-ad-highlights",
   "show-ad-highlights-true",
   "show-adorner-settings",
+  "show-all",
+  "show-all-nodes",
   "show-all-properties",
   "show-as-javascript-object",
   "show-console-insight-teasers",
@@ -3469,7 +3683,6 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "show-minimal-safe-area-for-maskable-icons",
   "show-more",
   "show-network-requests",
-  "show-option-tp-expose-internals-in-heap-snapshot",
   "show-overrides",
   "show-paint-rects",
   "show-paint-rects-true",
@@ -3479,6 +3692,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "show-scroll-bottleneck-rects-true",
   "show-shortcuts",
   "show-test-addresses-in-autofill-menu-on-event",
+  "show-thinking",
   "show-third-party-issues",
   "show-ua-shadow-dom",
   "show-url-decoded",
@@ -3514,6 +3728,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "slot",
   "slow",
   "slow-4g",
+  "slow-css-selector-widget",
   "sm-script",
   "sm-stylesheet",
   "small",
@@ -3599,6 +3814,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "srgb",
   "stack-trace",
   "stalled",
+  "standalone-styles",
   "standard-emulated-device-list",
   "start",
   "start-conversation-drjones-file",
@@ -3606,6 +3822,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "start-conversation-drjones-performance",
   "start-conversation-freestyler",
   "start-conversation-performance-insight",
+  "start-conversation-performance-none",
   "start-new-chat",
   "start-recording",
   "start-time",
@@ -3703,6 +3920,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "test-combo-box-setting",
   "test-device",
   "test-font",
+  "test-radio-setting",
   "test-setting",
   "test-setting-true",
   "test-sidebar",
@@ -3719,6 +3937,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "text-decoration-color",
   "text-decoration-line",
   "text-decoration-skip-ink",
+  "text-decoration-skip-spaces",
   "text-decoration-style",
   "text-decoration-thickness",
   "text-editor-auto-detect-indent",
@@ -3737,6 +3956,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "text-emphasis-color",
   "text-emphasis-position",
   "text-emphasis-style",
+  "text-fit",
   "text-grow",
   "text-indent",
   "text-justify",
@@ -3759,6 +3979,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "th",
   "third",
   "third-parties",
+  "third-parties-widget",
   "third-party-tree",
   "third-property",
   "this-origin",
@@ -3796,6 +4017,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "timeline-overview",
   "timeline-persisted-main-flamechart-track-config",
   "timeline-persisted-network-flamechart-track-config",
+  "timeline-range-summary",
   "timeline-save-as-gz",
   "timeline-scope",
   "timeline-settings-pane",
@@ -3806,20 +4028,31 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "timeline-show-postmessage-events",
   "timeline-show-screenshots",
   "timeline-show-settings-toolbar",
+  "timeline-sidebar-opened-at-least-once",
   "timeline-status",
   "timeline-tree-current-thread",
   "timeline-tree-group-by",
   "timeline-trigger",
+  "timeline-trigger-activation-range",
+  "timeline-trigger-activation-range-end",
+  "timeline-trigger-activation-range-start",
+  "timeline-trigger-active-range",
+  "timeline-trigger-active-range-end",
+  "timeline-trigger-active-range-start",
   "timeline-trigger-behavior",
+  "timeline-trigger-entry-range",
+  "timeline-trigger-entry-range-end",
+  "timeline-trigger-entry-range-start",
+  "timeline-trigger-exit-range",
   "timeline-trigger-exit-range-end",
   "timeline-trigger-exit-range-start",
   "timeline-trigger-name",
+  "timeline-trigger-range",
   "timeline-trigger-range-end",
   "timeline-trigger-range-start",
   "timeline-trigger-source",
   "timeline-trigger-timeline",
   "timeline-user-has-opened-sidebar-once",
-  "timeline-v8-runtime-call-stats",
   "timeline.animations",
   "timeline.annotation-sidebar.annotation-entries-link",
   "timeline.annotation-sidebar.annotation-entry-label",
@@ -3827,6 +4060,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "timeline.annotation-sidebar.delete",
   "timeline.annotations-tab",
   "timeline.annotations.",
+  "timeline.annotations.ai-generate-label",
   "timeline.annotations.create-entries-link",
   "timeline.annotations.create-entry-label",
   "timeline.annotations.create-entry-link",
@@ -3887,6 +4121,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "timeline.insight-ask-ai.viewport",
   "timeline.insights-tab",
   "timeline.insights.cache",
+  "timeline.insights.character-set",
   "timeline.insights.cls-culprits",
   "timeline.insights.dismiss-field-mismatch",
   "timeline.insights.document-latency",
@@ -3961,6 +4196,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "timeline.thread.worker",
   "timeline.timings",
   "timeline.toggle-insight.cache",
+  "timeline.toggle-insight.character-set",
   "timeline.toggle-insight.cls-culprits",
   "timeline.toggle-insight.document-latency",
   "timeline.toggle-insight.dom-size",
@@ -4028,6 +4264,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "translate",
   "transport",
   "tree",
+  "trigger-scope",
   "tritanopia",
   "trust-tokens",
   "trusted-type-violation",
@@ -4122,6 +4359,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "view-transition-class",
   "view-transition-group",
   "view-transition-name",
+  "view-transition-scope",
+  "viewport-widget",
   "views-location-override",
   "virtual-authenticators",
   "visibility",
@@ -4131,6 +4370,8 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "vw",
   "waiting",
   "waiting-entry-inspect",
+  "walkthrough",
+  "walkthrough-container",
   "warning",
   "wasm",
   "wasm-auto-stepping",
@@ -4143,6 +4384,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "web+coffee",
   "web+pwinter",
   "web-audio",
+  "web-mcp",
   "web-socket-frames",
   "web-socket-messages",
   "web-workers",
@@ -4157,6 +4399,22 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "webauthn.remove-credential",
   "webgl-error-fired",
   "webgl-warning-fired",
+  "webmcp.call-inputs",
+  "webmcp.call-outputs",
+  "webmcp.cancel-call",
+  "webmcp.canceled",
+  "webmcp.completed",
+  "webmcp.copy-tool-description",
+  "webmcp.copy-tool-name",
+  "webmcp.declarative",
+  "webmcp.edit-and-run",
+  "webmcp.error",
+  "webmcp.imperative",
+  "webmcp.pending",
+  "webmcp.reveal-tool",
+  "webmcp.status-types",
+  "webmcp.tool-details",
+  "webmcp.tool-types",
   "webp-format-disabled",
   "webp-format-disabled-true",
   "websocket",
@@ -4168,6 +4426,7 @@ var knownContextValues = /* @__PURE__ */ new Set([
   "width",
   "will-change",
   "window",
+  "window-controls",
   "window-controls-overlay",
   "windows",
   "word-break",
@@ -4276,7 +4535,9 @@ function checkContextValue(context) {
   }
   if (Root.Runtime.Runtime.queryParam("debugFrontend") || Host.InspectorFrontendHost.isUnderTest() || localStorage.getItem("veDebugLoggingEnabled") === "Test") {
     const stack = (new Error().stack || "").split("\n").slice(3).join("\n");
-    console.error(`Unknown VE context: ${context}${stack}`);
+    console.error(`Unknown VE context: '${context}'
+${stack}
+Please add it to front_end/ui/visual_logging/KnownContextValues.ts if you think that's a valid context value.`);
   }
   reportedUnknownVeContext.add(context);
 }
@@ -4293,9 +4554,9 @@ function parseJsLog(jslog) {
     checkContextValue(context);
     config.context = context;
   }
-  const parent2 = getComponent("parent:");
-  if (parent2) {
-    config.parent = parent2;
+  const parent = getComponent("parent:");
+  if (parent) {
+    config.parent = parent;
   }
   const trackString = getComponent("track:");
   if (trackString) {
@@ -4345,17 +4606,17 @@ function nextVeId() {
   crypto.getRandomValues(result);
   return Number(result[0] >> 64n - 53n);
 }
-function getOrCreateLoggingState(loggable, config, parent2) {
+function getOrCreateLoggingState(loggable, config, parent) {
   if (config.parent && parentProviders.has(config.parent) && loggable instanceof Element) {
-    parent2 = parentProviders.get(config.parent)?.(loggable);
-    while (parent2 instanceof Element && !needsLogging(parent2)) {
-      parent2 = parent2.parentElementOrShadowHost() ?? void 0;
+    parent = parentProviders.get(config.parent)?.(loggable);
+    while (parent instanceof Element && !needsLogging(parent)) {
+      parent = parent.parentElementOrShadowHost() ?? void 0;
     }
   }
   if (state.has(loggable)) {
     const currentState = state.get(loggable);
-    if (parent2 && currentState.parent !== getLoggingState(parent2)) {
-      currentState.parent = getLoggingState(parent2);
+    if (parent && currentState.parent !== getLoggingState(parent)) {
+      currentState.parent = getLoggingState(parent);
     }
     return currentState;
   }
@@ -4364,7 +4625,7 @@ function getOrCreateLoggingState(loggable, config, parent2) {
     processed: false,
     config,
     veid: nextVeId(),
-    parent: parent2 ? getLoggingState(parent2) : null,
+    parent: parent ? getLoggingState(parent) : null,
     size: new DOMRect(0, 0, 0, 0)
   };
   state.set(loggable, loggableState);
@@ -4382,8 +4643,8 @@ function registerParentProvider(name, provider) {
 }
 var PARENT = Symbol("veParent");
 registerParentProvider("mapped", (e) => e[PARENT]);
-function setMappedParent(element, parent2) {
-  element[PARENT] = parent2;
+function setMappedParent(element, parent) {
+  element[PARENT] = parent;
 }
 
 // gen/front_end/ui/visual_logging/Debugging.js
@@ -4391,7 +4652,6 @@ var veDebuggingEnabled = false;
 var debugOverlay = null;
 var debugPopover = null;
 var highlightedElements = [];
-var nonDomDebugElements = /* @__PURE__ */ new WeakMap();
 var onInspect = void 0;
 function ensureDebugOverlay() {
   if (!debugOverlay) {
@@ -4465,8 +4725,6 @@ function processForDebugging(loggable) {
   }
   if (loggable instanceof HTMLElement) {
     processElementForDebugging(loggable, loggingState);
-  } else {
-    processNonDomLoggableForDebugging(loggable, loggingState);
   }
 }
 function showDebugPopover(content, rect) {
@@ -4589,7 +4847,7 @@ function processEventForIntuitiveDebugging(event, state2, extraInfo) {
   maybeLogDebugEvent(entry);
 }
 function processEventForTestDebugging(event, state2, _extraInfo) {
-  if (event !== "SettingAccess" && event !== "FunctionCall") {
+  if (event !== "SettingAccess" && event !== "FunctionCall" && event !== "Resize") {
     lastImpressionLogEntry = null;
   }
   maybeLogDebugEvent({ interaction: event, veid: state2?.veid || 0 });
@@ -4642,9 +4900,9 @@ function processImpressionsForIntuitiveDebugLog(states) {
     if (!state2.parent || !impressions.has(state2.parent?.veid)) {
       entry.parent = state2.parent?.veid;
     } else {
-      const parent2 = impressions.get(state2.parent?.veid);
-      parent2.children = parent2.children || [];
-      parent2.children.push(entry);
+      const parent = impressions.get(state2.parent?.veid);
+      parent.children = parent.children || [];
+      parent.children.push(entry);
     }
   }
   const entries = [...impressions.values()].filter((i) => "parent" in i);
@@ -4696,33 +4954,6 @@ function processImpressionsForAdHocAnalysisDebugLog(states) {
     const entry = { ...buildVe(state2), interactions: [], time: Date.now() - sessionStartTime };
     adHocAnalysisEntries.set(state2.veid, entry);
     maybeLogDebugEvent(entry);
-  }
-}
-function processNonDomLoggableForDebugging(loggable, loggingState) {
-  let debugElement = nonDomDebugElements.get(loggable);
-  if (!debugElement) {
-    debugElement = document.createElement("div");
-    debugElement.classList.add("ve-debug");
-    debugElement.style.background = "black";
-    debugElement.style.color = "white";
-    debugElement.style.zIndex = "100000";
-    debugElement.textContent = debugString(loggingState.config);
-    nonDomDebugElements.set(loggable, debugElement);
-    setTimeout(() => {
-      if (!loggingState.size?.width || !loggingState.size?.height) {
-        debugElement?.parentElement?.removeChild(debugElement);
-        nonDomDebugElements.delete(loggable);
-      }
-    }, 1e4);
-  }
-  const parentDebugElement = parent instanceof HTMLElement ? parent : nonDomDebugElements.get(parent) || debugPopover;
-  assertNotNullOrUndefined(parentDebugElement);
-  if (!parentDebugElement.classList.contains("ve-debug")) {
-    debugElement.style.position = "absolute";
-    parentDebugElement.insertBefore(debugElement, parentDebugElement.firstChild);
-  } else {
-    debugElement.style.marginLeft = "10px";
-    parentDebugElement.appendChild(debugElement);
   }
 }
 function elementKey(config) {
@@ -4858,11 +5089,11 @@ var StateFlowElementsByArea = class {
   }
   getArea(e) {
     let area = (e.width || 0) * (e.height || 0);
-    const parent2 = e.parent ? this.#data.get(e.parent?.veid) : null;
-    if (!parent2) {
+    const parent = e.parent ? this.#data.get(e.parent?.veid) : null;
+    if (!parent) {
       return area;
     }
-    const parentArea = this.getArea(parent2);
+    const parentArea = this.getArea(parent);
     if (area > parentArea) {
       area = parentArea;
     }
@@ -4998,7 +5229,7 @@ async function expectVeEvents(expectedEvents) {
   pendingEventExpectation = { expectedEvents, success, fail, unmatchedEvents: [] };
   checkPendingEventExpectation();
   const timeout = setTimeout(() => {
-    if (pendingEventExpectation?.missingEvents) {
+    if (pendingEventExpectation?.missingEvents?.length) {
       const allLogs = veDebugEventsLog.filter((ve) => {
         if ("interaction" in ve) {
           return ve.interaction !== "SettingAccess";
@@ -5021,48 +5252,62 @@ ${JSON.stringify(allLogs, null, 2)}
   });
 }
 var numMatchedEvents = 0;
+function recordUnmatchedEvent(pendingExpectation, actualEvent, expectedEvent, matchedImpressions) {
+  const unmatched = { ...actualEvent };
+  if ("impressions" in unmatched && "impressions" in expectedEvent) {
+    unmatched.impressions = unmatched.impressions.filter((impression) => {
+      const matched = expectedEvent.impressions.includes(impression);
+      if (matched) {
+        matchedImpressions.add(impression);
+      }
+      return !matched;
+    });
+  }
+  pendingExpectation.unmatchedEvents.push(unmatched);
+}
+function processMissingEvents(pendingExpectation, expectedEventIndex, matchedImpressions) {
+  pendingExpectation.missingEvents = pendingExpectation.expectedEvents.slice(expectedEventIndex);
+  for (const event of pendingExpectation.missingEvents) {
+    if ("impressions" in event) {
+      event.impressions = event.impressions.filter((impression) => !matchedImpressions.has(impression));
+    }
+  }
+  pendingExpectation.missingEvents = pendingExpectation.missingEvents.filter((event) => !("impressions" in event) || event.impressions.length > 0);
+}
 function checkPendingEventExpectation() {
   if (!pendingEventExpectation) {
     return;
   }
-  const actualEvents = [...veDebugEventsLog];
-  let partialMatch = false;
+  const actualEvents = veDebugEventsLog;
+  let actualEventIndex = 0;
+  let matchStarted = false;
   const matchedImpressions = /* @__PURE__ */ new Set();
   pendingEventExpectation.unmatchedEvents = [];
-  for (let i = 0; i < pendingEventExpectation.expectedEvents.length; ++i) {
-    const expectedEvent = pendingEventExpectation.expectedEvents[i];
-    while (true) {
-      if (actualEvents.length <= i) {
-        pendingEventExpectation.missingEvents = pendingEventExpectation.expectedEvents.slice(i);
-        for (const event of pendingEventExpectation.missingEvents) {
-          if ("impressions" in event) {
-            event.impressions = event.impressions.filter((impression) => !matchedImpressions.has(impression));
-          }
-        }
-        return;
-      }
-      if (!compareVeEvents(actualEvents[i], expectedEvent)) {
-        if (partialMatch) {
-          const unmatched = { ...actualEvents[i] };
-          if ("impressions" in unmatched && "impressions" in expectedEvent) {
-            unmatched.impressions = unmatched.impressions.filter((impression) => {
-              const matched = expectedEvent.impressions.includes(impression);
-              if (matched) {
-                matchedImpressions.add(impression);
-              }
-              return !matched;
-            });
-          }
-          pendingEventExpectation.unmatchedEvents.push(unmatched);
-        }
-        actualEvents.splice(i, 1);
-      } else {
-        partialMatch = true;
+  for (let expectedEventIndex = 0; expectedEventIndex < pendingEventExpectation.expectedEvents.length; ++expectedEventIndex) {
+    const expectedEvent = pendingEventExpectation.expectedEvents[expectedEventIndex];
+    let found = false;
+    while (actualEventIndex < actualEvents.length) {
+      if (compareVeEvents(actualEvents[actualEventIndex], expectedEvent)) {
+        found = true;
+        matchStarted = true;
+        actualEventIndex++;
         break;
       }
+      if (matchStarted) {
+        recordUnmatchedEvent(pendingEventExpectation, actualEvents[actualEventIndex], expectedEvent, matchedImpressions);
+      }
+      actualEventIndex++;
+    }
+    if (!found) {
+      processMissingEvents(pendingEventExpectation, expectedEventIndex, matchedImpressions);
+      if (!pendingEventExpectation.missingEvents?.length) {
+        numMatchedEvents = actualEventIndex;
+        pendingEventExpectation.success();
+      }
+      return;
     }
   }
-  numMatchedEvents = veDebugEventsLog.length - actualEvents.length + pendingEventExpectation.expectedEvents.length;
+  numMatchedEvents = actualEventIndex;
   pendingEventExpectation.success();
 }
 function getUnmatchedVeEvents() {
@@ -5087,9 +5332,9 @@ function getDomState(documents2) {
   const loggables = [];
   const shadowRoots = [];
   const queue = [];
-  const enqueue = (children, parent2) => {
+  const enqueue = (children, parent) => {
     for (const child of children) {
-      queue.push({ element: child, parent: parent2 });
+      queue.push({ element: child, parent });
     }
   };
   for (const document2 of documents2) {
@@ -5106,18 +5351,18 @@ function getDomState(documents2) {
     if (element.localName === "template") {
       continue;
     }
-    let { parent: parent2 } = top;
+    let { parent } = top;
     if (needsLogging(element)) {
-      loggables.push({ element, parent: parent2 });
-      parent2 = element;
+      loggables.push({ element, parent });
+      parent = element;
     }
     if (element.localName === "slot" && element.assignedElements().length) {
-      enqueue(element.assignedElements(), parent2);
+      enqueue(element.assignedElements(), parent);
     } else if (element.shadowRoot) {
       shadowRoots.push(element.shadowRoot);
-      enqueue(element.shadowRoot.children, parent2);
+      enqueue(element.shadowRoot.children, parent);
     } else {
-      enqueue(element.children, parent2);
+      enqueue(element.children, parent);
     }
   }
   return { loggables, shadowRoots };
@@ -5177,7 +5422,11 @@ var logResize = (loggable, size) => {
     return;
   }
   loggingState.size = size;
-  const resizeEvent = { veid: loggingState.veid, width: loggingState.size.width, height: loggingState.size.height };
+  const resizeEvent = {
+    veid: loggingState.veid,
+    width: Math.round(loggingState.size.width),
+    height: Math.round(loggingState.size.height)
+  };
   Host2.InspectorFrontendHost.InspectorFrontendHostInstance.recordResize(resizeEvent);
   processEventForDebugging("Resize", loggingState, { width: Math.round(size.width), height: Math.round(size.height) });
 };
@@ -5333,22 +5582,22 @@ async function logFunctionCall(name, context) {
 
 // gen/front_end/ui/visual_logging/NonDomState.js
 var registry = /* @__PURE__ */ new WeakMap();
-function getLoggables(parent2) {
-  return registry.get(parent2 || nullParent) || [];
+function getLoggables(parent) {
+  return registry.get(parent || nullParent) || [];
 }
-function registerLoggable(loggable, config, parent2, size) {
-  const values = getLoggables(parent2);
-  values.push({ loggable, config, parent: parent2, size });
-  registry.set(parent2 || nullParent, values);
+function registerLoggable(loggable, config, parent, size) {
+  const values = getLoggables(parent);
+  values.push({ loggable, config, parent, size });
+  registry.set(parent || nullParent, values);
 }
-function hasNonDomLoggables(parent2) {
-  return registry.has(parent2 || nullParent);
+function hasNonDomLoggables(parent) {
+  return registry.has(parent || nullParent);
 }
-function getNonDomLoggables(parent2) {
-  return [...getLoggables(parent2)];
+function getNonDomLoggables(parent) {
+  return [...getLoggables(parent)];
 }
-function unregisterLoggables(parent2) {
-  registry.delete(parent2 || nullParent);
+function unregisterLoggables(parent) {
+  registry.delete(parent || nullParent);
 }
 function unregisterAllLoggables() {
   registry = /* @__PURE__ */ new WeakMap();
@@ -5472,12 +5721,12 @@ async function process() {
   const visibleLoggables = [];
   observeMutations(shadowRoots);
   const nonDomRoots = [void 0];
-  for (const { element, parent: parent2 } of loggables) {
-    const loggingState = getOrCreateLoggingState(element, getLoggingConfig(element), parent2);
+  for (const { element, parent } of loggables) {
+    const loggingState = getOrCreateLoggingState(element, getLoggingConfig(element), parent);
     if (!loggingState.impressionLogged) {
       const overlap = visibleOverlap(element, viewportRectFor(element));
       const visibleSelectOption = element.tagName === "OPTION" && loggingState.parent?.selectOpen;
-      const visible = overlap && element.checkVisibility({ checkVisibilityCSS: true }) && (!parent2 || loggingState.parent?.impressionLogged);
+      const visible = overlap && element.checkVisibility({ checkVisibilityCSS: true }) && (!parent || loggingState.parent?.impressionLogged);
       if (visible || visibleSelectOption) {
         if (overlap) {
           loggingState.size = overlap;
@@ -5586,8 +5835,11 @@ async function process() {
   }
   for (let i = 0; i < nonDomRoots.length; ++i) {
     const root = nonDomRoots[i];
-    for (const { loggable, config, parent: parent2, size } of getNonDomLoggables(root)) {
-      const loggingState = getOrCreateLoggingState(loggable, config, parent2);
+    for (const { loggable, config, parent, size } of getNonDomLoggables(root)) {
+      const loggingState = getOrCreateLoggingState(loggable, config, parent);
+      if (loggingState.impressionLogged) {
+        continue;
+      }
       if (size) {
         loggingState.size = size;
       }
@@ -5659,21 +5911,23 @@ async function onResizeOrIntersection(entries) {
     if (!loggingState?.size) {
       continue;
     }
-    let hasPendingParent = false;
-    for (const pendingElement of pendingResize.keys()) {
+    const resizeToOrFromZero = overlap.width * overlap.height * loggingState.size.width * loggingState.size.height === 0;
+    let suppressedByParentResize = false;
+    for (const [pendingElement, overlap2] of pendingResize.entries()) {
       if (pendingElement === element) {
         continue;
       }
       const pendingState = getLoggingState(pendingElement);
-      if (isAncestorOf(pendingState, loggingState)) {
-        hasPendingParent = true;
+      const pendingResizeToOrFromZero = overlap2.width * overlap2.height * (pendingState?.size?.width || 0) * (pendingState?.size?.height || 0) === 0;
+      if (isAncestorOf(pendingState, loggingState) && resizeToOrFromZero && pendingResizeToOrFromZero) {
+        suppressedByParentResize = true;
         break;
       }
-      if (isAncestorOf(loggingState, pendingState)) {
+      if (isAncestorOf(loggingState, pendingState) && resizeToOrFromZero && pendingResizeToOrFromZero) {
         pendingResize.delete(pendingElement);
       }
     }
-    if (hasPendingParent) {
+    if (suppressedByParentResize) {
       continue;
     }
     pendingResize.set(element, overlap);
@@ -5704,11 +5958,11 @@ async function onResizeOrIntersection(entries) {
 var logClick2 = (loggable, event, options = {}) => logClick(clickLogThrottler)(loggable, event, options);
 var logResize2 = (l, s) => logResize(l, s);
 var logKeyDown2 = async (l, e, context) => await logKeyDown(keyboardLogThrottler)(l, e, context);
-function registerLoggable2(loggable, config, parent2, size) {
+function registerLoggable2(loggable, config, parent, size) {
   if (!isLogging()) {
     return;
   }
-  registerLoggable(loggable, parseJsLog(config), parent2 || void 0, size);
+  registerLoggable(loggable, parseJsLog(config), parent || void 0, size);
   void scheduleProcessing();
 }
 async function isUnderInspection(origin) {

@@ -71,10 +71,6 @@ const UIStrings = {
      */
     schemefulSameSiteUnspecifiedTreatedAsLax: 'This cookie didn\'t specify a "`SameSite`" attribute when it was stored, was defaulted to "`SameSite=Lax"`, and was blocked because the request was cross-site and was not initiated by a top-level navigation. This request is considered cross-site because the URL has a different scheme than the current site.',
     /**
-     * @description Tooltip to explain why a cookie was blocked due to SameParty
-     */
-    samePartyFromCrossPartyContext: 'This cookie was blocked because it had the "`SameParty`" attribute but the request was cross-party. The request was considered cross-party because the domain of the resource\'s URL and the domains of the resource\'s enclosing frames/documents are neither owners nor members in the same First-Party Set.',
-    /**
      * @description Tooltip to explain why a cookie was blocked due to exceeding the maximum size
      */
     nameValuePairExceedsMaxSize: 'This cookie was blocked because it was too large. The combined size of the name and value must be less than or equal to 4096 characters.',
@@ -111,14 +107,6 @@ const UIStrings = {
      * @description Tooltip to explain why a cookie was blocked due to Schemeful Same-Site
      */
     thisSetcookieDidntSpecifyASamesite: 'This `Set-Cookie` header didn\'t specify a "`SameSite`" attribute, was defaulted to "`SameSite=Lax"`, and was blocked because it came from a cross-site response which was not the response to a top-level navigation. This response is considered cross-site because the URL has a different scheme than the current site.',
-    /**
-     * @description Tooltip to explain why a cookie was blocked due to SameParty
-     */
-    thisSetcookieWasBlockedBecauseItHadTheSameparty: 'This attempt to set a cookie via a `Set-Cookie` header was blocked because it had the "`SameParty`" attribute but the request was cross-party. The request was considered cross-party because the domain of the resource\'s URL and the domains of the resource\'s enclosing frames/documents are neither owners nor members in the same First-Party Set.',
-    /**
-     * @description Tooltip to explain why a cookie was blocked due to SameParty
-     */
-    thisSetcookieWasBlockedBecauseItHadTheSamepartyAttribute: 'This attempt to set a cookie via a `Set-Cookie` header was blocked because it had the "`SameParty`" attribute but also had other conflicting attributes. Chrome requires cookies that use the "`SameParty`" attribute to also have the "Secure" attribute, and to not be restricted to "`SameSite=Strict`".',
     /**
      * @description Tooltip to explain why an attempt to set a cookie via a `Set-Cookie` HTTP header on a request's response was blocked.
      */
@@ -214,6 +202,7 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     #startTime = -1;
     #endTime = -1;
     #blockedReason = undefined;
+    #renderBlockingBehavior;
     #corsErrorStatus = undefined;
     statusCode = 0;
     statusText = '';
@@ -256,6 +245,7 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     #exemptedResponseCookies = [];
     #responseCookiesPartitionKey = null;
     #responseCookiesPartitionKeyOpaque = null;
+    #deviceBoundSessionUsages = [];
     #siteHasCookieInOtherPartition = false;
     localizedFailDescription = null;
     #url;
@@ -304,7 +294,6 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     responseReceivedPromiseResolve;
     directSocketInfo;
     #directSocketChunks = [];
-    #isIpProtectionUsed;
     #isAdRelated;
     #appliedNetworkConditionsId;
     constructor(requestId, backendRequestId, url, documentURL, frameId, loaderId, initiator, hasUserGesture) {
@@ -317,7 +306,6 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
         this.#loaderId = loaderId;
         this.#initiator = initiator;
         this.#hasUserGesture = hasUserGesture;
-        this.#isIpProtectionUsed = false;
         this.#isAdRelated = false;
     }
     static create(backendRequestId, url, documentURL, frameId, loaderId, initiator, hasUserGesture) {
@@ -534,6 +522,12 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     }
     setBlockedReason(reason) {
         this.#blockedReason = reason;
+    }
+    setRenderBlockingBehavior(renderBlocking) {
+        this.#renderBlockingBehavior = renderBlocking;
+    }
+    renderBlockingBehavior() {
+        return this.#renderBlockingBehavior;
     }
     corsErrorStatus() {
         return this.#corsErrorStatus;
@@ -1149,6 +1143,9 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     requestContentType() {
         return this.requestHeaderValue('Content-Type');
     }
+    requestContentEncoding() {
+        return this.requestHeaderValue('Content-Encoding');
+    }
     hasErrorStatusCode() {
         return this.statusCode >= 400;
     }
@@ -1175,16 +1172,8 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
         if (TextUtils.ContentData.ContentData.isError(contentData)) {
             return;
         }
-        let imageSrc = contentData.asDataUrl();
-        if (imageSrc === null && !this.#failed) {
-            const cacheControl = this.responseHeaderValue('cache-control') || '';
-            if (!cacheControl.includes('no-cache')) {
-                imageSrc = this.#url;
-            }
-        }
-        if (imageSrc !== null) {
-            image.src = imageSrc;
-        }
+        const imageSrc = contentData.asImagePreviewUrl();
+        image.src = imageSrc ?? ''; // Empty the image if we cannot generate a preview URL
     }
     initiator() {
         return this.#initiator || null;
@@ -1254,6 +1243,7 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
         this.setRequestHeaders(extraRequestInfo.requestHeaders);
         this.#hasExtraRequestInfo = true;
         this.setRequestHeadersText(''); // Mark request headers as non-provisional
+        this.#deviceBoundSessionUsages = extraRequestInfo.deviceBoundSessionUsages || [];
         this.#clientSecurityState = extraRequestInfo.clientSecurityState;
         this.#appliedNetworkConditionsId = extraRequestInfo.appliedNetworkConditionsId;
         if (extraRequestInfo.connectTiming) {
@@ -1261,6 +1251,12 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
         }
         this.#siteHasCookieInOtherPartition = extraRequestInfo.siteHasCookieInOtherPartition ?? false;
         this.#hasThirdPartyCookiePhaseoutIssue = this.#blockedRequestCookies.some(item => item.blockedReasons.includes("ThirdPartyPhaseout" /* Protocol.Network.CookieBlockedReason.ThirdPartyPhaseout */));
+    }
+    setAppliedNetworkConditions(appliedNetworkConditionsId) {
+        this.#appliedNetworkConditionsId = appliedNetworkConditionsId;
+    }
+    getDeviceBoundSessionUsages() {
+        return this.#deviceBoundSessionUsages;
     }
     hasExtraRequestInfo() {
         return this.#hasExtraRequestInfo;
@@ -1409,12 +1405,6 @@ export class NetworkRequest extends Common.ObjectWrapper.ObjectWrapper {
     isSameSite() {
         return this.#isSameSite;
     }
-    setIsIpProtectionUsed(isIpProtectionUsed) {
-        this.#isIpProtectionUsed = isIpProtectionUsed;
-    }
-    isIpProtectionUsed() {
-        return this.#isIpProtectionUsed;
-    }
     setIsAdRelated(isAdRelated) {
         this.#isAdRelated = isAdRelated;
     }
@@ -1526,8 +1516,6 @@ export const cookieBlockedReasonToUiString = function (blockedReason) {
             return i18nString(UIStrings.schemefulSameSiteLax);
         case "SchemefulSameSiteUnspecifiedTreatedAsLax" /* Protocol.Network.CookieBlockedReason.SchemefulSameSiteUnspecifiedTreatedAsLax */:
             return i18nString(UIStrings.schemefulSameSiteUnspecifiedTreatedAsLax);
-        case "SamePartyFromCrossPartyContext" /* Protocol.Network.CookieBlockedReason.SamePartyFromCrossPartyContext */:
-            return i18nString(UIStrings.samePartyFromCrossPartyContext);
         case "NameValuePairExceedsMaxSize" /* Protocol.Network.CookieBlockedReason.NameValuePairExceedsMaxSize */:
             return i18nString(UIStrings.nameValuePairExceedsMaxSize);
         case "ThirdPartyPhaseout" /* Protocol.Network.CookieBlockedReason.ThirdPartyPhaseout */:
@@ -1571,10 +1559,6 @@ export const setCookieBlockedReasonToUiString = function (blockedReason) {
             return i18nString(UIStrings.thisSetcookieWasBlockedBecauseItHadTheSamesiteStrictLax, { PH1: 'SameSite=Lax' });
         case "SchemefulSameSiteUnspecifiedTreatedAsLax" /* Protocol.Network.SetCookieBlockedReason.SchemefulSameSiteUnspecifiedTreatedAsLax */:
             return i18nString(UIStrings.thisSetcookieDidntSpecifyASamesite);
-        case "SamePartyFromCrossPartyContext" /* Protocol.Network.SetCookieBlockedReason.SamePartyFromCrossPartyContext */:
-            return i18nString(UIStrings.thisSetcookieWasBlockedBecauseItHadTheSameparty);
-        case "SamePartyConflictsWithOtherAttributes" /* Protocol.Network.SetCookieBlockedReason.SamePartyConflictsWithOtherAttributes */:
-            return i18nString(UIStrings.thisSetcookieWasBlockedBecauseItHadTheSamepartyAttribute);
         case "NameValuePairExceedsMaxSize" /* Protocol.Network.SetCookieBlockedReason.NameValuePairExceedsMaxSize */:
             return i18nString(UIStrings.thisSetcookieWasBlockedBecauseTheNameValuePairExceedsMaxSize);
         case "DisallowedCharacter" /* Protocol.Network.SetCookieBlockedReason.DisallowedCharacter */:
@@ -1600,7 +1584,6 @@ export const cookieBlockedReasonToAttribute = function (blockedReason) {
         case "SchemefulSameSiteLax" /* Protocol.Network.CookieBlockedReason.SchemefulSameSiteLax */:
         case "SchemefulSameSiteUnspecifiedTreatedAsLax" /* Protocol.Network.CookieBlockedReason.SchemefulSameSiteUnspecifiedTreatedAsLax */:
             return "same-site" /* Attribute.SAME_SITE */;
-        case "SamePartyFromCrossPartyContext" /* Protocol.Network.CookieBlockedReason.SamePartyFromCrossPartyContext */:
         case "NameValuePairExceedsMaxSize" /* Protocol.Network.CookieBlockedReason.NameValuePairExceedsMaxSize */:
         case "UserPreferences" /* Protocol.Network.CookieBlockedReason.UserPreferences */:
         case "ThirdPartyPhaseout" /* Protocol.Network.CookieBlockedReason.ThirdPartyPhaseout */:
@@ -1626,8 +1609,6 @@ export const setCookieBlockedReasonToAttribute = function (blockedReason) {
             return "domain" /* Attribute.DOMAIN */;
         case "InvalidPrefix" /* Protocol.Network.SetCookieBlockedReason.InvalidPrefix */:
             return "name" /* Attribute.NAME */;
-        case "SamePartyConflictsWithOtherAttributes" /* Protocol.Network.SetCookieBlockedReason.SamePartyConflictsWithOtherAttributes */:
-        case "SamePartyFromCrossPartyContext" /* Protocol.Network.SetCookieBlockedReason.SamePartyFromCrossPartyContext */:
         case "NameValuePairExceedsMaxSize" /* Protocol.Network.SetCookieBlockedReason.NameValuePairExceedsMaxSize */:
         case "UserPreferences" /* Protocol.Network.SetCookieBlockedReason.UserPreferences */:
         case "ThirdPartyPhaseout" /* Protocol.Network.SetCookieBlockedReason.ThirdPartyPhaseout */:

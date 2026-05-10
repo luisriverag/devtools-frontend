@@ -86,7 +86,6 @@ export class ResourceTreeModel extends SDKModel {
         if (!this.framesInternal.has(frameId)) {
             return null;
         }
-        // TODO(crbug.com/445966299): Refactor to use `storageAgent().invoke_getStorageKey()` instead.
         const response = await this.storageAgent.invoke_getStorageKey({ frameId });
         if (response.getError() === 'Frame tree node for given frame not found') {
             return null;
@@ -198,10 +197,13 @@ export class ResourceTreeModel extends SDKModel {
     documentOpened(framePayload) {
         this.frameNavigated(framePayload, undefined);
         const frame = this.framesInternal.get(framePayload.id);
-        if (frame && !frame.getResourcesMap().get(framePayload.url)) {
-            const frameResource = this.createResourceFromFramePayload(framePayload, framePayload.url, Common.ResourceType.resourceTypes.Document, framePayload.mimeType, null, null);
-            frameResource.isGenerated = true;
-            frame.addResource(frameResource);
+        if (frame) {
+            this.dispatchEventToListeners(Events.DocumentOpened, frame);
+            if (!frame.getResourcesMap().get(framePayload.url)) {
+                const frameResource = this.createResourceFromFramePayload(framePayload, framePayload.url, Common.ResourceType.resourceTypes.Document, framePayload.mimeType, null, null);
+                frameResource.isGenerated = true;
+                frame.addResource(frameResource);
+            }
         }
     }
     frameDetached(frameId, isSwap) {
@@ -480,6 +482,7 @@ export var Events;
     Events["FrameDetached"] = "FrameDetached";
     Events["FrameResized"] = "FrameResized";
     Events["FrameWillNavigate"] = "FrameWillNavigate";
+    Events["DocumentOpened"] = "DocumentOpened";
     Events["PrimaryPageChanged"] = "PrimaryPageChanged";
     Events["ResourceAdded"] = "ResourceAdded";
     Events["WillLoadCachedResources"] = "WillLoadCachedResources";
@@ -517,9 +520,7 @@ export class ResourceTreeFrame {
     #childFrames = new Set();
     resourcesMap = new Map();
     backForwardCacheDetails = {
-        restoredFromCache: undefined,
         explanations: [],
-        explanationsTree: undefined,
     };
     constructor(model, parentFrame, frameId, payload, creationStackTrace) {
         this.#model = model;
@@ -578,9 +579,7 @@ export class ResourceTreeFrame {
         this.#crossOriginIsolatedContextType = framePayload.crossOriginIsolatedContextType;
         this.#gatedAPIFeatures = framePayload.gatedAPIFeatures;
         this.backForwardCacheDetails = {
-            restoredFromCache: undefined,
             explanations: [],
-            explanationsTree: undefined,
         };
         const mainResource = this.resourcesMap.get(this.#url);
         this.resourcesMap.clear();
@@ -694,7 +693,8 @@ export class ResourceTreeFrame {
      * https://chromium.googlesource.com/chromium/src/+/HEAD/docs/frame_trees.md
      */
     isPrimaryFrame() {
-        return !this.#sameTargetParentFrame && this.#model.target() === TargetManager.instance().primaryPageTarget();
+        return !this.#sameTargetParentFrame &&
+            this.#model.target() === this.#model.target().targetManager().primaryPageTarget();
     }
     removeChildFrame(frame, isSwap) {
         this.#childFrames.delete(frame);
@@ -722,7 +722,7 @@ export class ResourceTreeFrame {
     }
     addRequest(request) {
         let resource = this.resourcesMap.get(request.url());
-        if (resource && resource.request === request) {
+        if (resource?.request === request) {
             // Already in the tree, we just got an extra update.
             return;
         }

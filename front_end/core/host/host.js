@@ -19,13 +19,689 @@ __export(AidaClient_exports, {
   Reason: () => Reason,
   RecitationAction: () => RecitationAction,
   Role: () => Role,
-  SERVICE_NAME: () => SERVICE_NAME,
+  SERVICE_NAME: () => SERVICE_NAME2,
   UseCase: () => UseCase,
   UserTier: () => UserTier,
-  convertToUserTierEnum: () => convertToUserTierEnum
+  convertToUserTierEnum: () => convertToUserTierEnum,
+  debugLog: () => debugLog,
+  getClientFeatureName: () => getClientFeatureName
 });
-import * as Common3 from "./../common/common.js";
-import * as Root2 from "./../root/root.js";
+import * as Common4 from "./../common/common.js";
+import * as Platform4 from "./../platform/platform.js";
+import * as Root3 from "./../root/root.js";
+
+// gen/front_end/core/host/AidaClientTypes.js
+import * as Platform from "./../platform/platform.js";
+var Role;
+(function(Role2) {
+  Role2[Role2["ROLE_UNSPECIFIED"] = 0] = "ROLE_UNSPECIFIED";
+  Role2[Role2["USER"] = 1] = "USER";
+  Role2[Role2["MODEL"] = 2] = "MODEL";
+})(Role || (Role = {}));
+var FunctionalityType;
+(function(FunctionalityType2) {
+  FunctionalityType2[FunctionalityType2["FUNCTIONALITY_TYPE_UNSPECIFIED"] = 0] = "FUNCTIONALITY_TYPE_UNSPECIFIED";
+  FunctionalityType2[FunctionalityType2["CHAT"] = 1] = "CHAT";
+  FunctionalityType2[FunctionalityType2["EXPLAIN_ERROR"] = 2] = "EXPLAIN_ERROR";
+  FunctionalityType2[FunctionalityType2["AGENTIC_CHAT"] = 5] = "AGENTIC_CHAT";
+})(FunctionalityType || (FunctionalityType = {}));
+var ClientFeature;
+(function(ClientFeature2) {
+  ClientFeature2[ClientFeature2["CLIENT_FEATURE_UNSPECIFIED"] = 0] = "CLIENT_FEATURE_UNSPECIFIED";
+  ClientFeature2[ClientFeature2["CHROME_CONSOLE_INSIGHTS"] = 1] = "CHROME_CONSOLE_INSIGHTS";
+  ClientFeature2[ClientFeature2["CHROME_STYLING_AGENT"] = 2] = "CHROME_STYLING_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_NETWORK_AGENT"] = 7] = "CHROME_NETWORK_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_PERFORMANCE_ANNOTATIONS_AGENT"] = 20] = "CHROME_PERFORMANCE_ANNOTATIONS_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_FILE_AGENT"] = 9] = "CHROME_FILE_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_PATCH_AGENT"] = 12] = "CHROME_PATCH_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_PERFORMANCE_FULL_AGENT"] = 24] = "CHROME_PERFORMANCE_FULL_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_CONTEXT_SELECTION_AGENT"] = 25] = "CHROME_CONTEXT_SELECTION_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_ACCESSIBILITY_AGENT"] = 26] = "CHROME_ACCESSIBILITY_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_CONVERSATION_SUMMARY_AGENT"] = 27] = "CHROME_CONVERSATION_SUMMARY_AGENT";
+  ClientFeature2[ClientFeature2["CHROME_STORAGE_AGENT"] = 28] = "CHROME_STORAGE_AGENT";
+})(ClientFeature || (ClientFeature = {}));
+var UserTier;
+(function(UserTier2) {
+  UserTier2[UserTier2["USER_TIER_UNSPECIFIED"] = 0] = "USER_TIER_UNSPECIFIED";
+  UserTier2[UserTier2["TESTERS"] = 1] = "TESTERS";
+  UserTier2[UserTier2["BETA"] = 2] = "BETA";
+  UserTier2[UserTier2["PUBLIC"] = 3] = "PUBLIC";
+})(UserTier || (UserTier = {}));
+var EditType;
+(function(EditType2) {
+  EditType2[EditType2["EDIT_TYPE_UNSPECIFIED"] = 0] = "EDIT_TYPE_UNSPECIFIED";
+  EditType2[EditType2["ADD"] = 1] = "ADD";
+  EditType2[EditType2["DELETE"] = 2] = "DELETE";
+  EditType2[EditType2["PASTE"] = 3] = "PASTE";
+  EditType2[EditType2["UNDO"] = 4] = "UNDO";
+  EditType2[EditType2["REDO"] = 5] = "REDO";
+  EditType2[EditType2["ACCEPT_COMPLETION"] = 6] = "ACCEPT_COMPLETION";
+})(EditType || (EditType = {}));
+var Reason;
+(function(Reason2) {
+  Reason2[Reason2["UNKNOWN"] = 0] = "UNKNOWN";
+  Reason2[Reason2["CURRENTLY_OPEN"] = 1] = "CURRENTLY_OPEN";
+  Reason2[Reason2["RECENTLY_OPENED"] = 2] = "RECENTLY_OPENED";
+  Reason2[Reason2["RECENTLY_EDITED"] = 3] = "RECENTLY_EDITED";
+  Reason2[Reason2["COLOCATED"] = 4] = "COLOCATED";
+  Reason2[Reason2["RELATED_FILE"] = 5] = "RELATED_FILE";
+})(Reason || (Reason = {}));
+var UseCase;
+(function(UseCase2) {
+  UseCase2[UseCase2["USE_CASE_UNSPECIFIED"] = 0] = "USE_CASE_UNSPECIFIED";
+  UseCase2[UseCase2["CODE_GENERATION"] = 1] = "CODE_GENERATION";
+  UseCase2[UseCase2["CODE_TRANSFORMATION"] = 2] = "CODE_TRANSFORMATION";
+})(UseCase || (UseCase = {}));
+var RecitationAction;
+(function(RecitationAction2) {
+  RecitationAction2["ACTION_UNSPECIFIED"] = "ACTION_UNSPECIFIED";
+  RecitationAction2["CITE"] = "CITE";
+  RecitationAction2["BLOCK"] = "BLOCK";
+  RecitationAction2["NO_ACTION"] = "NO_ACTION";
+  RecitationAction2["EXEMPT_FOUND_IN_PROMPT"] = "EXEMPT_FOUND_IN_PROMPT";
+})(RecitationAction || (RecitationAction = {}));
+var CitationSourceType;
+(function(CitationSourceType2) {
+  CitationSourceType2["CITATION_SOURCE_TYPE_UNSPECIFIED"] = "CITATION_SOURCE_TYPE_UNSPECIFIED";
+  CitationSourceType2["TRAINING_DATA"] = "TRAINING_DATA";
+  CitationSourceType2["WORLD_FACTS"] = "WORLD_FACTS";
+  CitationSourceType2["LOCAL_FACTS"] = "LOCAL_FACTS";
+  CitationSourceType2["INDIRECT"] = "INDIRECT";
+})(CitationSourceType || (CitationSourceType = {}));
+function debugLog(...log) {
+  if (!Boolean(Platform.HostRuntime.HOST_RUNTIME.getLocalStorage()?.getItem("debugAiServicesEnabled"))) {
+    return;
+  }
+  console.log(...log);
+}
+
+// gen/front_end/core/host/AidaGcaTranslation.js
+var AidaGcaTranslation_exports = {};
+__export(AidaGcaTranslation_exports, {
+  aidaCompletionRequestToGcaRequest: () => aidaCompletionRequestToGcaRequest,
+  aidaDoConversationRequestToGcaRequest: () => aidaDoConversationRequestToGcaRequest,
+  aidaEventToGcaTelemetryRequest: () => aidaEventToGcaTelemetryRequest,
+  aidaGenerateCodeRequestToGcaRequest: () => aidaGenerateCodeRequestToGcaRequest,
+  gcaChunkResponseToAidaChunkResponse: () => gcaChunkResponseToAidaChunkResponse,
+  gcaResponseToAidaCompletionResponse: () => gcaResponseToAidaCompletionResponse,
+  gcaResponseToAidaDoConversationResponse: () => gcaResponseToAidaDoConversationResponse,
+  gcaResponseToAidaGenerateCodeResponse: () => gcaResponseToAidaGenerateCodeResponse
+});
+
+// gen/front_end/core/host/GcaTypes.js
+var GcaTypes_exports = {};
+__export(GcaTypes_exports, {
+  BlockReason: () => BlockReason,
+  FinishReason: () => FinishReason,
+  HarmBlockMethod: () => HarmBlockMethod,
+  HarmBlockThreshold: () => HarmBlockThreshold,
+  HarmCategory: () => HarmCategory,
+  HarmProbability: () => HarmProbability,
+  InclusionReason: () => InclusionReason,
+  InteractionType: () => InteractionType,
+  Language: () => Language,
+  Method: () => Method,
+  Mode: () => Mode,
+  Outcome: () => Outcome,
+  SuggestionStatus: () => SuggestionStatus,
+  Type: () => Type
+});
+var Type;
+(function(Type2) {
+  Type2[Type2["TYPE_UNSPECIFIED"] = 0] = "TYPE_UNSPECIFIED";
+  Type2[Type2["STRING"] = 1] = "STRING";
+  Type2[Type2["NUMBER"] = 2] = "NUMBER";
+  Type2[Type2["INTEGER"] = 3] = "INTEGER";
+  Type2[Type2["BOOLEAN"] = 4] = "BOOLEAN";
+  Type2[Type2["ARRAY"] = 5] = "ARRAY";
+  Type2[Type2["OBJECT"] = 6] = "OBJECT";
+  Type2[Type2["NULL"] = 7] = "NULL";
+})(Type || (Type = {}));
+var HarmCategory;
+(function(HarmCategory2) {
+  HarmCategory2[HarmCategory2["HARM_CATEGORY_UNSPECIFIED"] = 0] = "HARM_CATEGORY_UNSPECIFIED";
+  HarmCategory2[HarmCategory2["HARM_CATEGORY_HARASSMENT"] = 7] = "HARM_CATEGORY_HARASSMENT";
+  HarmCategory2[HarmCategory2["HARM_CATEGORY_HATE_SPEECH"] = 8] = "HARM_CATEGORY_HATE_SPEECH";
+  HarmCategory2[HarmCategory2["HARM_CATEGORY_SEXUALLY_EXPLICIT"] = 9] = "HARM_CATEGORY_SEXUALLY_EXPLICIT";
+  HarmCategory2[HarmCategory2["HARM_CATEGORY_DANGEROUS_CONTENT"] = 10] = "HARM_CATEGORY_DANGEROUS_CONTENT";
+})(HarmCategory || (HarmCategory = {}));
+var HarmProbability;
+(function(HarmProbability2) {
+  HarmProbability2[HarmProbability2["HARM_PROBABILITY_UNSPECIFIED"] = 0] = "HARM_PROBABILITY_UNSPECIFIED";
+  HarmProbability2[HarmProbability2["NEGLIGIBLE"] = 1] = "NEGLIGIBLE";
+  HarmProbability2[HarmProbability2["LOW"] = 2] = "LOW";
+  HarmProbability2[HarmProbability2["MEDIUM"] = 3] = "MEDIUM";
+  HarmProbability2[HarmProbability2["HIGH"] = 4] = "HIGH";
+})(HarmProbability || (HarmProbability = {}));
+var HarmBlockThreshold;
+(function(HarmBlockThreshold2) {
+  HarmBlockThreshold2[HarmBlockThreshold2["HARM_BLOCK_THRESHOLD_UNSPECIFIED"] = 0] = "HARM_BLOCK_THRESHOLD_UNSPECIFIED";
+  HarmBlockThreshold2[HarmBlockThreshold2["BLOCK_LOW_AND_ABOVE"] = 1] = "BLOCK_LOW_AND_ABOVE";
+  HarmBlockThreshold2[HarmBlockThreshold2["BLOCK_MEDIUM_AND_ABOVE"] = 2] = "BLOCK_MEDIUM_AND_ABOVE";
+  HarmBlockThreshold2[HarmBlockThreshold2["BLOCK_ONLY_HIGH"] = 3] = "BLOCK_ONLY_HIGH";
+  HarmBlockThreshold2[HarmBlockThreshold2["BLOCK_NONE"] = 4] = "BLOCK_NONE";
+  HarmBlockThreshold2[HarmBlockThreshold2["OFF"] = 5] = "OFF";
+})(HarmBlockThreshold || (HarmBlockThreshold = {}));
+var HarmBlockMethod;
+(function(HarmBlockMethod2) {
+  HarmBlockMethod2[HarmBlockMethod2["HARM_BLOCK_METHOD_UNSPECIFIED"] = 0] = "HARM_BLOCK_METHOD_UNSPECIFIED";
+  HarmBlockMethod2[HarmBlockMethod2["SEVERITY"] = 1] = "SEVERITY";
+  HarmBlockMethod2[HarmBlockMethod2["PROBABILITY"] = 2] = "PROBABILITY";
+})(HarmBlockMethod || (HarmBlockMethod = {}));
+var FinishReason;
+(function(FinishReason2) {
+  FinishReason2[FinishReason2["FINISH_REASON_UNSPECIFIED"] = 0] = "FINISH_REASON_UNSPECIFIED";
+  FinishReason2[FinishReason2["STOP"] = 1] = "STOP";
+  FinishReason2[FinishReason2["MAX_TOKENS"] = 2] = "MAX_TOKENS";
+  FinishReason2[FinishReason2["SAFETY"] = 3] = "SAFETY";
+  FinishReason2[FinishReason2["RECITATION"] = 4] = "RECITATION";
+  FinishReason2[FinishReason2["OTHER"] = 5] = "OTHER";
+  FinishReason2[FinishReason2["BLOCKLIST"] = 6] = "BLOCKLIST";
+  FinishReason2[FinishReason2["PROHIBITED_CONTENT"] = 7] = "PROHIBITED_CONTENT";
+  FinishReason2[FinishReason2["SPII"] = 8] = "SPII";
+  FinishReason2[FinishReason2["MALFORMED_FUNCTION_CALL"] = 9] = "MALFORMED_FUNCTION_CALL";
+  FinishReason2[FinishReason2["IMAGE_SAFETY"] = 10] = "IMAGE_SAFETY";
+  FinishReason2[FinishReason2["IMAGE_PROHIBITED_CONTENT"] = 11] = "IMAGE_PROHIBITED_CONTENT";
+  FinishReason2[FinishReason2["IMAGE_RECITATION"] = 12] = "IMAGE_RECITATION";
+  FinishReason2[FinishReason2["IMAGE_OTHER"] = 13] = "IMAGE_OTHER";
+  FinishReason2[FinishReason2["UNEXPECTED_TOOL_CALL"] = 14] = "UNEXPECTED_TOOL_CALL";
+  FinishReason2[FinishReason2["NO_IMAGE"] = 15] = "NO_IMAGE";
+})(FinishReason || (FinishReason = {}));
+var Method;
+(function(Method2) {
+  Method2[Method2["METHOD_UNSPECIFIED"] = 0] = "METHOD_UNSPECIFIED";
+  Method2[Method2["GENERATE_CODE"] = 1] = "GENERATE_CODE";
+  Method2[Method2["COMPLETE_CODE"] = 2] = "COMPLETE_CODE";
+  Method2[Method2["TRANSFORM_CODE"] = 3] = "TRANSFORM_CODE";
+  Method2[Method2["CHAT"] = 4] = "CHAT";
+})(Method || (Method = {}));
+var SuggestionStatus;
+(function(SuggestionStatus2) {
+  SuggestionStatus2[SuggestionStatus2["STATUS_UNSPECIFIED"] = 0] = "STATUS_UNSPECIFIED";
+  SuggestionStatus2[SuggestionStatus2["NO_ERROR"] = 1] = "NO_ERROR";
+  SuggestionStatus2[SuggestionStatus2["ERROR"] = 2] = "ERROR";
+  SuggestionStatus2[SuggestionStatus2["CANCELLED"] = 3] = "CANCELLED";
+  SuggestionStatus2[SuggestionStatus2["EMPTY"] = 4] = "EMPTY";
+})(SuggestionStatus || (SuggestionStatus = {}));
+var InteractionType;
+(function(InteractionType2) {
+  InteractionType2[InteractionType2["INTERACTION_TYPE_UNSPECIFIED"] = 0] = "INTERACTION_TYPE_UNSPECIFIED";
+  InteractionType2[InteractionType2["THUMBS_UP"] = 1] = "THUMBS_UP";
+  InteractionType2[InteractionType2["THUMBS_DOWN"] = 2] = "THUMBS_DOWN";
+  InteractionType2[InteractionType2["ACCEPT"] = 3] = "ACCEPT";
+  InteractionType2[InteractionType2["ACCEPT_PARTIALLY"] = 4] = "ACCEPT_PARTIALLY";
+  InteractionType2[InteractionType2["REJECT"] = 5] = "REJECT";
+  InteractionType2[InteractionType2["COPY"] = 6] = "COPY";
+})(InteractionType || (InteractionType = {}));
+var InclusionReason;
+(function(InclusionReason2) {
+  InclusionReason2[InclusionReason2["INCLUSION_REASON_UNSPECIFIED"] = 0] = "INCLUSION_REASON_UNSPECIFIED";
+  InclusionReason2[InclusionReason2["ACTIVE"] = 1] = "ACTIVE";
+  InclusionReason2[InclusionReason2["OPEN"] = 2] = "OPEN";
+  InclusionReason2[InclusionReason2["RECENTLY_CLOSED"] = 3] = "RECENTLY_CLOSED";
+  InclusionReason2[InclusionReason2["RECENTLY_EDITED"] = 4] = "RECENTLY_EDITED";
+  InclusionReason2[InclusionReason2["COLOCATED"] = 5] = "COLOCATED";
+  InclusionReason2[InclusionReason2["RELATED"] = 6] = "RELATED";
+  InclusionReason2[InclusionReason2["USER_SELECTED"] = 7] = "USER_SELECTED";
+})(InclusionReason || (InclusionReason = {}));
+var BlockReason;
+(function(BlockReason2) {
+  BlockReason2[BlockReason2["BLOCKED_REASON_UNSPECIFIED"] = 0] = "BLOCKED_REASON_UNSPECIFIED";
+  BlockReason2[BlockReason2["SAFETY"] = 1] = "SAFETY";
+  BlockReason2[BlockReason2["OTHER"] = 2] = "OTHER";
+  BlockReason2[BlockReason2["BLOCKLIST"] = 3] = "BLOCKLIST";
+  BlockReason2[BlockReason2["PROHIBITED_CONTENT"] = 4] = "PROHIBITED_CONTENT";
+  BlockReason2[BlockReason2["IMAGE_SAFETY"] = 5] = "IMAGE_SAFETY";
+})(BlockReason || (BlockReason = {}));
+var Language;
+(function(Language3) {
+  Language3[Language3["LANGUAGE_UNSPECIFIED"] = 0] = "LANGUAGE_UNSPECIFIED";
+  Language3[Language3["PYTHON"] = 1] = "PYTHON";
+})(Language || (Language = {}));
+var Outcome;
+(function(Outcome2) {
+  Outcome2[Outcome2["OUTCOME_UNSPECIFIED"] = 0] = "OUTCOME_UNSPECIFIED";
+  Outcome2[Outcome2["OUTCOME_OK"] = 1] = "OUTCOME_OK";
+  Outcome2[Outcome2["OUTCOME_FAILED"] = 2] = "OUTCOME_FAILED";
+  Outcome2[Outcome2["OUTCOME_DEADLINE_EXCEEDED"] = 3] = "OUTCOME_DEADLINE_EXCEEDED";
+})(Outcome || (Outcome = {}));
+var Mode;
+(function(Mode2) {
+  Mode2[Mode2["MODE_UNSPECIFIED"] = 0] = "MODE_UNSPECIFIED";
+  Mode2[Mode2["AUTO"] = 1] = "AUTO";
+  Mode2[Mode2["ANY"] = 2] = "ANY";
+  Mode2[Mode2["NONE"] = 3] = "NONE";
+})(Mode || (Mode = {}));
+
+// gen/front_end/core/host/AidaGcaTranslation.js
+function createBaseGcaRequest(request, contents, experience) {
+  const gcaRequest = { contents, aicode: { experience } };
+  mapCommonAidaRequestFields(request, gcaRequest);
+  buildLabels(request, gcaRequest);
+  if ("preamble" in request && request.preamble) {
+    gcaRequest.systemInstruction = {
+      role: "user",
+      parts: [{ text: request.preamble }]
+    };
+  }
+  return gcaRequest;
+}
+function aidaDoConversationRequestToGcaRequest(request) {
+  try {
+    const contents = [];
+    if (request.facts) {
+      contents.push(convertAidaFactsToGcaContent(request.facts));
+    }
+    if (request.historical_contexts) {
+      contents.push(...request.historical_contexts.map(convertAidaContentToGcaContent));
+    }
+    contents.push(convertAidaContentToGcaContent(request.current_message));
+    const gcaRequest = createBaseGcaRequest(request, contents, "chat_console_insights");
+    if (request.function_declarations) {
+      gcaRequest.tools = [{
+        functionDeclarations: request.function_declarations.map((fd) => ({
+          name: fd.name,
+          description: fd.description,
+          parameters: convertAidaParamToGcaSchema(fd.parameters)
+        }))
+      }];
+    }
+    debugLog("Translation succeded:", JSON.stringify(request), JSON.stringify(gcaRequest));
+    return gcaRequest;
+  } catch (e) {
+    debugLog("Translation error:", JSON.stringify(request), e);
+    throw e;
+  }
+}
+function mapCommonAidaRequestFields(aidaRequest, gcaRequest) {
+  if (aidaRequest.options?.model_id) {
+    gcaRequest.model = aidaRequest.options.model_id;
+  }
+  if (aidaRequest.options?.temperature !== void 0) {
+    gcaRequest.generationConfig = {
+      ...gcaRequest.generationConfig,
+      temperature: aidaRequest.options.temperature
+    };
+  }
+}
+function gcaResponseToAidaDoConversationResponse(response) {
+  const functionCalls = [];
+  if (response.candidates?.[0].content?.parts) {
+    for (const part of response.candidates[0].content.parts) {
+      if (part.functionCall) {
+        functionCalls.push({
+          name: part.functionCall.name,
+          args: part.functionCall.args || {}
+        });
+      }
+    }
+  }
+  return {
+    explanation: extractTextFromGcaParts(response.candidates[0].content?.parts),
+    metadata: {
+      rpcGlobalId: response.responseId
+    },
+    functionCalls: functionCalls.length > 0 ? functionCalls : void 0,
+    completed: true
+  };
+}
+function extractTextFromGcaParts(parts) {
+  if (!parts) {
+    return "";
+  }
+  return parts.map((p) => p.text || "").join("");
+}
+function aidaEventToGcaTelemetryRequest(clientEvent) {
+  try {
+    const feedbackMetrics = [];
+    const responseId = String(clientEvent.corresponding_aida_rpc_global_id);
+    const eventTime = (/* @__PURE__ */ new Date()).toISOString();
+    if (clientEvent.do_conversation_client_event) {
+      const feedback = clientEvent.do_conversation_client_event.user_feedback;
+      if (feedback.sentiment) {
+        let interaction = InteractionType.INTERACTION_TYPE_UNSPECIFIED;
+        if (feedback.sentiment === "POSITIVE") {
+          interaction = InteractionType.THUMBS_UP;
+        } else if (feedback.sentiment === "NEGATIVE") {
+          interaction = InteractionType.THUMBS_DOWN;
+        }
+        feedbackMetrics.push({
+          eventTime,
+          responseId,
+          suggestionInteraction: { interaction }
+        });
+      }
+    }
+    feedbackMetrics.push(...convertCodeTelemetry(clientEvent.complete_code_client_event, Method.COMPLETE_CODE, responseId, eventTime));
+    feedbackMetrics.push(...convertCodeTelemetry(clientEvent.generate_code_client_event, Method.GENERATE_CODE, responseId, eventTime));
+    const gcaTelemetryRequest = {
+      feedbackMetrics
+    };
+    debugLog("Translation succeeded:", JSON.stringify(clientEvent), JSON.stringify(gcaTelemetryRequest));
+    return gcaTelemetryRequest;
+  } catch (e) {
+    debugLog("Translation error:", JSON.stringify(clientEvent), e);
+    throw e;
+  }
+}
+function convertCodeTelemetry(event, method, responseId, eventTime) {
+  if (!event) {
+    return [];
+  }
+  if ("user_impression" in event && event.user_impression) {
+    const impression = event.user_impression;
+    return [{
+      eventTime,
+      responseId,
+      suggestionOffered: {
+        method,
+        status: SuggestionStatus.NO_ERROR,
+        responseLatency: `${impression.latency.duration.seconds + impression.latency.duration.nanos / 1e9}s`
+      }
+    }];
+  }
+  if ("user_acceptance" in event && event.user_acceptance) {
+    const acceptance = event.user_acceptance;
+    return [{
+      eventTime,
+      responseId,
+      suggestionInteraction: {
+        interaction: InteractionType.ACCEPT,
+        candidateIndex: acceptance.sample.sample_id
+      }
+    }];
+  }
+  return [];
+}
+function aidaCompletionRequestToGcaRequest(request) {
+  try {
+    let additionalFiles = (request.additional_files ?? []).map((f) => ({
+      fileUri: f.path,
+      inclusionReason: [AidaReasonToGcaInclusionReason[f.included_reason]],
+      segments: [{ content: f.content, isSelected: false }]
+    }));
+    const inEditorFile = inFileEditRequestToSourceFile(request);
+    if (inEditorFile) {
+      additionalFiles = [inEditorFile, ...additionalFiles];
+    }
+    const gcaRequest = createBaseGcaRequest(request, [], "complete_code");
+    gcaRequest.aicode.files = additionalFiles;
+    if (request.options?.stop_sequences) {
+      gcaRequest.generationConfig = {
+        ...gcaRequest.generationConfig,
+        stopSequences: request.options.stop_sequences
+      };
+    }
+    debugLog("Translation succeeded:", JSON.stringify(request), JSON.stringify(gcaRequest));
+    return gcaRequest;
+  } catch (e) {
+    debugLog("Translation error:", JSON.stringify(request), e);
+    throw e;
+  }
+}
+function inFileEditRequestToSourceFile(request) {
+  const sourceFile = {
+    inclusionReason: [InclusionReason.ACTIVE],
+    fileUri: "devtools-code-completion",
+    segments: [
+      {
+        content: request.prefix,
+        isSelected: false
+      },
+      {
+        content: "",
+        isSelected: true
+        // Cursor position
+      }
+    ]
+  };
+  if (request.suffix) {
+    sourceFile.segments?.push({
+      content: request.suffix,
+      isSelected: false
+    });
+  }
+  return sourceFile;
+}
+function buildLabels(request, gcaRequest) {
+  const labels = {};
+  if (request.client) {
+    labels["client"] = request.client;
+  }
+  if ("functionality_type" in request && request.functionality_type !== void 0) {
+    labels["functionality_type"] = FunctionalityType[request.functionality_type];
+  }
+  if ("client_feature" in request && request.client_feature !== void 0) {
+    labels["client_feature"] = ClientFeature[request.client_feature];
+  }
+  if ("last_user_action" in request && request.last_user_action !== void 0) {
+    labels["last_user_action"] = EditType[request.last_user_action];
+  }
+  if ("use_case" in request && request.use_case !== void 0) {
+    labels["use_case"] = UseCase[request.use_case];
+  }
+  if (request.metadata.string_session_id) {
+    labels["session_id"] = request.metadata.string_session_id;
+  }
+  const options = request.options;
+  if (options?.inference_language) {
+    labels["inference_language"] = options.inference_language;
+  }
+  if (options?.expect_code_output !== void 0) {
+    labels["expect_code_output"] = String(options.expect_code_output);
+  }
+  if (request.metadata.disable_user_content_logging !== void 0) {
+    labels["disable_user_content_logging"] = String(request.metadata.disable_user_content_logging);
+  }
+  if (request.metadata.client_version) {
+    labels["client_version"] = request.metadata.client_version;
+  }
+  if (Object.keys(labels).length > 0) {
+    gcaRequest.labels = labels;
+  }
+}
+var AidaReasonToGcaInclusionReason = {
+  [Reason.UNKNOWN]: InclusionReason.INCLUSION_REASON_UNSPECIFIED,
+  [Reason.CURRENTLY_OPEN]: InclusionReason.OPEN,
+  // Intentional mapping due to type mismatch
+  // TODO(liviurau): find a way to validate this mapping
+  [Reason.RECENTLY_OPENED]: InclusionReason.RECENTLY_CLOSED,
+  [Reason.RECENTLY_EDITED]: InclusionReason.RECENTLY_EDITED,
+  [Reason.COLOCATED]: InclusionReason.COLOCATED,
+  [Reason.RELATED_FILE]: InclusionReason.RELATED
+};
+function gcaResponseToAidaCompletionResponse(response) {
+  try {
+    const { samples, metadata } = gcaResponseToAidaSamplesAndMetadata(response);
+    const aidaResponse = {
+      generatedSamples: samples,
+      metadata
+    };
+    debugLog("Translation succeeded:", JSON.stringify(response), JSON.stringify(aidaResponse));
+    return aidaResponse;
+  } catch (e) {
+    debugLog("Translation error", JSON.stringify(response), e);
+    throw e;
+  }
+}
+function gcaResponseToAidaSamplesAndMetadata(response) {
+  return {
+    samples: (response.candidates ?? []).map(gcaCandidateToAidaGenerationSample),
+    metadata: {
+      rpcGlobalId: response.responseId
+    }
+  };
+}
+function aidaGenerateCodeRequestToGcaRequest(request) {
+  try {
+    const gcaRequest = createBaseGcaRequest(request, [convertAidaContentToGcaContent(request.current_message)], "generate_code");
+    if (request.context_files) {
+      gcaRequest.aicode.files = request.context_files.map((f) => ({
+        fileUri: f.path,
+        programmingLanguage: f.programming_language
+      }));
+    }
+    debugLog("Translation succeeded:", JSON.stringify(request), JSON.stringify(gcaRequest));
+    return gcaRequest;
+  } catch (e) {
+    debugLog("Translation error", JSON.stringify(request), e);
+    throw e;
+  }
+}
+function gcaResponseToAidaGenerateCodeResponse(response) {
+  try {
+    const aidaResponse = gcaResponseToAidaSamplesAndMetadata(response);
+    debugLog("Translation succeeded:", JSON.stringify(response), JSON.stringify(aidaResponse));
+    return aidaResponse;
+  } catch (e) {
+    debugLog("translation error", JSON.stringify(response), e);
+    throw e;
+  }
+}
+function gcaCandidateToAidaGenerationSample(candidate) {
+  const generationSample = {
+    generationString: extractTextFromGcaParts(candidate.content?.parts),
+    score: 0,
+    sampleId: candidate.index
+  };
+  if (candidate.citationMetadata) {
+    generationSample.attributionMetadata = {
+      attributionAction: RecitationAction.CITE,
+      citations: (candidate.citationMetadata.citations ?? []).map((c) => ({
+        startIndex: c.startIndex,
+        endIndex: c.endIndex,
+        uri: c.uri
+      }))
+    };
+  }
+  return generationSample;
+}
+function convertAidaFactsToGcaContent(facts) {
+  return {
+    role: "user",
+    parts: facts.map((fact) => {
+      return { text: `[source: ${fact.metadata.source}] ${fact.text}` };
+    })
+  };
+}
+function convertAidaContentToGcaContent(content) {
+  let role = "user";
+  if (content.role === Role.MODEL) {
+    role = "model";
+  }
+  return {
+    role,
+    parts: (content.parts ?? []).map(convertAidaPartToGcaPart)
+  };
+}
+function convertAidaPartToGcaPart(part) {
+  if ("text" in part) {
+    return { text: part.text };
+  }
+  if ("functionCall" in part) {
+    return {
+      functionCall: {
+        name: part.functionCall.name,
+        args: part.functionCall.args
+      }
+    };
+  }
+  if ("functionResponse" in part) {
+    const fResponse = {};
+    if ("result" in part.functionResponse.response) {
+      fResponse.output = part.functionResponse.response["result"];
+    } else if ("output" in part.functionResponse.response) {
+      fResponse.output = part.functionResponse.response["output"];
+    } else if (!("error" in part.functionResponse.response)) {
+      fResponse.output = part.functionResponse.response;
+    }
+    if ("error" in part.functionResponse.response) {
+      fResponse.error = part.functionResponse.response["error"];
+    }
+    return {
+      functionResponse: {
+        name: part.functionResponse.name,
+        response: fResponse
+      }
+    };
+  }
+  if ("inlineData" in part) {
+    return {
+      inlineData: {
+        mimeType: part.inlineData.mimeType,
+        data: part.inlineData.data
+      }
+    };
+  }
+  return {};
+}
+function convertAidaParamToGcaSchema(param) {
+  const schema = {
+    type: param.type,
+    description: param.description
+  };
+  if (param.nullable) {
+    schema.nullable = param.nullable;
+  }
+  if (param.type === 5 && param.items) {
+    schema.items = convertAidaParamToGcaSchema(param.items);
+  } else if (param.type === 6 && param.properties) {
+    schema.properties = {};
+    for (const [key, value] of Object.entries(param.properties)) {
+      schema.properties[key] = convertAidaParamToGcaSchema(value);
+    }
+    schema.required = (param.required ?? []).map((r) => r.toString());
+  }
+  return schema;
+}
+function gcaChunkResponseToAidaChunkResponse(response) {
+  try {
+    const candidate = response.candidates?.[0];
+    const parts = candidate?.content?.parts || [];
+    const metadata = {
+      rpcGlobalId: response.responseId,
+      inferenceOptionMetadata: { modelId: response.modelVersion }
+    };
+    if (candidate?.citationMetadata?.citations) {
+      metadata.attributionMetadata = {
+        attributionAction: RecitationAction.CITE,
+        citations: candidate.citationMetadata.citations.map((c) => ({
+          startIndex: c.startIndex,
+          endIndex: c.endIndex,
+          uri: c.uri
+        }))
+      };
+    }
+    const chunks = parts.map((part) => {
+      const aidaChunkResponse = { metadata };
+      if (part.text !== void 0) {
+        aidaChunkResponse.textChunk = {
+          text: extractTextFromGcaParts(parts)
+        };
+      }
+      if (part.functionCall) {
+        aidaChunkResponse.functionCallChunk = {
+          functionCall: {
+            name: part.functionCall.name,
+            args: part.functionCall.args || {}
+          }
+        };
+      }
+      if (part.executableCode) {
+        aidaChunkResponse.codeChunk = {
+          code: part.executableCode.code,
+          inferenceLanguage: part.executableCode.language ? "PYTHON" : "UNKNOWN"
+        };
+      }
+      return aidaChunkResponse;
+    });
+    debugLog("Translation succeeded:", JSON.stringify(response), JSON.stringify(chunks));
+    return chunks;
+  } catch (e) {
+    debugLog("Translation error", JSON.stringify(response), e);
+    throw e;
+  }
+}
 
 // gen/front_end/core/host/DispatchHttpRequestClient.js
 var DispatchHttpRequestClient_exports = {};
@@ -34,17 +710,17 @@ __export(DispatchHttpRequestClient_exports, {
   ErrorType: () => ErrorType,
   makeHttpRequest: () => makeHttpRequest
 });
+import * as Platform3 from "./../platform/platform.js";
 
 // gen/front_end/core/host/InspectorFrontendHost.js
 var InspectorFrontendHost_exports = {};
 __export(InspectorFrontendHost_exports, {
   InspectorFrontendHostInstance: () => InspectorFrontendHostInstance,
   InspectorFrontendHostStub: () => InspectorFrontendHostStub,
+  installInspectorFrontendHost: () => installInspectorFrontendHost,
   isUnderTest: () => isUnderTest
 });
-import * as Common2 from "./../common/common.js";
-import * as i18n3 from "./../i18n/i18n.js";
-import * as Platform from "./../platform/platform.js";
+import * as Common3 from "./../common/common.js";
 import * as Root from "./../root/root.js";
 
 // gen/front_end/core/host/InspectorFrontendHostAPI.js
@@ -114,6 +790,11 @@ var EventDescriptors = [
   [Events.SetUseSoftMenu, ["useSoftMenu"]],
   [Events.ShowPanel, ["panelName"]]
 ];
+
+// gen/front_end/core/host/InspectorFrontendHostStub.js
+import * as Common2 from "./../common/common.js";
+import * as i18n3 from "./../i18n/i18n.js";
+import * as Platform2 from "./../platform/platform.js";
 
 // gen/front_end/core/host/ResourceLoader.js
 var ResourceLoader_exports = {};
@@ -276,30 +957,17 @@ function createErrorMessageFromResponse(response) {
   console.assert(success === (message.length === 0));
   return { success, description: { statusCode, netError, netErrorName, urlValid, message } };
 }
-var loadXHR = (url) => {
-  return new Promise((successCallback, failureCallback) => {
-    function onReadyStateChanged() {
-      if (xhr.readyState !== XMLHttpRequest.DONE) {
-        return;
-      }
-      if (xhr.status !== 200) {
-        xhr.onreadystatechange = null;
-        failureCallback(new Error(String(xhr.status)));
-        return;
-      }
-      xhr.onreadystatechange = null;
-      successCallback(xhr.responseText);
-    }
-    const xhr = new XMLHttpRequest();
-    xhr.withCredentials = false;
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = onReadyStateChanged;
-    xhr.send(null);
-  });
-};
+async function fetchToString(url) {
+  try {
+    const response = await fetch(url);
+    return await response.text();
+  } catch (cause) {
+    throw new Error(`Failed to fetch ${url}`, { cause });
+  }
+}
 function canBeRemoteFilePath(url) {
   try {
-    const urlObject = new URL(url);
+    const urlObject = new URL(new URL(url).toString());
     return urlObject.protocol === "file:" && urlObject.host !== "";
   } catch {
     return false;
@@ -309,7 +977,7 @@ var loadAsStream = function(url, headers, stream, callback, allowRemoteFilePaths
   const streamId = bindOutputStream(stream);
   const parsedURL = new Common.ParsedURL.ParsedURL(url);
   if (parsedURL.isDataURL()) {
-    loadXHR(url).then(dataURLDecodeSuccessful).catch(dataURLDecodeFailed);
+    fetchToString(url).then(dataURLDecodeSuccessful).catch(dataURLDecodeFailed);
     return;
   }
   if (!allowRemoteFilePaths && canBeRemoteFilePath(url)) {
@@ -355,7 +1023,7 @@ var loadAsStream = function(url, headers, stream, callback, allowRemoteFilePaths
   }
 };
 
-// gen/front_end/core/host/InspectorFrontendHost.js
+// gen/front_end/core/host/InspectorFrontendHostStub.js
 var UIStrings2 = {
   /**
    * @description Document title in Inspector Frontend Host of the DevTools window
@@ -363,7 +1031,7 @@ var UIStrings2 = {
    */
   devtoolsS: "DevTools - {PH1}"
 };
-var str_2 = i18n3.i18n.registerUIStrings("core/host/InspectorFrontendHost.ts", UIStrings2);
+var str_2 = i18n3.i18n.registerUIStrings("core/host/InspectorFrontendHostStub.ts", UIStrings2);
 var i18nString2 = i18n3.i18n.getLocalizedString.bind(void 0, str_2);
 var MAX_RECORDED_HISTOGRAMS_SIZE = 100;
 var OVERRIDES_FILE_SYSTEM_PATH = "/overrides";
@@ -422,6 +1090,9 @@ var InspectorFrontendHostStub = class {
   setInjectedScriptForOrigin(_origin, _script) {
   }
   inspectedURLChanged(url) {
+    if (!("document" in globalThis)) {
+      return;
+    }
     document.title = i18nString2(UIStrings2.devtoolsS, { PH1: url.replace(/^https?:\/\//, "") });
   }
   copyText(text) {
@@ -466,8 +1137,8 @@ var InspectorFrontendHostStub = class {
     let fileName = "";
     if (url) {
       try {
-        const trimmed = Platform.StringUtilities.trimURL(url);
-        fileName = Platform.StringUtilities.removeURLFragment(trimmed);
+        const trimmed = Platform2.StringUtilities.trimURL(url);
+        fileName = Platform2.StringUtilities.removeURLFragment(trimmed);
       } catch {
         fileName = url;
       }
@@ -501,6 +1172,12 @@ var InspectorFrontendHostStub = class {
     this.recordedEnumeratedHistograms.push({ actionName, actionCode });
   }
   recordPerformanceHistogram(histogramName, duration) {
+    if (this.recordedPerformanceHistograms.length >= MAX_RECORDED_HISTOGRAMS_SIZE) {
+      this.recordedPerformanceHistograms.shift();
+    }
+    this.recordedPerformanceHistograms.push({ histogramName, duration });
+  }
+  recordPerformanceHistogramMedium(histogramName, duration) {
     if (this.recordedPerformanceHistograms.length >= MAX_RECORDED_HISTOGRAMS_SIZE) {
       this.recordedPerformanceHistograms.shift();
     }
@@ -560,21 +1237,11 @@ var InspectorFrontendHostStub = class {
     }).then(function(text) {
       streamWrite(streamId, text);
       callback({
-        statusCode: 200,
-        headers: void 0,
-        messageOverride: void 0,
-        netError: void 0,
-        netErrorName: void 0,
-        urlValid: void 0
+        statusCode: 200
       });
     }).catch(function() {
       callback({
-        statusCode: 404,
-        headers: void 0,
-        messageOverride: void 0,
-        netError: void 0,
-        netErrorName: void 0,
-        urlValid: void 0
+        statusCode: 404
       });
     });
   }
@@ -613,19 +1280,8 @@ var InspectorFrontendHostStub = class {
       devToolsVeLogging: {
         enabled: true
       },
-      thirdPartyCookieControls: {
-        thirdPartyCookieMetadataEnabled: true,
-        thirdPartyCookieHeuristicsEnabled: true,
-        managedBlockThirdPartyCookies: "Unset"
-      },
-      devToolsIpProtectionPanelInDevTools: {
-        enabled: false
-      },
       devToolsFlexibleLayout: {
         verticalDrawerEnabled: true
-      },
-      devToolsStartingStyleDebugging: {
-        enabled: false
       }
     };
     if ("hostConfigForTesting" in globalThis) {
@@ -690,19 +1346,19 @@ var InspectorFrontendHostStub = class {
    * Whereas in **Non-hosted** (aka "embedded"), DevTools is embedded and fully dockable. It's the common way DevTools is run.
    *
    * **Hosted mode** == we're using the `InspectorFrontendHostStub`. impl. (@see `InspectorFrontendHostStub` class comment)
-   * Whereas with **non-hosted** mode, native `DevToolsEmbedderMessageDispatcher` is used for CDP and more.
+   * Whereas with **non-hosted** mode, native `DevToolsEmbedderMessageDispatcher` is used for CDP and more.  `globalThis.DevToolsAPI` is present.
    *
    * Relationships to other signals:
-   * - Hosted-ness does not indicate whether the frontend is _connected to a valid CDP target_.
-   * - Being _"dockable"_ (aka `canDock`) is typically aligned but technically orthogonal.
-   * - It's unrelated to the _tab's (main frame's) URL_. Though in non-hosted, the devtools frame origin will always be `devtools://devtools`.
+   * - _Connection_: Hosted-ness does not indicate whether the frontend is _connected to a valid CDP target_.
+   * - _Dockability_: Being _"dockable"_ (aka `canDock`) is typically aligned but technically orthogonal.
+   * - _URL scheme_: If the main frame's URL scheme is `devtools://`, it's non-hosted.
    *
-   *  | Example case                                         | Mode           | Example devtools                                                                   |
-   *  | :--------------------------------------------------- | :------------- | :---------------------------------------------------------------------------- |
-   *  | tab URL: anything. embedded DevTools w/ native CDP bindings    | **NOT Hosted** | `devtools://devtools/bundled/devtools_app.html?targetType=tab&...`            |
-   *  | tab URL: `devtools://…?ws=…`                | **Hosted**     | `devtools://devtools/bundled/devtools_app.html?ws=localhost:9228/...`         |
-   *  | tab URL: `devtools://…` but no connection   | **Hosted**     | `devtools://devtools/bundled/devtools_app.html`                               |
-   *  | tab URL: `https://…` but no connection      | **Hosted**     | `https://chrome-devtools-frontend.appspot.com/serve_rev/@.../worker_app.html` |
+   *  | Example case                                | Mode           | Example devtools                                                              |
+   *  | :------------------------------------------ | :------------- | :---------------------------------------------------------------------------- |
+   *  | tab URL: `devtools://…`                     | **NOT Hosted** | `devtools://devtools/bundled/devtools_app.html?targetType=tab&...`            |
+   *  | tab URL: `devtools://…?ws=…`                | **NOT Hosted** | `devtools://devtools/bundled/devtools_app.html?ws=localhost:9228/...`         |
+   *  | tab URL: `devtools://…` but no connection   | **NOT Hosted** | `devtools://devtools/bundled/trace_app.html`                                  |
+   *  | tab URL: `https://…` but no connection      | **Hosted**     | `https://chrome-devtools-frontend.appspot.com/serve_rev/@.../trace_app.html`  |
    *  | tab URL: `http://…?ws=` (connected)         | **Hosted**     | `http://localhost:9222/devtools/inspector.html?ws=localhost:9222/...`         |
    */
   isHostedMode() {
@@ -749,8 +1405,14 @@ var InspectorFrontendHostStub = class {
   }
   recordFunctionCall(_event) {
   }
+  setChromeFlag(_flagName, _value) {
+  }
+  requestRestart() {
+  }
 };
-var InspectorFrontendHostInstance = globalThis.InspectorFrontendHost;
+
+// gen/front_end/core/host/InspectorFrontendHost.js
+var InspectorFrontendHostInstance;
 var InspectorFrontendAPIImpl = class {
   constructor() {
     for (const descriptor of EventDescriptors) {
@@ -780,24 +1442,23 @@ var InspectorFrontendAPIImpl = class {
     streamWrite(id, chunk);
   }
 };
-(function() {
-  function initializeInspectorFrontendHost() {
-    if (!InspectorFrontendHostInstance) {
-      globalThis.InspectorFrontendHost = InspectorFrontendHostInstance = new InspectorFrontendHostStub();
-    } else {
-      const proto = InspectorFrontendHostStub.prototype;
-      for (const name of Object.getOwnPropertyNames(proto)) {
-        const stub = proto[name];
-        if (typeof stub !== "function" || InspectorFrontendHostInstance[name]) {
-          continue;
-        }
-        console.error(`Incompatible embedder: method Host.InspectorFrontendHost.${name} is missing. Using stub instead.`);
-        InspectorFrontendHostInstance[name] = stub;
+function installInspectorFrontendHost(instance) {
+  globalThis.InspectorFrontendHost = InspectorFrontendHostInstance = instance;
+  if (!(instance instanceof InspectorFrontendHostStub)) {
+    const proto = InspectorFrontendHostStub.prototype;
+    for (const name of Object.getOwnPropertyNames(proto)) {
+      const stub = proto[name];
+      if (typeof stub !== "function" || InspectorFrontendHostInstance[name]) {
+        continue;
       }
+      console.error(`Incompatible embedder: method Host.InspectorFrontendHost.${name} is missing. Using stub instead.`);
+      InspectorFrontendHostInstance[name] = stub;
     }
-    InspectorFrontendHostInstance.events = new Common2.ObjectWrapper.ObjectWrapper();
   }
-  initializeInspectorFrontendHost();
+  InspectorFrontendHostInstance.events = new Common3.ObjectWrapper.ObjectWrapper();
+}
+(function() {
+  installInspectorFrontendHost(globalThis.InspectorFrontendHost ?? new InspectorFrontendHostStub());
   globalThis.InspectorFrontendAPI = new InspectorFrontendAPIImpl();
 })();
 function isUnderTest(prefs) {
@@ -807,7 +1468,7 @@ function isUnderTest(prefs) {
   if (prefs) {
     return prefs["isUnderTest"] === "true";
   }
-  return Common2.Settings.Settings.hasInstance() && Common2.Settings.Settings.instance().createSetting("isUnderTest", false).get();
+  return Common3.Settings.Settings.hasInstance() && Common3.Settings.Settings.instance().createSetting("isUnderTest", false).get();
 }
 
 // gen/front_end/core/host/DispatchHttpRequestClient.js
@@ -815,149 +1476,223 @@ var ErrorType;
 (function(ErrorType2) {
   ErrorType2["HTTP_RESPONSE_UNAVAILABLE"] = "HTTP_RESPONSE_UNAVAILABLE";
   ErrorType2["NOT_FOUND"] = "NOT_FOUND";
+  ErrorType2["ABORT"] = "ABORT";
 })(ErrorType || (ErrorType = {}));
 var DispatchHttpRequestError = class extends Error {
   type;
-  constructor(type, options) {
+  response;
+  constructor(type, response, options) {
     super(void 0, options);
     this.type = type;
+    this.response = response;
   }
 };
-async function makeHttpRequest(request) {
-  const response = await new Promise((resolve) => {
-    InspectorFrontendHostInstance.dispatchHttpRequest(request, resolve);
+async function makeHttpRequest(request, options) {
+  const signal = options?.signal;
+  if (signal?.aborted) {
+    throw new DispatchHttpRequestError(ErrorType.ABORT);
+  }
+  const response = await new Promise((resolve, reject) => {
+    const onAbort = () => {
+      reject(new DispatchHttpRequestError(ErrorType.ABORT));
+    };
+    signal?.addEventListener("abort", onAbort, { once: true });
+    InspectorFrontendHostInstance.dispatchHttpRequest(request, (result) => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve(result);
+    });
   });
-  debugLog({ request, response });
+  debugLog2({ request, response });
   if (response.statusCode === 404) {
-    throw new DispatchHttpRequestError(ErrorType.NOT_FOUND);
+    throw new DispatchHttpRequestError(ErrorType.NOT_FOUND, response);
   }
   if ("response" in response && response.statusCode === 200) {
+    if (request.streamId && !response.response) {
+      return null;
+    }
     try {
       return JSON.parse(response.response);
     } catch (err) {
-      throw new DispatchHttpRequestError(ErrorType.HTTP_RESPONSE_UNAVAILABLE, { cause: err });
+      throw new DispatchHttpRequestError(ErrorType.HTTP_RESPONSE_UNAVAILABLE, response, { cause: err });
     }
   }
-  throw new DispatchHttpRequestError(ErrorType.HTTP_RESPONSE_UNAVAILABLE);
+  throw new DispatchHttpRequestError(ErrorType.HTTP_RESPONSE_UNAVAILABLE, response);
 }
 function isDebugMode() {
-  return Boolean(localStorage.getItem("debugDispatchHttpRequestEnabled"));
+  return Boolean(Platform3.HostRuntime.HOST_RUNTIME.getLocalStorage()?.getItem("debugDispatchHttpRequestEnabled"));
 }
-function debugLog(...log) {
+function debugLog2(...log) {
   if (!isDebugMode()) {
     return;
   }
   console.log("debugLog", ...log);
 }
 function setDebugDispatchHttpRequestEnabled(enabled) {
+  const localStorage = Platform3.HostRuntime.HOST_RUNTIME.getLocalStorage();
   if (enabled) {
-    localStorage.setItem("debugDispatchHttpRequestEnabled", "true");
+    localStorage?.setItem("debugDispatchHttpRequestEnabled", "true");
   } else {
-    localStorage.removeItem("debugDispatchHttpRequestEnabled");
+    localStorage?.removeItem("debugDispatchHttpRequestEnabled");
   }
 }
 globalThis.setDebugDispatchHttpRequestEnabled = setDebugDispatchHttpRequestEnabled;
 
-// gen/front_end/core/host/AidaClient.js
-var Role;
-(function(Role2) {
-  Role2[Role2["ROLE_UNSPECIFIED"] = 0] = "ROLE_UNSPECIFIED";
-  Role2[Role2["USER"] = 1] = "USER";
-  Role2[Role2["MODEL"] = 2] = "MODEL";
-})(Role || (Role = {}));
-var FunctionalityType;
-(function(FunctionalityType2) {
-  FunctionalityType2[FunctionalityType2["FUNCTIONALITY_TYPE_UNSPECIFIED"] = 0] = "FUNCTIONALITY_TYPE_UNSPECIFIED";
-  FunctionalityType2[FunctionalityType2["CHAT"] = 1] = "CHAT";
-  FunctionalityType2[FunctionalityType2["EXPLAIN_ERROR"] = 2] = "EXPLAIN_ERROR";
-  FunctionalityType2[FunctionalityType2["AGENTIC_CHAT"] = 5] = "AGENTIC_CHAT";
-})(FunctionalityType || (FunctionalityType = {}));
-var ClientFeature;
-(function(ClientFeature2) {
-  ClientFeature2[ClientFeature2["CLIENT_FEATURE_UNSPECIFIED"] = 0] = "CLIENT_FEATURE_UNSPECIFIED";
-  ClientFeature2[ClientFeature2["CHROME_CONSOLE_INSIGHTS"] = 1] = "CHROME_CONSOLE_INSIGHTS";
-  ClientFeature2[ClientFeature2["CHROME_STYLING_AGENT"] = 2] = "CHROME_STYLING_AGENT";
-  ClientFeature2[ClientFeature2["CHROME_NETWORK_AGENT"] = 7] = "CHROME_NETWORK_AGENT";
-  ClientFeature2[ClientFeature2["CHROME_PERFORMANCE_ANNOTATIONS_AGENT"] = 20] = "CHROME_PERFORMANCE_ANNOTATIONS_AGENT";
-  ClientFeature2[ClientFeature2["CHROME_FILE_AGENT"] = 9] = "CHROME_FILE_AGENT";
-  ClientFeature2[ClientFeature2["CHROME_PATCH_AGENT"] = 12] = "CHROME_PATCH_AGENT";
-  ClientFeature2[ClientFeature2["CHROME_PERFORMANCE_FULL_AGENT"] = 24] = "CHROME_PERFORMANCE_FULL_AGENT";
-})(ClientFeature || (ClientFeature = {}));
-var UserTier;
-(function(UserTier2) {
-  UserTier2[UserTier2["USER_TIER_UNSPECIFIED"] = 0] = "USER_TIER_UNSPECIFIED";
-  UserTier2[UserTier2["TESTERS"] = 1] = "TESTERS";
-  UserTier2[UserTier2["BETA"] = 2] = "BETA";
-  UserTier2[UserTier2["PUBLIC"] = 3] = "PUBLIC";
-})(UserTier || (UserTier = {}));
-var EditType;
-(function(EditType2) {
-  EditType2[EditType2["EDIT_TYPE_UNSPECIFIED"] = 0] = "EDIT_TYPE_UNSPECIFIED";
-  EditType2[EditType2["ADD"] = 1] = "ADD";
-  EditType2[EditType2["DELETE"] = 2] = "DELETE";
-  EditType2[EditType2["PASTE"] = 3] = "PASTE";
-  EditType2[EditType2["UNDO"] = 4] = "UNDO";
-  EditType2[EditType2["REDO"] = 5] = "REDO";
-  EditType2[EditType2["ACCEPT_COMPLETION"] = 6] = "ACCEPT_COMPLETION";
-})(EditType || (EditType = {}));
-var Reason;
-(function(Reason2) {
-  Reason2[Reason2["UNKNOWN"] = 0] = "UNKNOWN";
-  Reason2[Reason2["CURRENTLY_OPEN"] = 1] = "CURRENTLY_OPEN";
-  Reason2[Reason2["RECENTLY_OPENED"] = 2] = "RECENTLY_OPENED";
-  Reason2[Reason2["RECENTLY_EDITED"] = 3] = "RECENTLY_EDITED";
-  Reason2[Reason2["COLOCATED"] = 4] = "COLOCATED";
-  Reason2[Reason2["RELATED_FILE"] = 5] = "RELATED_FILE";
-})(Reason || (Reason = {}));
-var UseCase;
-(function(UseCase2) {
-  UseCase2[UseCase2["USE_CASE_UNSPECIFIED"] = 0] = "USE_CASE_UNSPECIFIED";
-  UseCase2[UseCase2["CODE_GENERATION"] = 1] = "CODE_GENERATION";
-})(UseCase || (UseCase = {}));
-var RecitationAction;
-(function(RecitationAction2) {
-  RecitationAction2["ACTION_UNSPECIFIED"] = "ACTION_UNSPECIFIED";
-  RecitationAction2["CITE"] = "CITE";
-  RecitationAction2["BLOCK"] = "BLOCK";
-  RecitationAction2["NO_ACTION"] = "NO_ACTION";
-  RecitationAction2["EXEMPT_FOUND_IN_PROMPT"] = "EXEMPT_FOUND_IN_PROMPT";
-})(RecitationAction || (RecitationAction = {}));
-var CitationSourceType;
-(function(CitationSourceType2) {
-  CitationSourceType2["CITATION_SOURCE_TYPE_UNSPECIFIED"] = "CITATION_SOURCE_TYPE_UNSPECIFIED";
-  CitationSourceType2["TRAINING_DATA"] = "TRAINING_DATA";
-  CitationSourceType2["WORLD_FACTS"] = "WORLD_FACTS";
-  CitationSourceType2["LOCAL_FACTS"] = "LOCAL_FACTS";
-  CitationSourceType2["INDIRECT"] = "INDIRECT";
-})(CitationSourceType || (CitationSourceType = {}));
-var AidaLanguageToMarkdown = {
-  CPP: "cpp",
-  PYTHON: "py",
-  KOTLIN: "kt",
-  JAVA: "java",
-  JAVASCRIPT: "js",
-  GO: "go",
-  TYPESCRIPT: "ts",
-  HTML: "html",
-  BASH: "sh",
-  CSS: "css",
-  DART: "dart",
-  JSON: "json",
-  MARKDOWN: "md",
-  VUE: "vue",
-  XML: "xml"
+// gen/front_end/core/host/GcaClient.js
+var GcaClient_exports = {};
+__export(GcaClient_exports, {
+  GcaClient: () => GcaClient
+});
+import * as Root2 from "./../root/root.js";
+var SERVICE_NAME = "gcaService";
+var ENDPOINTS = {
+  CONTENT: "/v1beta:generateContent",
+  SEND_TELEMETRY: "/v1beta:sendTelemetry",
+  STREAM_CONTENT: "/v1beta:streamGenerateContent"
 };
+var GcaClient = class {
+  enabled() {
+    return Root2.Runtime.hostConfig.devToolsUseGcaApi?.enabled;
+  }
+  async conversationRequest(request, streamId, options) {
+    try {
+      const gcaRequest = aidaDoConversationRequestToGcaRequest(request);
+      const response = await makeHttpRequest({
+        service: SERVICE_NAME,
+        path: ENDPOINTS.STREAM_CONTENT,
+        method: "POST",
+        body: JSON.stringify(gcaRequest),
+        streamId
+      }, options);
+      debugLog("GCA conversation request succeeded:", JSON.stringify(request), JSON.stringify(response));
+    } catch (err) {
+      debugLog("GCA request failed:", JSON.stringify(request), err);
+      throw err;
+    }
+  }
+  registerClientEvent(clientEvent) {
+    const gcaEvent = aidaEventToGcaTelemetryRequest(clientEvent);
+    const response = makeHttpRequest({
+      service: SERVICE_NAME,
+      path: ENDPOINTS.SEND_TELEMETRY,
+      method: "POST",
+      body: JSON.stringify(gcaEvent)
+    });
+    return response.then((result) => {
+      debugLog("GCA register event succeeded:", JSON.stringify(gcaEvent), JSON.stringify(result));
+      return {};
+    }, (err) => {
+      debugLog("GCA register event failed:", JSON.stringify(gcaEvent), err);
+      return { error: JSON.stringify(err) };
+    });
+  }
+  async completeCode(request) {
+    const gcaRequest = aidaCompletionRequestToGcaRequest(request);
+    const result = await this.#requestContent(gcaRequest);
+    const aidaResult = result ? gcaResponseToAidaCompletionResponse(result) : null;
+    return aidaResult;
+  }
+  async generateCode(request, options) {
+    const gcaRequest = aidaGenerateCodeRequestToGcaRequest(request);
+    const result = await this.#requestContent(gcaRequest, options);
+    return result ? gcaResponseToAidaGenerateCodeResponse(result) : null;
+  }
+  async #requestContent(request, options) {
+    try {
+      const response = await makeHttpRequest({
+        service: SERVICE_NAME,
+        path: ENDPOINTS.CONTENT,
+        method: "POST",
+        body: JSON.stringify(request)
+      }, options);
+      debugLog("GCA request succeeded:", JSON.stringify(request), JSON.stringify(response));
+      return response;
+    } catch (err) {
+      debugLog("GCA request failed:", JSON.stringify(request), err);
+      return null;
+    }
+  }
+};
+
+// gen/front_end/core/host/AidaClient.js
 var CLIENT_NAME = "CHROME_DEVTOOLS";
-var SERVICE_NAME = "aidaService";
+var SERVICE_NAME2 = "aidaService";
 var CODE_CHUNK_SEPARATOR = (lang = "") => "\n`````" + lang + "\n";
+var AidaLanguageToMarkdown = {
+  [
+    "CPP"
+    /* AidaInferenceLanguage.CPP */
+  ]: "cpp",
+  [
+    "PYTHON"
+    /* AidaInferenceLanguage.PYTHON */
+  ]: "py",
+  [
+    "KOTLIN"
+    /* AidaInferenceLanguage.KOTLIN */
+  ]: "kt",
+  [
+    "JAVA"
+    /* AidaInferenceLanguage.JAVA */
+  ]: "java",
+  [
+    "JAVASCRIPT"
+    /* AidaInferenceLanguage.JAVASCRIPT */
+  ]: "js",
+  [
+    "GO"
+    /* AidaInferenceLanguage.GO */
+  ]: "go",
+  [
+    "TYPESCRIPT"
+    /* AidaInferenceLanguage.TYPESCRIPT */
+  ]: "ts",
+  [
+    "HTML"
+    /* AidaInferenceLanguage.HTML */
+  ]: "html",
+  [
+    "BASH"
+    /* AidaInferenceLanguage.BASH */
+  ]: "sh",
+  [
+    "CSS"
+    /* AidaInferenceLanguage.CSS */
+  ]: "css",
+  [
+    "DART"
+    /* AidaInferenceLanguage.DART */
+  ]: "dart",
+  [
+    "JSON"
+    /* AidaInferenceLanguage.JSON */
+  ]: "json",
+  [
+    "MARKDOWN"
+    /* AidaInferenceLanguage.MARKDOWN */
+  ]: "md",
+  [
+    "VUE"
+    /* AidaInferenceLanguage.VUE */
+  ]: "vue",
+  [
+    "XML"
+    /* AidaInferenceLanguage.XML */
+  ]: "xml",
+  [
+    "UNKNOWN"
+    /* AidaInferenceLanguage.UNKNOWN */
+  ]: "unknown"
+};
 var AidaAbortError = class extends Error {
 };
 var AidaBlockError = class extends Error {
 };
 var AidaClient = class {
+  // Delegate client
+  #gcaClient = new GcaClient();
   static buildConsoleInsightsRequest(input) {
-    const disallowLogging = Root2.Runtime.hostConfig.aidaAvailability?.disallowLogging ?? true;
-    const chromeVersion = Root2.Runtime.getChromeVersion();
+    const disallowLogging = Root3.Runtime.hostConfig.aidaAvailability?.disallowLogging ?? true;
+    const chromeVersion = Root3.Runtime.getChromeVersion();
     if (!chromeVersion) {
       throw new Error("Cannot determine Chrome version");
     }
@@ -973,9 +1708,9 @@ var AidaClient = class {
     };
     let temperature = -1;
     let modelId;
-    if (Root2.Runtime.hostConfig.devToolsConsoleInsights?.enabled) {
-      temperature = Root2.Runtime.hostConfig.devToolsConsoleInsights.temperature ?? -1;
-      modelId = Root2.Runtime.hostConfig.devToolsConsoleInsights.modelId;
+    if (Root3.Runtime.hostConfig.devToolsConsoleInsights?.enabled) {
+      temperature = Root3.Runtime.hostConfig.devToolsConsoleInsights.temperature ?? -1;
+      modelId = Root3.Runtime.hostConfig.devToolsConsoleInsights.modelId;
     }
     if (temperature >= 0) {
       request.options ??= {};
@@ -988,7 +1723,7 @@ var AidaClient = class {
     return request;
   }
   static async checkAccessPreconditions() {
-    if (!navigator.onLine) {
+    if (!Platform4.HostRuntime.HOST_RUNTIME.getOnLine()) {
       return "no-internet";
     }
     const syncInfo = await new Promise((resolve) => InspectorFrontendHostInstance.getSyncInformation((syncInfo2) => resolve(syncInfo2)));
@@ -1001,8 +1736,11 @@ var AidaClient = class {
     return "available";
   }
   async *doConversation(request, options) {
-    if (!InspectorFrontendHostInstance.doAidaConversation) {
-      throw new Error("doAidaConversation is not available");
+    if (!InspectorFrontendHostInstance.dispatchHttpRequest) {
+      throw new Error("dispatchHttpRequest is not available");
+    }
+    if (Root3.Runtime.hostConfig.devToolsGeminiRebranding?.enabled) {
+      request.metadata.disable_user_content_logging = true;
     }
     const stream = (() => {
       let { promise, resolve, reject } = Promise.withResolvers();
@@ -1024,59 +1762,70 @@ var AidaClient = class {
       };
     })();
     const streamId = bindOutputStream(stream);
-    InspectorFrontendHostInstance.doAidaConversation(JSON.stringify(request), streamId, (result) => {
-      if (result.statusCode === 403) {
-        stream.fail(new Error("Server responded: permission denied"));
-      } else if (result.error) {
-        stream.fail(new Error(`Cannot send request: ${result.error} ${result.detail || ""}`));
-      } else if (result.netErrorName === "net::ERR_TIMED_OUT") {
-        stream.fail(new Error("doAidaConversation timed out"));
-      } else if (result.statusCode !== 200) {
-        stream.fail(new Error(`Request failed: ${JSON.stringify(result)}`));
-      } else {
-        void stream.close();
+    let response;
+    if (this.#gcaClient.enabled()) {
+      response = this.#gcaClient.conversationRequest(request, streamId, options);
+    } else {
+      response = makeHttpRequest({
+        service: SERVICE_NAME2,
+        path: "/v1/aida:doConversation",
+        method: "POST",
+        body: JSON.stringify(request),
+        streamId
+      }, options);
+    }
+    response.then(() => {
+      void stream.close();
+    }, (err) => {
+      debugLog("doConversation failed with error:", JSON.stringify(err));
+      if (err instanceof DispatchHttpRequestError && err.response) {
+        const result = err.response;
+        if (result.statusCode === 403) {
+          stream.fail(new Error("Server responded: permission denied"));
+          return;
+        }
+        if ("error" in result && result.error) {
+          stream.fail(new Error(`Cannot send request: ${result.error} ${result.detail || ""}`));
+          return;
+        }
+        if ("netErrorName" in result && result.netErrorName === "net::ERR_TIMED_OUT") {
+          stream.fail(new Error("doAidaConversation timed out"));
+          return;
+        }
+        if (result.statusCode !== 200) {
+          stream.fail(new Error(`Request failed: ${JSON.stringify(result)}`));
+          return;
+        }
       }
+      stream.fail(err);
     });
+    await (yield* this.#handleResponseStream(stream));
+  }
+  async *#handleResponseStream(stream) {
     let chunk;
     const text = [];
     let inCodeChunk = false;
     const functionCalls = [];
     let metadata = { rpcGlobalId: 0 };
     while (chunk = await stream.read()) {
+      debugLog("doConversation stream chunk:", chunk);
       let textUpdated = false;
-      if (!chunk.length) {
-        continue;
-      }
-      if (chunk.startsWith(",")) {
-        chunk = chunk.slice(1);
-      }
-      if (!chunk.startsWith("[")) {
-        chunk = "[" + chunk;
-      }
-      if (!chunk.endsWith("]")) {
-        chunk = chunk + "]";
-      }
-      let results;
-      try {
-        results = JSON.parse(chunk);
-      } catch (error) {
-        throw new Error("Cannot parse chunk: " + chunk, { cause: error });
-      }
+      const results = this.#parseAndTranslate(chunk);
       for (const result of results) {
-        if ("metadata" in result) {
+        if (result.metadata) {
           metadata = result.metadata;
           if (metadata?.attributionMetadata?.attributionAction === RecitationAction.BLOCK) {
             throw new AidaBlockError();
           }
         }
-        if ("textChunk" in result) {
+        if (result.textChunk) {
           if (inCodeChunk) {
             text.push(CODE_CHUNK_SEPARATOR());
             inCodeChunk = false;
           }
           text.push(result.textChunk.text);
           textUpdated = true;
-        } else if ("codeChunk" in result) {
+        } else if (result.codeChunk) {
           if (!inCodeChunk) {
             const language = AidaLanguageToMarkdown[result.codeChunk.inferenceLanguage] ?? "";
             text.push(CODE_CHUNK_SEPARATOR(language));
@@ -1084,7 +1833,7 @@ var AidaClient = class {
           }
           text.push(result.codeChunk.code);
           textUpdated = true;
-        } else if ("functionCallChunk" in result) {
+        } else if (result.functionCallChunk) {
           functionCalls.push({
             name: result.functionCallChunk.functionCall.name,
             args: result.functionCallChunk.functionCall.args
@@ -1092,7 +1841,7 @@ var AidaClient = class {
         } else if ("error" in result) {
           throw new Error(`Server responded: ${JSON.stringify(result)}`);
         } else {
-          throw new Error("Unknown chunk result");
+          throw new Error(`Unknown chunk result ${JSON.stringify(result)}`);
         }
       }
       if (textUpdated) {
@@ -1110,7 +1859,40 @@ var AidaClient = class {
       completed: true
     };
   }
+  #parseAndTranslate(chunk) {
+    const results = this.#parseStreamChunk(chunk);
+    if (this.#gcaClient.enabled()) {
+      return results.flatMap(gcaChunkResponseToAidaChunkResponse);
+    }
+    return results;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #parseStreamChunk(chunk) {
+    if (!chunk.length) {
+      return [];
+    }
+    if (chunk.startsWith(",")) {
+      chunk = chunk.slice(1);
+    }
+    if (!chunk.startsWith("[")) {
+      chunk = "[" + chunk;
+    }
+    if (!chunk.endsWith("]")) {
+      chunk = chunk + "]";
+    }
+    try {
+      return JSON.parse(chunk);
+    } catch (error) {
+      throw new Error("Cannot parse chunk: " + chunk, { cause: error });
+    }
+  }
   registerClientEvent(clientEvent) {
+    if (Root3.Runtime.hostConfig.devToolsGeminiRebranding?.enabled) {
+      clientEvent.disable_user_content_logging = true;
+    }
+    if (this.#gcaClient.enabled()) {
+      return this.#gcaClient.registerClientEvent(clientEvent);
+    }
     const { promise, resolve } = Promise.withResolvers();
     InspectorFrontendHostInstance.registerAidaClientEvent(JSON.stringify({
       client: CLIENT_NAME,
@@ -1122,6 +1904,12 @@ var AidaClient = class {
   async completeCode(request) {
     if (!InspectorFrontendHostInstance.aidaCodeComplete) {
       throw new Error("aidaCodeComplete is not available");
+    }
+    if (Root3.Runtime.hostConfig.devToolsGeminiRebranding?.enabled) {
+      request.metadata.disable_user_content_logging = true;
+    }
+    if (this.#gcaClient.enabled()) {
+      return await this.#gcaClient.completeCode(request);
     }
     const { promise, resolve } = Promise.withResolvers();
     InspectorFrontendHostInstance.aidaCodeComplete(JSON.stringify(request), resolve);
@@ -1161,13 +1949,19 @@ var AidaClient = class {
     }
     return { generatedSamples, metadata };
   }
-  async generateCode(request) {
+  async generateCode(request, options) {
+    if (Root3.Runtime.hostConfig.devToolsGeminiRebranding?.enabled) {
+      request.metadata.disable_user_content_logging = true;
+    }
+    if (this.#gcaClient.enabled()) {
+      return await this.#gcaClient.generateCode(request, options);
+    }
     const response = await makeHttpRequest({
-      service: SERVICE_NAME,
+      service: SERVICE_NAME2,
       path: "/v1/aida:generateCode",
       method: "POST",
       body: JSON.stringify(request)
-    });
+    }, options);
     return response;
   }
 };
@@ -1182,10 +1976,17 @@ function convertToUserTierEnum(userTier) {
         return UserTier.PUBLIC;
     }
   }
-  return UserTier.BETA;
+  return UserTier.PUBLIC;
+}
+function getClientFeatureName(feature) {
+  const name = ClientFeature[feature];
+  if (typeof name !== "string") {
+    throw new Error(`Invalid ClientFeature: ${feature}`);
+  }
+  return name;
 }
 var hostConfigTrackerInstance;
-var HostConfigTracker = class _HostConfigTracker extends Common3.ObjectWrapper.ObjectWrapper {
+var HostConfigTracker = class _HostConfigTracker extends Common4.ObjectWrapper.ObjectWrapper {
   #pollTimer;
   #aidaAvailability;
   constructor() {
@@ -1201,7 +2002,7 @@ var HostConfigTracker = class _HostConfigTracker extends Common3.ObjectWrapper.O
     const isFirst = !this.hasEventListeners(eventType);
     const eventDescriptor = super.addEventListener(eventType, listener);
     if (isFirst) {
-      window.clearTimeout(this.#pollTimer);
+      clearTimeout(this.#pollTimer);
       void this.pollAidaAvailability();
     }
     return eventDescriptor;
@@ -1209,16 +2010,16 @@ var HostConfigTracker = class _HostConfigTracker extends Common3.ObjectWrapper.O
   removeEventListener(eventType, listener) {
     super.removeEventListener(eventType, listener);
     if (!this.hasEventListeners(eventType)) {
-      window.clearTimeout(this.#pollTimer);
+      clearTimeout(this.#pollTimer);
     }
   }
   async pollAidaAvailability() {
-    this.#pollTimer = window.setTimeout(() => this.pollAidaAvailability(), 2e3);
+    this.#pollTimer = setTimeout(() => this.pollAidaAvailability(), 2e3);
     const currentAidaAvailability = await AidaClient.checkAccessPreconditions();
     if (currentAidaAvailability !== this.#aidaAvailability) {
       this.#aidaAvailability = currentAidaAvailability;
       const config = await new Promise((resolve) => InspectorFrontendHostInstance.getHostConfig(resolve));
-      Object.assign(Root2.Runtime.hostConfig, config);
+      Object.assign(Root3.Runtime.hostConfig, config);
       this.dispatchEventToListeners(
         "aidaAvailabilityChanged"
         /* Events.AIDA_AVAILABILITY_CHANGED */
@@ -1241,7 +2042,7 @@ __export(GdpClient_exports, {
   isGdpProfilesAvailable: () => isGdpProfilesAvailable,
   isStarterBadgeEnabled: () => isStarterBadgeEnabled
 });
-import * as Root3 from "./../root/root.js";
+import * as Root4 from "./../root/root.js";
 var SubscriptionStatus;
 (function(SubscriptionStatus2) {
   SubscriptionStatus2["ENABLED"] = "SUBSCRIPTION_STATE_ENABLED";
@@ -1272,6 +2073,7 @@ function normalizeBadgeName(name) {
   return name.replace(/profiles\/[^/]+\/awards\//, "profiles/me/awards/");
 }
 var GOOGLE_DEVELOPER_PROGRAM_PROFILE_LINK = "https://developers.google.com/profile/u/me";
+var ORIGIN_APPLICATION_NAME = "APPLICATION_CHROME_DEVTOOLS";
 async function makeHttpRequest2(request) {
   if (!isGdpProfilesAvailable()) {
     throw new DispatchHttpRequestError(ErrorType.HTTP_RESPONSE_UNAVAILABLE);
@@ -1279,7 +2081,7 @@ async function makeHttpRequest2(request) {
   const response = await makeHttpRequest(request);
   return response;
 }
-var SERVICE_NAME2 = "gdpService";
+var SERVICE_NAME3 = "gdpService";
 var gdpClientInstance = null;
 var GdpClient = class _GdpClient {
   #cachedProfilePromise;
@@ -1329,7 +2131,7 @@ var GdpClient = class _GdpClient {
       return await this.#cachedProfilePromise;
     }
     this.#cachedProfilePromise = makeHttpRequest2({
-      service: SERVICE_NAME2,
+      service: SERVICE_NAME3,
       path: "/v1beta1/profile:get",
       method: "GET"
     }).then((profile) => {
@@ -1342,7 +2144,7 @@ var GdpClient = class _GdpClient {
     if (this.#cachedEligibilityPromise) {
       return await this.#cachedEligibilityPromise;
     }
-    this.#cachedEligibilityPromise = makeHttpRequest2({ service: SERVICE_NAME2, path: "/v1beta1/eligibility:check", method: "GET" });
+    this.#cachedEligibilityPromise = makeHttpRequest2({ service: SERVICE_NAME3, path: "/v1beta1/eligibility:check", method: "GET" });
     return await this.#cachedEligibilityPromise;
   }
   /**
@@ -1351,7 +2153,7 @@ var GdpClient = class _GdpClient {
   async getAwardedBadgeNames({ names }) {
     try {
       const response = await makeHttpRequest2({
-        service: SERVICE_NAME2,
+        service: SERVICE_NAME3,
         path: "/v1beta1/profiles/me/awards:batchGet",
         method: "GET",
         queryParams: {
@@ -1367,12 +2169,15 @@ var GdpClient = class _GdpClient {
   async createProfile({ user, emailPreference }) {
     try {
       const response = await makeHttpRequest2({
-        service: SERVICE_NAME2,
+        service: SERVICE_NAME3,
         path: "/v1beta1/profiles",
         method: "POST",
         body: JSON.stringify({
           user,
-          newsletter_email: emailPreference
+          newsletter_email: emailPreference,
+          creation_origin: {
+            origin_application: ORIGIN_APPLICATION_NAME
+          }
         })
       });
       this.#clearCache();
@@ -1388,7 +2193,7 @@ var GdpClient = class _GdpClient {
   async createAward({ name }) {
     try {
       const response = await makeHttpRequest2({
-        service: SERVICE_NAME2,
+        service: SERVICE_NAME3,
         path: "/v1beta1/profiles/me/awards",
         method: "POST",
         body: JSON.stringify({
@@ -1403,29 +2208,28 @@ var GdpClient = class _GdpClient {
   }
 };
 function isGdpProfilesAvailable() {
-  const isBaseFeatureEnabled = Boolean(Root3.Runtime.hostConfig.devToolsGdpProfiles?.enabled);
-  const isBrandedBuild = Boolean(Root3.Runtime.hostConfig.devToolsGdpProfilesAvailability?.enabled);
-  const isOffTheRecordProfile = Root3.Runtime.hostConfig.isOffTheRecord;
-  const isDisabledByEnterprisePolicy = getGdpProfilesEnterprisePolicy() === Root3.Runtime.GdpProfilesEnterprisePolicyValue.DISABLED;
+  const isBaseFeatureEnabled = Boolean(Root4.Runtime.hostConfig.devToolsGdpProfiles?.enabled);
+  const isBrandedBuild = Boolean(Root4.Runtime.hostConfig.devToolsGdpProfilesAvailability?.enabled);
+  const isOffTheRecordProfile = Root4.Runtime.hostConfig.isOffTheRecord;
+  const isDisabledByEnterprisePolicy = getGdpProfilesEnterprisePolicy() === Root4.Runtime.GdpProfilesEnterprisePolicyValue.DISABLED;
   return isBaseFeatureEnabled && isBrandedBuild && !isOffTheRecordProfile && !isDisabledByEnterprisePolicy;
 }
 function getGdpProfilesEnterprisePolicy() {
-  return Root3.Runtime.hostConfig.devToolsGdpProfilesAvailability?.enterprisePolicyValue ?? Root3.Runtime.GdpProfilesEnterprisePolicyValue.DISABLED;
+  return Root4.Runtime.hostConfig.devToolsGdpProfilesAvailability?.enterprisePolicyValue ?? Root4.Runtime.GdpProfilesEnterprisePolicyValue.DISABLED;
 }
 function isBadgesEnabled() {
-  const isBadgesEnabledByEnterprisePolicy = getGdpProfilesEnterprisePolicy() === Root3.Runtime.GdpProfilesEnterprisePolicyValue.ENABLED;
-  const isBadgesEnabledByFeatureFlag = Boolean(Root3.Runtime.hostConfig.devToolsGdpProfiles?.badgesEnabled);
+  const isBadgesEnabledByEnterprisePolicy = getGdpProfilesEnterprisePolicy() === Root4.Runtime.GdpProfilesEnterprisePolicyValue.ENABLED;
+  const isBadgesEnabledByFeatureFlag = Boolean(Root4.Runtime.hostConfig.devToolsGdpProfiles?.badgesEnabled);
   return isBadgesEnabledByEnterprisePolicy && isBadgesEnabledByFeatureFlag;
 }
 function isStarterBadgeEnabled() {
-  return Boolean(Root3.Runtime.hostConfig.devToolsGdpProfiles?.starterBadgeEnabled);
+  return Boolean(Root4.Runtime.hostConfig.devToolsGdpProfiles?.starterBadgeEnabled);
 }
 
 // gen/front_end/core/host/Platform.js
 var Platform_exports = {};
 __export(Platform_exports, {
   fontFamily: () => fontFamily,
-  isCustomDevtoolsFrontend: () => isCustomDevtoolsFrontend,
   isMac: () => isMac,
   isWin: () => isWin,
   platform: () => platform,
@@ -1457,13 +2261,6 @@ function setPlatformForTests(platform2) {
   _isMac = void 0;
   _isWin = void 0;
 }
-var _isCustomDevtoolsFrontend;
-function isCustomDevtoolsFrontend() {
-  if (typeof _isCustomDevtoolsFrontend === "undefined") {
-    _isCustomDevtoolsFrontend = window.location.toString().startsWith("devtools://devtools/custom/");
-  }
-  return _isCustomDevtoolsFrontend;
-}
 var _fontFamily;
 function fontFamily() {
   if (_fontFamily) {
@@ -1493,32 +2290,13 @@ __export(UserMetrics_exports, {
   IssueResourceOpened: () => IssueResourceOpened,
   KeybindSetSettings: () => KeybindSetSettings,
   KeyboardShortcutAction: () => KeyboardShortcutAction,
-  Language: () => Language,
+  Language: () => Language2,
   ManifestSectionCodes: () => ManifestSectionCodes,
   MediaTypes: () => MediaTypes,
   PanelCodes: () => PanelCodes,
   UserMetrics: () => UserMetrics
 });
 var UserMetrics = class {
-  #panelChangedSinceLaunch;
-  #firedLaunchHistogram;
-  #launchPanelName;
-  constructor() {
-    this.#panelChangedSinceLaunch = false;
-    this.#firedLaunchHistogram = false;
-    this.#launchPanelName = "";
-  }
-  panelShown(panelName, isLaunching) {
-    const code = PanelCodes[panelName] || 0;
-    InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.PanelShown", code, PanelCodes.MAX_VALUE);
-    InspectorFrontendHostInstance.recordUserMetricsAction("DevTools_PanelShown_" + panelName);
-    if (!isLaunching) {
-      this.#panelChangedSinceLaunch = true;
-    }
-  }
-  settingsPanelShown(settingsViewId) {
-    this.panelShown("settings-" + settingsViewId);
-  }
   sourcesPanelFileDebugged(mediaType) {
     const code = mediaType && MediaTypes[mediaType] || MediaTypes.Unknown;
     InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.SourcesPanelFileDebugged", code, MediaTypes.MAX_VALUE);
@@ -1533,27 +2311,6 @@ var UserMetrics = class {
   }
   actionTaken(action) {
     InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.ActionTaken", action, Action.MAX_VALUE);
-  }
-  panelLoaded(panelName, histogramName) {
-    if (this.#firedLaunchHistogram || panelName !== this.#launchPanelName) {
-      return;
-    }
-    this.#firedLaunchHistogram = true;
-    requestAnimationFrame(() => {
-      window.setTimeout(() => {
-        performance.mark(histogramName);
-        if (this.#panelChangedSinceLaunch) {
-          return;
-        }
-        InspectorFrontendHostInstance.recordPerformanceHistogram(histogramName, performance.now());
-      }, 0);
-    });
-  }
-  setLaunchPanel(panelName) {
-    this.#launchPanelName = panelName;
-  }
-  performanceTraceLoad(measure) {
-    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.TraceLoad", measure.duration);
   }
   keybindSetSettingChanged(keybindSet) {
     const value = KeybindSetSettings[keybindSet] || 0;
@@ -1649,11 +2406,11 @@ var UserMetrics = class {
     );
   }
   language(language) {
-    const languageCode = Language[language];
+    const languageCode = Language2[language];
     if (languageCode === void 0) {
       return;
     }
-    InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.Language", languageCode, Language.MAX_VALUE);
+    InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.Language", languageCode, Language2.MAX_VALUE);
   }
   syncSetting(devtoolsSyncSettingEnabled) {
     InspectorFrontendHostInstance.getSyncInformation((syncInfo) => {
@@ -1671,14 +2428,6 @@ var UserMetrics = class {
       );
     });
   }
-  recordingAssertion(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingAssertion",
-      value,
-      4
-      /* RecordingAssertion.MAX_VALUE */
-    );
-  }
   recordingToggled(value) {
     InspectorFrontendHostInstance.recordEnumeratedHistogram(
       "DevTools.RecordingToggled",
@@ -1695,52 +2444,12 @@ var UserMetrics = class {
       /* RecordingReplayFinished.MAX_VALUE */
     );
   }
-  recordingReplaySpeed(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingReplaySpeed",
-      value,
-      5
-      /* RecordingReplaySpeed.MAX_VALUE */
-    );
-  }
   recordingReplayStarted(value) {
     InspectorFrontendHostInstance.recordEnumeratedHistogram(
       "DevTools.RecordingReplayStarted",
       value,
       4
       /* RecordingReplayStarted.MAX_VALUE */
-    );
-  }
-  recordingEdited(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingEdited",
-      value,
-      11
-      /* RecordingEdited.MAX_VALUE */
-    );
-  }
-  recordingExported(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingExported",
-      value,
-      6
-      /* RecordingExported.MAX_VALUE */
-    );
-  }
-  recordingCodeToggled(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingCodeToggled",
-      value,
-      3
-      /* RecordingCodeToggled.MAX_VALUE */
-    );
-  }
-  recordingCopiedToClipboard(value) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.RecordingCopiedToClipboard",
-      value,
-      9
-      /* RecordingCopiedToClipboard.MAX_VALUE */
     );
   }
   lighthouseModeRun(type) {
@@ -1755,7 +2464,7 @@ var UserMetrics = class {
     InspectorFrontendHostInstance.recordEnumeratedHistogram(
       "DevTools.LighthouseCategoryUsed",
       type,
-      6
+      7
       /* LighthouseCategoryUsed.MAX_VALUE */
     );
   }
@@ -1765,14 +2474,6 @@ var UserMetrics = class {
       swatch,
       13
       /* SwatchType.MAX_VALUE */
-    );
-  }
-  animationPlaybackRateChanged(playbackRate) {
-    InspectorFrontendHostInstance.recordEnumeratedHistogram(
-      "DevTools.AnimationPlaybackRateChanged",
-      playbackRate,
-      4
-      /* AnimationsPlaybackRate.MAX_VALUE */
     );
   }
   workspacesPopulated(wallClockTimeInMilliseconds) {
@@ -1806,6 +2507,38 @@ var UserMetrics = class {
   }
   consoleInsightTeaserGenerated(timeInMilliseconds) {
     InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.TeaserGenerationTime", timeInMilliseconds);
+  }
+  consoleInsightTeaserGeneratedMedium(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogramMedium("DevTools.Insights.TeaserGenerationTimeMedium", timeInMilliseconds);
+  }
+  consoleInsightTeaserFirstChunkGenerated(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.TeaserFirstChunkGenerationTime", timeInMilliseconds);
+  }
+  consoleInsightTeaserFirstChunkGeneratedMedium(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogramMedium("DevTools.Insights.TeaserFirstChunkGenerationTimeMedium", timeInMilliseconds);
+  }
+  consoleInsightTeaserChunkToEndMedium(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogramMedium("DevTools.Insights.TeaserChunkToEndMedium", timeInMilliseconds);
+  }
+  consoleInsightTeaserAbortedAfterFirstCharacter(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.TeaserAfterFirstCharacterAbortionTime", timeInMilliseconds);
+  }
+  consoleInsightTeaserAbortedBeforeFirstCharacter(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.TeaserBeforeFirstCharacterAbortionTime", timeInMilliseconds);
+  }
+  consoleInsightLongTeaserGenerated(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.LongTeaserGenerationTime", timeInMilliseconds);
+  }
+  consoleInsightShortTeaserGenerated(timeInMilliseconds) {
+    InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.Insights.ShortTeaserGenerationTime", timeInMilliseconds);
+  }
+  extensionEvalTarget(target) {
+    InspectorFrontendHostInstance.recordEnumeratedHistogram(
+      "DevTools.ExtensionEvalTarget",
+      target,
+      3
+      /* ExtensionEvalTarget.MAX_VALUE */
+    );
   }
 };
 var Action;
@@ -1999,7 +2732,20 @@ var Action;
   Action2[Action2["InsightTeaserGenerationCompleted"] = 192] = "InsightTeaserGenerationCompleted";
   Action2[Action2["InsightTeaserGenerationAborted"] = 193] = "InsightTeaserGenerationAborted";
   Action2[Action2["InsightTeaserGenerationErrored"] = 194] = "InsightTeaserGenerationErrored";
-  Action2[Action2["MAX_VALUE"] = 195] = "MAX_VALUE";
+  Action2[Action2["AiCodeGenerationSuggestionDisplayed"] = 195] = "AiCodeGenerationSuggestionDisplayed";
+  Action2[Action2["AiCodeGenerationSuggestionAccepted"] = 196] = "AiCodeGenerationSuggestionAccepted";
+  Action2[Action2["InsightTeaserModelDownloadStarted"] = 197] = "InsightTeaserModelDownloadStarted";
+  Action2[Action2["InsightTeaserModelDownloadCompleted"] = 198] = "InsightTeaserModelDownloadCompleted";
+  Action2[Action2["AiCodeGenerationError"] = 199] = "AiCodeGenerationError";
+  Action2[Action2["AiCodeGenerationRequestTriggered"] = 200] = "AiCodeGenerationRequestTriggered";
+  Action2[Action2["AiCodeCompletionRequestTriggeredFromConsole"] = 201] = "AiCodeCompletionRequestTriggeredFromConsole";
+  Action2[Action2["AiCodeCompletionRequestTriggeredFromSources"] = 202] = "AiCodeCompletionRequestTriggeredFromSources";
+  Action2[Action2["AiCodeCompletionRequestTriggeredFromStyles"] = 203] = "AiCodeCompletionRequestTriggeredFromStyles";
+  Action2[Action2["AiCodeGenerationRequestTriggeredFromConsole"] = 204] = "AiCodeGenerationRequestTriggeredFromConsole";
+  Action2[Action2["AiCodeGenerationRequestTriggeredFromSources"] = 205] = "AiCodeGenerationRequestTriggeredFromSources";
+  Action2[Action2["AiCodeCompletionFreCompletedFromConsole"] = 206] = "AiCodeCompletionFreCompletedFromConsole";
+  Action2[Action2["AiCodeCompletionFreCompletedFromSources"] = 207] = "AiCodeCompletionFreCompletedFromSources";
+  Action2[Action2["MAX_VALUE"] = 208] = "MAX_VALUE";
 })(Action || (Action = {}));
 var PanelCodes;
 (function(PanelCodes2) {
@@ -2027,7 +2773,6 @@ var PanelCodes;
   PanelCodes2[PanelCodes2["changes.changes"] = 23] = "changes.changes";
   PanelCodes2[PanelCodes2["performance.monitor"] = 24] = "performance.monitor";
   PanelCodes2[PanelCodes2["release-note"] = 25] = "release-note";
-  PanelCodes2[PanelCodes2["live-heap-profile"] = 26] = "live-heap-profile";
   PanelCodes2[PanelCodes2["sources.quick"] = 27] = "sources.quick";
   PanelCodes2[PanelCodes2["network.blocked-urls"] = 28] = "network.blocked-urls";
   PanelCodes2[PanelCodes2["settings-preferences"] = 29] = "settings-preferences";
@@ -2171,8 +2916,6 @@ var KeyboardShortcutAction;
   KeyboardShortcutAction2[KeyboardShortcutAction2["inspector-main.focus-debuggee"] = 47] = "inspector-main.focus-debuggee";
   KeyboardShortcutAction2[KeyboardShortcutAction2["inspector-main.hard-reload"] = 48] = "inspector-main.hard-reload";
   KeyboardShortcutAction2[KeyboardShortcutAction2["inspector-main.reload"] = 49] = "inspector-main.reload";
-  KeyboardShortcutAction2[KeyboardShortcutAction2["live-heap-profile.start-with-reload"] = 50] = "live-heap-profile.start-with-reload";
-  KeyboardShortcutAction2[KeyboardShortcutAction2["live-heap-profile.toggle-recording"] = 51] = "live-heap-profile.toggle-recording";
   KeyboardShortcutAction2[KeyboardShortcutAction2["main.debug-reload"] = 52] = "main.debug-reload";
   KeyboardShortcutAction2[KeyboardShortcutAction2["main.next-tab"] = 53] = "main.next-tab";
   KeyboardShortcutAction2[KeyboardShortcutAction2["main.previous-tab"] = 54] = "main.previous-tab";
@@ -2244,25 +2987,14 @@ var KeyboardShortcutAction;
 var DevtoolsExperiments;
 (function(DevtoolsExperiments2) {
   DevtoolsExperiments2[DevtoolsExperiments2["capture-node-creation-stacks"] = 1] = "capture-node-creation-stacks";
-  DevtoolsExperiments2[DevtoolsExperiments2["live-heap-profile"] = 11] = "live-heap-profile";
   DevtoolsExperiments2[DevtoolsExperiments2["protocol-monitor"] = 13] = "protocol-monitor";
-  DevtoolsExperiments2[DevtoolsExperiments2["sampling-heap-profiler-timeline"] = 17] = "sampling-heap-profiler-timeline";
-  DevtoolsExperiments2[DevtoolsExperiments2["show-option-tp-expose-internals-in-heap-snapshot"] = 18] = "show-option-tp-expose-internals-in-heap-snapshot";
   DevtoolsExperiments2[DevtoolsExperiments2["timeline-invalidation-tracking"] = 26] = "timeline-invalidation-tracking";
-  DevtoolsExperiments2[DevtoolsExperiments2["timeline-show-all-events"] = 27] = "timeline-show-all-events";
-  DevtoolsExperiments2[DevtoolsExperiments2["timeline-v8-runtime-call-stats"] = 28] = "timeline-v8-runtime-call-stats";
-  DevtoolsExperiments2[DevtoolsExperiments2["apca"] = 39] = "apca";
-  DevtoolsExperiments2[DevtoolsExperiments2["font-editor"] = 41] = "font-editor";
-  DevtoolsExperiments2[DevtoolsExperiments2["full-accessibility-tree"] = 42] = "full-accessibility-tree";
-  DevtoolsExperiments2[DevtoolsExperiments2["contrast-issues"] = 44] = "contrast-issues";
-  DevtoolsExperiments2[DevtoolsExperiments2["experimental-cookie-features"] = 45] = "experimental-cookie-features";
   DevtoolsExperiments2[DevtoolsExperiments2["instrumentation-breakpoints"] = 61] = "instrumentation-breakpoints";
-  DevtoolsExperiments2[DevtoolsExperiments2["authored-deployed-grouping"] = 63] = "authored-deployed-grouping";
-  DevtoolsExperiments2[DevtoolsExperiments2["just-my-code"] = 65] = "just-my-code";
   DevtoolsExperiments2[DevtoolsExperiments2["use-source-map-scopes"] = 76] = "use-source-map-scopes";
-  DevtoolsExperiments2[DevtoolsExperiments2["timeline-show-postmessage-events"] = 86] = "timeline-show-postmessage-events";
   DevtoolsExperiments2[DevtoolsExperiments2["timeline-debug-mode"] = 93] = "timeline-debug-mode";
-  DevtoolsExperiments2[DevtoolsExperiments2["MAX_VALUE"] = 110] = "MAX_VALUE";
+  DevtoolsExperiments2[DevtoolsExperiments2["durable-messages"] = 110] = "durable-messages";
+  DevtoolsExperiments2[DevtoolsExperiments2["jpeg-xl"] = 111] = "jpeg-xl";
+  DevtoolsExperiments2[DevtoolsExperiments2["MAX_VALUE"] = 112] = "MAX_VALUE";
 })(DevtoolsExperiments || (DevtoolsExperiments = {}));
 var IssueExpanded;
 (function(IssueExpanded2) {
@@ -2329,8 +3061,7 @@ var IssueCreated;
   IssueCreated2[IssueCreated2["CookieIssue::WarnSameSiteUnspecifiedCrossSiteContext::SetCookie"] = 35] = "CookieIssue::WarnSameSiteUnspecifiedCrossSiteContext::SetCookie";
   IssueCreated2[IssueCreated2["SharedArrayBufferIssue::TransferIssue"] = 36] = "SharedArrayBufferIssue::TransferIssue";
   IssueCreated2[IssueCreated2["SharedArrayBufferIssue::CreationIssue"] = 37] = "SharedArrayBufferIssue::CreationIssue";
-  IssueCreated2[IssueCreated2["LowTextContrastIssue"] = 41] = "LowTextContrastIssue";
-  IssueCreated2[IssueCreated2["CorsIssue::InsecurePrivateNetwork"] = 42] = "CorsIssue::InsecurePrivateNetwork";
+  IssueCreated2[IssueCreated2["CorsIssue::InsecureLocalNetwork"] = 42] = "CorsIssue::InsecureLocalNetwork";
   IssueCreated2[IssueCreated2["CorsIssue::InvalidHeaders"] = 44] = "CorsIssue::InvalidHeaders";
   IssueCreated2[IssueCreated2["CorsIssue::WildcardOriginWithCredentials"] = 45] = "CorsIssue::WildcardOriginWithCredentials";
   IssueCreated2[IssueCreated2["CorsIssue::PreflightResponseInvalid"] = 46] = "CorsIssue::PreflightResponseInvalid";
@@ -2349,25 +3080,20 @@ var IssueCreated;
   IssueCreated2[IssueCreated2["DeprecationIssue"] = 60] = "DeprecationIssue";
   IssueCreated2[IssueCreated2["ClientHintIssue::MetaTagAllowListInvalidOrigin"] = 61] = "ClientHintIssue::MetaTagAllowListInvalidOrigin";
   IssueCreated2[IssueCreated2["ClientHintIssue::MetaTagModifiedHTML"] = 62] = "ClientHintIssue::MetaTagModifiedHTML";
-  IssueCreated2[IssueCreated2["CorsIssue::PreflightAllowPrivateNetworkError"] = 63] = "CorsIssue::PreflightAllowPrivateNetworkError";
   IssueCreated2[IssueCreated2["GenericIssue::CrossOriginPortalPostMessageError"] = 64] = "GenericIssue::CrossOriginPortalPostMessageError";
   IssueCreated2[IssueCreated2["GenericIssue::FormLabelForNameError"] = 65] = "GenericIssue::FormLabelForNameError";
   IssueCreated2[IssueCreated2["GenericIssue::FormDuplicateIdForInputError"] = 66] = "GenericIssue::FormDuplicateIdForInputError";
   IssueCreated2[IssueCreated2["GenericIssue::FormInputWithNoLabelError"] = 67] = "GenericIssue::FormInputWithNoLabelError";
   IssueCreated2[IssueCreated2["GenericIssue::FormAutocompleteAttributeEmptyError"] = 68] = "GenericIssue::FormAutocompleteAttributeEmptyError";
   IssueCreated2[IssueCreated2["GenericIssue::FormEmptyIdAndNameAttributesForInputError"] = 69] = "GenericIssue::FormEmptyIdAndNameAttributesForInputError";
-  IssueCreated2[IssueCreated2["GenericIssue::FormAriaLabelledByToNonExistingId"] = 70] = "GenericIssue::FormAriaLabelledByToNonExistingId";
+  IssueCreated2[IssueCreated2["GenericIssue::FormAriaLabelledByToNonExistingIdError"] = 70] = "GenericIssue::FormAriaLabelledByToNonExistingIdError";
   IssueCreated2[IssueCreated2["GenericIssue::FormInputAssignedAutocompleteValueToIdOrNameAttributeError"] = 71] = "GenericIssue::FormInputAssignedAutocompleteValueToIdOrNameAttributeError";
-  IssueCreated2[IssueCreated2["GenericIssue::FormLabelHasNeitherForNorNestedInput"] = 72] = "GenericIssue::FormLabelHasNeitherForNorNestedInput";
+  IssueCreated2[IssueCreated2["GenericIssue::FormLabelHasNeitherForNorNestedInputError"] = 72] = "GenericIssue::FormLabelHasNeitherForNorNestedInputError";
   IssueCreated2[IssueCreated2["GenericIssue::FormLabelForMatchesNonExistingIdError"] = 73] = "GenericIssue::FormLabelForMatchesNonExistingIdError";
   IssueCreated2[IssueCreated2["GenericIssue::FormHasPasswordFieldWithoutUsernameFieldError"] = 74] = "GenericIssue::FormHasPasswordFieldWithoutUsernameFieldError";
   IssueCreated2[IssueCreated2["GenericIssue::FormInputHasWrongButWellIntendedAutocompleteValueError"] = 75] = "GenericIssue::FormInputHasWrongButWellIntendedAutocompleteValueError";
   IssueCreated2[IssueCreated2["StylesheetLoadingIssue::LateImportRule"] = 76] = "StylesheetLoadingIssue::LateImportRule";
   IssueCreated2[IssueCreated2["StylesheetLoadingIssue::RequestFailed"] = 77] = "StylesheetLoadingIssue::RequestFailed";
-  IssueCreated2[IssueCreated2["CorsIssue::PreflightMissingPrivateNetworkAccessId"] = 78] = "CorsIssue::PreflightMissingPrivateNetworkAccessId";
-  IssueCreated2[IssueCreated2["CorsIssue::PreflightMissingPrivateNetworkAccessName"] = 79] = "CorsIssue::PreflightMissingPrivateNetworkAccessName";
-  IssueCreated2[IssueCreated2["CorsIssue::PrivateNetworkAccessPermissionUnavailable"] = 80] = "CorsIssue::PrivateNetworkAccessPermissionUnavailable";
-  IssueCreated2[IssueCreated2["CorsIssue::PrivateNetworkAccessPermissionDenied"] = 81] = "CorsIssue::PrivateNetworkAccessPermissionDenied";
   IssueCreated2[IssueCreated2["CookieIssue::WarnThirdPartyPhaseout::ReadCookie"] = 82] = "CookieIssue::WarnThirdPartyPhaseout::ReadCookie";
   IssueCreated2[IssueCreated2["CookieIssue::WarnThirdPartyPhaseout::SetCookie"] = 83] = "CookieIssue::WarnThirdPartyPhaseout::SetCookie";
   IssueCreated2[IssueCreated2["CookieIssue::ExcludeThirdPartyPhaseout::ReadCookie"] = 84] = "CookieIssue::ExcludeThirdPartyPhaseout::ReadCookie";
@@ -2400,94 +3126,95 @@ var IssueCreated;
   IssueCreated2[IssueCreated2["CorsIssue::LocalNetworkAccessPermissionDenied"] = 111] = "CorsIssue::LocalNetworkAccessPermissionDenied";
   IssueCreated2[IssueCreated2["SRIMessageSignatureIssue::ValidationFailedIntegrityMismatch"] = 112] = "SRIMessageSignatureIssue::ValidationFailedIntegrityMismatch";
   IssueCreated2[IssueCreated2["ElementAccessibilityIssue::InteractiveContentSummaryDescendant"] = 113] = "ElementAccessibilityIssue::InteractiveContentSummaryDescendant";
-  IssueCreated2[IssueCreated2["MAX_VALUE"] = 114] = "MAX_VALUE";
+  IssueCreated2[IssueCreated2["CorsIssue::InvalidLocalNetworkAccess"] = 114] = "CorsIssue::InvalidLocalNetworkAccess";
+  IssueCreated2[IssueCreated2["MAX_VALUE"] = 115] = "MAX_VALUE";
 })(IssueCreated || (IssueCreated = {}));
-var Language;
-(function(Language2) {
-  Language2[Language2["af"] = 1] = "af";
-  Language2[Language2["am"] = 2] = "am";
-  Language2[Language2["ar"] = 3] = "ar";
-  Language2[Language2["as"] = 4] = "as";
-  Language2[Language2["az"] = 5] = "az";
-  Language2[Language2["be"] = 6] = "be";
-  Language2[Language2["bg"] = 7] = "bg";
-  Language2[Language2["bn"] = 8] = "bn";
-  Language2[Language2["bs"] = 9] = "bs";
-  Language2[Language2["ca"] = 10] = "ca";
-  Language2[Language2["cs"] = 11] = "cs";
-  Language2[Language2["cy"] = 12] = "cy";
-  Language2[Language2["da"] = 13] = "da";
-  Language2[Language2["de"] = 14] = "de";
-  Language2[Language2["el"] = 15] = "el";
-  Language2[Language2["en-GB"] = 16] = "en-GB";
-  Language2[Language2["en-US"] = 17] = "en-US";
-  Language2[Language2["es-419"] = 18] = "es-419";
-  Language2[Language2["es"] = 19] = "es";
-  Language2[Language2["et"] = 20] = "et";
-  Language2[Language2["eu"] = 21] = "eu";
-  Language2[Language2["fa"] = 22] = "fa";
-  Language2[Language2["fi"] = 23] = "fi";
-  Language2[Language2["fil"] = 24] = "fil";
-  Language2[Language2["fr-CA"] = 25] = "fr-CA";
-  Language2[Language2["fr"] = 26] = "fr";
-  Language2[Language2["gl"] = 27] = "gl";
-  Language2[Language2["gu"] = 28] = "gu";
-  Language2[Language2["he"] = 29] = "he";
-  Language2[Language2["hi"] = 30] = "hi";
-  Language2[Language2["hr"] = 31] = "hr";
-  Language2[Language2["hu"] = 32] = "hu";
-  Language2[Language2["hy"] = 33] = "hy";
-  Language2[Language2["id"] = 34] = "id";
-  Language2[Language2["is"] = 35] = "is";
-  Language2[Language2["it"] = 36] = "it";
-  Language2[Language2["ja"] = 37] = "ja";
-  Language2[Language2["ka"] = 38] = "ka";
-  Language2[Language2["kk"] = 39] = "kk";
-  Language2[Language2["km"] = 40] = "km";
-  Language2[Language2["kn"] = 41] = "kn";
-  Language2[Language2["ko"] = 42] = "ko";
-  Language2[Language2["ky"] = 43] = "ky";
-  Language2[Language2["lo"] = 44] = "lo";
-  Language2[Language2["lt"] = 45] = "lt";
-  Language2[Language2["lv"] = 46] = "lv";
-  Language2[Language2["mk"] = 47] = "mk";
-  Language2[Language2["ml"] = 48] = "ml";
-  Language2[Language2["mn"] = 49] = "mn";
-  Language2[Language2["mr"] = 50] = "mr";
-  Language2[Language2["ms"] = 51] = "ms";
-  Language2[Language2["my"] = 52] = "my";
-  Language2[Language2["ne"] = 53] = "ne";
-  Language2[Language2["nl"] = 54] = "nl";
-  Language2[Language2["no"] = 55] = "no";
-  Language2[Language2["or"] = 56] = "or";
-  Language2[Language2["pa"] = 57] = "pa";
-  Language2[Language2["pl"] = 58] = "pl";
-  Language2[Language2["pt-PT"] = 59] = "pt-PT";
-  Language2[Language2["pt"] = 60] = "pt";
-  Language2[Language2["ro"] = 61] = "ro";
-  Language2[Language2["ru"] = 62] = "ru";
-  Language2[Language2["si"] = 63] = "si";
-  Language2[Language2["sk"] = 64] = "sk";
-  Language2[Language2["sl"] = 65] = "sl";
-  Language2[Language2["sq"] = 66] = "sq";
-  Language2[Language2["sr-Latn"] = 67] = "sr-Latn";
-  Language2[Language2["sr"] = 68] = "sr";
-  Language2[Language2["sv"] = 69] = "sv";
-  Language2[Language2["sw"] = 70] = "sw";
-  Language2[Language2["ta"] = 71] = "ta";
-  Language2[Language2["te"] = 72] = "te";
-  Language2[Language2["th"] = 73] = "th";
-  Language2[Language2["tr"] = 74] = "tr";
-  Language2[Language2["uk"] = 75] = "uk";
-  Language2[Language2["ur"] = 76] = "ur";
-  Language2[Language2["uz"] = 77] = "uz";
-  Language2[Language2["vi"] = 78] = "vi";
-  Language2[Language2["zh"] = 79] = "zh";
-  Language2[Language2["zh-HK"] = 80] = "zh-HK";
-  Language2[Language2["zh-TW"] = 81] = "zh-TW";
-  Language2[Language2["zu"] = 82] = "zu";
-  Language2[Language2["MAX_VALUE"] = 83] = "MAX_VALUE";
-})(Language || (Language = {}));
+var Language2;
+(function(Language3) {
+  Language3[Language3["af"] = 1] = "af";
+  Language3[Language3["am"] = 2] = "am";
+  Language3[Language3["ar"] = 3] = "ar";
+  Language3[Language3["as"] = 4] = "as";
+  Language3[Language3["az"] = 5] = "az";
+  Language3[Language3["be"] = 6] = "be";
+  Language3[Language3["bg"] = 7] = "bg";
+  Language3[Language3["bn"] = 8] = "bn";
+  Language3[Language3["bs"] = 9] = "bs";
+  Language3[Language3["ca"] = 10] = "ca";
+  Language3[Language3["cs"] = 11] = "cs";
+  Language3[Language3["cy"] = 12] = "cy";
+  Language3[Language3["da"] = 13] = "da";
+  Language3[Language3["de"] = 14] = "de";
+  Language3[Language3["el"] = 15] = "el";
+  Language3[Language3["en-GB"] = 16] = "en-GB";
+  Language3[Language3["en-US"] = 17] = "en-US";
+  Language3[Language3["es-419"] = 18] = "es-419";
+  Language3[Language3["es"] = 19] = "es";
+  Language3[Language3["et"] = 20] = "et";
+  Language3[Language3["eu"] = 21] = "eu";
+  Language3[Language3["fa"] = 22] = "fa";
+  Language3[Language3["fi"] = 23] = "fi";
+  Language3[Language3["fil"] = 24] = "fil";
+  Language3[Language3["fr-CA"] = 25] = "fr-CA";
+  Language3[Language3["fr"] = 26] = "fr";
+  Language3[Language3["gl"] = 27] = "gl";
+  Language3[Language3["gu"] = 28] = "gu";
+  Language3[Language3["he"] = 29] = "he";
+  Language3[Language3["hi"] = 30] = "hi";
+  Language3[Language3["hr"] = 31] = "hr";
+  Language3[Language3["hu"] = 32] = "hu";
+  Language3[Language3["hy"] = 33] = "hy";
+  Language3[Language3["id"] = 34] = "id";
+  Language3[Language3["is"] = 35] = "is";
+  Language3[Language3["it"] = 36] = "it";
+  Language3[Language3["ja"] = 37] = "ja";
+  Language3[Language3["ka"] = 38] = "ka";
+  Language3[Language3["kk"] = 39] = "kk";
+  Language3[Language3["km"] = 40] = "km";
+  Language3[Language3["kn"] = 41] = "kn";
+  Language3[Language3["ko"] = 42] = "ko";
+  Language3[Language3["ky"] = 43] = "ky";
+  Language3[Language3["lo"] = 44] = "lo";
+  Language3[Language3["lt"] = 45] = "lt";
+  Language3[Language3["lv"] = 46] = "lv";
+  Language3[Language3["mk"] = 47] = "mk";
+  Language3[Language3["ml"] = 48] = "ml";
+  Language3[Language3["mn"] = 49] = "mn";
+  Language3[Language3["mr"] = 50] = "mr";
+  Language3[Language3["ms"] = 51] = "ms";
+  Language3[Language3["my"] = 52] = "my";
+  Language3[Language3["ne"] = 53] = "ne";
+  Language3[Language3["nl"] = 54] = "nl";
+  Language3[Language3["no"] = 55] = "no";
+  Language3[Language3["or"] = 56] = "or";
+  Language3[Language3["pa"] = 57] = "pa";
+  Language3[Language3["pl"] = 58] = "pl";
+  Language3[Language3["pt-PT"] = 59] = "pt-PT";
+  Language3[Language3["pt"] = 60] = "pt";
+  Language3[Language3["ro"] = 61] = "ro";
+  Language3[Language3["ru"] = 62] = "ru";
+  Language3[Language3["si"] = 63] = "si";
+  Language3[Language3["sk"] = 64] = "sk";
+  Language3[Language3["sl"] = 65] = "sl";
+  Language3[Language3["sq"] = 66] = "sq";
+  Language3[Language3["sr-Latn"] = 67] = "sr-Latn";
+  Language3[Language3["sr"] = 68] = "sr";
+  Language3[Language3["sv"] = 69] = "sv";
+  Language3[Language3["sw"] = 70] = "sw";
+  Language3[Language3["ta"] = 71] = "ta";
+  Language3[Language3["te"] = 72] = "te";
+  Language3[Language3["th"] = 73] = "th";
+  Language3[Language3["tr"] = 74] = "tr";
+  Language3[Language3["uk"] = 75] = "uk";
+  Language3[Language3["ur"] = 76] = "ur";
+  Language3[Language3["uz"] = 77] = "uz";
+  Language3[Language3["vi"] = 78] = "vi";
+  Language3[Language3["zh"] = 79] = "zh";
+  Language3[Language3["zh-HK"] = 80] = "zh-HK";
+  Language3[Language3["zh-TW"] = 81] = "zh-TW";
+  Language3[Language3["zu"] = 82] = "zu";
+  Language3[Language3["MAX_VALUE"] = 83] = "MAX_VALUE";
+})(Language2 || (Language2 = {}));
 var ManifestSectionCodes;
 (function(ManifestSectionCodes2) {
   ManifestSectionCodes2[ManifestSectionCodes2["OtherSection"] = 0] = "OtherSection";
@@ -2503,7 +3230,10 @@ var ManifestSectionCodes;
 var userMetrics = new UserMetrics();
 export {
   AidaClient_exports as AidaClient,
+  AidaGcaTranslation_exports as AidaGcaTranslation,
   DispatchHttpRequestClient_exports as DispatchHttpRequestClient,
+  GcaClient_exports as GcaClient,
+  GcaTypes_exports as GcaTypes,
   GdpClient_exports as GdpClient,
   InspectorFrontendHost_exports as InspectorFrontendHost,
   InspectorFrontendHostAPI_exports as InspectorFrontendHostAPI,

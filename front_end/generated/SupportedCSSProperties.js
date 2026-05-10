@@ -1,4 +1,4 @@
-// Copyright 2025 The Chromium Authors
+// Copyright 2026 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 /* eslint-disable @stylistic/quotes, @stylistic/quote-props */
@@ -348,6 +348,7 @@ export const generatedProperties = [
             "background-repeat",
             "background-size",
             "base-palette",
+            "base-url",
             "baseline-shift",
             "baseline-source",
             "block-ellipsis",
@@ -418,7 +419,10 @@ export const generatedProperties = [
             "column-height",
             "column-rule-break",
             "column-rule-color",
-            "column-rule-outset",
+            "column-rule-inset-cap-end",
+            "column-rule-inset-cap-start",
+            "column-rule-inset-junction-end",
+            "column-rule-inset-junction-start",
             "column-rule-style",
             "column-rule-visibility-items",
             "column-rule-width",
@@ -464,11 +468,13 @@ export const generatedProperties = [
             "flex-basis",
             "flex-direction",
             "flex-grow",
+            "flex-line-count",
             "flex-shrink",
             "flex-wrap",
             "float",
             "flood-color",
             "flood-opacity",
+            "flow-tolerance",
             "font-display",
             "font-family",
             "font-feature-settings",
@@ -493,21 +499,27 @@ export const generatedProperties = [
             "font-variation-settings",
             "font-weight",
             "forced-color-adjust",
-            "gap-rule-overlap",
+            "frame-sizing",
             "grid-auto-columns",
             "grid-auto-flow",
             "grid-auto-rows",
             "grid-column-end",
             "grid-column-start",
+            "grid-lanes-direction",
+            "grid-lanes-pack",
             "grid-row-end",
             "grid-row-start",
             "grid-template-areas",
             "grid-template-columns",
             "grid-template-rows",
+            "hanging-punctuation",
+            "hash",
             "height",
+            "hostname",
             "hyphenate-character",
             "hyphenate-limit-chars",
             "hyphens",
+            "image-animation",
             "image-orientation",
             "image-rendering",
             "inherits",
@@ -523,7 +535,6 @@ export const generatedProperties = [
             "interest-delay-start",
             "interpolate-size",
             "isolation",
-            "item-tolerance",
             "justify-content",
             "justify-items",
             "justify-self",
@@ -544,6 +555,7 @@ export const generatedProperties = [
             "margin-left",
             "margin-right",
             "margin-top",
+            "margin-trim",
             "marker-end",
             "marker-mid",
             "marker-start",
@@ -555,8 +567,6 @@ export const generatedProperties = [
             "mask-repeat",
             "mask-size",
             "mask-type",
-            "masonry-direction",
-            "masonry-fill",
             "math-depth",
             "math-shift",
             "math-style",
@@ -597,12 +607,10 @@ export const generatedProperties = [
             "overflow-y",
             "overlay",
             "override-colors",
-            "overscroll-area",
             "overscroll-behavior-block",
             "overscroll-behavior-inline",
             "overscroll-behavior-x",
             "overscroll-behavior-y",
-            "overscroll-position",
             "pad",
             "padding-block-end",
             "padding-block-start",
@@ -613,11 +621,16 @@ export const generatedProperties = [
             "padding-right",
             "padding-top",
             "page",
+            "page-margin-safety",
             "page-orientation",
             "paint-order",
+            "path-length",
+            "pathname",
+            "pattern",
             "perspective",
             "perspective-origin",
             "pointer-events",
+            "port",
             "position",
             "position-anchor",
             "position-area",
@@ -626,6 +639,7 @@ export const generatedProperties = [
             "position-visibility",
             "prefix",
             "print-color-adjust",
+            "protocol",
             "quotes",
             "r",
             "range",
@@ -638,13 +652,17 @@ export const generatedProperties = [
             "row-gap",
             "row-rule-break",
             "row-rule-color",
-            "row-rule-outset",
+            "row-rule-inset-cap-end",
+            "row-rule-inset-cap-start",
+            "row-rule-inset-junction-end",
+            "row-rule-inset-junction-start",
             "row-rule-style",
             "row-rule-visibility-items",
             "row-rule-width",
             "ruby-align",
             "ruby-overhang",
             "ruby-position",
+            "rule-overlap",
             "rx",
             "ry",
             "scale",
@@ -670,16 +688,13 @@ export const generatedProperties = [
             "scroll-snap-align",
             "scroll-snap-stop",
             "scroll-snap-type",
-            "scroll-start-block",
-            "scroll-start-inline",
-            "scroll-start-x",
-            "scroll-start-y",
             "scroll-target-group",
             "scroll-timeline-axis",
             "scroll-timeline-name",
             "scrollbar-color",
             "scrollbar-gutter",
             "scrollbar-width",
+            "search",
             "shape-image-threshold",
             "shape-margin",
             "shape-outside",
@@ -715,19 +730,19 @@ export const generatedProperties = [
             "text-decoration-color",
             "text-decoration-line",
             "text-decoration-skip-ink",
+            "text-decoration-skip-spaces",
             "text-decoration-style",
             "text-decoration-thickness",
             "text-emphasis-color",
             "text-emphasis-position",
             "text-emphasis-style",
-            "text-grow",
+            "text-fit",
             "text-indent",
             "text-justify",
             "text-orientation",
             "text-overflow",
             "text-rendering",
             "text-shadow",
-            "text-shrink",
             "text-size-adjust",
             "text-spacing-trim",
             "text-transform",
@@ -736,11 +751,11 @@ export const generatedProperties = [
             "text-wrap-mode",
             "text-wrap-style",
             "timeline-scope",
-            "timeline-trigger-exit-range-end",
-            "timeline-trigger-exit-range-start",
+            "timeline-trigger-activation-range-end",
+            "timeline-trigger-activation-range-start",
+            "timeline-trigger-active-range-end",
+            "timeline-trigger-active-range-start",
             "timeline-trigger-name",
-            "timeline-trigger-range-end",
-            "timeline-trigger-range-start",
             "timeline-trigger-source",
             "top",
             "touch-action",
@@ -754,6 +769,7 @@ export const generatedProperties = [
             "transition-property",
             "transition-timing-function",
             "translate",
+            "trigger-scope",
             "types",
             "unicode-range",
             "user-select",
@@ -765,6 +781,7 @@ export const generatedProperties = [
             "view-transition-class",
             "view-transition-group",
             "view-transition-name",
+            "view-transition-scope",
             "visibility",
             "white-space-collapse",
             "widows",
@@ -983,7 +1000,8 @@ export const generatedProperties = [
             "border-box",
             "padding-box",
             "content-box",
-            "text"
+            "text",
+            "border-area"
         ],
         "name": "background-clip"
     },
@@ -1036,6 +1054,9 @@ export const generatedProperties = [
         "name": "base-palette"
     },
     {
+        "name": "base-url"
+    },
+    {
         "keywords": [
             "baseline",
             "sub",
@@ -1054,7 +1075,7 @@ export const generatedProperties = [
     {
         "inherited": true,
         "keywords": [
-            "auto",
+            "ellipsis",
             "no-ellipsis"
         ],
         "name": "block-ellipsis"
@@ -1709,7 +1730,7 @@ export const generatedProperties = [
         "inherited": false,
         "keywords": [
             "none",
-            "spanning-item",
+            "normal",
             "intersection"
         ],
         "name": "column-rule-break"
@@ -1721,8 +1742,69 @@ export const generatedProperties = [
         "name": "column-rule-color"
     },
     {
+        "longhands": [
+            "column-rule-inset-cap-start",
+            "column-rule-inset-cap-end",
+            "column-rule-inset-junction-start",
+            "column-rule-inset-junction-end"
+        ],
+        "name": "column-rule-inset"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-cap-start",
+            "column-rule-inset-cap-end"
+        ],
+        "name": "column-rule-inset-cap"
+    },
+    {
         "inherited": false,
-        "name": "column-rule-outset"
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "column-rule-inset-cap-end"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "column-rule-inset-cap-start"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-cap-end",
+            "column-rule-inset-junction-end"
+        ],
+        "name": "column-rule-inset-end"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-junction-start",
+            "column-rule-inset-junction-end"
+        ],
+        "name": "column-rule-inset-junction"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "column-rule-inset-junction-end"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "column-rule-inset-junction-start"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-cap-start",
+            "column-rule-inset-junction-start"
+        ],
+        "name": "column-rule-inset-start"
     },
     {
         "keywords": [
@@ -1743,9 +1825,9 @@ export const generatedProperties = [
         "inherited": false,
         "keywords": [
             "all",
+            "normal",
             "around",
-            "between",
-            "none"
+            "between"
         ],
         "name": "column-rule-visibility-items"
     },
@@ -1797,8 +1879,7 @@ export const generatedProperties = [
             "style",
             "paint",
             "inline-size",
-            "block-size",
-            "view-transition"
+            "block-size"
         ],
         "name": "contain"
     },
@@ -1863,11 +1944,27 @@ export const generatedProperties = [
     },
     {
         "keywords": [
-            "auto",
+            "normal",
             "collapse",
             "-webkit-legacy"
         ],
         "name": "continue"
+    },
+    {
+        "keywords": [
+            "normal"
+        ],
+        "longhands": [
+            "border-top-left-radius",
+            "corner-top-left-shape",
+            "border-top-right-radius",
+            "corner-top-right-shape",
+            "border-bottom-right-radius",
+            "corner-bottom-right-shape",
+            "border-bottom-left-radius",
+            "corner-bottom-left-shape"
+        ],
+        "name": "corner"
     },
     {
         "longhands": [
@@ -1992,22 +2089,6 @@ export const generatedProperties = [
     },
     {
         "keywords": [
-            "normal"
-        ],
-        "longhands": [
-            "border-top-left-radius",
-            "corner-top-left-shape",
-            "border-top-right-radius",
-            "corner-top-right-shape",
-            "border-bottom-right-radius",
-            "corner-bottom-right-shape",
-            "border-bottom-left-radius",
-            "corner-bottom-left-shape"
-        ],
-        "name": "corners"
-    },
-    {
-        "keywords": [
             "none"
         ],
         "name": "counter-increment"
@@ -2118,8 +2199,8 @@ export const generatedProperties = [
             "math",
             "ruby",
             "ruby-text",
-            "masonry",
-            "inline-masonry"
+            "grid-lanes",
+            "inline-grid-lanes"
         ],
         "name": "display"
     },
@@ -2228,6 +2309,9 @@ export const generatedProperties = [
         "name": "flex-grow"
     },
     {
+        "name": "flex-line-count"
+    },
+    {
         "name": "flex-shrink"
     },
     {
@@ -2257,6 +2341,13 @@ export const generatedProperties = [
     },
     {
         "name": "flood-opacity"
+    },
+    {
+        "keywords": [
+            "normal",
+            "infinite"
+        ],
+        "name": "flow-tolerance"
     },
     {
         "inherited": true,
@@ -2543,19 +2634,21 @@ export const generatedProperties = [
         "name": "forced-color-adjust"
     },
     {
+        "keywords": [
+            "auto",
+            "content-width",
+            "content-height",
+            "content-block-size",
+            "content-inline-size"
+        ],
+        "name": "frame-sizing"
+    },
+    {
         "longhands": [
             "row-gap",
             "column-gap"
         ],
         "name": "gap"
-    },
-    {
-        "inherited": false,
-        "keywords": [
-            "row-over-column",
-            "column-over-row"
-        ],
-        "name": "gap-rule-overlap"
     },
     {
         "longhands": [
@@ -2621,6 +2714,32 @@ export const generatedProperties = [
     },
     {
         "longhands": [
+            "grid-template-areas",
+            "grid-template-columns",
+            "grid-template-rows",
+            "grid-lanes-direction"
+        ],
+        "name": "grid-lanes"
+    },
+    {
+        "keywords": [
+            "normal",
+            "row",
+            "column",
+            "fill-reverse",
+            "track-reverse"
+        ],
+        "name": "grid-lanes-direction"
+    },
+    {
+        "keywords": [
+            "normal",
+            "dense"
+        ],
+        "name": "grid-lanes-pack"
+    },
+    {
+        "longhands": [
             "grid-row-start",
             "grid-row-end"
         ],
@@ -2665,6 +2784,19 @@ export const generatedProperties = [
         "name": "grid-template-rows"
     },
     {
+        "inherited": true,
+        "keywords": [
+            "none",
+            "first",
+            "last",
+            "allow-end"
+        ],
+        "name": "hanging-punctuation"
+    },
+    {
+        "name": "hash"
+    },
+    {
         "keywords": [
             "auto",
             "fit-content",
@@ -2672,6 +2804,9 @@ export const generatedProperties = [
             "max-content"
         ],
         "name": "height"
+    },
+    {
+        "name": "hostname"
     },
     {
         "inherited": true,
@@ -2695,6 +2830,16 @@ export const generatedProperties = [
     },
     {
         "inherited": true,
+        "keywords": [
+            "normal",
+            "running",
+            "paused",
+            "stopped"
+        ],
+        "name": "image-animation"
+    },
+    {
+        "inherited": true,
         "name": "image-orientation"
     },
     {
@@ -2704,7 +2849,8 @@ export const generatedProperties = [
             "optimizespeed",
             "optimizequality",
             "-webkit-optimize-contrast",
-            "pixelated"
+            "pixelated",
+            "crisp-edges"
         ],
         "name": "image-rendering"
     },
@@ -2799,13 +2945,6 @@ export const generatedProperties = [
             "isolate"
         ],
         "name": "isolation"
-    },
-    {
-        "keywords": [
-            "normal",
-            "infinite"
-        ],
-        "name": "item-tolerance"
     },
     {
         "name": "justify-content"
@@ -2974,6 +3113,9 @@ export const generatedProperties = [
         "name": "margin-top"
     },
     {
+        "name": "margin-trim"
+    },
+    {
         "inherited": true,
         "longhands": [
             "marker-start",
@@ -3062,38 +3204,6 @@ export const generatedProperties = [
             "alpha"
         ],
         "name": "mask-type"
-    },
-    {
-        "longhands": [
-            "grid-template-areas",
-            "grid-template-columns",
-            "masonry-direction",
-            "masonry-fill"
-        ],
-        "name": "masonry"
-    },
-    {
-        "keywords": [
-            "row",
-            "row-reverse",
-            "column",
-            "column-reverse"
-        ],
-        "name": "masonry-direction"
-    },
-    {
-        "keywords": [
-            "normal",
-            "reverse"
-        ],
-        "name": "masonry-fill"
-    },
-    {
-        "longhands": [
-            "masonry-direction",
-            "masonry-fill"
-        ],
-        "name": "masonry-flow"
     },
     {
         "inherited": true,
@@ -3372,12 +3482,6 @@ export const generatedProperties = [
         "name": "override-colors"
     },
     {
-        "keywords": [
-            "none"
-        ],
-        "name": "overscroll-area"
-    },
-    {
         "longhands": [
             "overscroll-behavior-x",
             "overscroll-behavior-y"
@@ -3393,6 +3497,7 @@ export const generatedProperties = [
     {
         "keywords": [
             "auto",
+            "chain",
             "contain",
             "none"
         ],
@@ -3401,16 +3506,11 @@ export const generatedProperties = [
     {
         "keywords": [
             "auto",
+            "chain",
             "contain",
             "none"
         ],
         "name": "overscroll-behavior-y"
-    },
-    {
-        "keywords": [
-            "none"
-        ],
-        "name": "overscroll-position"
     },
     {
         "name": "pad"
@@ -3487,6 +3587,14 @@ export const generatedProperties = [
         "name": "page-break-inside"
     },
     {
+        "keywords": [
+            "none",
+            "clamp",
+            "add"
+        ],
+        "name": "page-margin-safety"
+    },
+    {
         "name": "page-orientation"
     },
     {
@@ -3498,6 +3606,18 @@ export const generatedProperties = [
             "markers"
         ],
         "name": "paint-order"
+    },
+    {
+        "keywords": [
+            "none"
+        ],
+        "name": "path-length"
+    },
+    {
+        "name": "pathname"
+    },
+    {
+        "name": "pattern"
     },
     {
         "keywords": [
@@ -3547,6 +3667,9 @@ export const generatedProperties = [
         "name": "pointer-events"
     },
     {
+        "name": "port"
+    },
+    {
         "keywords": [
             "static",
             "relative",
@@ -3558,7 +3681,8 @@ export const generatedProperties = [
     },
     {
         "keywords": [
-            "auto"
+            "auto",
+            "none"
         ],
         "name": "position-anchor"
     },
@@ -3594,7 +3718,9 @@ export const generatedProperties = [
             "none",
             "flip-block",
             "flip-inline",
-            "flip-start"
+            "flip-start",
+            "flip-x",
+            "flip-y"
         ],
         "name": "position-try-fallbacks"
     },
@@ -3626,6 +3752,9 @@ export const generatedProperties = [
             "exact"
         ],
         "name": "print-color-adjust"
+    },
+    {
+        "name": "protocol"
     },
     {
         "inherited": true,
@@ -3697,7 +3826,7 @@ export const generatedProperties = [
         "inherited": false,
         "keywords": [
             "none",
-            "spanning-item",
+            "normal",
             "intersection"
         ],
         "name": "row-rule-break"
@@ -3709,8 +3838,69 @@ export const generatedProperties = [
         "name": "row-rule-color"
     },
     {
+        "longhands": [
+            "row-rule-inset-cap-start",
+            "row-rule-inset-cap-end",
+            "row-rule-inset-junction-start",
+            "row-rule-inset-junction-end"
+        ],
+        "name": "row-rule-inset"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-cap-start",
+            "row-rule-inset-cap-end"
+        ],
+        "name": "row-rule-inset-cap"
+    },
+    {
         "inherited": false,
-        "name": "row-rule-outset"
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "row-rule-inset-cap-end"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "row-rule-inset-cap-start"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-cap-end",
+            "row-rule-inset-junction-end"
+        ],
+        "name": "row-rule-inset-end"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-junction-start",
+            "row-rule-inset-junction-end"
+        ],
+        "name": "row-rule-inset-junction"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "row-rule-inset-junction-end"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "overlap-join"
+        ],
+        "name": "row-rule-inset-junction-start"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-cap-start",
+            "row-rule-inset-junction-start"
+        ],
+        "name": "row-rule-inset-start"
     },
     {
         "keywords": [
@@ -3731,9 +3921,9 @@ export const generatedProperties = [
         "inherited": false,
         "keywords": [
             "all",
+            "normal",
             "around",
-            "between",
-            "none"
+            "between"
         ],
         "name": "row-rule-visibility-items"
     },
@@ -3759,7 +3949,7 @@ export const generatedProperties = [
         "inherited": true,
         "keywords": [
             "auto",
-            "none"
+            "spaces"
         ],
         "name": "ruby-overhang"
     },
@@ -3798,10 +3988,60 @@ export const generatedProperties = [
     },
     {
         "longhands": [
-            "row-rule-outset",
-            "column-rule-outset"
+            "row-rule-inset-cap-start",
+            "row-rule-inset-cap-end",
+            "row-rule-inset-junction-start",
+            "row-rule-inset-junction-end",
+            "column-rule-inset-cap-start",
+            "column-rule-inset-cap-end",
+            "column-rule-inset-junction-start",
+            "column-rule-inset-junction-end"
         ],
-        "name": "rule-outset"
+        "name": "rule-inset"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-cap-start",
+            "row-rule-inset-cap-end",
+            "column-rule-inset-cap-start",
+            "column-rule-inset-cap-end"
+        ],
+        "name": "rule-inset-cap"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-cap-end",
+            "column-rule-inset-junction-end",
+            "row-rule-inset-cap-end",
+            "row-rule-inset-junction-end"
+        ],
+        "name": "rule-inset-end"
+    },
+    {
+        "longhands": [
+            "row-rule-inset-junction-start",
+            "row-rule-inset-junction-end",
+            "column-rule-inset-junction-start",
+            "column-rule-inset-junction-end"
+        ],
+        "name": "rule-inset-junction"
+    },
+    {
+        "longhands": [
+            "column-rule-inset-cap-start",
+            "column-rule-inset-junction-start",
+            "row-rule-inset-cap-start",
+            "row-rule-inset-junction-start"
+        ],
+        "name": "rule-inset-start"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "row-over-column",
+            "column-over-row"
+        ],
+        "name": "rule-overlap"
     },
     {
         "longhands": [
@@ -3809,6 +4049,13 @@ export const generatedProperties = [
             "row-rule-style"
         ],
         "name": "rule-style"
+    },
+    {
+        "longhands": [
+            "column-rule-visibility-items",
+            "row-rule-visibility-items"
+        ],
+        "name": "rule-visibility-items"
     },
     {
         "longhands": [
@@ -3997,25 +4244,6 @@ export const generatedProperties = [
         "name": "scroll-snap-type"
     },
     {
-        "longhands": [
-            "scroll-start-block",
-            "scroll-start-inline"
-        ],
-        "name": "scroll-start"
-    },
-    {
-        "name": "scroll-start-block"
-    },
-    {
-        "name": "scroll-start-inline"
-    },
-    {
-        "name": "scroll-start-x"
-    },
-    {
-        "name": "scroll-start-y"
-    },
-    {
         "keywords": [
             "none",
             "auto"
@@ -4059,6 +4287,9 @@ export const generatedProperties = [
             "none"
         ],
         "name": "scrollbar-width"
+    },
+    {
+        "name": "search"
     },
     {
         "name": "shape-image-threshold"
@@ -4292,9 +4523,20 @@ export const generatedProperties = [
         "inherited": true,
         "keywords": [
             "none",
-            "auto"
+            "auto",
+            "all"
         ],
         "name": "text-decoration-skip-ink"
+    },
+    {
+        "inherited": true,
+        "keywords": [
+            "none",
+            "start",
+            "end",
+            "all"
+        ],
+        "name": "text-decoration-skip-spaces"
     },
     {
         "keywords": [
@@ -4338,7 +4580,7 @@ export const generatedProperties = [
         "name": "text-emphasis-style"
     },
     {
-        "name": "text-grow"
+        "name": "text-fit"
     },
     {
         "inherited": true,
@@ -4388,9 +4630,6 @@ export const generatedProperties = [
         "name": "text-shadow"
     },
     {
-        "name": "text-shrink"
-    },
-    {
         "inherited": true,
         "keywords": [
             "none",
@@ -4419,11 +4658,12 @@ export const generatedProperties = [
     {
         "inherited": true,
         "keywords": [
+            "none",
             "capitalize",
             "uppercase",
             "lowercase",
             "full-width",
-            "none",
+            "full-size-kana",
             "math-auto"
         ],
         "name": "text-transform"
@@ -4479,27 +4719,41 @@ export const generatedProperties = [
         "longhands": [
             "timeline-trigger-name",
             "timeline-trigger-source",
-            "timeline-trigger-range-start",
-            "timeline-trigger-range-end",
-            "timeline-trigger-exit-range-start",
-            "timeline-trigger-exit-range-end"
+            "timeline-trigger-activation-range-start",
+            "timeline-trigger-activation-range-end",
+            "timeline-trigger-active-range-start",
+            "timeline-trigger-active-range-end"
         ],
         "name": "timeline-trigger"
     },
     {
-        "name": "timeline-trigger-exit-range-end"
+        "longhands": [
+            "timeline-trigger-activation-range-start",
+            "timeline-trigger-activation-range-end"
+        ],
+        "name": "timeline-trigger-activation-range"
     },
     {
-        "name": "timeline-trigger-exit-range-start"
+        "name": "timeline-trigger-activation-range-end"
+    },
+    {
+        "name": "timeline-trigger-activation-range-start"
+    },
+    {
+        "longhands": [
+            "timeline-trigger-active-range-start",
+            "timeline-trigger-active-range-end"
+        ],
+        "name": "timeline-trigger-active-range"
+    },
+    {
+        "name": "timeline-trigger-active-range-end"
+    },
+    {
+        "name": "timeline-trigger-active-range-start"
     },
     {
         "name": "timeline-trigger-name"
-    },
-    {
-        "name": "timeline-trigger-range-end"
-    },
-    {
-        "name": "timeline-trigger-range-start"
     },
     {
         "keywords": [
@@ -4604,6 +4858,13 @@ export const generatedProperties = [
         "name": "translate"
     },
     {
+        "keywords": [
+            "none",
+            "all"
+        ],
+        "name": "trigger-scope"
+    },
+    {
         "name": "types"
     },
     {
@@ -4686,6 +4947,14 @@ export const generatedProperties = [
             "auto"
         ],
         "name": "view-transition-name"
+    },
+    {
+        "inherited": false,
+        "keywords": [
+            "none",
+            "all"
+        ],
+        "name": "view-transition-scope"
     },
     {
         "inherited": true,
@@ -5009,7 +5278,8 @@ export const generatedPropertyValues = {
             "border-box",
             "padding-box",
             "content-box",
-            "text"
+            "text",
+            "border-area"
         ]
     },
     "background-color": {
@@ -5053,7 +5323,7 @@ export const generatedPropertyValues = {
     },
     "block-ellipsis": {
         "values": [
-            "auto",
+            "ellipsis",
             "no-ellipsis"
         ]
     },
@@ -5374,13 +5644,33 @@ export const generatedPropertyValues = {
     "column-rule-break": {
         "values": [
             "none",
-            "spanning-item",
+            "normal",
             "intersection"
         ]
     },
     "column-rule-color": {
         "values": [
             "currentcolor"
+        ]
+    },
+    "column-rule-inset-cap-end": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "column-rule-inset-cap-start": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "column-rule-inset-junction-end": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "column-rule-inset-junction-start": {
+        "values": [
+            "overlap-join"
         ]
     },
     "column-rule-style": {
@@ -5400,9 +5690,9 @@ export const generatedPropertyValues = {
     "column-rule-visibility-items": {
         "values": [
             "all",
+            "normal",
             "around",
-            "between",
-            "none"
+            "between"
         ]
     },
     "column-rule-width": {
@@ -5440,8 +5730,7 @@ export const generatedPropertyValues = {
             "style",
             "paint",
             "inline-size",
-            "block-size",
-            "view-transition"
+            "block-size"
         ]
     },
     "contain-intrinsic-height": {
@@ -5477,9 +5766,14 @@ export const generatedPropertyValues = {
     },
     "continue": {
         "values": [
-            "auto",
+            "normal",
             "collapse",
             "-webkit-legacy"
+        ]
+    },
+    "corner": {
+        "values": [
+            "normal"
         ]
     },
     "corner-bottom-left-shape": {
@@ -5520,11 +5814,6 @@ export const generatedPropertyValues = {
             "round",
             "squircle",
             "square"
-        ]
-    },
-    "corners": {
-        "values": [
-            "normal"
         ]
     },
     "counter-increment": {
@@ -5622,8 +5911,8 @@ export const generatedPropertyValues = {
             "math",
             "ruby",
             "ruby-text",
-            "masonry",
-            "inline-masonry"
+            "grid-lanes",
+            "inline-grid-lanes"
         ]
     },
     "dominant-baseline": {
@@ -5709,6 +5998,12 @@ export const generatedPropertyValues = {
     "flood-color": {
         "values": [
             "currentcolor"
+        ]
+    },
+    "flow-tolerance": {
+        "values": [
+            "normal",
+            "infinite"
         ]
     },
     "font-feature-settings": {
@@ -5897,10 +6192,13 @@ export const generatedPropertyValues = {
             "preserve-parent-color"
         ]
     },
-    "gap-rule-overlap": {
+    "frame-sizing": {
         "values": [
-            "row-over-column",
-            "column-over-row"
+            "auto",
+            "content-width",
+            "content-height",
+            "content-block-size",
+            "content-inline-size"
         ]
     },
     "grid-auto-columns": {
@@ -5933,6 +6231,21 @@ export const generatedPropertyValues = {
             "auto"
         ]
     },
+    "grid-lanes-direction": {
+        "values": [
+            "normal",
+            "row",
+            "column",
+            "fill-reverse",
+            "track-reverse"
+        ]
+    },
+    "grid-lanes-pack": {
+        "values": [
+            "normal",
+            "dense"
+        ]
+    },
     "grid-row-end": {
         "values": [
             "auto"
@@ -5958,6 +6271,14 @@ export const generatedPropertyValues = {
             "none"
         ]
     },
+    "hanging-punctuation": {
+        "values": [
+            "none",
+            "first",
+            "last",
+            "allow-end"
+        ]
+    },
     "height": {
         "values": [
             "auto",
@@ -5978,13 +6299,22 @@ export const generatedPropertyValues = {
             "auto"
         ]
     },
+    "image-animation": {
+        "values": [
+            "normal",
+            "running",
+            "paused",
+            "stopped"
+        ]
+    },
     "image-rendering": {
         "values": [
             "auto",
             "optimizespeed",
             "optimizequality",
             "-webkit-optimize-contrast",
-            "pixelated"
+            "pixelated",
+            "crisp-edges"
         ]
     },
     "initial-letter": {
@@ -6015,12 +6345,6 @@ export const generatedPropertyValues = {
         "values": [
             "auto",
             "isolate"
-        ]
-    },
-    "item-tolerance": {
-        "values": [
-            "normal",
-            "infinite"
         ]
     },
     "left": {
@@ -6149,20 +6473,6 @@ export const generatedPropertyValues = {
         "values": [
             "luminance",
             "alpha"
-        ]
-    },
-    "masonry-direction": {
-        "values": [
-            "row",
-            "row-reverse",
-            "column",
-            "column-reverse"
-        ]
-    },
-    "masonry-fill": {
-        "values": [
-            "normal",
-            "reverse"
         ]
     },
     "math-shift": {
@@ -6338,14 +6648,10 @@ export const generatedPropertyValues = {
             "auto"
         ]
     },
-    "overscroll-area": {
-        "values": [
-            "none"
-        ]
-    },
     "overscroll-behavior-x": {
         "values": [
             "auto",
+            "chain",
             "contain",
             "none"
         ]
@@ -6353,12 +6659,8 @@ export const generatedPropertyValues = {
     "overscroll-behavior-y": {
         "values": [
             "auto",
+            "chain",
             "contain",
-            "none"
-        ]
-    },
-    "overscroll-position": {
-        "values": [
             "none"
         ]
     },
@@ -6367,12 +6669,24 @@ export const generatedPropertyValues = {
             "auto"
         ]
     },
+    "page-margin-safety": {
+        "values": [
+            "none",
+            "clamp",
+            "add"
+        ]
+    },
     "paint-order": {
         "values": [
             "normal",
             "fill",
             "stroke",
             "markers"
+        ]
+    },
+    "path-length": {
+        "values": [
+            "none"
         ]
     },
     "perspective": {
@@ -6406,7 +6720,8 @@ export const generatedPropertyValues = {
     },
     "position-anchor": {
         "values": [
-            "auto"
+            "auto",
+            "none"
         ]
     },
     "position-area": {
@@ -6433,7 +6748,9 @@ export const generatedPropertyValues = {
             "none",
             "flip-block",
             "flip-inline",
-            "flip-start"
+            "flip-start",
+            "flip-x",
+            "flip-y"
         ]
     },
     "position-try-order": {
@@ -6498,13 +6815,33 @@ export const generatedPropertyValues = {
     "row-rule-break": {
         "values": [
             "none",
-            "spanning-item",
+            "normal",
             "intersection"
         ]
     },
     "row-rule-color": {
         "values": [
             "currentcolor"
+        ]
+    },
+    "row-rule-inset-cap-end": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "row-rule-inset-cap-start": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "row-rule-inset-junction-end": {
+        "values": [
+            "overlap-join"
+        ]
+    },
+    "row-rule-inset-junction-start": {
+        "values": [
+            "overlap-join"
         ]
     },
     "row-rule-style": {
@@ -6524,9 +6861,9 @@ export const generatedPropertyValues = {
     "row-rule-visibility-items": {
         "values": [
             "all",
+            "normal",
             "around",
-            "between",
-            "none"
+            "between"
         ]
     },
     "row-rule-width": {
@@ -6547,13 +6884,19 @@ export const generatedPropertyValues = {
     "ruby-overhang": {
         "values": [
             "auto",
-            "none"
+            "spaces"
         ]
     },
     "ruby-position": {
         "values": [
             "over",
             "under"
+        ]
+    },
+    "rule-overlap": {
+        "values": [
+            "row-over-column",
+            "column-over-row"
         ]
     },
     "rx": {
@@ -6799,7 +7142,16 @@ export const generatedPropertyValues = {
     "text-decoration-skip-ink": {
         "values": [
             "none",
-            "auto"
+            "auto",
+            "all"
+        ]
+    },
+    "text-decoration-skip-spaces": {
+        "values": [
+            "none",
+            "start",
+            "end",
+            "all"
         ]
     },
     "text-decoration-style": {
@@ -6872,11 +7224,12 @@ export const generatedPropertyValues = {
     },
     "text-transform": {
         "values": [
+            "none",
             "capitalize",
             "uppercase",
             "lowercase",
             "full-width",
-            "none",
+            "full-size-kana",
             "math-auto"
         ]
     },
@@ -6979,6 +7332,12 @@ export const generatedPropertyValues = {
             "step-end"
         ]
     },
+    "trigger-scope": {
+        "values": [
+            "none",
+            "all"
+        ]
+    },
     "unicode-bidi": {
         "values": [
             "normal",
@@ -7030,6 +7389,12 @@ export const generatedPropertyValues = {
         "values": [
             "none",
             "auto"
+        ]
+    },
+    "view-transition-scope": {
+        "values": [
+            "none",
+            "all"
         ]
     },
     "visibility": {

@@ -31,6 +31,7 @@
     "target": "ES2023",
     "tsBuildInfoFile": "sdk-tsconfig.json.tsbuildinfo",
     "typeRoots": [],
+    "types": [],
     "useUnknownInCatchVariables": false
   },
   "files": [
@@ -46,6 +47,7 @@
     "../../../../../../front_end/core/sdk/CSSMedia.ts",
     "../../../../../../front_end/core/sdk/CSSMetadata.ts",
     "../../../../../../front_end/core/sdk/CSSModel.ts",
+    "../../../../../../front_end/core/sdk/CSSNavigation.ts",
     "../../../../../../front_end/core/sdk/CSSProperty.ts",
     "../../../../../../front_end/core/sdk/CSSPropertyParser.ts",
     "../../../../../../front_end/core/sdk/CSSPropertyParserMatchers.ts",
@@ -65,8 +67,10 @@
     "../../../../../../front_end/core/sdk/Cookie.ts",
     "../../../../../../front_end/core/sdk/CookieModel.ts",
     "../../../../../../front_end/core/sdk/CookieParser.ts",
+    "../../../../../../front_end/core/sdk/CrashReportContextModel.ts",
     "../../../../../../front_end/core/sdk/DOMDebuggerModel.ts",
     "../../../../../../front_end/core/sdk/DOMModel.ts",
+    "../../../../../../front_end/core/sdk/DOMStorageModel.ts",
     "../../../../../../front_end/core/sdk/DebuggerModel.ts",
     "../../../../../../front_end/core/sdk/EmulationModel.ts",
     "../../../../../../front_end/core/sdk/EnhancedTracesParser.ts",

@@ -21,7 +21,6 @@ export declare class CSSMetadata {
     isGridNameAwareProperty(propertyName: string): boolean;
     isLengthProperty(propertyName: string): boolean;
     isBezierAwareProperty(propertyName: string): boolean;
-    isFontAwareProperty(propertyName: string): boolean;
     isCustomProperty(propertyName: string): boolean;
     isShadowProperty(propertyName: string): boolean;
     isStringProperty(propertyName: string): boolean;
@@ -45,11 +44,13 @@ export declare const enum CSSWideKeyword {
     INITIAL = "initial",
     REVERT = "revert",
     REVERT_LAYER = "revert-layer",
+    REVERT_RULE = "revert-rule",
     UNSET = "unset"
 }
 /**
  * Spec: https://drafts.csswg.org/css-cascade/#defaulting-keywords
  * https://drafts.csswg.org/css-cascade-5/#revert-layer
+ * https://drafts.csswg.org/css-cascade-6/#revert-rule
  **/
 export declare const CSSWideKeywords: CSSWideKeyword[];
 /** https://www.w3.org/TR/css-anchor-position-1/#typedef-try-size **/

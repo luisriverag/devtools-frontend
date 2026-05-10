@@ -10,7 +10,7 @@ import * as ARIAUtils from './ARIAUtils.js';
 import { SimpleResizerWidget } from './ResizerWidget.js';
 import splitWidgetStyles from './splitWidget.css.js';
 import { ToolbarButton } from './Toolbar.js';
-import { Widget, WidgetElement } from './Widget.js';
+import { registerWidgetConfig, Widget, widgetConfig, WidgetElement } from './Widget.js';
 import { ZoomManager } from './ZoomManager.js';
 export class SplitWidget extends Common.ObjectWrapper.eventMixin(Widget) {
     #sidebarElement;
@@ -352,9 +352,9 @@ export class SplitWidget extends Common.ObjectWrapper.eventMixin(Widget) {
      */
     #totalSizeDIP() {
         if (!this.#totalSizeCSS) {
-            this.#totalSizeCSS = this.#isVertical ? this.contentElement.offsetWidth : this.contentElement.offsetHeight;
-            this.#totalSizeOtherDimensionCSS =
-                this.#isVertical ? this.contentElement.offsetHeight : this.contentElement.offsetWidth;
+            const { width, height } = this.contentElement.getBoundingClientRect();
+            this.#totalSizeCSS = this.#isVertical ? width : height;
+            this.#totalSizeOtherDimensionCSS = this.#isVertical ? height : width;
         }
         return ZoomManager.instance().cssToDIP(this.#totalSizeCSS);
     }
@@ -380,9 +380,12 @@ export class SplitWidget extends Common.ObjectWrapper.eventMixin(Widget) {
         // Invalidate layout below.
         this.#removeAllLayoutProperties();
         // this.#totalSizeDIP is available below since we successfully applied constraints.
-        const roundSizeCSS = Math.round(ZoomManager.instance().dipToCSS(sizeDIP));
-        const sidebarSizeValue = roundSizeCSS + 'px';
-        const mainSizeValue = (this.#totalSizeCSS - roundSizeCSS) + 'px';
+        const sizeCSS = ZoomManager.instance().dipToCSS(sizeDIP);
+        const sidebarSizeValue = sizeCSS + 'px';
+        const mainSizeValue = (this.#totalSizeCSS - sizeCSS) + 'px';
+        // With `box-sizing: border-box` on the sidebar (set in splitWidget.css),
+        // flex-basis, width, and height all include the border, so the sidebar's
+        // border does not steal space from the main pane.
         this.#sidebarElement.style.flexBasis = sidebarSizeValue;
         // Make both sides relayout boundaries.
         if (this.#isVertical) {
@@ -754,30 +757,33 @@ export class SplitWidget extends Common.ObjectWrapper.eventMixin(Widget) {
 }
 export class SplitWidgetElement extends WidgetElement {
     static observedAttributes = ['direction', 'sidebar-position', 'sidebar-initial-size', 'sidebar-visibility'];
-    createWidget() {
-        const vertical = this.getAttribute('direction') === 'column';
-        const autoAdjustOrientation = this.getAttribute('direction') === 'auto';
-        const secondIsSidebar = this.getAttribute('sidebar-position') === 'second';
-        const settingName = this.getAttribute('name') ?? undefined;
-        const sidebarSize = parseInt(this.getAttribute('sidebar-initial-size') || '', 10);
-        const defaultSidebarWidth = !isNaN(sidebarSize) ? sidebarSize : undefined;
-        const defaultSidebarHeight = !isNaN(sidebarSize) ? sidebarSize : undefined;
-        const widget = new SplitWidget(vertical, secondIsSidebar, settingName, defaultSidebarWidth, defaultSidebarHeight, 
-        /* constraintsInDip=*/ false, this);
-        if (this.getAttribute('sidebar-initial-size') === 'minimized') {
-            widget.setSidebarMinimized(true);
-        }
-        if (autoAdjustOrientation) {
-            widget.setAutoAdjustOrientation(true);
-        }
-        const sidebarHidden = this.getAttribute('sidebar-visibility') === 'hidden';
-        if (sidebarHidden) {
-            widget.hideSidebar();
-        }
-        widget.addEventListener("ShowModeChanged" /* Events.SHOW_MODE_CHANGED */, () => {
-            this.dispatchEvent(new CustomEvent('change', { detail: widget.showMode() }));
-        });
-        return widget;
+    constructor() {
+        super();
+        registerWidgetConfig(this, widgetConfig(element => {
+            const vertical = element.getAttribute('direction') === 'column';
+            const autoAdjustOrientation = element.getAttribute('direction') === 'auto';
+            const secondIsSidebar = element.getAttribute('sidebar-position') === 'second';
+            const settingName = element.getAttribute('name') ?? undefined;
+            const sidebarSize = parseInt(element.getAttribute('sidebar-initial-size') || '', 10);
+            const defaultSidebarWidth = !isNaN(sidebarSize) ? sidebarSize : undefined;
+            const defaultSidebarHeight = !isNaN(sidebarSize) ? sidebarSize : undefined;
+            const widget = new SplitWidget(vertical, secondIsSidebar, settingName, defaultSidebarWidth, defaultSidebarHeight, 
+            /* constraintsInDip=*/ false, element);
+            if (element.getAttribute('sidebar-initial-size') === 'minimized') {
+                widget.setSidebarMinimized(true);
+            }
+            if (autoAdjustOrientation) {
+                widget.setAutoAdjustOrientation(true);
+            }
+            const sidebarHidden = element.getAttribute('sidebar-visibility') === 'hidden';
+            if (sidebarHidden) {
+                widget.hideSidebar();
+            }
+            widget.addEventListener("ShowModeChanged" /* Events.SHOW_MODE_CHANGED */, () => {
+                element.dispatchEvent(new CustomEvent('change', { detail: widget.showMode() }));
+            });
+            return widget;
+        }));
     }
     attributeChangedCallback(name, _oldValue, newValue) {
         const widget = Widget.get(this);

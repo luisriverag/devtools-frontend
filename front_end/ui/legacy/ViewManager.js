@@ -7,13 +7,12 @@ import * as Common from '../../core/common/common.js';
 import * as Host from '../../core/host/host.js';
 import * as i18n from '../../core/i18n/i18n.js';
 import * as Platform from '../../core/platform/platform.js';
-import * as Root from '../../core/root/root.js';
-import * as IconButton from '../components/icon_button/icon_button.js';
+import { createIcon } from '../kit/kit.js';
 import * as VisualLogging from '../visual_logging/visual_logging.js';
 import * as ARIAUtils from './ARIAUtils.js';
 import { Events as TabbedPaneEvents, TabbedPane } from './TabbedPane.js';
 import { ToolbarMenuButton } from './Toolbar.js';
-import { createTextChild, PromotionManager } from './UIUtils.js';
+import { createTextChild } from './UIUtils.js';
 import viewContainersStyles from './viewContainers.css.js';
 import { getLocalizedViewLocationCategory, getRegisteredLocationResolvers, getRegisteredViewExtensions, maybeRemoveViewExtension, registerLocationResolver, registerViewExtension, resetViewRegistration, } from './ViewRegistration.js';
 import { VBox } from './Widget.js';
@@ -32,9 +31,11 @@ export const defaultOptionsForTabs = {
 };
 export class PreRegisteredView {
     viewRegistration;
+    universe;
     widgetPromise;
-    constructor(viewRegistration) {
+    constructor(viewRegistration, universe) {
         this.viewRegistration = viewRegistration;
+        this.universe = universe;
         this.widgetPromise = null;
     }
     title() {
@@ -89,7 +90,10 @@ export class PreRegisteredView {
     }
     widget() {
         if (this.widgetPromise === null) {
-            this.widgetPromise = this.viewRegistration.loadView();
+            if (!this.universe) {
+                throw new Error('Creating views via ViewManager requires a Foundation.Universe');
+            }
+            this.widgetPromise = this.viewRegistration.loadView(this.universe);
         }
         return this.widgetPromise;
     }
@@ -112,7 +116,10 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
     views = new Map();
     locationNameByViewId = new Map();
     locationOverrideSetting;
-    constructor() {
+    preRegisteredViews = [];
+    // TODO(crbug.com/458180550): Pass the universe unconditionally once tests no longer rely
+    //   on `instance()` to create ViewManagers lazily in after/afterEach blocks.
+    constructor(universe) {
         super();
         // Read override setting for location
         this.locationOverrideSetting = Common.Settings.Settings.instance().createSetting('views-location-override', {});
@@ -121,9 +128,9 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
         // default ordering as defined by the views themselves.
         const viewsByLocation = new Map();
         for (const view of getRegisteredViewExtensions()) {
-            const location = view.location() || 'none';
+            const location = view.location || 'none';
             const views = viewsByLocation.get(location) || [];
-            views.push(view);
+            views.push(new PreRegisteredView(view, universe));
             viewsByLocation.set(location, views);
         }
         let sortedViewExtensions = [];
@@ -148,15 +155,16 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
                 throw new Error(`Invalid view ID '${viewId}'`);
             }
             this.views.set(viewId, view);
+            this.preRegisteredViews.push(view);
             // Use the preferred user location if available
             const locationName = preferredExtensionLocations[viewId] || location;
             this.locationNameByViewId.set(viewId, locationName);
         }
     }
     static instance(opts = { forceNew: null }) {
-        const { forceNew } = opts;
+        const { forceNew, universe } = opts;
         if (!viewManagerInstance || forceNew) {
-            viewManagerInstance = new ViewManager();
+            viewManagerInstance = new ViewManager(universe);
         }
         return viewManagerInstance;
     }
@@ -172,6 +180,9 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
             toolbar.appendToolbarItem(item);
         }
         return toolbar;
+    }
+    getRegisteredViewExtensions() {
+        return this.preRegisteredViews;
     }
     locationNameForViewId(viewId) {
         const locationName = this.locationNameByViewId.get(viewId);
@@ -235,7 +246,7 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
         return view;
     }
     materializedWidget(viewId) {
-        const view = this.view(viewId);
+        const view = this.views.get(viewId);
         if (!view) {
             return null;
         }
@@ -282,8 +293,8 @@ export class ViewManager extends Common.ObjectWrapper.ObjectWrapper {
         }
         throw new Error('Unresolved location: ' + location);
     }
-    createTabbedLocation(revealCallback, location, restoreSelection, allowReorder, defaultTab) {
-        return new TabbedLocation(this, revealCallback, location, restoreSelection, allowReorder, defaultTab);
+    createTabbedLocation(revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory) {
+        return new TabbedLocation(this, revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory);
     }
     createStackLocation(revealCallback, location, jslogContext) {
         return new StackLocation(this, revealCallback, location, jslogContext);
@@ -370,7 +381,7 @@ class ExpandableContainerWidget extends VBox {
             keydown: 'Enter|Space|ArrowLeft|ArrowRight',
         })}`);
         ARIAUtils.markAsTreeitem(this.titleElement);
-        this.titleExpandIcon = IconButton.Icon.create('triangle-right', 'title-expand-icon');
+        this.titleExpandIcon = createIcon('triangle-right', 'title-expand-icon');
         this.titleElement.appendChild(this.titleExpandIcon);
         const titleText = view.title();
         createTextChild(this.titleElement, titleText);
@@ -506,9 +517,10 @@ class TabbedLocation extends Location {
     tabOrderSetting;
     lastSelectedTabSetting;
     defaultTab;
+    isLocationVisible;
     views = new Map();
-    constructor(manager, revealCallback, location, restoreSelection, allowReorder, defaultTab) {
-        const tabbedPane = new TabbedPane();
+    constructor(manager, revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory) {
+        const tabbedPane = tabbedPaneFactory ? tabbedPaneFactory() : new TabbedPane();
         if (allowReorder) {
             tabbedPane.setAllowTabReorder(true);
         }
@@ -529,6 +541,7 @@ class TabbedLocation extends Location {
             this.lastSelectedTabSetting = Common.Settings.Settings.instance().createSetting(location + '-selected-tab', '');
         }
         this.defaultTab = defaultTab;
+        this.isLocationVisible = isLocationVisible;
         if (location) {
             this.appendApplicableItems(location);
         }
@@ -602,29 +615,6 @@ class TabbedLocation extends Location {
     appendTabsToMenu(contextMenu) {
         const views = Array.from(this.views.values());
         views.sort((viewa, viewb) => viewa.title().localeCompare(viewb.title()));
-        const freestylerView = views.find(view => view.viewId() === 'freestyler');
-        if (freestylerView) {
-            const featureName = Root.Runtime.hostConfig.devToolsFreestyler?.featureName;
-            const promotionId = (freestylerView instanceof PreRegisteredView) ? freestylerView.featurePromotionId() : undefined;
-            // Register this with the PromotionManager and the back-end, in order to make sure that
-            // showing the general ai assistance panel new badge is synchronized.
-            const handler = () => {
-                void this.showView(freestylerView, undefined, true);
-                if (promotionId) {
-                    PromotionManager.instance().recordFeatureInteraction(promotionId);
-                }
-            };
-            contextMenu.defaultSection().appendItem(freestylerView.title(), handler, {
-                isPreviewFeature: freestylerView.isPreviewFeature(),
-                jslogContext: freestylerView.viewId(),
-                // Request to show a new badge in the native context menu only if:
-                // 1. The promotion manager agrees that we may show it, or 2. the promotion manager doesn't track this badge.
-                // Note that this is only a request to show the new badge, the back-end will decide whether
-                // or not it will show it depending on the user education service.
-                featureName: !promotionId || PromotionManager.instance().maybeShowPromotion(promotionId) ? featureName :
-                    undefined,
-            });
-        }
         for (const view of views) {
             const title = view.title();
             if (view.viewId() === 'issues-pane') {
@@ -632,10 +622,6 @@ class TabbedLocation extends Location {
                     Host.userMetrics.issuesPanelOpenedFrom(3 /* Host.UserMetrics.IssueOpener.HAMBURGER_MENU */);
                     void this.showView(view, undefined, true);
                 }, { jslogContext: 'issues-pane' });
-                continue;
-            }
-            if (view.viewId() === 'freestyler') {
-                // We have already taken care of this.
                 continue;
             }
             const isPreviewFeature = view.isPreviewFeature();
@@ -646,7 +632,7 @@ class TabbedLocation extends Location {
         this.#tabbedPane.appendTab(view.viewId(), view.title(), new ContainerWidget(view), undefined, false, view.isCloseable() || view.isTransient(), view.isPreviewFeature(), index);
         const iconName = view.iconName();
         if (iconName) {
-            const icon = IconButton.Icon.create(iconName);
+            const icon = createIcon(iconName);
             this.#tabbedPane.setTabIcon(view.viewId(), icon);
         }
     }
@@ -713,7 +699,8 @@ class TabbedLocation extends Location {
         this.views.delete(view.viewId());
     }
     isViewVisible(view) {
-        return this.#tabbedPane.isShowing() && this.#tabbedPane?.selectedTabId === view.viewId();
+        const locationVisible = this.isLocationVisible ? this.isLocationVisible() : this.#tabbedPane.isShowing();
+        return locationVisible && this.#tabbedPane.selectedTabId === view.viewId();
     }
     tabbedPaneVisibilityChanged(event) {
         if (!this.#tabbedPane.selectedTabId) {
@@ -829,5 +816,5 @@ class StackLocation extends Location {
         }
     }
 }
-export { getLocalizedViewLocationCategory, getRegisteredLocationResolvers, getRegisteredViewExtensions, maybeRemoveViewExtension, registerLocationResolver, registerViewExtension, resetViewRegistration, };
+export { getLocalizedViewLocationCategory, getRegisteredLocationResolvers, maybeRemoveViewExtension, registerLocationResolver, registerViewExtension, resetViewRegistration, };
 //# sourceMappingURL=ViewManager.js.map

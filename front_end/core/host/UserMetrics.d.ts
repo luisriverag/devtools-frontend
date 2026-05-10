@@ -1,19 +1,12 @@
 export declare class UserMetrics {
-    #private;
-    constructor();
-    panelShown(panelName: string, isLaunching?: boolean): void;
-    settingsPanelShown(settingsViewId: string): void;
     sourcesPanelFileDebugged(mediaType?: string): void;
     sourcesPanelFileOpened(mediaType?: string): void;
     networkPanelResponsePreviewOpened(mediaType: string): void;
     actionTaken(action: Action): void;
-    panelLoaded(panelName: string, histogramName: string): void;
-    setLaunchPanel(panelName: string | null): void;
-    performanceTraceLoad(measure: PerformanceMeasure): void;
     keybindSetSettingChanged(keybindSet: string): void;
     keyboardShortcutFired(actionId: string): void;
     issuesPanelOpenedFrom(issueOpener: IssueOpener): void;
-    issuesPanelIssueExpanded(issueExpandedCategory: string | undefined): void;
+    issuesPanelIssueExpanded(issueExpandedCategory?: string): void;
     issuesPanelResourceOpened(issueCategory: string, type: string): void;
     issueCreated(code: string): void;
     experimentEnabledAtLaunch(experimentId: string): void;
@@ -24,19 +17,12 @@ export declare class UserMetrics {
     developerResourceScheme(developerResourceScheme: DeveloperResourceScheme): void;
     language(language: Intl.UnicodeBCP47LocaleIdentifier): void;
     syncSetting(devtoolsSyncSettingEnabled: boolean): void;
-    recordingAssertion(value: RecordingAssertion): void;
     recordingToggled(value: RecordingToggled): void;
     recordingReplayFinished(value: RecordingReplayFinished): void;
-    recordingReplaySpeed(value: RecordingReplaySpeed): void;
     recordingReplayStarted(value: RecordingReplayStarted): void;
-    recordingEdited(value: RecordingEdited): void;
-    recordingExported(value: RecordingExported): void;
-    recordingCodeToggled(value: RecordingCodeToggled): void;
-    recordingCopiedToClipboard(value: RecordingCopiedToClipboard): void;
     lighthouseModeRun(type: LighthouseModeRun): void;
     lighthouseCategoryUsed(type: LighthouseCategoryUsed): void;
     swatchActivated(swatch: SwatchType): void;
-    animationPlaybackRateChanged(playbackRate: AnimationsPlaybackRate): void;
     workspacesPopulated(wallClockTimeInMilliseconds: number): void;
     visualLoggingProcessingDone(timeInMilliseconds: number): void;
     freestylerQueryLength(numberOfCharacters: number): void;
@@ -46,6 +32,15 @@ export declare class UserMetrics {
     performanceAIMainThreadActivityResponseSize(bytes: number): void;
     builtInAiAvailability(availability: BuiltInAiAvailability): void;
     consoleInsightTeaserGenerated(timeInMilliseconds: number): void;
+    consoleInsightTeaserGeneratedMedium(timeInMilliseconds: number): void;
+    consoleInsightTeaserFirstChunkGenerated(timeInMilliseconds: number): void;
+    consoleInsightTeaserFirstChunkGeneratedMedium(timeInMilliseconds: number): void;
+    consoleInsightTeaserChunkToEndMedium(timeInMilliseconds: number): void;
+    consoleInsightTeaserAbortedAfterFirstCharacter(timeInMilliseconds: number): void;
+    consoleInsightTeaserAbortedBeforeFirstCharacter(timeInMilliseconds: number): void;
+    consoleInsightLongTeaserGenerated(timeInMilliseconds: number): void;
+    consoleInsightShortTeaserGenerated(timeInMilliseconds: number): void;
+    extensionEvalTarget(target: ExtensionEvalTarget): void;
 }
 /**
  * The numeric enum values are not necessarily continuous! It is possible that
@@ -253,7 +248,20 @@ export declare enum Action {
     InsightTeaserGenerationCompleted = 192,
     InsightTeaserGenerationAborted = 193,
     InsightTeaserGenerationErrored = 194,
-    MAX_VALUE = 195
+    AiCodeGenerationSuggestionDisplayed = 195,
+    AiCodeGenerationSuggestionAccepted = 196,
+    InsightTeaserModelDownloadStarted = 197,
+    InsightTeaserModelDownloadCompleted = 198,
+    AiCodeGenerationError = 199,
+    AiCodeGenerationRequestTriggered = 200,
+    AiCodeCompletionRequestTriggeredFromConsole = 201,
+    AiCodeCompletionRequestTriggeredFromSources = 202,
+    AiCodeCompletionRequestTriggeredFromStyles = 203,
+    AiCodeGenerationRequestTriggeredFromConsole = 204,
+    AiCodeGenerationRequestTriggeredFromSources = 205,
+    AiCodeCompletionFreCompletedFromConsole = 206,
+    AiCodeCompletionFreCompletedFromSources = 207,
+    MAX_VALUE = 208
 }
 export declare enum PanelCodes {
     elements = 1,
@@ -280,7 +288,6 @@ export declare enum PanelCodes {
     'changes.changes' = 23,
     'performance.monitor' = 24,
     'release-note' = 25,
-    'live-heap-profile' = 26,
     'sources.quick' = 27,
     'network.blocked-urls' = 28,
     'settings-preferences' = 29,
@@ -421,8 +428,6 @@ export declare enum KeyboardShortcutAction {
     'inspector-main.focus-debuggee' = 47,
     'inspector-main.hard-reload' = 48,
     'inspector-main.reload' = 49,
-    'live-heap-profile.start-with-reload' = 50,
-    'live-heap-profile.toggle-recording' = 51,
     'main.debug-reload' = 52,
     'main.next-tab' = 53,
     'main.previous-tab' = 54,
@@ -506,25 +511,14 @@ export declare const enum IssueOpener {
  */
 export declare enum DevtoolsExperiments {
     'capture-node-creation-stacks' = 1,
-    'live-heap-profile' = 11,
     'protocol-monitor' = 13,
-    'sampling-heap-profiler-timeline' = 17,
-    'show-option-tp-expose-internals-in-heap-snapshot' = 18,
     'timeline-invalidation-tracking' = 26,
-    'timeline-show-all-events' = 27,
-    'timeline-v8-runtime-call-stats' = 28,
-    apca = 39,
-    'font-editor' = 41,
-    'full-accessibility-tree' = 42,
-    'contrast-issues' = 44,
-    'experimental-cookie-features' = 45,
     'instrumentation-breakpoints' = 61,
-    'authored-deployed-grouping' = 63,
-    'just-my-code' = 65,
     'use-source-map-scopes' = 76,
-    'timeline-show-postmessage-events' = 86,
     'timeline-debug-mode' = 93,
-    MAX_VALUE = 110
+    'durable-messages' = 110,
+    'jpeg-xl' = 111,
+    MAX_VALUE = 112
 }
 /** Update DevToolsIssuesPanelIssueExpanded from tools/metrics/histograms/enums.xml if new enum is added. **/
 export declare enum IssueExpanded {
@@ -593,8 +587,7 @@ export declare enum IssueCreated {
     'CookieIssue::WarnSameSiteUnspecifiedCrossSiteContext::SetCookie' = 35,
     'SharedArrayBufferIssue::TransferIssue' = 36,
     'SharedArrayBufferIssue::CreationIssue' = 37,
-    LowTextContrastIssue = 41,
-    'CorsIssue::InsecurePrivateNetwork' = 42,
+    'CorsIssue::InsecureLocalNetwork' = 42,
     'CorsIssue::InvalidHeaders' = 44,
     'CorsIssue::WildcardOriginWithCredentials' = 45,
     'CorsIssue::PreflightResponseInvalid' = 46,
@@ -613,25 +606,20 @@ export declare enum IssueCreated {
     DeprecationIssue = 60,
     'ClientHintIssue::MetaTagAllowListInvalidOrigin' = 61,
     'ClientHintIssue::MetaTagModifiedHTML' = 62,
-    'CorsIssue::PreflightAllowPrivateNetworkError' = 63,
     'GenericIssue::CrossOriginPortalPostMessageError' = 64,
     'GenericIssue::FormLabelForNameError' = 65,
     'GenericIssue::FormDuplicateIdForInputError' = 66,
     'GenericIssue::FormInputWithNoLabelError' = 67,
     'GenericIssue::FormAutocompleteAttributeEmptyError' = 68,
     'GenericIssue::FormEmptyIdAndNameAttributesForInputError' = 69,
-    'GenericIssue::FormAriaLabelledByToNonExistingId' = 70,
+    'GenericIssue::FormAriaLabelledByToNonExistingIdError' = 70,
     'GenericIssue::FormInputAssignedAutocompleteValueToIdOrNameAttributeError' = 71,
-    'GenericIssue::FormLabelHasNeitherForNorNestedInput' = 72,
+    'GenericIssue::FormLabelHasNeitherForNorNestedInputError' = 72,
     'GenericIssue::FormLabelForMatchesNonExistingIdError' = 73,
     'GenericIssue::FormHasPasswordFieldWithoutUsernameFieldError' = 74,
     'GenericIssue::FormInputHasWrongButWellIntendedAutocompleteValueError' = 75,
     'StylesheetLoadingIssue::LateImportRule' = 76,
     'StylesheetLoadingIssue::RequestFailed' = 77,
-    'CorsIssue::PreflightMissingPrivateNetworkAccessId' = 78,
-    'CorsIssue::PreflightMissingPrivateNetworkAccessName' = 79,
-    'CorsIssue::PrivateNetworkAccessPermissionUnavailable' = 80,
-    'CorsIssue::PrivateNetworkAccessPermissionDenied' = 81,
     'CookieIssue::WarnThirdPartyPhaseout::ReadCookie' = 82,
     'CookieIssue::WarnThirdPartyPhaseout::SetCookie' = 83,
     'CookieIssue::ExcludeThirdPartyPhaseout::ReadCookie' = 84,
@@ -664,11 +652,11 @@ export declare enum IssueCreated {
     'CorsIssue::LocalNetworkAccessPermissionDenied' = 111,
     'SRIMessageSignatureIssue::ValidationFailedIntegrityMismatch' = 112,
     'ElementAccessibilityIssue::InteractiveContentSummaryDescendant' = 113,
-    MAX_VALUE = 114
+    'CorsIssue::InvalidLocalNetworkAccess' = 114,
+    MAX_VALUE = 115
 }
 export declare const enum DeveloperResourceLoaded {
     LOAD_THROUGH_PAGE_VIA_TARGET = 0,
-    LOAD_THROUGH_PAGE_VIA_FRAME = 1,
     LOAD_THROUGH_PAGE_FAILURE = 2,
     LOAD_THROUGH_PAGE_FALLBACK = 3,
     FALLBACK_AFTER_FAILURE = 4,
@@ -872,7 +860,8 @@ export declare const enum LighthouseCategoryUsed {
     SEO = 3,
     PWA = 4,
     PUB_ADS = 5,
-    MAX_VALUE = 6
+    AGENTIC_BROWSING = 6,
+    MAX_VALUE = 7
 }
 export declare const enum SwatchType {
     VAR_LINK = 0,
@@ -886,7 +875,7 @@ export declare const enum SwatchType {
     LENGTH = 8,
     POSITION_TRY_LINK = 10,
     ATTR_LINK = 11,
-    MASONRY = 12,
+    GRID_LANES = 12,
     MAX_VALUE = 13
 }
 export declare const enum BadgeType {
@@ -927,4 +916,10 @@ export declare const enum BuiltInAiAvailability {
     AVAILABLE_NO_GPU = 8,
     DISABLED_NO_GPU = 9,
     MAX_VALUE = 10
+}
+export declare const enum ExtensionEvalTarget {
+    WEB_PAGE = 0,
+    SAME_EXTENSION = 1,
+    OTHER_EXTENSION = 2,
+    MAX_VALUE = 3
 }

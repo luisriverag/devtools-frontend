@@ -1,14 +1,14 @@
 // Copyright 2021 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-/* eslint-disable @devtools/no-lit-render-outside-of-view */
-import './Icon.js';
+/* eslint-disable @devtools/no-lit-render-outside-of-view, @devtools/enforce-custom-element-definitions-location */
+import '../../kit/kit.js';
 import * as Lit from '../../lit/lit.js';
 import iconButtonStyles from './iconButton.css.js';
 const { html } = Lit;
 export class IconButton extends HTMLElement {
     #shadow = this.attachShadow({ mode: 'open' });
-    #clickHandler = undefined;
+    #clickHandler;
     #groups = [];
     #compact = false;
     #leadingText = '';
@@ -64,5 +64,6 @@ export class IconButton extends HTMLElement {
         // clang-format on
     }
 }
+// eslint-disable-next-line @devtools/enforce-custom-element-prefix
 customElements.define('icon-button', IconButton);
 //# sourceMappingURL=IconButton.js.map

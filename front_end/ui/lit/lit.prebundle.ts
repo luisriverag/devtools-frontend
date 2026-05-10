@@ -4,7 +4,9 @@
 
 import type * as Lit from '../../third_party/lit/lit.js';
 
+export type {DirectiveResult} from '../../third_party/lit/lib/directive.js';
 export {
+  AsyncDirective,
   Decorators,
   Directive,
   Directives,
@@ -12,7 +14,6 @@ export {
   noChange,
   nothing,
   type PropertyValues,
-  render,
   StaticHtml,
   svg,
   type TemplateResult,
@@ -20,6 +21,10 @@ export {
 export {
   i18nTemplate,
 } from './i18n-template.js';
+export {
+  render,
+  type RenderOptions,
+} from './render.js';
 export {
   html,
 } from './strip-whitespace.js';

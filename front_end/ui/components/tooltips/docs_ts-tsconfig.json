@@ -32,7 +32,8 @@
     "target": "ES2023",
     "tsBuildInfoFile": "docs_ts-tsconfig.json.tsbuildinfo",
     "typeRoots": [
-      "../../../../../../../node_modules/@types"
+      "../../../../../../../node_modules/@types",
+      "../../../../../../../node_modules"
     ],
     "types": [
       "mocha",
@@ -51,6 +52,9 @@
   "references": [
     {
       "path": "./bundle-tsconfig.json"
+    },
+    {
+      "path": "../../lit/bundle-tsconfig.json"
     }
   ]
 }

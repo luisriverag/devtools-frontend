@@ -67,17 +67,16 @@ export declare class SourceMapEntry {
     readonly lineNumber: number;
     readonly columnNumber: number;
     readonly sourceIndex?: number;
-    readonly sourceURL: Platform.DevToolsPath.UrlString | undefined;
+    readonly sourceURL?: Platform.DevToolsPath.UrlString;
     readonly sourceLineNumber: number;
     readonly sourceColumnNumber: number;
-    readonly name: string | undefined;
+    readonly name?: string;
     constructor(lineNumber: number, columnNumber: number, sourceIndex?: number, sourceURL?: Platform.DevToolsPath.UrlString, sourceLineNumber?: number, sourceColumnNumber?: number, name?: string);
     static compare(entry1: SourceMapEntry, entry2: SourceMapEntry): number;
 }
 export declare class SourceMap {
     #private;
     static retainRawSourceMaps: boolean;
-    scopesFallbackPromiseForTest?: Promise<unknown>;
     /**
      * Implements Source Map V3 model. See https://github.com/google/closure-compiler/wiki/Source-Maps
      * for format description.
@@ -92,7 +91,10 @@ export declare class SourceMap {
     sourceURLs(): Platform.DevToolsPath.UrlString[];
     embeddedContentByURL(sourceURL: Platform.DevToolsPath.UrlString): string | null;
     hasScopeInfo(): boolean;
+    waitForScopeInfo(): Promise<void>;
     findEntry(lineNumber: number, columnNumber: number, inlineFrameIndex?: number): SourceMapEntry | null;
+    /** Returns the entry at the given position but only if an entry exists for that exact position */
+    findEntryExact(lineNumber: number, columnNumber: number): SourceMapEntry | null;
     findEntryRanges(lineNumber: number, columnNumber: number): {
         range: TextUtils.TextRange.TextRange;
         sourceRange: TextUtils.TextRange.TextRange;
@@ -144,9 +146,12 @@ export declare class SourceMap {
      *          for it.
      */
     compatibleForURL(sourceURL: Platform.DevToolsPath.UrlString, other: SourceMap): boolean;
-    expandCallFrame(frame: CallFrame): CallFrame[];
     resolveScopeChain(frame: CallFrame): ScopeChainEntry[] | null;
     findOriginalFunctionName(position: ScopesCodec.Position): string | null;
+    findOriginalFunctionScope(position: ScopesCodec.Position): {
+        scope: ScopesCodec.OriginalScope;
+        url?: Platform.DevToolsPath.UrlString;
+    } | null;
     isOutlinedFrame(generatedLine: number, generatedColumn: number): boolean;
     hasInlinedFrames(generatedLine: number, generatedColumn: number): boolean;
     translateCallSite(generatedLine: number, generatedColumn: number): TranslatedFrame[];

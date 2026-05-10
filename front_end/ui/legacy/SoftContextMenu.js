@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 /* eslint-disable @devtools/no-imperative-dom-api */
 import * as i18n from '../../core/i18n/i18n.js';
-import * as IconButton from '../../ui/components/icon_button/icon_button.js';
+import { createIcon } from '../../ui/kit/kit.js';
 import * as VisualLogging from '../../ui/visual_logging/visual_logging.js';
 import * as ARIAUtils from './ARIAUtils.js';
 import { GlassPane } from './GlassPane.js';
@@ -189,19 +189,13 @@ export class SoftContextMenu {
         }
         // If the menu contains a checkbox, add checkbox space in front of the label to align the items
         if (menuContainsCheckbox) {
-            const checkMarkElement = IconButton.Icon.create('checkmark', 'checkmark');
+            const checkMarkElement = createIcon('checkmark', 'checkmark');
             menuItemElement.appendChild(checkMarkElement);
         }
         if (item.tooltip) {
             Tooltip.install(menuItemElement, item.tooltip);
         }
-        const detailsForElement = {
-            actionId: undefined,
-            isSeparator: undefined,
-            customElement: undefined,
-            subItems: undefined,
-            subMenuTimer: undefined,
-        };
+        const detailsForElement = {};
         // Only add a jslog context if the item has a label. Menu items without a
         // label are containers for custom elements, which are responsible for adding
         // their own `jslog` attributes.
@@ -257,7 +251,7 @@ export class SoftContextMenu {
         }
         ARIAUtils.setLabel(menuItemElement, accessibleName);
         if (item.isExperimentalFeature) {
-            const experimentIcon = IconButton.Icon.create('experiment');
+            const experimentIcon = createIcon('experiment');
             menuItemElement.appendChild(experimentIcon);
         }
         this.detailsForElementMap.set(menuItemElement, detailsForElement);
@@ -270,19 +264,15 @@ export class SoftContextMenu {
         ARIAUtils.markAsMenuItemSubMenu(menuItemElement);
         this.detailsForElementMap.set(menuItemElement, {
             subItems: item.subItems,
-            actionId: undefined,
-            isSeparator: undefined,
-            customElement: undefined,
-            subMenuTimer: undefined,
         });
         // If the menu contains a checkbox, add checkbox space in front of the label to align the items
         if (menuContainsCheckbox) {
-            const checkMarkElement = IconButton.Icon.create('checkmark', 'checkmark soft-context-menu-item-checkmark');
+            const checkMarkElement = createIcon('checkmark', 'checkmark soft-context-menu-item-checkmark');
             menuItemElement.appendChild(checkMarkElement);
         }
         createTextChild(menuItemElement, item.label || '');
         ARIAUtils.setExpanded(menuItemElement, false);
-        const subMenuArrowElement = IconButton.Icon.create('keyboard-arrow-right', 'soft-context-menu-item-submenu-arrow');
+        const subMenuArrowElement = createIcon('keyboard-arrow-right', 'soft-context-menu-item-submenu-arrow');
         menuItemElement.appendChild(subMenuArrowElement);
         menuItemElement.addEventListener('mousedown', this.menuItemMouseDown.bind(this), false);
         menuItemElement.addEventListener('mouseup', this.menuItemMouseUp.bind(this), false);
@@ -290,7 +280,7 @@ export class SoftContextMenu {
         menuItemElement.addEventListener('mouseover', this.menuItemMouseOver.bind(this), false);
         menuItemElement.addEventListener('mouseleave', this.menuItemMouseLeave.bind(this), false);
         if (item.jslogContext) {
-            menuItemElement.setAttribute('jslog', `${VisualLogging.item().context(item.jslogContext)}`);
+            menuItemElement.setAttribute('jslog', `${VisualLogging.item(item.jslogContext).track({ click: true, resize: true })}`);
         }
         return menuItemElement;
     }
@@ -298,11 +288,7 @@ export class SoftContextMenu {
         const separatorElement = document.createElement('div');
         separatorElement.classList.add('soft-context-menu-separator');
         this.detailsForElementMap.set(separatorElement, {
-            subItems: undefined,
-            actionId: undefined,
             isSeparator: true,
-            customElement: undefined,
-            subMenuTimer: undefined,
         });
         separatorElement.createChild('div', 'separator-line');
         return separatorElement;

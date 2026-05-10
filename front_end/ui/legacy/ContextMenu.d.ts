@@ -93,12 +93,12 @@ export declare class Section {
     constructor(contextMenu: ContextMenu | null);
     /**
      * Appends a standard clickable item to this section.
-     * @param label The text to display for the item.
+     * @param labelOrItem The text to display for the item, or a premade Item. In the latter case, `option` is ignored.
      * @param handler The function to execute when the item is clicked.
      * @param options Optional settings for the item.
      * @returns The newly created `Item`.
      */
-    appendItem(label: string, handler: () => void, options?: {
+    appendItem(labelOrItem: string | Item, handler: () => void, options?: {
         accelerator?: Host.InspectorFrontendHostAPI.AcceleratorDescriptor;
         isPreviewFeature?: boolean;
         disabled?: boolean;
@@ -476,7 +476,7 @@ export interface ProviderRegistration<T> {
     /** A function that asynchronously loads the provider instance. */
     loadProvider: () => Promise<Provider<T>>;
     /** Optional. The experiment that enables this provider. */
-    experiment?: Root.Runtime.ExperimentName;
+    experiment?: Root.ExperimentNames.ExperimentName;
 }
 export interface ContextMenuItemRegistration {
     /** The location in the menu where this item should appear. */
@@ -486,5 +486,5 @@ export interface ContextMenuItemRegistration {
     /** Optional. A number used for sorting items within the same location. Lower numbers appear first. */
     order?: number;
     /** Optional. The experiment that enables this item. */
-    experiment?: Root.Runtime.ExperimentName;
+    experiment?: Root.ExperimentNames.ExperimentName;
 }

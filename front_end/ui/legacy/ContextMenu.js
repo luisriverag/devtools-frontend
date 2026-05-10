@@ -105,8 +105,6 @@ export class Item {
                     label: this.label,
                     isExperimentalFeature: this.previewFeature,
                     enabled: !this.disabled,
-                    checked: undefined,
-                    subItems: undefined,
                     tooltip: this.#tooltip,
                     jslogContext: this.jslogContext,
                     featureName: this.featureName,
@@ -128,11 +126,6 @@ export class Item {
             case 'separator': {
                 return {
                     type: 'separator',
-                    id: undefined,
-                    label: undefined,
-                    enabled: undefined,
-                    checked: undefined,
-                    subItems: undefined,
                 };
             }
             case 'checkbox': {
@@ -143,7 +136,6 @@ export class Item {
                     checked: Boolean(this.checked),
                     isExperimentalFeature: this.previewFeature,
                     enabled: !this.disabled,
-                    subItems: undefined,
                     tooltip: this.#tooltip,
                     jslogContext: this.jslogContext,
                 };
@@ -197,15 +189,21 @@ export class Section {
     }
     /**
      * Appends a standard clickable item to this section.
-     * @param label The text to display for the item.
+     * @param labelOrItem The text to display for the item, or a premade Item. In the latter case, `option` is ignored.
      * @param handler The function to execute when the item is clicked.
      * @param options Optional settings for the item.
      * @returns The newly created `Item`.
      */
-    appendItem(label, handler, options) {
-        const item = new Item(this.contextMenu, 'item', label, options?.isPreviewFeature, options?.disabled, undefined, options?.accelerator, options?.tooltip, options?.jslogContext, options?.featureName);
-        if (options?.additionalElement) {
-            item.customElement = options?.additionalElement;
+    appendItem(labelOrItem, handler, options) {
+        let item;
+        if (labelOrItem instanceof Item) {
+            item = labelOrItem;
+        }
+        else {
+            item = new Item(this.contextMenu, 'item', labelOrItem, options?.isPreviewFeature, options?.disabled, undefined, options?.accelerator, options?.tooltip, options?.jslogContext, options?.featureName);
+            if (options?.additionalElement) {
+                item.customElement = options?.additionalElement;
+            }
         }
         this.items.push(item);
         if (this.contextMenu) {
@@ -436,8 +434,6 @@ export class SubMenu extends Item {
             isExperimentalFeature: this.previewFeature,
             enabled: !this.disabled,
             subItems: [],
-            id: undefined,
-            checked: undefined,
             jslogContext: this.jslogContext,
             featureName: this.featureName,
         };
@@ -455,11 +451,6 @@ export class SubMenu extends Item {
                 }
                 result.subItems.push({
                     type: 'separator',
-                    id: undefined,
-                    subItems: undefined,
-                    checked: undefined,
-                    enabled: undefined,
-                    label: undefined,
                 });
             }
         }
@@ -664,8 +655,14 @@ export class ContextMenu extends SubMenu {
         }
         const menuObject = this.buildMenuDescriptors();
         const ownerDocument = this.eventTarget.ownerDocument;
-        if (this.useSoftMenu || ContextMenu.useSoftMenu ||
-            Host.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode()) {
+        let useSoftMenu = this.useSoftMenu || ContextMenu.useSoftMenu ||
+            Host.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode();
+        // Allow force opening a Native menu when DevTools is under test.
+        // This allows opening DevTools on DevTools
+        if (!this.useSoftMenu && ContextMenu.useSoftMenu && this.event.altKey) {
+            useSoftMenu = false;
+        }
+        if (useSoftMenu) {
             this.softMenu = new SoftContextMenu(menuObject, this.itemSelected.bind(this), this.keepOpen, undefined, this.onSoftMenuClosed, this.loggableParent);
             // let soft context menu focus on the first item when the event is triggered by a non-mouse event
             // add another check of button value to differentiate mouse event with 'shift + f10' keyboard event
@@ -961,7 +958,7 @@ export function registerProvider(registration) {
 async function loadApplicableRegisteredProviders(target) {
     const providers = [];
     for (const providerRegistration of registeredProviders) {
-        if (!Root.Runtime.Runtime.isDescriptorEnabled({ experiment: providerRegistration.experiment, condition: undefined })) {
+        if (!Root.Runtime.Runtime.isDescriptorEnabled({ experiment: providerRegistration.experiment })) {
             continue;
         }
         if (providerRegistration.contextTypes) {

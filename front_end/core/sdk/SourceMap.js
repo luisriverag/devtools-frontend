@@ -63,7 +63,7 @@ export class SourceMap {
     #script;
     #scopesInfo = null;
     #debugId;
-    scopesFallbackPromiseForTest;
+    #scopesFallbackPromise;
     /**
      * Implements Source Map V3 model. See https://github.com/google/closure-compiler/wiki/Source-Maps
      * for format description.
@@ -93,9 +93,11 @@ export class SourceMap {
         // Ensure scriptUrl is associated with sourceMap sources
         const sourceIdx = this.#sourceIndex(scriptUrl);
         if (sourceIdx >= 0) {
-            if (!this.#scopesInfo) {
-                // First time seeing this sourcemap, create an new empty scopesInfo object
+            if (!this.#scopesInfo || this.#scopesFallbackPromise !== undefined) {
+                // First time seeing this sourcemap, create an new empty scopesInfo object.
+                // Also reset the fallback scope info since the extension will provide it.
                 this.#scopesInfo = new SourceMapScopesInfo(this, { scopes: [], ranges: [] });
+                this.#scopesFallbackPromise = undefined;
             }
             if (!this.#scopesInfo.hasOriginalScopes(sourceIdx)) {
                 const originalScopes = buildOriginalScopes(ranges);
@@ -135,6 +137,10 @@ export class SourceMap {
         this.#ensureSourceMapProcessed();
         return this.#scopesInfo !== null && !this.#scopesInfo.isEmpty();
     }
+    waitForScopeInfo() {
+        this.#ensureSourceMapProcessed();
+        return this.#scopesFallbackPromise ?? Promise.resolve();
+    }
     findEntry(lineNumber, columnNumber, inlineFrameIndex) {
         this.#ensureSourceMapProcessed();
         if (inlineFrameIndex && this.#scopesInfo !== null) {
@@ -153,12 +159,19 @@ export class SourceMap {
                 sourceURL: this.sourceURLs()[callsite.sourceIndex],
                 sourceLineNumber: callsite.line,
                 sourceColumnNumber: callsite.column,
-                name: undefined,
             };
         }
         const mappings = this.mappings();
         const index = Platform.ArrayUtilities.upperBound(mappings, undefined, (_, entry) => lineNumber - entry.lineNumber || columnNumber - entry.columnNumber);
         return index ? mappings[index - 1] : null;
+    }
+    /** Returns the entry at the given position but only if an entry exists for that exact position */
+    findEntryExact(lineNumber, columnNumber) {
+        const entry = this.findEntry(lineNumber, columnNumber);
+        if (entry?.lineNumber === lineNumber && entry.columnNumber === columnNumber) {
+            return entry;
+        }
+        return null;
     }
     findEntryRanges(lineNumber, columnNumber) {
         const mappings = this.mappings();
@@ -285,7 +298,7 @@ export class SourceMap {
             try {
                 this.eachSection(this.parseMap.bind(this));
                 if (!this.hasScopeInfo()) {
-                    this.scopesFallbackPromiseForTest = this.#buildScopesFallback().then(info => {
+                    this.#scopesFallbackPromise = this.#buildScopesFallback().then(info => {
                         this.#scopesInfo = info;
                     });
                 }
@@ -423,7 +436,7 @@ export class SourceMap {
             nameIndex += tokenIter.nextVLQ();
             this.mappings().push(new SourceMapEntry(lineNumber, columnNumber, sourceIndex, sourceURL, sourceLineNumber, sourceColumnNumber, names[nameIndex]));
         }
-        if (Root.Runtime.experiments.isEnabled("use-source-map-scopes" /* Root.Runtime.ExperimentName.USE_SOURCE_MAP_SCOPES */)) {
+        if (Root.Runtime.experiments.isEnabled(Root.ExperimentNames.ExperimentName.USE_SOURCE_MAP_SCOPES)) {
             if (!this.#scopesInfo) {
                 this.#scopesInfo = new SourceMapScopesInfo(this, { scopes: [], ranges: [] });
             }
@@ -591,13 +604,6 @@ export class SourceMap {
         return this.embeddedContentByURL(sourceURL) === other.embeddedContentByURL(sourceURL) &&
             this.hasIgnoreListHint(sourceURL) === other.hasIgnoreListHint(sourceURL);
     }
-    expandCallFrame(frame) {
-        this.#ensureSourceMapProcessed();
-        if (this.#scopesInfo === null) {
-            return [frame];
-        }
-        return this.#scopesInfo.expandCallFrame(frame);
-    }
     resolveScopeChain(frame) {
         this.#ensureSourceMapProcessed();
         if (this.#scopesInfo === null) {
@@ -608,6 +614,10 @@ export class SourceMap {
     findOriginalFunctionName(position) {
         this.#ensureSourceMapProcessed();
         return this.#scopesInfo?.findOriginalFunctionName(position) ?? null;
+    }
+    findOriginalFunctionScope(position) {
+        this.#ensureSourceMapProcessed();
+        return this.#scopesInfo?.findOriginalFunctionScope(position) ?? null;
     }
     isOutlinedFrame(generatedLine, generatedColumn) {
         this.#ensureSourceMapProcessed();

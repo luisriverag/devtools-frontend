@@ -29,13 +29,40 @@ export function decode(input) {
     }
     return bytes;
 }
-export function encode(input) {
-    return new Promise((resolve, reject) => {
+/**
+ * Note: if input can be very large (larger than the max string size), callers should
+ * expect this to throw an error.
+ */
+export async function encode(input) {
+    // Node.js environment (for foundation unit tests)
+    if (typeof FileReader === 'undefined') {
+        const blob = new Blob([input]);
+        const arrayBuffer = await blob.arrayBuffer();
+        // Use globalThis.Buffer to avoid TypeScript errors if Node types are not included.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return globalThis.Buffer.from(arrayBuffer).toString('base64');
+    }
+    // Browser environment
+    return await new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onerror = () => reject(new Error('failed to convert to base64'));
+        reader.onerror = () => reject(new Error('failed to convert to base64: internal error'));
         reader.onload = () => {
+            // The input was too large to encode as a string. The caller should anticipate
+            // this and use a workaround. See TimelinePanel.ts innerSaveToFile for an example.
+            // For more information, see crbug.com/436482118.
+            if (reader.result === '') {
+                reject(new Error('failed to convert to base64: input too large to encode as base64 string'));
+                return;
+            }
+            // This string can be very large, so take care to not double memory. `split`
+            // was used here before, which always results in new strings in V8. By using
+            // slice instead, we leverage the sliced string optimization in V8 and avoid
+            // doubling the memory requirement (even if temporarily: that is a potential
+            // source of OOM crashes given large enough input, such as is common with
+            // Performance traces).
             const blobAsUrl = reader.result;
-            const [, base64] = blobAsUrl.split(',', 2);
+            const index = blobAsUrl.indexOf(',');
+            const base64 = blobAsUrl.slice(index + 1);
             resolve(base64);
         };
         reader.readAsDataURL(new Blob([input]));

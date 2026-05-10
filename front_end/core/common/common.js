@@ -4,28 +4,6 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
-// gen/front_end/core/common/App.js
-var App_exports = {};
-
-// gen/front_end/core/common/AppProvider.js
-var AppProvider_exports = {};
-__export(AppProvider_exports, {
-  getRegisteredAppProviders: () => getRegisteredAppProviders,
-  registerAppProvider: () => registerAppProvider
-});
-import * as Root from "./../root/root.js";
-var registeredAppProvider = [];
-function registerAppProvider(registration) {
-  registeredAppProvider.push(registration);
-}
-function getRegisteredAppProviders() {
-  return registeredAppProvider.filter((provider) => Root.Runtime.Runtime.isDescriptorEnabled({ experiment: void 0, condition: provider.condition })).sort((firstProvider, secondProvider) => {
-    const order1 = firstProvider.order || 0;
-    const order2 = secondProvider.order || 0;
-    return order1 - order2;
-  });
-}
-
 // gen/front_end/core/common/Base64.js
 var Base64_exports = {};
 __export(Base64_exports, {
@@ -58,13 +36,23 @@ function decode(input) {
   }
   return bytes;
 }
-function encode(input) {
-  return new Promise((resolve, reject) => {
+async function encode(input) {
+  if (typeof FileReader === "undefined") {
+    const blob = new Blob([input]);
+    const arrayBuffer = await blob.arrayBuffer();
+    return globalThis.Buffer.from(arrayBuffer).toString("base64");
+  }
+  return await new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onerror = () => reject(new Error("failed to convert to base64"));
+    reader.onerror = () => reject(new Error("failed to convert to base64: internal error"));
     reader.onload = () => {
+      if (reader.result === "") {
+        reject(new Error("failed to convert to base64: input too large to encode as base64 string"));
+        return;
+      }
       const blobAsUrl = reader.result;
-      const [, base64] = blobAsUrl.split(",", 2);
+      const index = blobAsUrl.indexOf(",");
+      const base64 = blobAsUrl.slice(index + 1);
       resolve(base64);
     };
     reader.readAsDataURL(new Blob([input]));
@@ -1058,6 +1046,7 @@ function findFgColorForContrastAPCA(fgColor, bgColor, requiredContrast) {
 }
 var EPSILON = 0.01;
 var WIDE_RANGE_EPSILON = 1;
+var STRICT_EPSILON = 1e-4;
 function equals(a, b, accuracy = EPSILON) {
   if (Array.isArray(a) && Array.isArray(b)) {
     if (a.length !== b.length) {
@@ -1522,7 +1511,7 @@ var LCH = class _LCH {
   // See "powerless" component definitions in
   // https://www.w3.org/TR/css-color-4/#specifying-lab-lch
   isHuePowerless() {
-    return equals(this.c, 0);
+    return equals(this.c, 0, STRICT_EPSILON);
   }
   static fromSpec(spec, text) {
     const L = parsePercentage(spec[0], [0, 100]) ?? parseNumber(spec[0]);
@@ -2447,7 +2436,7 @@ var HSL = class _HSL {
     this.l = clamp(l, { min: 0, max: 1 });
     s = equals(this.l, 0) || equals(this.l, 1) ? 0 : s;
     this.s = clamp(s, { min: 0, max: 1 });
-    h = equals(this.s, 0) ? 0 : h;
+    h = equals(this.s, 0, STRICT_EPSILON) ? 0 : h;
     this.h = normalizeHue(h * 360) / 360;
     this.alpha = clamp(alpha ?? null, { min: 0, max: 1 });
     this.#authoredText = authoredText;
@@ -3147,7 +3136,7 @@ var Legacy = class _Legacy {
   }
   toProtocolRGBA() {
     const rgba = this.canonicalRGBA();
-    const result = { r: rgba[0], g: rgba[1], b: rgba[2], a: void 0 };
+    const result = { r: rgba[0], g: rgba[1], b: rgba[2] };
     if (rgba[3] !== 1) {
       result.a = rgba[3];
     }
@@ -3411,7 +3400,7 @@ var Generator = class {
   #alphaSpace;
   #colors = /* @__PURE__ */ new Map();
   constructor(hueSpace, satSpace, lightnessSpace, alphaSpace) {
-    this.#hueSpace = hueSpace || { min: 0, max: 360, count: void 0 };
+    this.#hueSpace = hueSpace || { min: 0, max: 360 };
     this.#satSpace = satSpace || 67;
     this.#lightnessSpace = lightnessSpace || 80;
     this.#alphaSpace = alphaSpace || 1;
@@ -3456,6 +3445,7 @@ __export(Console_exports, {
   FrontendMessageSource: () => FrontendMessageSource,
   Message: () => Message
 });
+import * as Root from "./../root/root.js";
 
 // gen/front_end/core/common/Object.js
 var Object_exports = {};
@@ -3512,7 +3502,11 @@ var ObjectWrapper = class {
     const event = { data: eventData, source: this };
     for (const listener of [...listeners]) {
       if (!listener.disposed) {
-        listener.listener.call(listener.thisObject, event);
+        try {
+          listener.listener.call(listener.thisObject, event);
+        } catch (err) {
+          console.error(`Event listener for ${String(eventType)} throw an error:`, err);
+        }
       }
     }
   }
@@ -3520,21 +3514,27 @@ var ObjectWrapper = class {
 function eventMixin(base) {
   console.assert(base !== HTMLElement);
   return class EventHandling extends base {
-    #events = new ObjectWrapper();
+    // Note that the weird name is due to TSC disallowing private/protected fields in
+    // anonmous exported classes. We use a `__` prefix to prevent clashes with `base`.
+    // eslint-disable-next-line @devtools/no-underscored-properties, @typescript-eslint/naming-convention
+    __events = new ObjectWrapper();
     addEventListener(eventType, listener, thisObject) {
-      return this.#events.addEventListener(eventType, listener, thisObject);
+      return this.__events.addEventListener(eventType, listener, thisObject);
     }
     once(eventType) {
-      return this.#events.once(eventType);
+      return this.__events.once(eventType);
     }
     removeEventListener(eventType, listener, thisObject) {
-      this.#events.removeEventListener(eventType, listener, thisObject);
+      this.__events.removeEventListener(eventType, listener, thisObject);
     }
     hasEventListeners(eventType) {
-      return this.#events.hasEventListeners(eventType);
+      return this.__events.hasEventListeners(eventType);
     }
     dispatchEventToListeners(eventType, ...eventData) {
-      this.#events.dispatchEventToListeners(eventType, ...eventData);
+      this.__events.dispatchEventToListeners(eventType, ...eventData);
+      if (typeof this.dispatchDOMEvent === "function") {
+        this.dispatchDOMEvent(new CustomEvent(eventType, { detail: eventData[0] }));
+      }
     }
   };
 }
@@ -3573,11 +3573,11 @@ var UIStrings = {
   /**
    * @description The UI destination when right clicking an item that can be revealed
    */
-  applicationPanel: "Application panel",
+  requestConditionsDrawer: "Request conditions drawer",
   /**
    * @description The UI destination when right clicking an item that can be revealed
    */
-  securityPanel: "Security panel",
+  applicationPanel: "Application panel",
   /**
    * @description The UI destination when right clicking an item that can be revealed
    */
@@ -3678,26 +3678,25 @@ var RevealerDestination = {
   CHANGES_DRAWER: i18nLazyString(UIStrings.changesDrawer),
   ISSUES_VIEW: i18nLazyString(UIStrings.issuesView),
   NETWORK_PANEL: i18nLazyString(UIStrings.networkPanel),
+  REQUEST_CONDITIONS_DRAWER: i18nLazyString(UIStrings.requestConditionsDrawer),
   TIMELINE_PANEL: i18nLazyString(UIStrings.timelinePanel),
   APPLICATION_PANEL: i18nLazyString(UIStrings.applicationPanel),
   SOURCES_PANEL: i18nLazyString(UIStrings.sourcesPanel),
-  SECURITY_PANEL: i18nLazyString(UIStrings.securityPanel),
   MEMORY_INSPECTOR_PANEL: i18nLazyString(UIStrings.memoryInspectorPanel),
   ANIMATIONS_PANEL: i18nLazyString(UIStrings.animationsPanel)
 };
 
 // gen/front_end/core/common/Console.js
-var consoleInstance;
 var Console = class _Console extends ObjectWrapper {
   #messages = [];
   static instance(opts) {
-    if (!consoleInstance || opts?.forceNew) {
-      consoleInstance = new _Console();
+    if (!Root.DevToolsContext.globalInstance().has(_Console) || opts?.forceNew) {
+      Root.DevToolsContext.globalInstance().set(_Console, new _Console());
     }
-    return consoleInstance;
+    return Root.DevToolsContext.globalInstance().get(_Console);
   }
   static removeInstance() {
-    consoleInstance = void 0;
+    Root.DevToolsContext.globalInstance().delete(_Console);
   }
   /**
    * Add a message to the Console panel.
@@ -3768,16 +3767,25 @@ var Message = class {
 // gen/front_end/core/common/Debouncer.js
 var Debouncer_exports = {};
 __export(Debouncer_exports, {
-  debounce: () => debounce
+  debounce: () => debounce,
+  disableTestOverride: () => disableTestOverride,
+  enableTestOverride: () => enableTestOverride
 });
 var debounce = function(func, delay) {
-  let timer = 0;
+  let timer;
   const debounced = (...args) => {
     clearTimeout(timer);
-    timer = window.setTimeout(() => func(...args), delay);
+    timer = setTimeout(() => func(...args), testDebounceOverride ? 0 : delay);
   };
   return debounced;
 };
+var testDebounceOverride = false;
+function enableTestOverride() {
+  testDebounceOverride = true;
+}
+function disableTestOverride() {
+  testDebounceOverride = false;
+}
 
 // gen/front_end/core/common/EventTarget.js
 var EventTarget_exports = {};
@@ -3802,7 +3810,9 @@ __export(Gzip_exports, {
   arrayBufferToString: () => arrayBufferToString,
   compress: () => compress,
   compressStream: () => compressStream,
+  createMonitoredStream: () => createMonitoredStream,
   decompress: () => decompress,
+  decompressDeflate: () => decompressDeflate,
   decompressStream: () => decompressStream,
   fileToString: () => fileToString,
   isGzip: () => isGzip
@@ -3830,10 +3840,19 @@ async function fileToString(file) {
   const str = new TextDecoder("utf-8").decode(arrayBuffer);
   return str;
 }
-async function decompress(gzippedBuffer) {
+async function decompress(gzippedBuffer, charset = "utf-8") {
   const buffer = await gzipCodec(gzippedBuffer, new DecompressionStream("gzip"));
-  const str = new TextDecoder("utf-8").decode(buffer);
+  const str = new TextDecoder(charset).decode(buffer);
   return str;
+}
+async function decompressDeflate(buffer, charset = "utf-8") {
+  let decompressedBuffer;
+  try {
+    decompressedBuffer = await gzipCodec(buffer, new DecompressionStream("deflate"));
+  } catch {
+    decompressedBuffer = await gzipCodec(buffer, new DecompressionStream("deflate-raw"));
+  }
+  return new TextDecoder(charset).decode(decompressedBuffer);
 }
 async function compress(str) {
   const encoded = new TextEncoder().encode(str);
@@ -3843,7 +3862,7 @@ async function compress(str) {
 async function gzipCodec(buffer, codecStream) {
   const readable = new ReadableStream({
     start(controller) {
-      controller.enqueue(buffer);
+      controller.enqueue(buffer instanceof ArrayBuffer ? new Uint8Array(buffer) : buffer);
       controller.close();
     }
   });
@@ -3857,6 +3876,17 @@ function decompressStream(stream) {
 function compressStream(stream) {
   const cs = new CompressionStream("gzip");
   return stream.pipeThrough(cs);
+}
+function createMonitoredStream(stream, onProgress) {
+  let bytesRead = 0;
+  const progressTransformer = new TransformStream({
+    transform(chunk, controller) {
+      bytesRead += chunk.byteLength;
+      onProgress(bytesRead);
+      controller.enqueue(chunk);
+    }
+  });
+  return stream.pipeThrough(progressTransformer);
 }
 
 // gen/front_end/core/common/JavaScriptMetaData.js
@@ -3887,45 +3917,6 @@ function lazy(producer) {
       throw error;
     }
   };
-}
-
-// gen/front_end/core/common/Linkifier.js
-var Linkifier_exports = {};
-__export(Linkifier_exports, {
-  Linkifier: () => Linkifier,
-  getApplicableRegisteredlinkifiers: () => getApplicableRegisteredlinkifiers,
-  registerLinkifier: () => registerLinkifier
-});
-var Linkifier = class {
-  static async linkify(object, options) {
-    if (!object) {
-      throw new Error("Can't linkify " + object);
-    }
-    const linkifierRegistration = getApplicableRegisteredlinkifiers(object)[0];
-    if (!linkifierRegistration) {
-      throw new Error("No linkifiers registered for object " + object);
-    }
-    const linkifier = await linkifierRegistration.loadLinkifier();
-    return linkifier.linkify(object, options);
-  }
-};
-var registeredLinkifiers = [];
-function registerLinkifier(registration) {
-  registeredLinkifiers.push(registration);
-}
-function getApplicableRegisteredlinkifiers(object) {
-  return registeredLinkifiers.filter(isLinkifierApplicableToContextTypes);
-  function isLinkifierApplicableToContextTypes(linkifierRegistration) {
-    if (!linkifierRegistration.contextTypes) {
-      return true;
-    }
-    for (const contextType of linkifierRegistration.contextTypes()) {
-      if (object instanceof contextType) {
-        return true;
-      }
-    }
-    return false;
-  }
 }
 
 // gen/front_end/core/common/MapWithDefault.js
@@ -4232,6 +4223,9 @@ var ParsedURL = class _ParsedURL {
     return "";
   }
   static extractName(url) {
+    if (url.endsWith("/")) {
+      url = url.slice(0, -1);
+    }
     let index = url.lastIndexOf("/");
     const pathAndQuery = index !== -1 ? url.substr(index + 1) : url;
     index = pathAndQuery.indexOf("?");
@@ -4421,7 +4415,7 @@ __export(Progress_exports, {
 var Progress = class {
   totalWork = 0;
   worked = 0;
-  title = void 0;
+  title;
   canceled = false;
   done = false;
 };
@@ -4559,9 +4553,6 @@ var ProgressProxy = class {
     return this.#delegate ? this.#delegate.worked : 0;
   }
 };
-
-// gen/front_end/core/common/QueryParamHandler.js
-var QueryParamHandler_exports = {};
 
 // gen/front_end/core/common/ResolverBase.js
 var ResolverBase_exports = {};
@@ -4837,6 +4828,12 @@ var ResourceType = class {
   static simplifyContentType(contentType) {
     const regex = new RegExp("^application(.*json$|/json+.*)");
     return regex.test(contentType) ? "application/json" : contentType;
+  }
+  /**
+   * Checks whether the given MIME type represents JavaScript content.
+   */
+  static isJavaScriptMimeType(mimeType) {
+    return mimeType === "application/javascript" || mimeType === "text/javascript";
   }
   /**
    * Adds suffixes iff the mimeType is 'text/javascript' to denote whether the JS is minified or from
@@ -5386,12 +5383,11 @@ function getLocalizedSettingsCategory(category) {
 var Settings_exports = {};
 __export(Settings_exports, {
   Deprecation: () => Deprecation,
-  NOOP_STORAGE: () => NOOP_STORAGE,
+  InMemoryStorage: () => InMemoryStorage,
   RegExpSetting: () => RegExpSetting,
   Setting: () => Setting,
   Settings: () => Settings,
   SettingsStorage: () => SettingsStorage,
-  VersionController: () => VersionController,
   getLocalizedSettingsCategory: () => getLocalizedSettingsCategory,
   maybeRemoveSettingExtension: () => maybeRemoveSettingExtension,
   moduleSetting: () => moduleSetting,
@@ -5400,13 +5396,752 @@ __export(Settings_exports, {
   resetSettings: () => resetSettings,
   settingForTest: () => settingForTest
 });
+import * as Platform5 from "./../platform/platform.js";
+import * as Root4 from "./../root/root.js";
+
+// gen/front_end/core/common/VersionController.js
+var VersionController_exports = {};
+__export(VersionController_exports, {
+  VersionController: () => VersionController
+});
 import * as Platform4 from "./../platform/platform.js";
 import * as Root3 from "./../root/root.js";
-var settingsInstance;
+var VersionController = class _VersionController {
+  static GLOBAL_VERSION_SETTING_NAME = "inspectorVersion";
+  static SYNCED_VERSION_SETTING_NAME = "syncedInspectorVersion";
+  static LOCAL_VERSION_SETTING_NAME = "localInspectorVersion";
+  static CURRENT_VERSION = 44;
+  #settings;
+  #globalVersionSetting;
+  #syncedVersionSetting;
+  #localVersionSetting;
+  constructor(settings) {
+    this.#settings = settings;
+    this.#globalVersionSetting = this.#settings.createSetting(
+      _VersionController.GLOBAL_VERSION_SETTING_NAME,
+      _VersionController.CURRENT_VERSION,
+      "Global"
+      /* SettingStorageType.GLOBAL */
+    );
+    this.#syncedVersionSetting = this.#settings.createSetting(
+      _VersionController.SYNCED_VERSION_SETTING_NAME,
+      _VersionController.CURRENT_VERSION,
+      "Synced"
+      /* SettingStorageType.SYNCED */
+    );
+    this.#localVersionSetting = this.#settings.createSetting(
+      _VersionController.LOCAL_VERSION_SETTING_NAME,
+      _VersionController.CURRENT_VERSION,
+      "Local"
+      /* SettingStorageType.LOCAL */
+    );
+  }
+  /**
+   * Force re-sets all version number settings to the current version without
+   * running any migrations.
+   */
+  resetToCurrent() {
+    this.#globalVersionSetting.set(_VersionController.CURRENT_VERSION);
+    this.#syncedVersionSetting.set(_VersionController.CURRENT_VERSION);
+    this.#localVersionSetting.set(_VersionController.CURRENT_VERSION);
+  }
+  #removeSetting(setting) {
+    const name = setting.name;
+    this.#settings.getRegistry().delete(name);
+    this.#settings.moduleSettings.delete(name);
+    setting.storage.remove(name);
+  }
+  /**
+   * Runs the appropriate migrations and updates the version settings accordingly.
+   *
+   * To determine what migrations to run we take the minimum of all version number settings.
+   *
+   * IMPORTANT: All migrations must be idempotent since they might be applied multiple times.
+   */
+  updateVersion() {
+    const currentVersion = _VersionController.CURRENT_VERSION;
+    const minimumVersion = Math.min(this.#globalVersionSetting.get(), this.#syncedVersionSetting.get(), this.#localVersionSetting.get());
+    const methodsToRun = this.methodsToRunToUpdateVersion(minimumVersion, currentVersion);
+    console.assert(
+      // @ts-expect-error
+      this[`updateVersionFrom${currentVersion}To${currentVersion + 1}`] === void 0,
+      "Unexpected migration method found. Increment CURRENT_VERSION or remove the method."
+    );
+    for (const method of methodsToRun) {
+      this[method].call(this);
+    }
+    this.resetToCurrent();
+  }
+  methodsToRunToUpdateVersion(oldVersion, currentVersion) {
+    const result = [];
+    for (let i = oldVersion; i < currentVersion; ++i) {
+      result.push("updateVersionFrom" + i + "To" + (i + 1));
+    }
+    return result;
+  }
+  updateVersionFrom0To1() {
+    this.clearBreakpointsWhenTooMany(this.#settings.createLocalSetting("breakpoints", []), 5e5);
+  }
+  updateVersionFrom1To2() {
+    this.#settings.createSetting("previouslyViewedFiles", []).set([]);
+  }
+  updateVersionFrom2To3() {
+    this.#settings.createSetting("fileSystemMapping", {}).set({});
+    this.#removeSetting(this.#settings.createSetting("fileMappingEntries", []));
+  }
+  updateVersionFrom3To4() {
+    const advancedMode = this.#settings.createSetting("showHeaSnapshotObjectsHiddenProperties", false);
+    this.#settings.moduleSetting("showAdvancedHeapSnapshotProperties").set(advancedMode.get());
+    this.#removeSetting(advancedMode);
+  }
+  updateVersionFrom4To5() {
+    const settingNames = {
+      FileSystemViewSidebarWidth: "fileSystemViewSplitViewState",
+      elementsSidebarWidth: "elementsPanelSplitViewState",
+      StylesPaneSplitRatio: "stylesPaneSplitViewState",
+      heapSnapshotRetainersViewSize: "heapSnapshotSplitViewState",
+      "InspectorView.splitView": "InspectorView.splitViewState",
+      "InspectorView.screencastSplitView": "InspectorView.screencastSplitViewState",
+      "Inspector.drawerSplitView": "Inspector.drawerSplitViewState",
+      layerDetailsSplitView: "layerDetailsSplitViewState",
+      networkSidebarWidth: "networkPanelSplitViewState",
+      sourcesSidebarWidth: "sourcesPanelSplitViewState",
+      scriptsPanelNavigatorSidebarWidth: "sourcesPanelNavigatorSplitViewState",
+      sourcesPanelSplitSidebarRatio: "sourcesPanelDebuggerSidebarSplitViewState",
+      "timeline-details": "timelinePanelDetailsSplitViewState",
+      "timeline-split": "timelinePanelRecorsSplitViewState",
+      "timeline-view": "timelinePanelTimelineStackSplitViewState",
+      auditsSidebarWidth: "auditsPanelSplitViewState",
+      layersSidebarWidth: "layersPanelSplitViewState",
+      profilesSidebarWidth: "profilesPanelSplitViewState",
+      resourcesSidebarWidth: "resourcesPanelSplitViewState"
+    };
+    const empty = {};
+    for (const oldName in settingNames) {
+      const newName = settingNames[oldName];
+      const oldNameH = oldName + "H";
+      let newValue = null;
+      const oldSetting = this.#settings.createSetting(oldName, empty);
+      if (oldSetting.get() !== empty) {
+        newValue = newValue || {};
+        newValue.vertical = {};
+        newValue.vertical.size = oldSetting.get();
+        this.#removeSetting(oldSetting);
+      }
+      const oldSettingH = this.#settings.createSetting(oldNameH, empty);
+      if (oldSettingH.get() !== empty) {
+        newValue = newValue || {};
+        newValue.horizontal = {};
+        newValue.horizontal.size = oldSettingH.get();
+        this.#removeSetting(oldSettingH);
+      }
+      if (newValue) {
+        this.#settings.createSetting(newName, {}).set(newValue);
+      }
+    }
+  }
+  updateVersionFrom5To6() {
+    const settingNames = {
+      debuggerSidebarHidden: "sourcesPanelSplitViewState",
+      navigatorHidden: "sourcesPanelNavigatorSplitViewState",
+      "WebInspector.Drawer.showOnLoad": "Inspector.drawerSplitViewState"
+    };
+    for (const oldName in settingNames) {
+      const oldSetting = this.#settings.createSetting(oldName, null);
+      if (oldSetting.get() === null) {
+        this.#removeSetting(oldSetting);
+        continue;
+      }
+      const newName = settingNames[oldName];
+      const invert = oldName === "WebInspector.Drawer.showOnLoad";
+      const hidden = oldSetting.get() !== invert;
+      this.#removeSetting(oldSetting);
+      const showMode = hidden ? "OnlyMain" : "Both";
+      const newSetting = this.#settings.createSetting(newName, {});
+      const newValue = newSetting.get() || {};
+      newValue.vertical = newValue.vertical || {};
+      newValue.vertical.showMode = showMode;
+      newValue.horizontal = newValue.horizontal || {};
+      newValue.horizontal.showMode = showMode;
+      newSetting.set(newValue);
+    }
+  }
+  updateVersionFrom6To7() {
+    const settingNames = {
+      sourcesPanelNavigatorSplitViewState: "sourcesPanelNavigatorSplitViewState",
+      elementsPanelSplitViewState: "elementsPanelSplitViewState",
+      stylesPaneSplitViewState: "stylesPaneSplitViewState",
+      sourcesPanelDebuggerSidebarSplitViewState: "sourcesPanelDebuggerSidebarSplitViewState"
+    };
+    const empty = {};
+    for (const name in settingNames) {
+      const setting = this.#settings.createSetting(name, empty);
+      const value = setting.get();
+      if (value === empty) {
+        continue;
+      }
+      if (value.vertical?.size && value.vertical.size < 1) {
+        value.vertical.size = 0;
+      }
+      if (value.horizontal?.size && value.horizontal.size < 1) {
+        value.horizontal.size = 0;
+      }
+      setting.set(value);
+    }
+  }
+  updateVersionFrom7To8() {
+  }
+  updateVersionFrom8To9() {
+    const settingNames = ["skipStackFramesPattern", "workspaceFolderExcludePattern"];
+    for (let i = 0; i < settingNames.length; ++i) {
+      const setting = this.#settings.createSetting(settingNames[i], "");
+      let value = setting.get();
+      if (!value) {
+        return;
+      }
+      if (typeof value === "string") {
+        value = [value];
+      }
+      for (let j = 0; j < value.length; ++j) {
+        if (typeof value[j] === "string") {
+          value[j] = { pattern: value[j] };
+        }
+      }
+      setting.set(value);
+    }
+  }
+  updateVersionFrom9To10() {
+    const localStorage = Platform4.HostRuntime.HOST_RUNTIME.getLocalStorage();
+    if (!localStorage) {
+      return;
+    }
+    for (const key in localStorage) {
+      if (key.startsWith("revision-history")) {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+  updateVersionFrom10To11() {
+    const oldSettingName = "customDevicePresets";
+    const newSettingName = "customEmulatedDeviceList";
+    const oldSetting = this.#settings.createSetting(oldSettingName, void 0);
+    const list = oldSetting.get();
+    if (!Array.isArray(list)) {
+      return;
+    }
+    const newList = [];
+    for (let i = 0; i < list.length; ++i) {
+      const value = list[i];
+      const device = {};
+      device["title"] = value["title"];
+      device["type"] = "unknown";
+      device["user-agent"] = value["userAgent"];
+      device["capabilities"] = [];
+      if (value["touch"]) {
+        device["capabilities"].push("touch");
+      }
+      if (value["mobile"]) {
+        device["capabilities"].push("mobile");
+      }
+      device["screen"] = {};
+      device["screen"]["vertical"] = { width: value["width"], height: value["height"] };
+      device["screen"]["horizontal"] = { width: value["height"], height: value["width"] };
+      device["screen"]["device-pixel-ratio"] = value["deviceScaleFactor"];
+      device["modes"] = [];
+      device["show-by-default"] = true;
+      device["show"] = "Default";
+      newList.push(device);
+    }
+    if (newList.length) {
+      this.#settings.createSetting(newSettingName, []).set(newList);
+    }
+    this.#removeSetting(oldSetting);
+  }
+  updateVersionFrom11To12() {
+    this.migrateSettingsFromLocalStorage();
+  }
+  updateVersionFrom12To13() {
+    this.migrateSettingsFromLocalStorage();
+    this.#removeSetting(this.#settings.createSetting("timelineOverviewMode", ""));
+  }
+  updateVersionFrom13To14() {
+    const defaultValue = { throughput: -1, latency: 0 };
+    this.#settings.createSetting("networkConditions", defaultValue).set(defaultValue);
+  }
+  updateVersionFrom14To15() {
+    const setting = this.#settings.createLocalSetting("workspaceExcludedFolders", {});
+    const oldValue = setting.get();
+    const newValue = {};
+    for (const fileSystemPath in oldValue) {
+      newValue[fileSystemPath] = [];
+      for (const entry of oldValue[fileSystemPath]) {
+        newValue[fileSystemPath].push(entry.path);
+      }
+    }
+    setting.set(newValue);
+  }
+  updateVersionFrom15To16() {
+    const setting = this.#settings.createSetting("InspectorView.panelOrder", {});
+    const tabOrders = setting.get();
+    for (const key of Object.keys(tabOrders)) {
+      tabOrders[key] = (tabOrders[key] + 1) * 10;
+    }
+    setting.set(tabOrders);
+  }
+  updateVersionFrom16To17() {
+    const setting = this.#settings.createSetting("networkConditionsCustomProfiles", []);
+    const oldValue = setting.get();
+    const newValue = [];
+    if (Array.isArray(oldValue)) {
+      for (const preset of oldValue) {
+        if (typeof preset.title === "string" && typeof preset.value === "object" && typeof preset.value.throughput === "number" && typeof preset.value.latency === "number") {
+          newValue.push({
+            title: preset.title,
+            value: { download: preset.value.throughput, upload: preset.value.throughput, latency: preset.value.latency }
+          });
+        }
+      }
+    }
+    setting.set(newValue);
+  }
+  updateVersionFrom17To18() {
+    const setting = this.#settings.createLocalSetting("workspaceExcludedFolders", {});
+    const oldValue = setting.get();
+    const newValue = {};
+    for (const oldKey in oldValue) {
+      let newKey = oldKey.replace(/\\/g, "/");
+      if (!newKey.startsWith("file://")) {
+        if (newKey.startsWith("/")) {
+          newKey = "file://" + newKey;
+        } else {
+          newKey = "file:///" + newKey;
+        }
+      }
+      newValue[newKey] = oldValue[oldKey];
+    }
+    setting.set(newValue);
+  }
+  updateVersionFrom18To19() {
+    const defaultColumns = { status: true, type: true, initiator: true, size: true, time: true };
+    const visibleColumnSettings = this.#settings.createSetting("networkLogColumnsVisibility", defaultColumns);
+    const visibleColumns = visibleColumnSettings.get();
+    visibleColumns.name = true;
+    visibleColumns.timeline = true;
+    const configs = {};
+    for (const columnId in visibleColumns) {
+      if (!visibleColumns.hasOwnProperty(columnId)) {
+        continue;
+      }
+      configs[columnId.toLowerCase()] = { visible: visibleColumns[columnId] };
+    }
+    const newSetting = this.#settings.createSetting("networkLogColumns", {});
+    newSetting.set(configs);
+    this.#removeSetting(visibleColumnSettings);
+  }
+  updateVersionFrom19To20() {
+    const oldSetting = this.#settings.createSetting("InspectorView.panelOrder", {});
+    const newSetting = this.#settings.createSetting("panel-tabOrder", {});
+    newSetting.set(oldSetting.get());
+    this.#removeSetting(oldSetting);
+  }
+  updateVersionFrom20To21() {
+    const networkColumns = this.#settings.createSetting("networkLogColumns", {});
+    const columns = networkColumns.get();
+    delete columns["timeline"];
+    delete columns["waterfall"];
+    networkColumns.set(columns);
+  }
+  updateVersionFrom21To22() {
+    const breakpointsSetting = this.#settings.createLocalSetting("breakpoints", []);
+    const breakpoints = breakpointsSetting.get();
+    for (const breakpoint of breakpoints) {
+      breakpoint["url"] = breakpoint["sourceFileId"];
+      delete breakpoint["sourceFileId"];
+    }
+    breakpointsSetting.set(breakpoints);
+  }
+  updateVersionFrom22To23() {
+  }
+  updateVersionFrom23To24() {
+    const oldSetting = this.#settings.createSetting("searchInContentScripts", false);
+    const newSetting = this.#settings.createSetting("searchInAnonymousAndContentScripts", false);
+    newSetting.set(oldSetting.get());
+    this.#removeSetting(oldSetting);
+  }
+  updateVersionFrom24To25() {
+    const defaultColumns = { status: true, type: true, initiator: true, size: true, time: true };
+    const networkLogColumnsSetting = this.#settings.createSetting("networkLogColumns", defaultColumns);
+    const columns = networkLogColumnsSetting.get();
+    delete columns.product;
+    networkLogColumnsSetting.set(columns);
+  }
+  updateVersionFrom25To26() {
+    const oldSetting = this.#settings.createSetting("messageURLFilters", {});
+    const urls = Object.keys(oldSetting.get());
+    const textFilter = urls.map((url) => `-url:${url}`).join(" ");
+    if (textFilter) {
+      const textFilterSetting = this.#settings.createSetting("console.textFilter", "");
+      const suffix = textFilterSetting.get() ? ` ${textFilterSetting.get()}` : "";
+      textFilterSetting.set(`${textFilter}${suffix}`);
+    }
+    this.#removeSetting(oldSetting);
+  }
+  updateVersionFrom26To27() {
+    const settings = this.#settings;
+    function renameKeyInObjectSetting(settingName, from, to) {
+      const setting = settings.createSetting(settingName, {});
+      const value = setting.get();
+      if (from in value) {
+        value[to] = value[from];
+        delete value[from];
+        setting.set(value);
+      }
+    }
+    function renameInStringSetting(settingName, from, to) {
+      const setting = settings.createSetting(settingName, "");
+      const value = setting.get();
+      if (value === from) {
+        setting.set(to);
+      }
+    }
+    renameKeyInObjectSetting("panel-tabOrder", "audits2", "audits");
+    renameKeyInObjectSetting("panel-closeableTabs", "audits2", "audits");
+    renameInStringSetting("panel-selectedTab", "audits2", "audits");
+  }
+  updateVersionFrom27To28() {
+    const setting = this.#settings.createSetting("uiTheme", "systemPreferred");
+    if (setting.get() === "default") {
+      setting.set("systemPreferred");
+    }
+  }
+  updateVersionFrom28To29() {
+    const settings = this.#settings;
+    function renameKeyInObjectSetting(settingName, from, to) {
+      const setting = settings.createSetting(settingName, {});
+      const value = setting.get();
+      if (from in value) {
+        value[to] = value[from];
+        delete value[from];
+        setting.set(value);
+      }
+    }
+    function renameInStringSetting(settingName, from, to) {
+      const setting = settings.createSetting(settingName, "");
+      const value = setting.get();
+      if (value === from) {
+        setting.set(to);
+      }
+    }
+    renameKeyInObjectSetting("panel-tabOrder", "audits", "lighthouse");
+    renameKeyInObjectSetting("panel-closeableTabs", "audits", "lighthouse");
+    renameInStringSetting("panel-selectedTab", "audits", "lighthouse");
+  }
+  updateVersionFrom29To30() {
+    const closeableTabSetting = this.#settings.createSetting("closeableTabs", {});
+    const panelCloseableTabSetting = this.#settings.createSetting("panel-closeableTabs", {});
+    const drawerCloseableTabSetting = this.#settings.createSetting("drawer-view-closeableTabs", {});
+    const openTabsInPanel = panelCloseableTabSetting.get();
+    const openTabsInDrawer = panelCloseableTabSetting.get();
+    const newValue = Object.assign(openTabsInDrawer, openTabsInPanel);
+    closeableTabSetting.set(newValue);
+    this.#removeSetting(panelCloseableTabSetting);
+    this.#removeSetting(drawerCloseableTabSetting);
+  }
+  updateVersionFrom30To31() {
+    const recordingsSetting = this.#settings.createSetting("recorder_recordings", []);
+    this.#removeSetting(recordingsSetting);
+  }
+  updateVersionFrom31To32() {
+    const breakpointsSetting = this.#settings.createLocalSetting("breakpoints", []);
+    const breakpoints = breakpointsSetting.get();
+    for (const breakpoint of breakpoints) {
+      breakpoint["resourceTypeName"] = "script";
+    }
+    breakpointsSetting.set(breakpoints);
+  }
+  updateVersionFrom32To33() {
+    const previouslyViewedFilesSetting = this.#settings.createLocalSetting("previouslyViewedFiles", []);
+    let previouslyViewedFiles = previouslyViewedFilesSetting.get();
+    previouslyViewedFiles = previouslyViewedFiles.filter((previouslyViewedFile) => "url" in previouslyViewedFile);
+    for (const previouslyViewedFile of previouslyViewedFiles) {
+      previouslyViewedFile["resourceTypeName"] = "script";
+    }
+    previouslyViewedFilesSetting.set(previouslyViewedFiles);
+  }
+  updateVersionFrom33To34() {
+    const logpointPrefix = "/** DEVTOOLS_LOGPOINT */ console.log(";
+    const logpointSuffix = ")";
+    const breakpointsSetting = this.#settings.createLocalSetting("breakpoints", []);
+    const breakpoints = breakpointsSetting.get();
+    for (const breakpoint of breakpoints) {
+      const isLogpoint = breakpoint.condition.startsWith(logpointPrefix) && breakpoint.condition.endsWith(logpointSuffix);
+      breakpoint["isLogpoint"] = isLogpoint;
+    }
+    breakpointsSetting.set(breakpoints);
+  }
+  updateVersionFrom34To35() {
+    const logpointPrefix = "/** DEVTOOLS_LOGPOINT */ console.log(";
+    const logpointSuffix = ")";
+    const breakpointsSetting = this.#settings.createLocalSetting("breakpoints", []);
+    const breakpoints = breakpointsSetting.get();
+    for (const breakpoint of breakpoints) {
+      const { condition, isLogpoint } = breakpoint;
+      if (isLogpoint) {
+        breakpoint.condition = condition.slice(logpointPrefix.length, condition.length - logpointSuffix.length);
+      }
+    }
+    breakpointsSetting.set(breakpoints);
+  }
+  updateVersionFrom35To36() {
+    this.#settings.createSetting("showThirdPartyIssues", true).set(true);
+  }
+  updateVersionFrom36To37() {
+    const updateStorage = (storage) => {
+      for (const key of storage.keys()) {
+        const normalizedKey = Settings.normalizeSettingName(key);
+        if (normalizedKey !== key) {
+          const value = storage.get(key);
+          this.#removeSetting({ name: key, storage });
+          storage.set(normalizedKey, value);
+        }
+      }
+    };
+    updateStorage(this.#settings.globalStorage);
+    updateStorage(this.#settings.syncedStorage);
+    updateStorage(this.#settings.localStorage);
+    for (const key of this.#settings.globalStorage.keys()) {
+      if (key.startsWith("data-grid-") && key.endsWith("-column-weights") || key.endsWith("-tab-order") || key === "views-location-override" || key === "closeable-tabs") {
+        const setting = this.#settings.createSetting(key, {});
+        setting.set(Platform4.StringUtilities.toKebabCaseKeys(setting.get()));
+      }
+      if (key.endsWith("-selected-tab")) {
+        const setting = this.#settings.createSetting(key, "");
+        setting.set(Platform4.StringUtilities.toKebabCase(setting.get()));
+      }
+    }
+  }
+  updateVersionFrom37To38() {
+    const getConsoleInsightsEnabledSetting = () => {
+      try {
+        return this.#settings.moduleSetting("console-insights-enabled");
+      } catch {
+        return;
+      }
+    };
+    const consoleInsightsEnabled = getConsoleInsightsEnabledSetting();
+    const onboardingFinished = this.#settings.createLocalSetting("console-insights-onboarding-finished", false);
+    if (consoleInsightsEnabled && consoleInsightsEnabled.get() === true && onboardingFinished.get() === false) {
+      consoleInsightsEnabled.set(false);
+    }
+    if (consoleInsightsEnabled && consoleInsightsEnabled.get() === false) {
+      onboardingFinished.set(false);
+    }
+  }
+  updateVersionFrom38To39() {
+    const PREFERRED_NETWORK_COND = "preferred-network-condition";
+    const setting = this.#settings.globalStorage.get(PREFERRED_NETWORK_COND);
+    if (!setting) {
+      return;
+    }
+    try {
+      const networkSetting = JSON.parse(setting);
+      if (networkSetting.title === "Slow 3G") {
+        networkSetting.title = "3G";
+        networkSetting.i18nTitleKey = "3G";
+        this.#settings.globalStorage.set(PREFERRED_NETWORK_COND, JSON.stringify(networkSetting));
+      } else if (networkSetting.title === "Fast 3G") {
+        networkSetting.title = "Slow 4G";
+        networkSetting.i18nTitleKey = "Slow 4G";
+        this.#settings.globalStorage.set(PREFERRED_NETWORK_COND, JSON.stringify(networkSetting));
+      }
+    } catch {
+      this.#settings.globalStorage.remove(PREFERRED_NETWORK_COND);
+    }
+  }
+  /**
+   * There are two related migrations here for handling network throttling persistence:
+   * 1. Go through all user custom throttling conditions and add a `key` property.
+   * 2. If the user has a 'preferred-network-condition' setting, take the value
+   *    of that and set the right key for the new 'active-network-condition-key'
+   *    setting. Then, remove the now-obsolete 'preferred-network-condition'
+   *    setting.
+   */
+  updateVersionFrom39To40() {
+    const hasCustomNetworkConditionsSetting = () => {
+      try {
+        this.#settings.moduleSetting("custom-network-conditions");
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    if (hasCustomNetworkConditionsSetting()) {
+      const conditionsSetting = this.#settings.moduleSetting("custom-network-conditions");
+      const customConditions = conditionsSetting.get();
+      if (customConditions?.length > 0) {
+        customConditions.forEach((condition, i) => {
+          if (condition.key) {
+            return;
+          }
+          condition.key = `USER_CUSTOM_SETTING_${i + 1}`;
+        });
+        conditionsSetting.set(customConditions);
+      }
+    }
+    const PREFERRED_NETWORK_COND_SETTING = "preferred-network-condition";
+    const setting = this.#settings.globalStorage.get(PREFERRED_NETWORK_COND_SETTING);
+    if (!setting) {
+      return;
+    }
+    const UI_STRING_TO_NEW_KEY = {
+      "Fast 4G": "SPEED_FAST_4G",
+      "Slow 4G": "SPEED_SLOW_4G",
+      "3G": "SPEED_3G",
+      "No throttling": "NO_THROTTLING",
+      Offline: "OFFLINE"
+    };
+    try {
+      const networkSetting = JSON.parse(setting);
+      if (networkSetting.i18nTitleKey && UI_STRING_TO_NEW_KEY.hasOwnProperty(networkSetting.i18nTitleKey)) {
+        const key = UI_STRING_TO_NEW_KEY[networkSetting.i18nTitleKey];
+        const newSetting = this.#settings.createSetting("active-network-condition-key", "NO_THROTTLING");
+        newSetting.set(key);
+      }
+    } finally {
+      this.#settings.globalStorage.remove(PREFERRED_NETWORK_COND_SETTING);
+    }
+  }
+  // This migration handles two setting renames that requires inverted logic
+  // (from "Hide X" to "X") and flipped the default values to true.
+  updateVersionFrom40To41() {
+    if (this.#settings.syncedStorage.has("hide-network-messages")) {
+      const oldNetworkSetting = this.#settings.createSetting(
+        "hide-network-messages",
+        false,
+        "Synced"
+        /* SettingStorageType.SYNCED */
+      );
+      if (!this.#settings.syncedStorage.has("network-messages")) {
+        const newNetworkSetting = this.#settings.createSetting(
+          "network-messages",
+          true,
+          "Synced"
+          /* SettingStorageType.SYNCED */
+        );
+        newNetworkSetting.set(!oldNetworkSetting.get());
+      }
+      this.#removeSetting(oldNetworkSetting);
+    }
+    if (this.#settings.syncedStorage.has("frame-viewer-hide-chrome-window")) {
+      const oldChromeFrameSetting = this.#settings.createSetting(
+        "frame-viewer-hide-chrome-window",
+        false,
+        "Synced"
+        /* SettingStorageType.SYNCED */
+      );
+      if (!this.#settings.syncedStorage.has("frame-viewer-chrome-window")) {
+        const newChromeFrameSetting = this.#settings.createSetting(
+          "frame-viewer-chrome-window",
+          true,
+          "Synced"
+          /* SettingStorageType.SYNCED */
+        );
+        newChromeFrameSetting.set(!oldChromeFrameSetting.get());
+      }
+      this.#removeSetting(oldChromeFrameSetting);
+    }
+  }
+  /**
+   * The recording in recorder panel may have unreasonably long titles
+   * or a lot of steps which can cause renderer crashes.
+   * Similar to https://crbug.com/40918380
+   */
+  updateVersionFrom41To42() {
+    const recordingsSetting = this.#settings.createSetting("recorder-recordings-ng", []);
+    const recordings = recordingsSetting.get();
+    if (recordings.length === 0) {
+      return;
+    }
+    for (const recording of recordings) {
+      recording.flow.title = Platform4.StringUtilities.trimEndWithMaxLength(recording.flow.title, 300);
+      recording.flow.steps = recording.flow.steps.slice(0, 4096);
+    }
+    recordingsSetting.set(recordings);
+  }
+  updateVersionFrom42To43() {
+    const timelineShowAllEventsExperimentEnabled = Root3.Runtime.experiments.getValueFromStorage("timeline-show-all-events");
+    if (timelineShowAllEventsExperimentEnabled !== void 0) {
+      if (this.#settings.syncedStorage.has("timeline-show-all-events")) {
+        return;
+      }
+      try {
+        const timelineShowAllEventsSetting = this.#settings.moduleSetting("timeline-show-all-events");
+        timelineShowAllEventsSetting.set(timelineShowAllEventsExperimentEnabled);
+      } catch {
+      }
+    }
+  }
+  updateVersionFrom43To44() {
+    const apcaExperimentEnabled = Root3.Runtime.experiments.getValueFromStorage("apca");
+    if (apcaExperimentEnabled !== void 0) {
+      if (this.#settings.syncedStorage.has("apca")) {
+        return;
+      }
+      try {
+        const apcaSetting = this.#settings.moduleSetting("apca");
+        apcaSetting.set(apcaExperimentEnabled);
+      } catch {
+      }
+    }
+  }
+  /*
+   * Any new migration should be added before this comment.
+   *
+   * IMPORTANT: Migrations must be idempotent, since they may be applied
+   * multiple times! E.g. when renaming a setting one has to check that the
+   * a setting with the new name does not yet exist.
+   * ----------------------------------------------------------------------- */
+  migrateSettingsFromLocalStorage() {
+    const localSettings = /* @__PURE__ */ new Set([
+      "advancedSearchConfig",
+      "breakpoints",
+      "consoleHistory",
+      "domBreakpoints",
+      "eventListenerBreakpoints",
+      "fileSystemMapping",
+      "lastSelectedSourcesSidebarPaneTab",
+      "previouslyViewedFiles",
+      "savedURLs",
+      "watchExpressions",
+      "workspaceExcludedFolders",
+      "xhrBreakpoints"
+    ]);
+    const localStorage = Platform4.HostRuntime.HOST_RUNTIME.getLocalStorage();
+    if (!localStorage) {
+      return;
+    }
+    for (const key in localStorage) {
+      if (localSettings.has(key)) {
+        continue;
+      }
+      const value = localStorage[key];
+      localStorage.removeItem(key);
+      this.#settings.globalStorage.set(key, value);
+    }
+  }
+  clearBreakpointsWhenTooMany(breakpointsSetting, maxBreakpointsCount) {
+    if (breakpointsSetting.get().length > maxBreakpointsCount) {
+      breakpointsSetting.set([]);
+    }
+  }
+};
+
+// gen/front_end/core/common/Settings.js
 var Settings = class _Settings {
   syncedStorage;
   globalStorage;
   localStorage;
+  #settingRegistrations;
   #sessionStorage = new SettingsStorage({});
   settingNameSet = /* @__PURE__ */ new Set();
   orderValuesBySettingCategory = /* @__PURE__ */ new Map();
@@ -5414,42 +6149,53 @@ var Settings = class _Settings {
   #registry = /* @__PURE__ */ new Map();
   moduleSettings = /* @__PURE__ */ new Map();
   #logSettingAccess;
-  constructor(syncedStorage, globalStorage, localStorage, logSettingAccess) {
+  constructor({ syncedStorage, globalStorage, localStorage, settingRegistrations, logSettingAccess, runSettingsMigration }) {
     this.syncedStorage = syncedStorage;
     this.globalStorage = globalStorage;
     this.localStorage = localStorage;
+    this.#settingRegistrations = settingRegistrations;
     this.#logSettingAccess = logSettingAccess;
-    for (const registration of this.getRegisteredSettings()) {
+    for (const registration of this.#settingRegistrations) {
       const { settingName, defaultValue, storageType } = registration;
       const isRegex = registration.settingType === "regex";
-      const evaluatedDefaultValue = typeof defaultValue === "function" ? defaultValue(Root3.Runtime.hostConfig) : defaultValue;
+      const evaluatedDefaultValue = typeof defaultValue === "function" ? defaultValue(Root4.Runtime.hostConfig) : defaultValue;
       const setting = isRegex && typeof evaluatedDefaultValue === "string" ? this.createRegExpSetting(settingName, evaluatedDefaultValue, void 0, storageType) : this.createSetting(settingName, evaluatedDefaultValue, storageType);
       setting.setTitleFunction(registration.title);
       if (registration.userActionCondition) {
-        setting.setRequiresUserAction(Boolean(Root3.Runtime.Runtime.queryParam(registration.userActionCondition)));
+        setting.setRequiresUserAction(Boolean(Root4.Runtime.Runtime.queryParam(registration.userActionCondition)));
       }
       setting.setRegistration(registration);
       this.registerModuleSetting(setting);
     }
+    if (runSettingsMigration) {
+      new VersionController(this).updateVersion();
+    }
   }
   getRegisteredSettings() {
-    return getRegisteredSettings();
+    return this.#settingRegistrations;
   }
   static hasInstance() {
-    return typeof settingsInstance !== "undefined";
+    return Root4.DevToolsContext.globalInstance().has(_Settings);
   }
-  static instance(opts = { forceNew: null, syncedStorage: null, globalStorage: null, localStorage: null }) {
-    const { forceNew, syncedStorage, globalStorage, localStorage, logSettingAccess } = opts;
-    if (!settingsInstance || forceNew) {
-      if (!syncedStorage || !globalStorage || !localStorage) {
+  static instance(opts = { forceNew: null, syncedStorage: null, globalStorage: null, localStorage: null, settingRegistrations: null }) {
+    const { forceNew, syncedStorage, globalStorage, localStorage, settingRegistrations, logSettingAccess, runSettingsMigration } = opts;
+    if (!Root4.DevToolsContext.globalInstance().has(_Settings) || forceNew) {
+      if (!syncedStorage || !globalStorage || !localStorage || !settingRegistrations) {
         throw new Error(`Unable to create settings: global and local storage must be provided: ${new Error().stack}`);
       }
-      settingsInstance = new _Settings(syncedStorage, globalStorage, localStorage, logSettingAccess);
+      Root4.DevToolsContext.globalInstance().set(_Settings, new _Settings({
+        syncedStorage,
+        globalStorage,
+        localStorage,
+        settingRegistrations,
+        logSettingAccess,
+        runSettingsMigration
+      }));
     }
-    return settingsInstance;
+    return Root4.DevToolsContext.globalInstance().get(_Settings);
   }
   static removeInstance() {
-    settingsInstance = void 0;
+    Root4.DevToolsContext.globalInstance().delete(_Settings);
   }
   registerModuleSetting(setting) {
     const settingName = setting.name;
@@ -5479,7 +6225,7 @@ var Settings = class _Settings {
     ].includes(name)) {
       return name;
     }
-    return Platform4.StringUtilities.toKebabCase(name);
+    return Platform5.StringUtilities.toKebabCase(name);
   }
   /**
    * Prefer a module setting if this setting is one that you might not want to
@@ -5537,7 +6283,7 @@ var Settings = class _Settings {
     this.globalStorage.removeAll();
     this.syncedStorage.removeAll();
     this.localStorage.removeAll();
-    new VersionController().resetToCurrent();
+    new VersionController(this).resetToCurrent();
   }
   storageFromType(storageType) {
     switch (storageType) {
@@ -5556,22 +6302,28 @@ var Settings = class _Settings {
     return this.#registry;
   }
 };
-var NOOP_STORAGE = {
-  register: () => {
-  },
-  set: () => {
-  },
-  get: () => Promise.resolve(""),
-  remove: () => {
-  },
-  clear: () => {
+var InMemoryStorage = class {
+  #store = /* @__PURE__ */ new Map();
+  register(_setting) {
+  }
+  set(key, value) {
+    this.#store.set(key, value);
+  }
+  get(key) {
+    return this.#store.get(key);
+  }
+  remove(key) {
+    this.#store.delete(key);
+  }
+  clear() {
+    this.#store.clear();
   }
 };
 var SettingsStorage = class {
   object;
   backingStore;
   storagePrefix;
-  constructor(object, backingStore = NOOP_STORAGE, storagePrefix = "") {
+  constructor(object, backingStore = new InMemoryStorage(), storagePrefix = "") {
     this.object = object;
     this.backingStore = backingStore;
     this.storagePrefix = storagePrefix;
@@ -5631,13 +6383,6 @@ var SettingsStorage = class {
     }
   }
 };
-function removeSetting(setting) {
-  const name = setting.name;
-  const settings = Settings.instance();
-  settings.getRegistry().delete(name);
-  settings.moduleSettings.delete(name);
-  setting.storage.remove(name);
-}
 var Deprecation = class {
   disabled;
   warning;
@@ -5648,7 +6393,7 @@ var Deprecation = class {
     }
     this.disabled = deprecationNotice.disabled;
     this.warning = deprecationNotice.warning();
-    this.experiment = deprecationNotice.experiment ? Root3.Runtime.experiments.allConfigurableExperiments().find((e) => e.name === deprecationNotice.experiment) : void 0;
+    this.experiment = deprecationNotice.experiment ? Root4.Runtime.experiments.allConfigurableExperiments().find((e) => e.name === deprecationNotice.experiment) : void 0;
   }
 };
 var Setting = class {
@@ -5707,7 +6452,7 @@ var Setting = class {
   }
   disabled() {
     if (this.#registration?.disabledCondition) {
-      const { disabled } = this.#registration.disabledCondition(Root3.Runtime.hostConfig);
+      const { disabled } = this.#registration.disabledCondition(Root4.Runtime.hostConfig);
       if (disabled) {
         return true;
       }
@@ -5716,7 +6461,7 @@ var Setting = class {
   }
   disabledReasons() {
     if (this.#registration?.disabledCondition) {
-      const result = this.#registration.disabledCondition(Root3.Runtime.hostConfig);
+      const result = this.#registration.disabledCondition(Root4.Runtime.hostConfig);
       if (result.disabled) {
         return result.reasons;
       }
@@ -5809,7 +6554,7 @@ var Setting = class {
     this.#registration = registration;
     const { deprecationNotice } = registration;
     if (deprecationNotice?.disabled) {
-      const experiment = deprecationNotice.experiment ? Root3.Runtime.experiments.allConfigurableExperiments().find((e) => e.name === deprecationNotice.experiment) : void 0;
+      const experiment = deprecationNotice.experiment ? Root4.Runtime.experiments.allConfigurableExperiments().find((e) => e.name === deprecationNotice.experiment) : void 0;
       if (!experiment || experiment.isEnabled()) {
         this.set(this.defaultValue);
         this.setDisabled(true);
@@ -5925,640 +6670,6 @@ var RegExpSetting = class extends Setting {
     return this.#regex;
   }
 };
-var VersionController = class _VersionController {
-  static GLOBAL_VERSION_SETTING_NAME = "inspectorVersion";
-  static SYNCED_VERSION_SETTING_NAME = "syncedInspectorVersion";
-  static LOCAL_VERSION_SETTING_NAME = "localInspectorVersion";
-  static CURRENT_VERSION = 40;
-  #globalVersionSetting;
-  #syncedVersionSetting;
-  #localVersionSetting;
-  constructor() {
-    this.#globalVersionSetting = Settings.instance().createSetting(
-      _VersionController.GLOBAL_VERSION_SETTING_NAME,
-      _VersionController.CURRENT_VERSION,
-      "Global"
-      /* SettingStorageType.GLOBAL */
-    );
-    this.#syncedVersionSetting = Settings.instance().createSetting(
-      _VersionController.SYNCED_VERSION_SETTING_NAME,
-      _VersionController.CURRENT_VERSION,
-      "Synced"
-      /* SettingStorageType.SYNCED */
-    );
-    this.#localVersionSetting = Settings.instance().createSetting(
-      _VersionController.LOCAL_VERSION_SETTING_NAME,
-      _VersionController.CURRENT_VERSION,
-      "Local"
-      /* SettingStorageType.LOCAL */
-    );
-  }
-  /**
-   * Force re-sets all version number settings to the current version without
-   * running any migrations.
-   */
-  resetToCurrent() {
-    this.#globalVersionSetting.set(_VersionController.CURRENT_VERSION);
-    this.#syncedVersionSetting.set(_VersionController.CURRENT_VERSION);
-    this.#localVersionSetting.set(_VersionController.CURRENT_VERSION);
-  }
-  /**
-   * Runs the appropriate migrations and updates the version settings accordingly.
-   *
-   * To determine what migrations to run we take the minimum of all version number settings.
-   *
-   * IMPORTANT: All migrations must be idempotent since they might be applied multiple times.
-   */
-  updateVersion() {
-    const currentVersion = _VersionController.CURRENT_VERSION;
-    const minimumVersion = Math.min(this.#globalVersionSetting.get(), this.#syncedVersionSetting.get(), this.#localVersionSetting.get());
-    const methodsToRun = this.methodsToRunToUpdateVersion(minimumVersion, currentVersion);
-    console.assert(
-      // @ts-expect-error
-      this[`updateVersionFrom${currentVersion}To${currentVersion + 1}`] === void 0,
-      "Unexpected migration method found. Increment CURRENT_VERSION or remove the method."
-    );
-    for (const method of methodsToRun) {
-      this[method].call(this);
-    }
-    this.resetToCurrent();
-  }
-  methodsToRunToUpdateVersion(oldVersion, currentVersion) {
-    const result = [];
-    for (let i = oldVersion; i < currentVersion; ++i) {
-      result.push("updateVersionFrom" + i + "To" + (i + 1));
-    }
-    return result;
-  }
-  updateVersionFrom0To1() {
-    this.clearBreakpointsWhenTooMany(Settings.instance().createLocalSetting("breakpoints", []), 5e5);
-  }
-  updateVersionFrom1To2() {
-    Settings.instance().createSetting("previouslyViewedFiles", []).set([]);
-  }
-  updateVersionFrom2To3() {
-    Settings.instance().createSetting("fileSystemMapping", {}).set({});
-    removeSetting(Settings.instance().createSetting("fileMappingEntries", []));
-  }
-  updateVersionFrom3To4() {
-    const advancedMode = Settings.instance().createSetting("showHeaSnapshotObjectsHiddenProperties", false);
-    moduleSetting("showAdvancedHeapSnapshotProperties").set(advancedMode.get());
-    removeSetting(advancedMode);
-  }
-  updateVersionFrom4To5() {
-    const settingNames = {
-      FileSystemViewSidebarWidth: "fileSystemViewSplitViewState",
-      elementsSidebarWidth: "elementsPanelSplitViewState",
-      StylesPaneSplitRatio: "stylesPaneSplitViewState",
-      heapSnapshotRetainersViewSize: "heapSnapshotSplitViewState",
-      "InspectorView.splitView": "InspectorView.splitViewState",
-      "InspectorView.screencastSplitView": "InspectorView.screencastSplitViewState",
-      "Inspector.drawerSplitView": "Inspector.drawerSplitViewState",
-      layerDetailsSplitView: "layerDetailsSplitViewState",
-      networkSidebarWidth: "networkPanelSplitViewState",
-      sourcesSidebarWidth: "sourcesPanelSplitViewState",
-      scriptsPanelNavigatorSidebarWidth: "sourcesPanelNavigatorSplitViewState",
-      sourcesPanelSplitSidebarRatio: "sourcesPanelDebuggerSidebarSplitViewState",
-      "timeline-details": "timelinePanelDetailsSplitViewState",
-      "timeline-split": "timelinePanelRecorsSplitViewState",
-      "timeline-view": "timelinePanelTimelineStackSplitViewState",
-      auditsSidebarWidth: "auditsPanelSplitViewState",
-      layersSidebarWidth: "layersPanelSplitViewState",
-      profilesSidebarWidth: "profilesPanelSplitViewState",
-      resourcesSidebarWidth: "resourcesPanelSplitViewState"
-    };
-    const empty = {};
-    for (const oldName in settingNames) {
-      const newName = settingNames[oldName];
-      const oldNameH = oldName + "H";
-      let newValue = null;
-      const oldSetting = Settings.instance().createSetting(oldName, empty);
-      if (oldSetting.get() !== empty) {
-        newValue = newValue || {};
-        newValue.vertical = {};
-        newValue.vertical.size = oldSetting.get();
-        removeSetting(oldSetting);
-      }
-      const oldSettingH = Settings.instance().createSetting(oldNameH, empty);
-      if (oldSettingH.get() !== empty) {
-        newValue = newValue || {};
-        newValue.horizontal = {};
-        newValue.horizontal.size = oldSettingH.get();
-        removeSetting(oldSettingH);
-      }
-      if (newValue) {
-        Settings.instance().createSetting(newName, {}).set(newValue);
-      }
-    }
-  }
-  updateVersionFrom5To6() {
-    const settingNames = {
-      debuggerSidebarHidden: "sourcesPanelSplitViewState",
-      navigatorHidden: "sourcesPanelNavigatorSplitViewState",
-      "WebInspector.Drawer.showOnLoad": "Inspector.drawerSplitViewState"
-    };
-    for (const oldName in settingNames) {
-      const oldSetting = Settings.instance().createSetting(oldName, null);
-      if (oldSetting.get() === null) {
-        removeSetting(oldSetting);
-        continue;
-      }
-      const newName = settingNames[oldName];
-      const invert = oldName === "WebInspector.Drawer.showOnLoad";
-      const hidden = oldSetting.get() !== invert;
-      removeSetting(oldSetting);
-      const showMode = hidden ? "OnlyMain" : "Both";
-      const newSetting = Settings.instance().createSetting(newName, {});
-      const newValue = newSetting.get() || {};
-      newValue.vertical = newValue.vertical || {};
-      newValue.vertical.showMode = showMode;
-      newValue.horizontal = newValue.horizontal || {};
-      newValue.horizontal.showMode = showMode;
-      newSetting.set(newValue);
-    }
-  }
-  updateVersionFrom6To7() {
-    const settingNames = {
-      sourcesPanelNavigatorSplitViewState: "sourcesPanelNavigatorSplitViewState",
-      elementsPanelSplitViewState: "elementsPanelSplitViewState",
-      stylesPaneSplitViewState: "stylesPaneSplitViewState",
-      sourcesPanelDebuggerSidebarSplitViewState: "sourcesPanelDebuggerSidebarSplitViewState"
-    };
-    const empty = {};
-    for (const name in settingNames) {
-      const setting = Settings.instance().createSetting(name, empty);
-      const value = setting.get();
-      if (value === empty) {
-        continue;
-      }
-      if (value.vertical?.size && value.vertical.size < 1) {
-        value.vertical.size = 0;
-      }
-      if (value.horizontal?.size && value.horizontal.size < 1) {
-        value.horizontal.size = 0;
-      }
-      setting.set(value);
-    }
-  }
-  updateVersionFrom7To8() {
-  }
-  updateVersionFrom8To9() {
-    const settingNames = ["skipStackFramesPattern", "workspaceFolderExcludePattern"];
-    for (let i = 0; i < settingNames.length; ++i) {
-      const setting = Settings.instance().createSetting(settingNames[i], "");
-      let value = setting.get();
-      if (!value) {
-        return;
-      }
-      if (typeof value === "string") {
-        value = [value];
-      }
-      for (let j = 0; j < value.length; ++j) {
-        if (typeof value[j] === "string") {
-          value[j] = { pattern: value[j] };
-        }
-      }
-      setting.set(value);
-    }
-  }
-  updateVersionFrom9To10() {
-    if (!window.localStorage) {
-      return;
-    }
-    for (const key in window.localStorage) {
-      if (key.startsWith("revision-history")) {
-        window.localStorage.removeItem(key);
-      }
-    }
-  }
-  updateVersionFrom10To11() {
-    const oldSettingName = "customDevicePresets";
-    const newSettingName = "customEmulatedDeviceList";
-    const oldSetting = Settings.instance().createSetting(oldSettingName, void 0);
-    const list = oldSetting.get();
-    if (!Array.isArray(list)) {
-      return;
-    }
-    const newList = [];
-    for (let i = 0; i < list.length; ++i) {
-      const value = list[i];
-      const device = {};
-      device["title"] = value["title"];
-      device["type"] = "unknown";
-      device["user-agent"] = value["userAgent"];
-      device["capabilities"] = [];
-      if (value["touch"]) {
-        device["capabilities"].push("touch");
-      }
-      if (value["mobile"]) {
-        device["capabilities"].push("mobile");
-      }
-      device["screen"] = {};
-      device["screen"]["vertical"] = { width: value["width"], height: value["height"] };
-      device["screen"]["horizontal"] = { width: value["height"], height: value["width"] };
-      device["screen"]["device-pixel-ratio"] = value["deviceScaleFactor"];
-      device["modes"] = [];
-      device["show-by-default"] = true;
-      device["show"] = "Default";
-      newList.push(device);
-    }
-    if (newList.length) {
-      Settings.instance().createSetting(newSettingName, []).set(newList);
-    }
-    removeSetting(oldSetting);
-  }
-  updateVersionFrom11To12() {
-    this.migrateSettingsFromLocalStorage();
-  }
-  updateVersionFrom12To13() {
-    this.migrateSettingsFromLocalStorage();
-    removeSetting(Settings.instance().createSetting("timelineOverviewMode", ""));
-  }
-  updateVersionFrom13To14() {
-    const defaultValue = { throughput: -1, latency: 0 };
-    Settings.instance().createSetting("networkConditions", defaultValue).set(defaultValue);
-  }
-  updateVersionFrom14To15() {
-    const setting = Settings.instance().createLocalSetting("workspaceExcludedFolders", {});
-    const oldValue = setting.get();
-    const newValue = {};
-    for (const fileSystemPath in oldValue) {
-      newValue[fileSystemPath] = [];
-      for (const entry of oldValue[fileSystemPath]) {
-        newValue[fileSystemPath].push(entry.path);
-      }
-    }
-    setting.set(newValue);
-  }
-  updateVersionFrom15To16() {
-    const setting = Settings.instance().createSetting("InspectorView.panelOrder", {});
-    const tabOrders = setting.get();
-    for (const key of Object.keys(tabOrders)) {
-      tabOrders[key] = (tabOrders[key] + 1) * 10;
-    }
-    setting.set(tabOrders);
-  }
-  updateVersionFrom16To17() {
-    const setting = Settings.instance().createSetting("networkConditionsCustomProfiles", []);
-    const oldValue = setting.get();
-    const newValue = [];
-    if (Array.isArray(oldValue)) {
-      for (const preset of oldValue) {
-        if (typeof preset.title === "string" && typeof preset.value === "object" && typeof preset.value.throughput === "number" && typeof preset.value.latency === "number") {
-          newValue.push({
-            title: preset.title,
-            value: { download: preset.value.throughput, upload: preset.value.throughput, latency: preset.value.latency }
-          });
-        }
-      }
-    }
-    setting.set(newValue);
-  }
-  updateVersionFrom17To18() {
-    const setting = Settings.instance().createLocalSetting("workspaceExcludedFolders", {});
-    const oldValue = setting.get();
-    const newValue = {};
-    for (const oldKey in oldValue) {
-      let newKey = oldKey.replace(/\\/g, "/");
-      if (!newKey.startsWith("file://")) {
-        if (newKey.startsWith("/")) {
-          newKey = "file://" + newKey;
-        } else {
-          newKey = "file:///" + newKey;
-        }
-      }
-      newValue[newKey] = oldValue[oldKey];
-    }
-    setting.set(newValue);
-  }
-  updateVersionFrom18To19() {
-    const defaultColumns = { status: true, type: true, initiator: true, size: true, time: true };
-    const visibleColumnSettings = Settings.instance().createSetting("networkLogColumnsVisibility", defaultColumns);
-    const visibleColumns = visibleColumnSettings.get();
-    visibleColumns.name = true;
-    visibleColumns.timeline = true;
-    const configs = {};
-    for (const columnId in visibleColumns) {
-      if (!visibleColumns.hasOwnProperty(columnId)) {
-        continue;
-      }
-      configs[columnId.toLowerCase()] = { visible: visibleColumns[columnId] };
-    }
-    const newSetting = Settings.instance().createSetting("networkLogColumns", {});
-    newSetting.set(configs);
-    removeSetting(visibleColumnSettings);
-  }
-  updateVersionFrom19To20() {
-    const oldSetting = Settings.instance().createSetting("InspectorView.panelOrder", {});
-    const newSetting = Settings.instance().createSetting("panel-tabOrder", {});
-    newSetting.set(oldSetting.get());
-    removeSetting(oldSetting);
-  }
-  updateVersionFrom20To21() {
-    const networkColumns = Settings.instance().createSetting("networkLogColumns", {});
-    const columns = networkColumns.get();
-    delete columns["timeline"];
-    delete columns["waterfall"];
-    networkColumns.set(columns);
-  }
-  updateVersionFrom21To22() {
-    const breakpointsSetting = Settings.instance().createLocalSetting("breakpoints", []);
-    const breakpoints = breakpointsSetting.get();
-    for (const breakpoint of breakpoints) {
-      breakpoint["url"] = breakpoint["sourceFileId"];
-      delete breakpoint["sourceFileId"];
-    }
-    breakpointsSetting.set(breakpoints);
-  }
-  updateVersionFrom22To23() {
-  }
-  updateVersionFrom23To24() {
-    const oldSetting = Settings.instance().createSetting("searchInContentScripts", false);
-    const newSetting = Settings.instance().createSetting("searchInAnonymousAndContentScripts", false);
-    newSetting.set(oldSetting.get());
-    removeSetting(oldSetting);
-  }
-  updateVersionFrom24To25() {
-    const defaultColumns = { status: true, type: true, initiator: true, size: true, time: true };
-    const networkLogColumnsSetting = Settings.instance().createSetting("networkLogColumns", defaultColumns);
-    const columns = networkLogColumnsSetting.get();
-    delete columns.product;
-    networkLogColumnsSetting.set(columns);
-  }
-  updateVersionFrom25To26() {
-    const oldSetting = Settings.instance().createSetting("messageURLFilters", {});
-    const urls = Object.keys(oldSetting.get());
-    const textFilter = urls.map((url) => `-url:${url}`).join(" ");
-    if (textFilter) {
-      const textFilterSetting = Settings.instance().createSetting("console.textFilter", "");
-      const suffix = textFilterSetting.get() ? ` ${textFilterSetting.get()}` : "";
-      textFilterSetting.set(`${textFilter}${suffix}`);
-    }
-    removeSetting(oldSetting);
-  }
-  updateVersionFrom26To27() {
-    function renameKeyInObjectSetting(settingName, from, to) {
-      const setting = Settings.instance().createSetting(settingName, {});
-      const value = setting.get();
-      if (from in value) {
-        value[to] = value[from];
-        delete value[from];
-        setting.set(value);
-      }
-    }
-    function renameInStringSetting(settingName, from, to) {
-      const setting = Settings.instance().createSetting(settingName, "");
-      const value = setting.get();
-      if (value === from) {
-        setting.set(to);
-      }
-    }
-    renameKeyInObjectSetting("panel-tabOrder", "audits2", "audits");
-    renameKeyInObjectSetting("panel-closeableTabs", "audits2", "audits");
-    renameInStringSetting("panel-selectedTab", "audits2", "audits");
-  }
-  updateVersionFrom27To28() {
-    const setting = Settings.instance().createSetting("uiTheme", "systemPreferred");
-    if (setting.get() === "default") {
-      setting.set("systemPreferred");
-    }
-  }
-  updateVersionFrom28To29() {
-    function renameKeyInObjectSetting(settingName, from, to) {
-      const setting = Settings.instance().createSetting(settingName, {});
-      const value = setting.get();
-      if (from in value) {
-        value[to] = value[from];
-        delete value[from];
-        setting.set(value);
-      }
-    }
-    function renameInStringSetting(settingName, from, to) {
-      const setting = Settings.instance().createSetting(settingName, "");
-      const value = setting.get();
-      if (value === from) {
-        setting.set(to);
-      }
-    }
-    renameKeyInObjectSetting("panel-tabOrder", "audits", "lighthouse");
-    renameKeyInObjectSetting("panel-closeableTabs", "audits", "lighthouse");
-    renameInStringSetting("panel-selectedTab", "audits", "lighthouse");
-  }
-  updateVersionFrom29To30() {
-    const closeableTabSetting = Settings.instance().createSetting("closeableTabs", {});
-    const panelCloseableTabSetting = Settings.instance().createSetting("panel-closeableTabs", {});
-    const drawerCloseableTabSetting = Settings.instance().createSetting("drawer-view-closeableTabs", {});
-    const openTabsInPanel = panelCloseableTabSetting.get();
-    const openTabsInDrawer = panelCloseableTabSetting.get();
-    const newValue = Object.assign(openTabsInDrawer, openTabsInPanel);
-    closeableTabSetting.set(newValue);
-    removeSetting(panelCloseableTabSetting);
-    removeSetting(drawerCloseableTabSetting);
-  }
-  updateVersionFrom30To31() {
-    const recordingsSetting = Settings.instance().createSetting("recorder_recordings", []);
-    removeSetting(recordingsSetting);
-  }
-  updateVersionFrom31To32() {
-    const breakpointsSetting = Settings.instance().createLocalSetting("breakpoints", []);
-    const breakpoints = breakpointsSetting.get();
-    for (const breakpoint of breakpoints) {
-      breakpoint["resourceTypeName"] = "script";
-    }
-    breakpointsSetting.set(breakpoints);
-  }
-  updateVersionFrom32To33() {
-    const previouslyViewedFilesSetting = Settings.instance().createLocalSetting("previouslyViewedFiles", []);
-    let previouslyViewedFiles = previouslyViewedFilesSetting.get();
-    previouslyViewedFiles = previouslyViewedFiles.filter((previouslyViewedFile) => "url" in previouslyViewedFile);
-    for (const previouslyViewedFile of previouslyViewedFiles) {
-      previouslyViewedFile["resourceTypeName"] = "script";
-    }
-    previouslyViewedFilesSetting.set(previouslyViewedFiles);
-  }
-  updateVersionFrom33To34() {
-    const logpointPrefix = "/** DEVTOOLS_LOGPOINT */ console.log(";
-    const logpointSuffix = ")";
-    const breakpointsSetting = Settings.instance().createLocalSetting("breakpoints", []);
-    const breakpoints = breakpointsSetting.get();
-    for (const breakpoint of breakpoints) {
-      const isLogpoint = breakpoint.condition.startsWith(logpointPrefix) && breakpoint.condition.endsWith(logpointSuffix);
-      breakpoint["isLogpoint"] = isLogpoint;
-    }
-    breakpointsSetting.set(breakpoints);
-  }
-  updateVersionFrom34To35() {
-    const logpointPrefix = "/** DEVTOOLS_LOGPOINT */ console.log(";
-    const logpointSuffix = ")";
-    const breakpointsSetting = Settings.instance().createLocalSetting("breakpoints", []);
-    const breakpoints = breakpointsSetting.get();
-    for (const breakpoint of breakpoints) {
-      const { condition, isLogpoint } = breakpoint;
-      if (isLogpoint) {
-        breakpoint.condition = condition.slice(logpointPrefix.length, condition.length - logpointSuffix.length);
-      }
-    }
-    breakpointsSetting.set(breakpoints);
-  }
-  updateVersionFrom35To36() {
-    Settings.instance().createSetting("showThirdPartyIssues", true).set(true);
-  }
-  updateVersionFrom36To37() {
-    const updateStorage = (storage) => {
-      for (const key of storage.keys()) {
-        const normalizedKey = Settings.normalizeSettingName(key);
-        if (normalizedKey !== key) {
-          const value = storage.get(key);
-          removeSetting({ name: key, storage });
-          storage.set(normalizedKey, value);
-        }
-      }
-    };
-    updateStorage(Settings.instance().globalStorage);
-    updateStorage(Settings.instance().syncedStorage);
-    updateStorage(Settings.instance().localStorage);
-    for (const key of Settings.instance().globalStorage.keys()) {
-      if (key.startsWith("data-grid-") && key.endsWith("-column-weights") || key.endsWith("-tab-order") || key === "views-location-override" || key === "closeable-tabs") {
-        const setting = Settings.instance().createSetting(key, {});
-        setting.set(Platform4.StringUtilities.toKebabCaseKeys(setting.get()));
-      }
-      if (key.endsWith("-selected-tab")) {
-        const setting = Settings.instance().createSetting(key, "");
-        setting.set(Platform4.StringUtilities.toKebabCase(setting.get()));
-      }
-    }
-  }
-  updateVersionFrom37To38() {
-    const getConsoleInsightsEnabledSetting = () => {
-      try {
-        return moduleSetting("console-insights-enabled");
-      } catch {
-        return;
-      }
-    };
-    const consoleInsightsEnabled = getConsoleInsightsEnabledSetting();
-    const onboardingFinished = Settings.instance().createLocalSetting("console-insights-onboarding-finished", false);
-    if (consoleInsightsEnabled && consoleInsightsEnabled.get() === true && onboardingFinished.get() === false) {
-      consoleInsightsEnabled.set(false);
-    }
-    if (consoleInsightsEnabled && consoleInsightsEnabled.get() === false) {
-      onboardingFinished.set(false);
-    }
-  }
-  updateVersionFrom38To39() {
-    const PREFERRED_NETWORK_COND = "preferred-network-condition";
-    const setting = Settings.instance().globalStorage.get(PREFERRED_NETWORK_COND);
-    if (!setting) {
-      return;
-    }
-    try {
-      const networkSetting = JSON.parse(setting);
-      if (networkSetting.title === "Slow 3G") {
-        networkSetting.title = "3G";
-        networkSetting.i18nTitleKey = "3G";
-        Settings.instance().globalStorage.set(PREFERRED_NETWORK_COND, JSON.stringify(networkSetting));
-      } else if (networkSetting.title === "Fast 3G") {
-        networkSetting.title = "Slow 4G";
-        networkSetting.i18nTitleKey = "Slow 4G";
-        Settings.instance().globalStorage.set(PREFERRED_NETWORK_COND, JSON.stringify(networkSetting));
-      }
-    } catch {
-      Settings.instance().globalStorage.remove(PREFERRED_NETWORK_COND);
-    }
-  }
-  /**
-   * There are two related migrations here for handling network throttling persistence:
-   * 1. Go through all user custom throttling conditions and add a `key` property.
-   * 2. If the user has a 'preferred-network-condition' setting, take the value
-   *    of that and set the right key for the new 'active-network-condition-key'
-   *    setting. Then, remove the now-obsolete 'preferred-network-condition'
-   *    setting.
-   */
-  updateVersionFrom39To40() {
-    const hasCustomNetworkConditionsSetting = () => {
-      try {
-        moduleSetting("custom-network-conditions");
-        return true;
-      } catch {
-        return false;
-      }
-    };
-    if (hasCustomNetworkConditionsSetting()) {
-      const conditionsSetting = moduleSetting("custom-network-conditions");
-      const customConditions = conditionsSetting.get();
-      if (customConditions?.length > 0) {
-        customConditions.forEach((condition, i) => {
-          if (condition.key) {
-            return;
-          }
-          condition.key = `USER_CUSTOM_SETTING_${i + 1}`;
-        });
-        conditionsSetting.set(customConditions);
-      }
-    }
-    const PREFERRED_NETWORK_COND_SETTING = "preferred-network-condition";
-    const setting = Settings.instance().globalStorage.get(PREFERRED_NETWORK_COND_SETTING);
-    if (!setting) {
-      return;
-    }
-    const UI_STRING_TO_NEW_KEY = {
-      "Fast 4G": "SPEED_FAST_4G",
-      "Slow 4G": "SPEED_SLOW_4G",
-      "3G": "SPEED_3G",
-      "No throttling": "NO_THROTTLING",
-      Offline: "OFFLINE"
-    };
-    try {
-      const networkSetting = JSON.parse(setting);
-      if (networkSetting.i18nTitleKey && UI_STRING_TO_NEW_KEY.hasOwnProperty(networkSetting.i18nTitleKey)) {
-        const key = UI_STRING_TO_NEW_KEY[networkSetting.i18nTitleKey];
-        const newSetting = Settings.instance().createSetting("active-network-condition-key", "NO_THROTTLING");
-        newSetting.set(key);
-      }
-    } finally {
-      Settings.instance().globalStorage.remove(PREFERRED_NETWORK_COND_SETTING);
-    }
-  }
-  /*
-   * Any new migration should be added before this comment.
-   *
-   * IMPORTANT: Migrations must be idempotent, since they may be applied
-   * multiple times! E.g. when renaming a setting one has to check that the
-   * a setting with the new name does not yet exist.
-   * ----------------------------------------------------------------------- */
-  migrateSettingsFromLocalStorage() {
-    const localSettings = /* @__PURE__ */ new Set([
-      "advancedSearchConfig",
-      "breakpoints",
-      "consoleHistory",
-      "domBreakpoints",
-      "eventListenerBreakpoints",
-      "fileSystemMapping",
-      "lastSelectedSourcesSidebarPaneTab",
-      "previouslyViewedFiles",
-      "savedURLs",
-      "watchExpressions",
-      "workspaceExcludedFolders",
-      "xhrBreakpoints"
-    ]);
-    if (!window.localStorage) {
-      return;
-    }
-    for (const key in window.localStorage) {
-      if (localSettings.has(key)) {
-        continue;
-      }
-      const value = window.localStorage[key];
-      window.localStorage.removeItem(key);
-      Settings.instance().globalStorage.set(key, value);
-    }
-  }
-  clearBreakpointsWhenTooMany(breakpointsSetting, maxBreakpointsCount) {
-    if (breakpointsSetting.get().length > maxBreakpointsCount) {
-      breakpointsSetting.set([]);
-    }
-  }
-};
 function moduleSetting(settingName) {
   return Settings.instance().moduleSetting(settingName);
 }
@@ -6662,6 +6773,63 @@ var SimpleHistoryManager = class {
     return true;
   }
 };
+
+// gen/front_end/core/common/Srcset.js
+var Srcset_exports = {};
+__export(Srcset_exports, {
+  parseSrcset: () => parseSrcset
+});
+function parseSrcset(value) {
+  const result = [];
+  let i = 0;
+  while (value.length) {
+    if (i++ > 0) {
+      result.push({
+        value: " ",
+        type: 0
+        /* TokenType.LITERAL */
+      });
+    }
+    value = value.trim();
+    let url = "";
+    let descriptor = "";
+    const indexOfSpace = value.search(/\s/);
+    if (indexOfSpace === -1) {
+      url = value;
+    } else if (indexOfSpace > 0 && value[indexOfSpace - 1] === ",") {
+      url = value.substring(0, indexOfSpace);
+    } else {
+      url = value.substring(0, indexOfSpace);
+      const indexOfComma = value.indexOf(",", indexOfSpace);
+      if (indexOfComma !== -1) {
+        descriptor = value.substring(indexOfSpace, indexOfComma + 1);
+      } else {
+        descriptor = value.substring(indexOfSpace);
+      }
+    }
+    if (url) {
+      if (url.endsWith(",")) {
+        result.push({
+          value: url.substring(0, url.length - 1),
+          type: 1
+          /* TokenType.URL */
+        });
+        result.push({ type: 0, value: "," });
+      } else {
+        result.push({
+          value: url,
+          type: 1
+          /* TokenType.URL */
+        });
+      }
+    }
+    if (descriptor) {
+      result.push({ type: 0, value: descriptor });
+    }
+    value = value.substring(url.length + descriptor.length);
+  }
+  return result;
+}
 
 // gen/front_end/core/common/StringOutputStream.js
 var StringOutputStream_exports = {};
@@ -6913,73 +7081,16 @@ var Throttler = class {
     }
     clearTimeout(this.#processTimeout);
     const timeout = this.#asSoonAsPossible ? 0 : this.#timeout;
-    this.#processTimeout = window.setTimeout(this.#onTimeout.bind(this), timeout);
+    this.#processTimeout = setTimeout(this.#onTimeout.bind(this), timeout);
   }
   #getTime() {
-    return window.performance.now();
-  }
-};
-
-// gen/front_end/core/common/Worker.js
-var Worker_exports = {};
-__export(Worker_exports, {
-  WorkerWrapper: () => WorkerWrapper
-});
-var WorkerWrapper = class _WorkerWrapper {
-  #workerPromise;
-  #disposed;
-  #rejectWorkerPromise;
-  constructor(workerLocation) {
-    this.#workerPromise = new Promise((fulfill, reject) => {
-      this.#rejectWorkerPromise = reject;
-      const worker = new Worker(workerLocation, { type: "module" });
-      worker.onerror = (event) => {
-        console.error(`Failed to load worker for ${workerLocation.href}:`, event);
-      };
-      worker.onmessage = (event) => {
-        console.assert(event.data === "workerReady");
-        worker.onmessage = null;
-        fulfill(worker);
-      };
-    });
-  }
-  static fromURL(url) {
-    return new _WorkerWrapper(url);
-  }
-  postMessage(message, transfer) {
-    void this.#workerPromise.then((worker) => {
-      if (!this.#disposed) {
-        worker.postMessage(message, transfer ?? []);
-      }
-    });
-  }
-  dispose() {
-    this.#disposed = true;
-    void this.#workerPromise.then((worker) => worker.terminate());
-  }
-  terminate(immediately = false) {
-    if (immediately) {
-      this.#rejectWorkerPromise?.(new Error("Worker terminated"));
-    }
-    this.dispose();
-  }
-  set onmessage(listener) {
-    void this.#workerPromise.then((worker) => {
-      worker.onmessage = listener;
-    });
-  }
-  set onerror(listener) {
-    void this.#workerPromise.then((worker) => {
-      worker.onerror = listener;
-    });
+    return performance.now();
   }
 };
 
 // gen/front_end/core/common/common.prebundle.js
 import { UIString } from "./../platform/platform.js";
 export {
-  App_exports as App,
-  AppProvider_exports as AppProvider,
   Base64_exports as Base64,
   CharacterIdMap_exports as CharacterIdMap,
   Color_exports as Color,
@@ -6991,13 +7102,11 @@ export {
   Gzip_exports as Gzip,
   JavaScriptMetaData_exports as JavaScriptMetaData,
   Lazy_exports as Lazy,
-  Linkifier_exports as Linkifier,
   MapWithDefault_exports as MapWithDefault,
   Mutex_exports as Mutex,
   Object_exports as ObjectWrapper,
   ParsedURL_exports as ParsedURL,
   Progress_exports as Progress,
-  QueryParamHandler_exports as QueryParamHandler,
   ResolverBase_exports as ResolverBase,
   ResourceType_exports as ResourceType,
   ReturnToPanel_exports as ReturnToPanel,
@@ -7007,11 +7116,12 @@ export {
   SettingRegistration_exports as SettingRegistration,
   Settings_exports as Settings,
   SimpleHistoryManager_exports as SimpleHistoryManager,
+  Srcset_exports as Srcset,
   StringOutputStream_exports as StringOutputStream,
   TextDictionary_exports as TextDictionary,
   Throttler_exports as Throttler,
   Trie_exports as Trie,
   UIString,
-  Worker_exports as Worker
+  VersionController_exports as VersionController
 };
 //# sourceMappingURL=common.js.map

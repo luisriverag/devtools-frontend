@@ -9,6 +9,7 @@ var ArrayUtilities_exports = {};
 __export(ArrayUtilities_exports, {
   DEFAULT_COMPARATOR: () => DEFAULT_COMPARATOR,
   arrayDoesNotContainNullOrUndefined: () => arrayDoesNotContainNullOrUndefined,
+  assertArrayIsSorted: () => assertArrayIsSorted,
   binaryIndexOf: () => binaryIndexOf,
   intersectOrdered: () => intersectOrdered,
   lowerBound: () => lowerBound,
@@ -187,6 +188,16 @@ function nearestIndexFromEnd(arr, predicate) {
 function arrayDoesNotContainNullOrUndefined(arr) {
   return !arr.includes(null) && !arr.includes(void 0);
 }
+function assertArrayIsSorted(arr, compareFn) {
+  const comparator = compareFn || DEFAULT_COMPARATOR;
+  for (let i = 0; i < arr.length - 1; i++) {
+    const current = arr[i];
+    const next = arr[i + 1];
+    if (comparator(current, next) > 0) {
+      throw new Error(`Array is not sorted at index ${i}: ${JSON.stringify(current)} > ${JSON.stringify(next)}`);
+    }
+  }
+}
 
 // gen/front_end/core/platform/Brand.js
 var Brand_exports = {};
@@ -223,118 +234,28 @@ var urlString = (strings, ...values) => String.raw({ raw: strings }, ...values);
 var EmptyRawPathString = "";
 var EmptyEncodedPathString = "";
 
-// gen/front_end/core/platform/DOMUtilities.js
-var DOMUtilities_exports = {};
-__export(DOMUtilities_exports, {
-  appendStyle: () => appendStyle,
-  deepActiveElement: () => deepActiveElement,
-  getEnclosingShadowRootForNode: () => getEnclosingShadowRootForNode,
-  rangeOfWord: () => rangeOfWord
+// gen/front_end/core/platform/HostRuntime.js
+var HostRuntime_exports = {};
+__export(HostRuntime_exports, {
+  HOST_RUNTIME: () => HOST_RUNTIME,
+  IS_BROWSER: () => IS_BROWSER,
+  IS_NODE: () => IS_NODE
 });
-function deepActiveElement(doc) {
-  let activeElement = doc.activeElement;
-  while (activeElement?.shadowRoot?.activeElement) {
-    activeElement = activeElement.shadowRoot.activeElement;
+var IS_NODE = typeof process !== "undefined" && process.versions?.node !== null;
+var IS_BROWSER = (
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore 'window' is not available when type-checking against node.js types.
+  typeof window !== "undefined" || typeof self !== "undefined" && typeof self.postMessage === "function"
+);
+var HOST_RUNTIME = await (async () => {
+  if (IS_BROWSER) {
+    return (await import("./browser/browser.js")).HostRuntime.HOST_RUNTIME;
   }
-  return activeElement;
-}
-function getEnclosingShadowRootForNode(node) {
-  let parentNode = node.parentNodeOrShadowHost();
-  while (parentNode) {
-    if (parentNode instanceof ShadowRoot) {
-      return parentNode;
-    }
-    parentNode = parentNode.parentNodeOrShadowHost();
+  if (IS_NODE) {
+    return (await import("./node/node.js")).HostRuntime.HOST_RUNTIME;
   }
-  return null;
-}
-function rangeOfWord(rootNode, offset, stopCharacters, stayWithinNode, direction) {
-  let startNode;
-  let startOffset = 0;
-  let endNode;
-  let endOffset = 0;
-  if (!stayWithinNode) {
-    stayWithinNode = rootNode;
-  }
-  if (!direction || direction === "backward" || direction === "both") {
-    let node = rootNode;
-    while (node) {
-      if (node === stayWithinNode) {
-        if (!startNode) {
-          startNode = stayWithinNode;
-        }
-        break;
-      }
-      if (node.nodeType === Node.TEXT_NODE && node.nodeValue !== null) {
-        const start = node === rootNode ? offset - 1 : node.nodeValue.length - 1;
-        for (let i = start; i >= 0; --i) {
-          if (stopCharacters.indexOf(node.nodeValue[i]) !== -1) {
-            startNode = node;
-            startOffset = i + 1;
-            break;
-          }
-        }
-      }
-      if (startNode) {
-        break;
-      }
-      node = node.traversePreviousNode(stayWithinNode);
-    }
-    if (!startNode) {
-      startNode = stayWithinNode;
-      startOffset = 0;
-    }
-  } else {
-    startNode = rootNode;
-    startOffset = offset;
-  }
-  if (!direction || direction === "forward" || direction === "both") {
-    let node = rootNode;
-    while (node) {
-      if (node === stayWithinNode) {
-        if (!endNode) {
-          endNode = stayWithinNode;
-        }
-        break;
-      }
-      if (node.nodeType === Node.TEXT_NODE && node.nodeValue !== null) {
-        const start = node === rootNode ? offset : 0;
-        for (let i = start; i < node.nodeValue.length; ++i) {
-          if (stopCharacters.indexOf(node.nodeValue[i]) !== -1) {
-            endNode = node;
-            endOffset = i;
-            break;
-          }
-        }
-      }
-      if (endNode) {
-        break;
-      }
-      node = node.traverseNextNode(stayWithinNode);
-    }
-    if (!endNode) {
-      endNode = stayWithinNode;
-      endOffset = stayWithinNode.nodeType === Node.TEXT_NODE ? stayWithinNode.nodeValue?.length || 0 : stayWithinNode.childNodes.length;
-    }
-  } else {
-    endNode = rootNode;
-    endOffset = offset;
-  }
-  if (!rootNode.ownerDocument) {
-    throw new Error("No `ownerDocument` found for rootNode");
-  }
-  const result = rootNode.ownerDocument.createRange();
-  result.setStart(startNode, startOffset);
-  result.setEnd(endNode, endOffset);
-  return result;
-}
-function appendStyle(node, ...styles) {
-  for (const cssText of styles) {
-    const style = (node.ownerDocument ?? document).createElement("style");
-    style.textContent = cssText;
-    node.appendChild(style);
-  }
-}
+  throw new Error("Unknown runtime!");
+})();
 
 // gen/front_end/core/platform/KeyboardUtilities.js
 var KeyboardUtilities_exports = {};
@@ -634,6 +555,7 @@ __export(StringUtilities_exports, {
   createSearchRegex: () => createSearchRegex,
   escapeCharacters: () => escapeCharacters,
   escapeForRegExp: () => escapeForRegExp,
+  escapeForURLPattern: () => escapeForURLPattern,
   filterRegex: () => filterRegex,
   findIndexesOfSubString: () => findIndexesOfSubString,
   findLineEndingIndexes: () => findLineEndingIndexes,
@@ -873,6 +795,7 @@ var removeURLFragment = (inputStr) => {
   return url.toString();
 };
 var SPECIAL_REGEX_CHARACTERS = "^[]{}()\\.^$*+?|-,";
+var SPECIAL_URL_PATTERN_CHARACTERS = "?+*(){}\\:";
 var regexSpecialCharacters = function() {
   return SPECIAL_REGEX_CHARACTERS;
 };
@@ -940,27 +863,66 @@ var compare = (a, b) => {
 };
 var trimMiddle = (str, maxLength) => {
   if (str.length <= maxLength) {
-    return String(str);
+    return str;
   }
-  let leftHalf = maxLength >> 1;
-  let rightHalf = maxLength - leftHalf - 1;
-  if (str.codePointAt(str.length - rightHalf - 1) >= 65536) {
-    --rightHalf;
-    ++leftHalf;
+  const segmenter = new Intl.Segmenter(void 0, { granularity: "grapheme" });
+  const ellipsis = "\u2026";
+  const ellipsisLength = 1;
+  if (maxLength <= ellipsisLength) {
+    return ellipsis;
   }
-  if (leftHalf > 0 && str.codePointAt(leftHalf - 1) >= 65536) {
-    --leftHalf;
+  const freeSpace = maxLength - ellipsisLength;
+  const leftCount = Math.ceil(freeSpace / 2);
+  const rightCount = Math.floor(freeSpace / 2);
+  let currentGraphemeCount = 0;
+  let leftEndIndex = 0;
+  const rightIndexBuffer = [];
+  for (const { segment, index } of segmenter.segment(str)) {
+    currentGraphemeCount++;
+    if (currentGraphemeCount === leftCount) {
+      leftEndIndex = index + segment.length;
+    }
+    if (rightCount > 0) {
+      rightIndexBuffer.push(index);
+      if (rightIndexBuffer.length > rightCount) {
+        rightIndexBuffer.shift();
+      }
+    }
   }
-  return str.substr(0, leftHalf) + "\u2026" + str.substr(str.length - rightHalf, rightHalf);
+  if (currentGraphemeCount <= maxLength) {
+    return str;
+  }
+  const rightStartIndex = rightCount > 0 ? rightIndexBuffer[0] : str.length;
+  return str.slice(0, leftEndIndex) + ellipsis + str.slice(rightStartIndex);
 };
 var trimEndWithMaxLength = (str, maxLength) => {
   if (str.length <= maxLength) {
-    return String(str);
+    return str;
   }
-  return str.substr(0, maxLength - 1) + "\u2026";
+  const ellipsis = "\u2026";
+  const ellipsisLength = 1;
+  const segmenter = new Intl.Segmenter(void 0, { granularity: "grapheme" });
+  const iterator = segmenter.segment(str)[Symbol.iterator]();
+  let lastSegmentIndex = 0;
+  for (let i = 0; i <= maxLength - ellipsisLength; i++) {
+    const result = iterator.next();
+    if (result.done) {
+      return str;
+    }
+    lastSegmentIndex = result.value.index;
+  }
+  for (let i = 0; i < ellipsisLength; i++) {
+    if (iterator.next().done) {
+      return str;
+    }
+  }
+  return str.slice(0, lastSegmentIndex) + ellipsis;
 };
 var escapeForRegExp = (str) => {
   return escapeCharacters(str, SPECIAL_REGEX_CHARACTERS);
+};
+var escapeForURLPattern = (text) => {
+  return escapeCharacters(text, SPECIAL_URL_PATTERN_CHARACTERS);
 };
 var naturalOrderComparator = (a, b) => {
   const chunk = /^\d+|^\D+/;
@@ -1099,7 +1061,7 @@ var concatBase64 = function(lhs, rhs) {
   }
   const lhsLeaveAsIs = lhs.substring(0, lhs.length - 4);
   const lhsToDecode = lhs.substring(lhs.length - 4);
-  return lhsLeaveAsIs + window.btoa(window.atob(lhsToDecode) + window.atob(rhs));
+  return lhsLeaveAsIs + globalThis.btoa(globalThis.atob(lhsToDecode) + globalThis.atob(rhs));
 };
 
 // gen/front_end/core/platform/Timing.js
@@ -1303,9 +1265,9 @@ export {
   ArrayUtilities_exports as ArrayUtilities,
   Brand_exports as Brand,
   Constructor_exports as Constructor,
-  DOMUtilities_exports as DOMUtilities,
   DateUtilities_exports as DateUtilities,
   DevToolsPath_exports as DevToolsPath,
+  HostRuntime_exports as HostRuntime,
   KeyboardUtilities_exports as KeyboardUtilities,
   MapUtilities_exports as MapUtilities,
   MimeType_exports as MimeType,

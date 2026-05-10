@@ -1,4 +1,5 @@
 import * as Platform from '../platform/platform.js';
+import type { ExperimentName } from './ExperimentNames.js';
 /**
  * Returns the base URL (similar to `<base>`).
  * Used to resolve the relative URLs of any additional DevTools files (locale strings, etc) needed.
@@ -12,13 +13,12 @@ export declare function getPathName(): string;
 export declare function isNodeEntry(pathname: string): boolean;
 export declare const getChromeVersion: () => string;
 export declare class Runtime {
+    #private;
     private constructor();
     static instance(opts?: {
         forceNew: boolean | null;
     } | undefined): Runtime;
     static removeInstance(): void;
-    static queryParamsObject: URLSearchParams;
-    static getSearchParams(): URLSearchParams;
     static queryParam(name: string): string | null;
     static setQueryParamForTesting(name: string, value: string): void;
     static isNode(): boolean;
@@ -43,51 +43,65 @@ export interface Option {
 }
 export declare class ExperimentsSupport {
     #private;
-    allConfigurableExperiments(): Experiment[];
-    register(experimentName: string, experimentTitle: string, unstable?: boolean, docLink?: string, feedbackLink?: string): void;
-    isEnabled(experimentName: string): boolean;
-    setEnabled(experimentName: string, enabled: boolean): void;
-    enableExperimentsTransiently(experimentNames: string[]): void;
-    enableExperimentsByDefault(experimentNames: string[]): void;
-    setServerEnabledExperiments(experimentNames: string[]): void;
-    enableForTest(experimentName: string): void;
-    disableForTest(experimentName: string): void;
+    allConfigurableExperiments(): Array<Experiment | HostExperiment>;
+    registerHostExperiment(params: {
+        name: ExperimentName;
+        title: string;
+        aboutFlag: string;
+        isEnabled: boolean;
+        requiresChromeRestart: boolean;
+        docLink?: Platform.DevToolsPath.UrlString;
+        readonly feedbackLink?: Platform.DevToolsPath.UrlString;
+    }): HostExperiment;
+    register(experimentName: ExperimentName, experimentTitle: string, docLink?: string, feedbackLink?: string): void;
+    isEnabled(experimentName: ExperimentName): boolean;
+    getValueFromStorage(experimentName: ExperimentName): boolean | undefined;
+    setEnabled(experimentName: ExperimentName, enabled: boolean): void;
+    enableExperimentsByDefault(experimentNames: ExperimentName[]): void;
+    setServerEnabledExperiments(experiments: string[]): void;
+    enableForTest(experimentName: ExperimentName): void;
+    disableForTest(experimentName: ExperimentName): void;
+    isEnabledForTest(experimentName: ExperimentName): boolean;
     clearForTest(): void;
     cleanUpStaleExperiments(): void;
-    private checkExperiment;
 }
+/**
+ * @deprecated Experiments should not be used anymore, instead use base::Feature.
+ * See docs/contributing/settings-experiments-features.md
+ */
 export declare class Experiment {
     #private;
-    name: string;
+    name: ExperimentName;
     title: string;
-    unstable: boolean;
     docLink?: Platform.DevToolsPath.UrlString;
     readonly feedbackLink?: Platform.DevToolsPath.UrlString;
-    constructor(experiments: ExperimentsSupport, name: string, title: string, unstable: boolean, docLink: Platform.DevToolsPath.UrlString, feedbackLink: Platform.DevToolsPath.UrlString);
+    constructor(experiments: ExperimentsSupport, name: ExperimentName, title: string, docLink: Platform.DevToolsPath.UrlString, feedbackLink: Platform.DevToolsPath.UrlString);
+    isEnabled(): boolean;
+    setEnabled(enabled: boolean): void;
+}
+export declare class HostExperiment {
+    #private;
+    name: ExperimentName;
+    title: string;
+    aboutFlag: string;
+    readonly requiresChromeRestart: boolean;
+    docLink?: Platform.DevToolsPath.UrlString;
+    readonly feedbackLink?: Platform.DevToolsPath.UrlString;
+    constructor(params: {
+        name: ExperimentName;
+        title: string;
+        experiments: ExperimentsSupport;
+        aboutFlag: string;
+        isEnabled: boolean;
+        requiresChromeRestart: boolean;
+        docLink?: Platform.DevToolsPath.UrlString;
+        feedbackLink?: Platform.DevToolsPath.UrlString;
+    });
     isEnabled(): boolean;
     setEnabled(enabled: boolean): void;
 }
 /** This must be constructed after the query parameters have been parsed. **/
 export declare const experiments: ExperimentsSupport;
-/**
- * @deprecated Experiments should not be used anymore, instead use base::Feature.
- * See docs/contributing/settings-experiments-features.md
- */
-export declare const enum ExperimentName {
-    CAPTURE_NODE_CREATION_STACKS = "capture-node-creation-stacks",
-    CSS_OVERVIEW = "css-overview",
-    LIVE_HEAP_PROFILE = "live-heap-profile",
-    ALL = "*",
-    PROTOCOL_MONITOR = "protocol-monitor",
-    FULL_ACCESSIBILITY_TREE = "full-accessibility-tree",
-    HEADER_OVERRIDES = "header-overrides",
-    INSTRUMENTATION_BREAKPOINTS = "instrumentation-breakpoints",
-    AUTHORED_DEPLOYED_GROUPING = "authored-deployed-grouping",
-    JUST_MY_CODE = "just-my-code",
-    USE_SOURCE_MAP_SCOPES = "use-source-map-scopes",
-    TIMELINE_SHOW_POST_MESSAGE_EVENTS = "timeline-show-postmessage-events",
-    TIMELINE_DEBUG_MODE = "timeline-debug-mode"
-}
 export declare enum GenAiEnterprisePolicyValue {
     ALLOW = 0,
     ALLOW_WITHOUT_LOGGING = 1,
@@ -122,28 +136,30 @@ export interface HostConfigFreestyler {
     multimodal?: boolean;
     multimodalUploadInput?: boolean;
     functionCalling?: boolean;
-    featureName?: string;
 }
 export interface HostConfigAiAssistanceNetworkAgent {
     modelId: string;
     temperature: number;
     enabled: boolean;
     userTier: string;
-    featureName?: string;
 }
 export interface HostConfigAiAssistancePerformanceAgent {
     modelId: string;
     temperature: number;
     enabled: boolean;
     userTier: string;
-    featureName?: string;
 }
 export interface HostConfigAiAssistanceFileAgent {
     modelId: string;
     temperature: number;
     enabled: boolean;
     userTier: string;
-    featureName?: string;
+}
+export interface HostConfigAiAssistanceAccessibilityAgent {
+    enabled: boolean;
+}
+export interface HostConfigAiAssistanceStorageAgent {
+    enabled: boolean;
 }
 export interface HostConfigAiCodeCompletion {
     modelId: string;
@@ -151,7 +167,25 @@ export interface HostConfigAiCodeCompletion {
     enabled: boolean;
     userTier: string;
 }
+export interface HostConfigAiCodeGeneration {
+    modelId: string;
+    temperature: number;
+    enabled: boolean;
+    userTier: string;
+}
+export interface HostConfigAiCodeCompletionStyles {
+    modelId: string;
+    temperature: number;
+    enabled: boolean;
+    userTier: string;
+}
 export interface HostConfigDeepLinksViaExtensibilityApi {
+    enabled: boolean;
+}
+export interface HostConfigGreenDevUi {
+    enabled: boolean;
+}
+export interface HostConfigGeminiRebranding {
     enabled: boolean;
 }
 export interface HostConfigVeLogging {
@@ -174,13 +208,10 @@ export interface HostConfigEnableOriginBoundCookies {
 export interface HostConfigAnimationStylesInStylesTab {
     enabled: boolean;
 }
-export interface HostConfigThirdPartyCookieControls {
-    thirdPartyCookieRestrictionEnabled: boolean;
-    thirdPartyCookieMetadataEnabled: boolean;
-    thirdPartyCookieHeuristicsEnabled: boolean;
-    managedBlockThirdPartyCookies: string | boolean;
+export interface HostConfigJpegXlImageFormat {
+    enabled: boolean;
 }
-export interface HostConfigIPProtection {
+export interface HostConfigAiAssistanceV2 {
     enabled: boolean;
 }
 interface AiGeneratedTimelineLabels {
@@ -188,17 +219,6 @@ interface AiGeneratedTimelineLabels {
 }
 interface AllowPopoverForcing {
     enabled: boolean;
-}
-interface AiSubmenuPrompts {
-    enabled: boolean;
-    featureName?: string;
-}
-interface IpProtectionInDevTools {
-    enabled: boolean;
-}
-interface AiDebugWithAi {
-    enabled: boolean;
-    featureName?: string;
 }
 interface GlobalAiButton {
     enabled: boolean;
@@ -224,17 +244,26 @@ interface LiveEdit {
 interface DevToolsFlexibleLayout {
     verticalDrawerEnabled: boolean;
 }
-interface DevToolsStartingStyleDebugging {
-    enabled: boolean;
-}
-interface AiPromptApi {
-    enabled: boolean;
-    allowWithoutGpu: boolean;
-}
-interface DevToolsIndividualRequestThrottling {
+interface DeviceBoundSessionsDebugging {
     enabled: boolean;
 }
 export interface DevToolsEnableDurableMessages {
+    enabled: boolean;
+}
+interface HostConfigAiAssistanceContextSelectionAgent {
+    enabled: boolean;
+}
+interface ConsoleInsightsTeasers {
+    enabled: boolean;
+    allowWithoutGpu: boolean;
+}
+interface UseGcaApi {
+    enabled: boolean;
+}
+interface DevToolsProtocolMonitor {
+    enabled: boolean;
+}
+interface DevToolsWebMCPSupport {
     enabled: boolean;
 }
 /**
@@ -256,16 +285,18 @@ export type HostConfig = Platform.TypeScriptUtilities.RecursivePartial<{
     devToolsConsoleInsights: HostConfigConsoleInsights;
     devToolsDeepLinksViaExtensibilityApi: HostConfigDeepLinksViaExtensibilityApi;
     devToolsFreestyler: HostConfigFreestyler;
+    devToolsGreenDevUi: HostConfigGreenDevUi;
     devToolsAiAssistanceNetworkAgent: HostConfigAiAssistanceNetworkAgent;
-    devToolsAiDebugWithAi: AiDebugWithAi;
     devToolsAiAssistanceFileAgent: HostConfigAiAssistanceFileAgent;
     devToolsAiAssistancePerformanceAgent: HostConfigAiAssistancePerformanceAgent;
+    devToolsAiAssistanceAccessibilityAgent: HostConfigAiAssistanceAccessibilityAgent;
+    devToolsAiAssistanceStorageAgent: HostConfigAiAssistanceStorageAgent;
+    devToolsAiAssistanceV2: HostConfigAiAssistanceV2;
     devToolsAiCodeCompletion: HostConfigAiCodeCompletion;
+    devToolsAiCodeGeneration: HostConfigAiCodeGeneration;
+    devToolsAiCodeCompletionStyles: HostConfigAiCodeCompletionStyles;
     devToolsVeLogging: HostConfigVeLogging;
     devToolsWellKnown: HostConfigWellKnown;
-    devToolsPrivacyUI: HostConfigPrivacyUI;
-    devToolsIndividualRequestThrottling: DevToolsIndividualRequestThrottling;
-    devToolsIpProtectionPanelInDevTools: HostConfigIPProtection;
     /**
      * OffTheRecord here indicates that the user's profile is either incognito,
      * or guest mode, rather than a "normal" profile.
@@ -273,19 +304,22 @@ export type HostConfig = Platform.TypeScriptUtilities.RecursivePartial<{
     isOffTheRecord: boolean;
     devToolsEnableOriginBoundCookies: HostConfigEnableOriginBoundCookies;
     devToolsAnimationStylesInStylesTab: HostConfigAnimationStylesInStylesTab;
-    thirdPartyCookieControls: HostConfigThirdPartyCookieControls;
+    devToolsJpegXlImageFormat: HostConfigJpegXlImageFormat;
     devToolsAiGeneratedTimelineLabels: AiGeneratedTimelineLabels;
     devToolsAllowPopoverForcing: AllowPopoverForcing;
-    devToolsAiSubmenuPrompts: AiSubmenuPrompts;
-    devToolsIpProtectionInDevTools: IpProtectionInDevTools;
     devToolsGlobalAiButton: GlobalAiButton;
     devToolsGdpProfiles: GdpProfiles;
     devToolsGdpProfilesAvailability: GdpProfilesAvailability;
     devToolsLiveEdit: LiveEdit;
     devToolsFlexibleLayout: DevToolsFlexibleLayout;
-    devToolsStartingStyleDebugging: DevToolsStartingStyleDebugging;
-    devToolsAiPromptApi: AiPromptApi;
+    deviceBoundSessionsDebugging: DeviceBoundSessionsDebugging;
     devToolsEnableDurableMessages: DevToolsEnableDurableMessages;
+    devToolsAiAssistanceContextSelectionAgent: HostConfigAiAssistanceContextSelectionAgent;
+    devToolsConsoleInsightsTeasers: ConsoleInsightsTeasers;
+    devToolsGeminiRebranding: HostConfigGeminiRebranding;
+    devToolsProtocolMonitor: DevToolsProtocolMonitor;
+    devToolsWebMCPSupport: DevToolsWebMCPSupport;
+    devToolsUseGcaApi: UseGcaApi;
 }>;
 /**
  * The host configuration for this DevTools instance.

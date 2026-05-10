@@ -1,7 +1,7 @@
 import * as Common from '../../core/common/common.js';
 import type * as TextUtils from '../../models/text_utils/text_utils.js';
 import type * as Buttons from '../components/buttons/buttons.js';
-import type * as IconButton from '../components/icon_button/icon_button.js';
+import type { Icon } from '../kit/kit.js';
 import * as Lit from '../lit/lit.js';
 import { type Config } from './InplaceEditor.js';
 import type { SearchableView } from './SearchableView.js';
@@ -134,7 +134,7 @@ export declare class TreeElement {
     set title(x: string | Node);
     titleAsText(): string;
     startEditingTitle<T>(editingConfig: Config<T>): void;
-    setLeadingIcons(icons: IconButton.Icon.Icon[] | Lit.TemplateResult[]): void;
+    setLeadingIcons(icons: Icon[] | Lit.TemplateResult[]): void;
     get tooltip(): string;
     set tooltip(x: string);
     isExpandable(): boolean;
@@ -222,9 +222,16 @@ export declare class TreeSearch<NodeT extends TreeNode<NodeT>, SearchResultT ext
  *          <ul role="group">
  *            Node with subtree
  *            <li role="treeitem" jslog-context="context">
- *              <ul role="group" hidden>
+ *              <ul role="group">
  *                <li role="treeitem">Tree Node Text in collapsed subtree</li>
  *                <li role="treeitem">Tree Node Text in collapsed subtree</li>
+ *              </ul>
+ *           </li>
+ *           <li role="treeitem" open>
+ *             Tree Node Text in expanded subtree
+ *              <ul role="group">
+ *                <li role="treeitem">Tree Node Text in expanded subtree</li>
+ *                <li role="treeitem">Tree Node Text in expanded subtree</li>
  *              </ul>
  *           </li>
  *           <li selected role="treeitem">Tree Node Text in a selected-by-default node</li>
@@ -236,8 +243,8 @@ export declare class TreeSearch<NodeT extends TreeNode<NodeT>, SearchResultT ext
  *
  * ```
  * where a <li role="treeitem"> element defines a tree node and its contents (the <li> is the `config element` for this
- * tree node). If a tree node contains a <ul role="group">, that defines a subtree under that tree node. The `hidden`
- * attribute on the <ul> defines whether that subtree should render as collapsed. Note that node expanding/collapsing do
+ * tree node). If a tree node contains a <ul role="group">, that defines a subtree under that tree node. The `open`
+ * attribute on the <li> defines whether that subtree should render as expanded. Note that node expanding/collapsing do
  * not reflect this state back to the attribute on the config element, those state changes are rather sent out as
  * `expand` events on the config element.
  *
@@ -248,7 +255,7 @@ export declare class TreeSearch<NodeT extends TreeNode<NodeT>, SearchResultT ext
  * - `selected`: Whether the tree node should be rendered as selected.
  * - `jslog-context`: The jslog context for the tree element.
  * - `aria-*`: All aria attributes defined on the config element are cloned over.
- * - `hidden`: On the <ul>, declares whether the subtree should be rendererd as expanded or collapsed.
+ * - `open`: On the <li>, declares whether the subtree should be rendererd as expanded or collapsed.
  *
  * ## Event Handling ##
  *
@@ -282,11 +289,13 @@ export declare class TreeViewElement extends HTMLElementWithLightDOMTemplate {
     get hideOverflow(): boolean;
     set navgiationVariant(navigationVariant: boolean);
     get navigationVariant(): boolean;
+    set dense(dense: boolean);
+    get dense(): boolean;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
 }
 export declare namespace TreeViewElement {
-    class SelectEvent extends CustomEvent<HTMLLIElement> {
-        constructor(detail: HTMLLIElement);
+    class SelectEvent extends CustomEvent<void> {
+        constructor();
     }
     class ExpandEvent extends CustomEvent<{
         expanded: boolean;
@@ -295,10 +304,31 @@ export declare namespace TreeViewElement {
             expanded: boolean;
         });
     }
+    /**
+     * @deprecated
+     */
+    class TreeElementExpandEvent extends CustomEvent<{
+        treeElement: TreeElement;
+        expanded: boolean;
+    }> {
+        constructor(treeElement: TreeElement, expanded: boolean);
+    }
+}
+declare class IfExpandedDirective extends Lit.Directive.Directive {
+    #private;
+    constructor(partInfo: Lit.Directive.PartInfo);
+    render(content: Lit.LitTemplate | Iterable<Lit.LitTemplate>): Lit.LitTemplate | Iterable<Lit.LitTemplate>;
+}
+export declare const ifExpanded: (content: Lit.LitTemplate | Iterable<Lit.LitTemplate>) => Lit.DirectiveResult<typeof IfExpandedDirective>;
+export declare class TreeElementWrapper extends HTMLElement {
+    #private;
+    set treeElement(treeElement: TreeElement);
+    get treeElement(): TreeElement | undefined;
 }
 declare global {
     interface HTMLElementTagNameMap {
         'devtools-tree': TreeViewElement;
+        'devtools-tree-wrapper': TreeElementWrapper;
     }
 }
 export {};

@@ -163,6 +163,23 @@ export declare class ColorMixMatcher extends ColorMixMatcher_base {
     accepts(propertyName: string): boolean;
     matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): ColorMixMatch | null;
 }
+export declare class ContrastColorMatch implements Match {
+    readonly text: string;
+    readonly node: CodeMirror.SyntaxNode;
+    readonly color: CodeMirror.SyntaxNode[];
+    constructor(text: string, node: CodeMirror.SyntaxNode, color: CodeMirror.SyntaxNode[]);
+}
+declare const ContrastColorMatcher_base: {
+    new (): {
+        matchType: Platform.Constructor.ConstructorOrAbstract<ContrastColorMatch>;
+        accepts(_propertyName: string): boolean;
+        matches(_node: CodeMirror.SyntaxNode, _matching: BottomUpTreeMatching): ContrastColorMatch | null;
+    };
+};
+export declare class ContrastColorMatcher extends ContrastColorMatcher_base {
+    accepts(propertyName: string): boolean;
+    matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): ContrastColorMatch | null;
+}
 export declare class URLMatch implements Match {
     readonly url: Platform.DevToolsPath.UrlString;
     readonly text: string;
@@ -280,8 +297,10 @@ export declare const enum LinkableNameProperties {
     ANIMATION = "animation",
     ANIMATION_NAME = "animation-name",
     FONT_PALETTE = "font-palette",
-    POSITION_TRY_FALLBACKS = "position-try-fallbacks",
-    POSITION_TRY = "position-try"
+    LIST_STYLE = "list-style",
+    LIST_STYLE_TYPE = "list-style-type",
+    POSITION_TRY = "position-try",
+    POSITION_TRY_FALLBACKS = "position-try-fallbacks"
 }
 declare const enum AnimationLonghandPart {
     DIRECTION = "direction",
@@ -361,22 +380,6 @@ export declare class ShadowMatcher extends ShadowMatcher_base {
     accepts(propertyName: string): boolean;
     matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): ShadowMatch | null;
 }
-export declare class FontMatch implements Match {
-    readonly text: string;
-    readonly node: CodeMirror.SyntaxNode;
-    constructor(text: string, node: CodeMirror.SyntaxNode);
-}
-declare const FontMatcher_base: {
-    new (): {
-        matchType: Platform.Constructor.ConstructorOrAbstract<FontMatch>;
-        accepts(_propertyName: string): boolean;
-        matches(_node: CodeMirror.SyntaxNode, _matching: BottomUpTreeMatching): FontMatch | null;
-    };
-};
-export declare class FontMatcher extends FontMatcher_base {
-    accepts(propertyName: string): boolean;
-    matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): Match | null;
-}
 export declare class LengthMatch implements Match {
     readonly text: string;
     readonly node: CodeMirror.SyntaxNode;
@@ -402,7 +405,10 @@ export declare const enum SelectFunction {
 export declare const enum ArithmeticFunction {
     CALC = "calc",
     SIBLING_COUNT = "sibling-count",
-    SIBLING_INDEX = "sibling-index"
+    SIBLING_INDEX = "sibling-index",
+    ROUND = "round",
+    MOD = "mod",
+    REM = "rem"
 }
 type MathFunction = SelectFunction | ArithmeticFunction;
 export declare class BaseFunctionMatch<T extends string> implements Match {
@@ -441,27 +447,27 @@ export declare class CustomFunctionMatcher extends CustomFunctionMatcher_base {
 export declare const enum LayoutType {
     FLEX = "flex",
     GRID = "grid",
-    MASONRY = "masonry"
+    GRID_LANES = "grid-lanes"
 }
-export declare class FlexGridMasonryMatch implements Match {
+export declare class FlexGridGridLanesMatch implements Match {
     readonly text: string;
     readonly node: CodeMirror.SyntaxNode;
     readonly layoutType: LayoutType;
     constructor(text: string, node: CodeMirror.SyntaxNode, layoutType: LayoutType);
 }
-declare const FlexGridMasonryMatcher_base: {
+declare const FlexGridGridLanesMatcher_base: {
     new (): {
-        matchType: Platform.Constructor.ConstructorOrAbstract<FlexGridMasonryMatch>;
+        matchType: Platform.Constructor.ConstructorOrAbstract<FlexGridGridLanesMatch>;
         accepts(_propertyName: string): boolean;
-        matches(_node: CodeMirror.SyntaxNode, _matching: BottomUpTreeMatching): FlexGridMasonryMatch | null;
+        matches(_node: CodeMirror.SyntaxNode, _matching: BottomUpTreeMatching): FlexGridGridLanesMatch | null;
     };
 };
-export declare class FlexGridMasonryMatcher extends FlexGridMasonryMatcher_base {
+export declare class FlexGridGridLanesMatcher extends FlexGridGridLanesMatcher_base {
     static readonly FLEX: string[];
     static readonly GRID: string[];
-    static readonly MASONRY: string[];
+    static readonly GRID_LANES: string[];
     accepts(propertyName: string): boolean;
-    matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): FlexGridMasonryMatch | null;
+    matches(node: CodeMirror.SyntaxNode, matching: BottomUpTreeMatching): FlexGridGridLanesMatch | null;
 }
 export declare class GridTemplateMatch implements Match {
     readonly text: string;

@@ -42,9 +42,12 @@ export declare const createSearchRegex: (query: string, caseSensitive: boolean, 
 export declare const caseInsensetiveComparator: (a: string, b: string) => number;
 export declare const hashCode: (string?: string) => number;
 export declare const compare: (a: string, b: string) => number;
+/** Returns a string that has no more than maxLength characters. Actual graphemes are used, not bytes. */
 export declare const trimMiddle: (str: string, maxLength: number) => string;
+/** Returns a string that has no more than maxLength characters. Actual graphemes are used, not bytes. */
 export declare const trimEndWithMaxLength: (str: string, maxLength: number) => string;
 export declare const escapeForRegExp: (str: string) => string;
+export declare const escapeForURLPattern: (text: string) => string;
 export declare const naturalOrderComparator: (a: string, b: string) => number;
 export declare const base64ToSize: (content: string | null) => number;
 export declare const SINGLE_QUOTE = "'";

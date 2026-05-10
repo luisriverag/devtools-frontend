@@ -61,17 +61,18 @@ export declare class InspectorView extends VBox implements ViewLocationResolver 
         hasTargetDrawer: boolean;
     }): void;
     drawerVisible(): boolean;
+    minimizeDrawer(): void;
     closeDrawer(): void;
     toggleDrawerOrientation({ force }?: {
         force?: Omit<DrawerOrientation, DrawerOrientation.UNSET>;
     }): void;
     isUserExplicitlyUpdatedDrawerOrientation(): boolean;
-    setDrawerRelatedMinimumSizes(): void;
     setDrawerMinimized(minimized: boolean): void;
     drawerSize(): number;
     setDrawerSize(size: number): void;
     totalSize(): number;
     isDrawerMinimized(): boolean;
+    toggleDrawerMinimized(): void;
     isDrawerOrientationVertical(): boolean;
     private keyDown;
     onResize(): void;
@@ -85,6 +86,7 @@ export declare class InspectorView extends VBox implements ViewLocationResolver 
     displayDebuggedTabReloadRequiredWarning(message: string): void;
     removeDebuggedTabReloadRequiredWarning(): void;
     displayReloadRequiredWarning(message: string): void;
+    displayChromeRestartRequiredWarning(message: string): void;
     displaySelectOverrideFolderInfobar(callback: () => void): void;
     private createInfoBarDiv;
     private attachInfobar;

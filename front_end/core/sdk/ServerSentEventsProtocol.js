@@ -28,6 +28,9 @@ export class ServerSentEventsParser {
     async addBase64Chunk(raw) {
         await this.#decoder.addBase64Chunk(raw);
     }
+    addTextChunk(chunk) {
+        this.#onTextChunk(chunk);
+    }
     #onTextChunk(chunk) {
         // A line consists of "this.#line" plus a slice of "chunk[start:<next new cr/lf>]".
         let start = 0;
@@ -102,7 +105,7 @@ class Base64TextDecoder {
         void this.#decoder.readable.pipeTo(new WritableStream({ write: onTextChunk }));
     }
     async addBase64Chunk(chunk) {
-        const binString = window.atob(chunk);
+        const binString = globalThis.atob(chunk);
         const bytes = Uint8Array.from(binString, m => m.codePointAt(0));
         await this.#writer.ready;
         await this.#writer.write(bytes);

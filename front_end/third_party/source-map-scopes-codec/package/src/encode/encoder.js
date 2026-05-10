@@ -48,7 +48,7 @@ export class Encoder {
     }
     #encodeOriginalScope(scope) {
         if (scope === null) {
-            this.#encodedItems.push("");
+            this.#encodedItems.push("A" /* EncodedTag.EMPTY */);
             return;
         }
         this.#encodeOriginalScopeStart(scope);
@@ -186,8 +186,8 @@ export class Encoder {
                 const binding = subRange.value === undefined
                     ? 0
                     : this.#resolveNamesIdx(subRange.value) + 1;
-                this.#encodeUnsigned(binding).#encodeUnsigned(encodedLine)
-                    .#encodeUnsigned(encodedColumn);
+                this.#encodeUnsigned(encodedLine).#encodeUnsigned(encodedColumn)
+                    .#encodeUnsigned(binding);
             }
             this.#finishItem();
         }

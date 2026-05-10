@@ -1,12 +1,13 @@
 import * as Common from '../../core/common/common.js';
 import { EmulationModel } from './EmulationModel.js';
-import { type SDKModelObserver } from './TargetManager.js';
+import { type SDKModelObserver, TargetManager } from './TargetManager.js';
 export declare class CPUThrottlingManager extends Common.ObjectWrapper.ObjectWrapper<EventTypes> implements SDKModelObserver<EmulationModel> {
     #private;
-    private constructor();
+    constructor(settings: Common.Settings.Settings, targetManager: TargetManager);
     static instance(opts?: {
         forceNew: boolean | null;
     }): CPUThrottlingManager;
+    static removeInstance(): void;
     cpuThrottlingRate(): number;
     cpuThrottlingOption(): CPUThrottlingOption;
     setCPUThrottlingOption(option: CPUThrottlingOption): void;
@@ -24,7 +25,6 @@ export interface EventTypes {
     [Events.RATE_CHANGED]: number;
     [Events.HARDWARE_CONCURRENCY_CHANGED]: number;
 }
-export declare function throttlingManager(): CPUThrottlingManager;
 export declare enum CPUThrottlingRates {
     NO_THROTTLING = 1,
     MID_TIER_MOBILE = 4,

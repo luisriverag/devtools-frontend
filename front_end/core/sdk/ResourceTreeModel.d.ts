@@ -68,6 +68,7 @@ export declare enum Events {
     FrameDetached = "FrameDetached",
     FrameResized = "FrameResized",
     FrameWillNavigate = "FrameWillNavigate",
+    DocumentOpened = "DocumentOpened",
     PrimaryPageChanged = "PrimaryPageChanged",
     ResourceAdded = "ResourceAdded",
     WillLoadCachedResources = "WillLoadCachedResources",
@@ -91,6 +92,7 @@ export interface EventTypes {
     };
     [Events.FrameResized]: void;
     [Events.FrameWillNavigate]: ResourceTreeFrame;
+    [Events.DocumentOpened]: ResourceTreeFrame;
     [Events.PrimaryPageChanged]: {
         frame: ResourceTreeFrame;
         type: PrimaryPageChangeType;
@@ -119,9 +121,9 @@ export declare class ResourceTreeFrame {
     crossTargetParentFrameId: string | null;
     resourcesMap: Map<Platform.DevToolsPath.UrlString, Resource>;
     backForwardCacheDetails: {
-        restoredFromCache: boolean | undefined;
         explanations: Protocol.Page.BackForwardCacheNotRestoredExplanation[];
-        explanationsTree: Protocol.Page.BackForwardCacheNotRestoredExplanationTree | undefined;
+        restoredFromCache?: boolean;
+        explanationsTree?: Protocol.Page.BackForwardCacheNotRestoredExplanationTree;
     };
     constructor(model: ResourceTreeModel, parentFrame: ResourceTreeFrame | null, frameId: Protocol.Page.FrameId, payload: Protocol.Page.Frame | null, creationStackTrace: Protocol.Runtime.StackTrace | null);
     isSecureContext(): boolean;
@@ -139,7 +141,7 @@ export declare class ResourceTreeFrame {
     get name(): string;
     get url(): Platform.DevToolsPath.UrlString;
     domainAndRegistry(): string;
-    getAdScriptAncestry(frameId: Protocol.Page.FrameId): Promise<Protocol.Page.AdScriptAncestry | null>;
+    getAdScriptAncestry(frameId: Protocol.Page.FrameId): Promise<Protocol.Network.AdAncestry | null>;
     get securityOrigin(): string | null;
     get securityOriginDetails(): Protocol.Page.SecurityOriginDetails | null;
     getStorageKey(forceFetch: boolean): Promise<string | null>;

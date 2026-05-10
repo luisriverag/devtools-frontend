@@ -50,9 +50,9 @@ export class CSSModel extends SDKModel {
         if (!target.suspended()) {
             void this.enable();
         }
-        this.#sourceMapManager.setEnabled(Common.Settings.Settings.instance().moduleSetting('css-source-maps-enabled').get());
-        Common.Settings.Settings.instance()
-            .moduleSetting('css-source-maps-enabled')
+        const settings = this.target().targetManager().settings;
+        this.#sourceMapManager.setEnabled(settings.moduleSetting('css-source-maps-enabled').get());
+        settings.moduleSetting('css-source-maps-enabled')
             .addChangeListener(event => this.#sourceMapManager.setEnabled(event.data));
     }
     async colorScheme() {
@@ -138,7 +138,7 @@ export class CSSModel extends SDKModel {
         try {
             await this.ensureOriginalStyleSheetText(styleSheetId);
             const { styles } = await this.agent.invoke_setStyleTexts({ edits: [{ styleSheetId, range: range.serializeToObject(), text }] });
-            if (!styles || styles.length !== 1) {
+            if (styles?.length !== 1) {
                 return false;
             }
             this.#domModel.markUndoableState(!majorChange);
@@ -278,7 +278,7 @@ export class CSSModel extends SDKModel {
             propertyRules: matchedStylesResponse.cssPropertyRules ?? [],
             functionRules: matchedStylesResponse.cssFunctionRules ?? [],
             cssPropertyRegistrations: matchedStylesResponse.cssPropertyRegistrations ?? [],
-            fontPaletteValuesRule: matchedStylesResponse.cssFontPaletteValuesRule,
+            atRules: matchedStylesResponse.cssAtRules ?? [],
             activePositionFallbackIndex: matchedStylesResponse.activePositionFallbackIndex ?? -1,
             animationStylesPayload: animatedStylesResponse?.animationStyles || [],
             inheritedAnimatedPayload: animatedStylesResponse?.inherited || [],
@@ -296,6 +296,12 @@ export class CSSModel extends SDKModel {
         }
         return await this.#styleLoader.computedStylePromise(nodeId);
     }
+    async getComputedStyleExtraFields(nodeId) {
+        if (!this.isEnabled()) {
+            await this.enable();
+        }
+        return await this.#styleLoader.extraFieldsPromise(nodeId);
+    }
     async getLayoutPropertiesFromComputedStyle(nodeId) {
         const styles = await this.getComputedStyle(nodeId);
         if (!styles) {
@@ -308,7 +314,7 @@ export class CSSModel extends SDKModel {
             (styles.get('grid-template-columns')?.startsWith('subgrid') ||
                 styles.get('grid-template-rows')?.startsWith('subgrid'))) ??
             false;
-        const isMasonry = display === 'masonry' || display === 'inline-masonry';
+        const isGridLanes = display === 'grid-lanes' || display === 'inline-grid-lanes';
         const containerType = styles.get('container-type');
         const isContainer = Boolean(containerType) && containerType !== '' && containerType !== 'normal';
         const hasScroll = Boolean(styles.get('scroll-snap-type')) && styles.get('scroll-snap-type') !== 'none';
@@ -316,8 +322,8 @@ export class CSSModel extends SDKModel {
             isFlex,
             isGrid,
             isSubgrid,
-            isMasonry,
-            isContainer,
+            isGridLanes,
+            containerType: isContainer ? containerType : undefined,
             hasScroll,
         };
     }
@@ -451,6 +457,24 @@ export class CSSModel extends SDKModel {
             }
             this.#domModel.markUndoableState();
             const edit = new Edit(styleSheetId, range, newSupportsText, supports);
+            this.fireStyleSheetChanged(styleSheetId, edit);
+            return true;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+    async setNavigationText(styleSheetId, range, newNavigationText) {
+        Host.userMetrics.actionTaken(Host.UserMetrics.Action.StyleRuleEdited);
+        try {
+            await this.ensureOriginalStyleSheetText(styleSheetId);
+            const { navigation } = await this.agent.invoke_setNavigationText({ styleSheetId, range, text: newNavigationText });
+            if (!navigation) {
+                return false;
+            }
+            this.#domModel.markUndoableState();
+            const edit = new Edit(styleSheetId, range, newNavigationText, navigation);
             this.fireStyleSheetChanged(styleSheetId, edit);
             return true;
         }
@@ -858,24 +882,33 @@ class ComputedStyleLoader {
     constructor(cssModel) {
         this.#cssModel = cssModel;
     }
-    computedStylePromise(nodeId) {
+    #getResponsePromise(nodeId) {
         let promise = this.#nodeIdToPromise.get(nodeId);
         if (promise) {
             return promise;
         }
-        promise = this.#cssModel.getAgent().invoke_getComputedStyleForNode({ nodeId }).then(({ computedStyle }) => {
-            this.#nodeIdToPromise.delete(nodeId);
-            if (!computedStyle?.length) {
-                return null;
-            }
-            const result = new Map();
-            for (const property of computedStyle) {
-                result.set(property.name, property.value);
-            }
-            return result;
-        });
+        promise =
+            this.#cssModel.getAgent().invoke_getComputedStyleForNode({ nodeId }).then(({ computedStyle, extraFields }) => {
+                this.#nodeIdToPromise.delete(nodeId);
+                if (!computedStyle?.length) {
+                    return { style: null, extraFields };
+                }
+                const result = new Map();
+                for (const property of computedStyle) {
+                    result.set(property.name, property.value);
+                }
+                return { style: result, extraFields };
+            });
         this.#nodeIdToPromise.set(nodeId, promise);
         return promise;
+    }
+    async computedStylePromise(nodeId) {
+        const computedStyleWithExtraFields = await this.#getResponsePromise(nodeId);
+        return computedStyleWithExtraFields.style;
+    }
+    async extraFieldsPromise(nodeId) {
+        const computedStyleWithExtraFields = await this.#getResponsePromise(nodeId);
+        return computedStyleWithExtraFields.extraFields;
     }
 }
 export class InlineStyleResult {

@@ -278,6 +278,9 @@ var Action = class extends Common2.ObjectWrapper.ObjectWrapper {
   bindings() {
     return this.actionRegistration.bindings;
   }
+  configurableBindings() {
+    return this.actionRegistration.configurableBindings ?? true;
+  }
   experiment() {
     return this.actionRegistration.experiment;
   }
@@ -461,6 +464,28 @@ var ActionRegistry = class _ActionRegistry {
   }
 };
 
+// gen/front_end/ui/legacy/App.js
+var App_exports = {};
+
+// gen/front_end/ui/legacy/AppProvider.js
+var AppProvider_exports = {};
+__export(AppProvider_exports, {
+  getRegisteredAppProviders: () => getRegisteredAppProviders,
+  registerAppProvider: () => registerAppProvider
+});
+import * as Root2 from "./../../core/root/root.js";
+var registeredAppProvider = [];
+function registerAppProvider(registration) {
+  registeredAppProvider.push(registration);
+}
+function getRegisteredAppProviders() {
+  return registeredAppProvider.filter((provider) => Root2.Runtime.Runtime.isDescriptorEnabled({ condition: provider.condition })).sort((firstProvider, secondProvider) => {
+    const order1 = firstProvider.order || 0;
+    const order2 = secondProvider.order || 0;
+    return order1 - order2;
+  });
+}
+
 // gen/front_end/ui/legacy/ARIAUtils.js
 var ARIAUtils_exports = {};
 __export(ARIAUtils_exports, {
@@ -539,8 +564,10 @@ var Dialog_exports = {};
 __export(Dialog_exports, {
   Dialog: () => Dialog
 });
-import * as Common15 from "./../../core/common/common.js";
-import * as VisualLogging15 from "./../visual_logging/visual_logging.js";
+import * as Common16 from "./../../core/common/common.js";
+import * as i18n25 from "./../../core/i18n/i18n.js";
+import * as Buttons7 from "./../components/buttons/buttons.js";
+import * as VisualLogging16 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/dialog.css.js
 var dialog_css_default = `/*
@@ -624,15 +651,16 @@ __export(UIUtils_exports, {
   InterceptBindingDirective: () => InterceptBindingDirective,
   LongClickController: () => LongClickController,
   MaxLengthForDisplayedURLs: () => MaxLengthForDisplayedURLs,
+  MaxLengthForDisplayedURLsInConsole: () => MaxLengthForDisplayedURLsInConsole,
   MessageDialog: () => MessageDialog,
   PromotionManager: () => PromotionManager,
   Renderer: () => Renderer,
   StyleValueDelimiters: () => StyleValueDelimiters,
   addPlatformClass: () => addPlatformClass,
   animateFunction: () => animateFunction,
+  animateOn: () => animateOn,
   anotherProfilerActiveLabel: () => anotherProfilerActiveLabel,
-  applyDomChanges: () => applyDomChanges,
-  asyncStackTraceLabel: () => asyncStackTraceLabel,
+  asyncFragmentLabel: () => asyncFragmentLabel,
   beautifyFunctionName: () => beautifyFunctionName,
   bindCheckbox: () => bindCheckbox,
   bindCheckboxImpl: () => bindCheckboxImpl,
@@ -669,11 +697,6 @@ __export(UIUtils_exports, {
   getDevToolsBoundingElement: () => getDevToolsBoundingElement,
   getValueModificationDirection: () => getValueModificationDirection,
   handleElementValueModifications: () => handleElementValueModifications,
-  highlightRangesWithStyleClass: () => highlightRangesWithStyleClass,
-  highlightSearchResult: () => highlightSearchResult,
-  highlightSearchResults: () => highlightSearchResults,
-  highlightedCurrentSearchResultClassName: () => highlightedCurrentSearchResultClassName,
-  highlightedSearchResultClassName: () => highlightedSearchResultClassName,
   initializeUIUtils: () => initializeUIUtils,
   installComponentRootStyles: () => installComponentRootStyles,
   installDragHandle: () => installDragHandle,
@@ -688,11 +711,9 @@ __export(UIUtils_exports, {
   measureTextWidth: () => measureTextWidth,
   measuredScrollbarWidth: () => measuredScrollbarWidth,
   modifiedFloatNumber: () => modifiedFloatNumber,
-  openInNewTab: () => openInNewTab,
   openLinkExternallyLabel: () => openLinkExternallyLabel,
   registerRenderer: () => registerRenderer,
   resetMeasuredScrollbarWidthForTest: () => resetMeasuredScrollbarWidthForTest,
-  revertDomChanges: () => revertDomChanges,
   runCSSAnimationOnce: () => runCSSAnimationOnce,
   setTitle: () => setTitle,
   startBatchUpdate: () => startBatchUpdate,
@@ -722,13 +743,13 @@ __export(Toolbar_exports, {
   ToolbarToggle: () => ToolbarToggle,
   registerToolbarItem: () => registerToolbarItem
 });
-import * as Common13 from "./../../core/common/common.js";
-import * as i18n19 from "./../../core/i18n/i18n.js";
+import * as Common14 from "./../../core/common/common.js";
+import * as i18n21 from "./../../core/i18n/i18n.js";
 import * as Platform13 from "./../../core/platform/platform.js";
 import * as Root6 from "./../../core/root/root.js";
 import * as Buttons5 from "./../components/buttons/buttons.js";
-import * as VisualLogging13 from "./../visual_logging/visual_logging.js";
-import * as IconButton6 from "./../components/icon_button/icon_button.js";
+import * as VisualLogging14 from "./../visual_logging/visual_logging.js";
+import { createIcon as createIcon6 } from "./../kit/kit.js";
 
 // gen/front_end/ui/legacy/ContextMenu.js
 var ContextMenu_exports = {};
@@ -742,11 +763,11 @@ __export(ContextMenu_exports, {
   registerItem: () => registerItem,
   registerProvider: () => registerProvider
 });
-import * as Host6 from "./../../core/host/host.js";
+import * as Host7 from "./../../core/host/host.js";
 import * as Root5 from "./../../core/root/root.js";
 import * as Buttons4 from "./../components/buttons/buttons.js";
-import { html, render } from "./../lit/lit.js";
-import * as VisualLogging9 from "./../visual_logging/visual_logging.js";
+import { html as html2, render as render2 } from "./../lit/lit.js";
+import * as VisualLogging10 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/ShortcutRegistry.js
 var ShortcutRegistry_exports = {};
@@ -1508,9 +1529,9 @@ var SoftContextMenu_exports = {};
 __export(SoftContextMenu_exports, {
   SoftContextMenu: () => SoftContextMenu
 });
-import * as i18n15 from "./../../core/i18n/i18n.js";
-import * as IconButton5 from "./../components/icon_button/icon_button.js";
-import * as VisualLogging8 from "./../visual_logging/visual_logging.js";
+import * as i18n17 from "./../../core/i18n/i18n.js";
+import { createIcon as createIcon5 } from "./../kit/kit.js";
+import * as VisualLogging9 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/InspectorView.js
 var InspectorView_exports = {};
@@ -1521,14 +1542,14 @@ __export(InspectorView_exports, {
   InspectorView: () => InspectorView,
   InspectorViewTabDelegate: () => InspectorViewTabDelegate
 });
-import * as Common10 from "./../../core/common/common.js";
-import * as Host5 from "./../../core/host/host.js";
-import * as i18n13 from "./../../core/i18n/i18n.js";
+import * as Common11 from "./../../core/common/common.js";
+import * as Host6 from "./../../core/host/host.js";
+import * as i18n15 from "./../../core/i18n/i18n.js";
 import * as Root4 from "./../../core/root/root.js";
 import * as SDK from "./../../core/sdk/sdk.js";
 import * as Buttons3 from "./../components/buttons/buttons.js";
-import * as IconButton4 from "./../components/icon_button/icon_button.js";
-import * as VisualLogging7 from "./../visual_logging/visual_logging.js";
+import { createIcon as createIcon4 } from "./../kit/kit.js";
+import * as VisualLogging8 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/DockController.js
 var DockController_exports = {};
@@ -1708,7 +1729,7 @@ __export(Infobar_exports, {
 import * as i18n5 from "./../../core/i18n/i18n.js";
 import * as Buttons from "./../components/buttons/buttons.js";
 import * as VisualLogging3 from "./../visual_logging/visual_logging.js";
-import * as IconButton from "./../components/icon_button/icon_button.js";
+import { createIcon } from "./../kit/kit.js";
 
 // gen/front_end/ui/legacy/infobar.css.js
 var infobar_css_default = `/*
@@ -1838,6 +1859,7 @@ var infobar_css_default = `/*
 
 .infobar-info-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--sys-size-5);
 }
 
@@ -1919,7 +1941,7 @@ var Infobar = class _Infobar {
     this.element.classList.add("flex-none");
     this.shadowRoot = createShadowRootWithCoreStyles(this.element, { cssFile: infobar_css_default });
     this.contentElement = this.shadowRoot.createChild("div", "infobar infobar-" + type);
-    const icon = IconButton.Icon.create(TYPE_TO_ICON[type], type + "-icon");
+    const icon = createIcon(TYPE_TO_ICON[type], type + "-icon");
     this.contentElement.createChild("div", "icon-container").appendChild(icon);
     this.mainRow = this.contentElement.createChild("div", "infobar-main-row");
     this.infoContainer = this.mainRow.createChild("div", "infobar-info-container");
@@ -2022,7 +2044,7 @@ var Infobar = class _Infobar {
     if (!this.detailsRows) {
       const details = document.createElement("details");
       const summary = details.createChild("summary");
-      const triangleIcon = IconButton.Icon.create("arrow-drop-down");
+      const triangleIcon = createIcon("arrow-drop-down");
       summary.createChild("div", "icon-container").appendChild(triangleIcon);
       this.contentElement.insertBefore(details, this.mainRow);
       summary.appendChild(this.mainRow);
@@ -2057,1912 +2079,91 @@ var TYPE_TO_ICON = {
   ]: "cross-circle"
 };
 
-// gen/front_end/ui/legacy/SplitWidget.js
-var SplitWidget_exports = {};
-__export(SplitWidget_exports, {
-  SplitWidget: () => SplitWidget,
-  SplitWidgetElement: () => SplitWidgetElement
-});
-import * as Common7 from "./../../core/common/common.js";
-import * as Platform6 from "./../../core/platform/platform.js";
-import * as Geometry2 from "./../../models/geometry/geometry.js";
-import * as VisualLogging4 from "./../visual_logging/visual_logging.js";
+// gen/front_end/ui/legacy/InspectorDrawerView.js
+import * as Common8 from "./../../core/common/common.js";
+import * as i18n13 from "./../../core/i18n/i18n.js";
+import * as VisualLogging6 from "./../visual_logging/visual_logging.js";
 
-// gen/front_end/ui/legacy/ResizerWidget.js
-var ResizerWidget_exports = {};
-__export(ResizerWidget_exports, {
-  ResizerWidget: () => ResizerWidget,
-  SimpleResizerWidget: () => SimpleResizerWidget
-});
-import * as Common5 from "./../../core/common/common.js";
-var ResizerWidget = class extends Common5.ObjectWrapper.ObjectWrapper {
-  #isEnabled = true;
-  #elements = /* @__PURE__ */ new Set();
-  #installDragOnMouseDownBound;
-  #cursor = "nwse-resize";
-  #startX;
-  #startY;
-  constructor() {
-    super();
-    this.#installDragOnMouseDownBound = this.#installDragOnMouseDown.bind(this);
-  }
-  isEnabled() {
-    return this.#isEnabled;
-  }
-  setEnabled(enabled) {
-    this.#isEnabled = enabled;
-    this.updateElementCursors();
-  }
-  elements() {
-    return [...this.#elements];
-  }
-  addElement(element) {
-    if (!this.#elements.has(element)) {
-      this.#elements.add(element);
-      element.addEventListener("pointerdown", this.#installDragOnMouseDownBound, false);
-      this.#updateElementCursor(element);
-    }
-  }
-  removeElement(element) {
-    if (this.#elements.has(element)) {
-      this.#elements.delete(element);
-      element.removeEventListener("pointerdown", this.#installDragOnMouseDownBound, false);
-      element.style.removeProperty("cursor");
-    }
-  }
-  updateElementCursors() {
-    this.#elements.forEach(this.#updateElementCursor.bind(this));
-  }
-  #updateElementCursor(element) {
-    if (this.#isEnabled) {
-      element.style.setProperty("cursor", this.cursor());
-      element.style.setProperty("touch-action", "none");
-    } else {
-      element.style.removeProperty("cursor");
-      element.style.removeProperty("touch-action");
-    }
-  }
-  cursor() {
-    return this.#cursor;
-  }
-  setCursor(cursor) {
-    this.#cursor = cursor;
-    this.updateElementCursors();
-  }
-  #installDragOnMouseDown(event) {
-    const element = event.target;
-    if (!this.#elements.has(element)) {
-      return false;
-    }
-    elementDragStart(element, this.#dragStart.bind(this), (event2) => {
-      this.#drag(event2);
-    }, this.#dragEnd.bind(this), this.cursor(), event);
-    return void 0;
-  }
-  #dragStart(event) {
-    if (!this.#isEnabled) {
-      return false;
-    }
-    this.#startX = event.pageX;
-    this.#startY = event.pageY;
-    this.sendDragStart(this.#startX, this.#startY);
-    return true;
-  }
-  sendDragStart(x, y) {
-    this.dispatchEventToListeners("ResizeStart", { startX: x, currentX: x, startY: y, currentY: y });
-  }
-  #drag(event) {
-    if (!this.#isEnabled) {
-      this.#dragEnd(event);
-      return true;
-    }
-    this.sendDragMove(this.#startX, event.pageX, this.#startY, event.pageY, event.shiftKey);
-    event.preventDefault();
-    return false;
-  }
-  sendDragMove(startX, currentX, startY, currentY, shiftKey) {
-    this.dispatchEventToListeners("ResizeUpdateXY", { startX, currentX, startY, currentY, shiftKey });
-  }
-  #dragEnd(_event) {
-    this.dispatchEventToListeners(
-      "ResizeEnd"
-      /* Events.RESIZE_END */
-    );
-    this.#startX = void 0;
-    this.#startY = void 0;
-  }
-};
-var SimpleResizerWidget = class extends ResizerWidget {
-  #isVertical = true;
-  isVertical() {
-    return this.#isVertical;
-  }
-  /**
-   * Vertical widget resizes height (along y-axis).
-   */
-  setVertical(vertical) {
-    this.#isVertical = vertical;
-    this.updateElementCursors();
-  }
-  cursor() {
-    return this.#isVertical ? "ns-resize" : "ew-resize";
-  }
-  sendDragStart(x, y) {
-    const position = this.#isVertical ? y : x;
-    this.dispatchEventToListeners("ResizeStart", { startPosition: position, currentPosition: position });
-  }
-  sendDragMove(startX, currentX, startY, currentY, shiftKey) {
-    if (this.#isVertical) {
-      this.dispatchEventToListeners("ResizeUpdatePosition", { startPosition: startY, currentPosition: currentY, shiftKey });
-    } else {
-      this.dispatchEventToListeners("ResizeUpdatePosition", { startPosition: startX, currentPosition: currentX, shiftKey });
-    }
-  }
-};
-
-// gen/front_end/ui/legacy/splitWidget.css.js
-var splitWidget_css_default = `/*
- * Copyright (C) 2011 Google Inc. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * 1. Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY GOOGLE INC. AND ITS CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE INC.
- * OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// gen/front_end/ui/legacy/inspectorDrawerTabbedPane.css.js
+var inspectorDrawerTabbedPane_css_default = `/*
+ * Copyright 2026 The Chromium Authors
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
  */
 
-.shadow-split-widget {
-  display: flex;
-  overflow: hidden;
+.drawer-tabbed-pane.drawer-minimized-vertical {
+  min-width: 27px;
+  width: 27px;
 }
 
-.shadow-split-widget-contents {
+.hide-element {
+  display: none;
+}
+
+.collapsed-vertical-drawer-container {
+  height: calc(100% - 27px);
   display: flex;
-  position: relative;
   flex-direction: column;
-  contain: layout size style;
 }
 
-.shadow-split-widget-sidebar {
-  flex: none;
+.collapsed-vertical-drawer-header {
+  flex-direction: column;
+  flex-basis: 100% !important; /* stylelint-disable-line declaration-no-important */
+  border-bottom: none;
 }
 
-.shadow-split-widget-main,
-.shadow-split-widget-sidebar.maximized {
-  flex: auto;
+.collapsed-vertical-drawer-right-toolbar {
+  margin-left: 0 !important; /* stylelint-disable-line declaration-no-important */
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  width: 27px;
 }
 
-.shadow-split-widget.hbox > .shadow-split-widget-resizer {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  z-index: 4000;
+devtools-toolbar.collapsed-vertical-drawer-toolbar-content {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto !important; /* stylelint-disable-line declaration-no-important */
+  width: 27px;
+  padding: 0 !important; /* stylelint-disable-line declaration-no-important */
+  gap: 0;
 }
 
-.shadow-split-widget.vbox > .shadow-split-widget-resizer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 6px;
-  z-index: 4000;
-}
-
-.shadow-split-widget.vbox > .shadow-split-widget-sidebar.no-default-splitter {
-  border: 0 !important; /* stylelint-disable-line declaration-no-important */
-}
-
-.shadow-split-widget.vbox > .shadow-split-widget-sidebar:not(.maximized) {
-  border: 0;
-  border-top: 1px solid var(--sys-color-divider);
-}
-
-.shadow-split-widget.hbox > .shadow-split-widget-sidebar:not(.maximized) {
-  border: 0;
-  border-left: 1px solid var(--sys-color-divider);
-}
-
-.shadow-split-widget.vbox > .shadow-split-widget-sidebar:first-child:not(.maximized) {
-  border: 0;
-  border-bottom: 1px solid var(--sys-color-divider);
-}
-
-.shadow-split-widget.hbox > .shadow-split-widget-sidebar:first-child:not(.maximized) {
-  border: 0;
-  border-right: 1px solid var(--sys-color-divider);
-}
-
-:host-context(.disable-resizer-for-elements-hack) .shadow-split-widget-resizer {
-  pointer-events: none;
-}
-
-:host {
+devtools-toolbar.collapsed-vertical-drawer-toolbar-content .toolbar-button {
+  margin: 0 auto;
+  padding: 0;
+  padding-right: 1px;
+  width: 27px;
+  height: 26px;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/*# sourceURL=${import.meta.resolve("./splitWidget.css")} */`;
+devtools-toolbar.collapsed-vertical-drawer-toolbar-content .toolbar-spacer {
+  display: none;
+}
 
-// gen/front_end/ui/legacy/Widget.js
-var Widget_exports = {};
-__export(Widget_exports, {
-  HBox: () => HBox,
-  VBox: () => VBox,
-  VBoxWithResizeCallback: () => VBoxWithResizeCallback,
-  Widget: () => Widget,
-  WidgetConfig: () => WidgetConfig,
-  WidgetElement: () => WidgetElement,
-  WidgetFocusRestorer: () => WidgetFocusRestorer,
-  widgetConfig: () => widgetConfig,
-  widgetRef: () => widgetRef
-});
-import "./../../core/dom_extension/dom_extension.js";
-import * as Platform5 from "./../../core/platform/platform.js";
-import * as Geometry from "./../../models/geometry/geometry.js";
-import * as Lit from "./../lit/lit.js";
-var originalAppendChild = Element.prototype.appendChild;
-var originalInsertBefore = Element.prototype.insertBefore;
-var originalRemoveChild = Element.prototype.removeChild;
-var originalRemoveChildren = Element.prototype.removeChildren;
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-var WidgetConfig = class {
-  widgetClass;
-  widgetParams;
-  constructor(widgetClass, widgetParams) {
-    this.widgetClass = widgetClass;
-    this.widgetParams = widgetParams;
-  }
-};
-function widgetConfig(widgetClass, widgetParams) {
-  return new WidgetConfig(widgetClass, widgetParams);
-}
-var currentUpdateQueue = null;
-var currentlyProcessed = /* @__PURE__ */ new Set();
-var nextUpdateQueue = /* @__PURE__ */ new Map();
-var pendingAnimationFrame = null;
-function enqueueIntoNextUpdateQueue(widget) {
-  const scheduledUpdate = nextUpdateQueue.get(widget) ?? Promise.withResolvers();
-  nextUpdateQueue.delete(widget);
-  nextUpdateQueue.set(widget, scheduledUpdate);
-  if (pendingAnimationFrame === null) {
-    pendingAnimationFrame = requestAnimationFrame(runNextUpdate);
-  }
-  return scheduledUpdate.promise;
-}
-function enqueueWidgetUpdate(widget) {
-  if (currentUpdateQueue) {
-    if (currentlyProcessed.has(widget)) {
-      return enqueueIntoNextUpdateQueue(widget);
-    }
-    const scheduledUpdate = currentUpdateQueue.get(widget) ?? Promise.withResolvers();
-    currentUpdateQueue.delete(widget);
-    currentUpdateQueue.set(widget, scheduledUpdate);
-    return scheduledUpdate.promise;
-  }
-  return enqueueIntoNextUpdateQueue(widget);
-}
-function cancelUpdate(widget) {
-  if (currentUpdateQueue) {
-    const scheduledUpdate2 = currentUpdateQueue.get(widget);
-    if (scheduledUpdate2) {
-      scheduledUpdate2.resolve();
-      currentUpdateQueue.delete(widget);
-    }
-  }
-  const scheduledUpdate = nextUpdateQueue.get(widget);
-  if (scheduledUpdate) {
-    scheduledUpdate.resolve();
-    nextUpdateQueue.delete(widget);
-  }
-}
-function runNextUpdate() {
-  pendingAnimationFrame = null;
-  currentUpdateQueue = nextUpdateQueue;
-  nextUpdateQueue = /* @__PURE__ */ new Map();
-  for (const [widget, { resolve }] of currentUpdateQueue) {
-    currentlyProcessed.add(widget);
-    void (async () => {
-      await widget.performUpdate();
-      resolve();
-    })();
-  }
-  currentUpdateQueue = null;
-  currentlyProcessed.clear();
-}
-var WidgetElement = class extends HTMLElement {
-  #widgetClass;
-  #widgetParams;
-  createWidget() {
-    const widget = this.#instantiateWidget();
-    if (this.#widgetParams) {
-      Object.assign(widget, this.#widgetParams);
-    }
-    widget.requestUpdate();
-    return widget;
-  }
-  #instantiateWidget() {
-    if (!this.#widgetClass) {
-      throw new Error("No widgetClass defined");
-    }
-    if (Widget.isPrototypeOf(this.#widgetClass)) {
-      const ctor = this.#widgetClass;
-      return new ctor(this);
-    }
-    const factory = this.#widgetClass;
-    return factory(this);
-  }
-  set widgetConfig(config) {
-    const widget = Widget.get(this);
-    if (widget) {
-      let needsUpdate = false;
-      for (const key in config.widgetParams) {
-        if (config.widgetParams.hasOwnProperty(key) && config.widgetParams[key] !== this.#widgetParams?.[key]) {
-          needsUpdate = true;
-        }
-      }
-      if (needsUpdate) {
-        Object.assign(widget, config.widgetParams);
-        widget.requestUpdate();
-      }
-    }
-    this.#widgetClass = config.widgetClass;
-    this.#widgetParams = config.widgetParams;
-  }
-  getWidget() {
-    return Widget.get(this);
-  }
-  connectedCallback() {
-    const widget = Widget.getOrCreateWidget(this);
-    if (!widget.element.parentElement) {
-      widget.markAsRoot();
-    }
-    widget.show(
-      this.parentElement,
-      void 0,
-      /* suppressOrphanWidgetError= */
-      true
-    );
-  }
-  disconnectedCallback() {
-    const widget = Widget.get(this);
-    if (widget) {
-      widget.setHideOnDetach();
-      widget.detach();
-    }
-  }
-  appendChild(child) {
-    if (child instanceof HTMLElement && child.tagName !== "STYLE") {
-      Widget.getOrCreateWidget(child).show(this);
-      return child;
-    }
-    return super.appendChild(child);
-  }
-  insertBefore(child, referenceChild) {
-    if (child instanceof HTMLElement && child.tagName !== "STYLE") {
-      Widget.getOrCreateWidget(child).show(this, referenceChild, true);
-      return child;
-    }
-    return super.insertBefore(child, referenceChild);
-  }
-  removeChild(child) {
-    const childWidget = Widget.get(child);
-    if (childWidget) {
-      childWidget.detach();
-      return child;
-    }
-    return super.removeChild(child);
-  }
-  removeChildren() {
-    for (const child of this.children) {
-      const childWidget = Widget.get(child);
-      if (childWidget) {
-        childWidget.detach();
-      }
-    }
-    super.removeChildren();
-  }
-  cloneNode(deep) {
-    const clone = super.cloneNode(deep);
-    if (!this.#widgetClass) {
-      throw new Error("No widgetClass defined");
-    }
-    clone.#widgetClass = this.#widgetClass;
-    clone.#widgetParams = this.#widgetParams;
-    return clone;
-  }
-};
-customElements.define("devtools-widget", WidgetElement);
-function widgetRef(type, callback) {
-  return Lit.Directives.ref((e) => {
-    if (!(e instanceof HTMLElement)) {
-      return;
-    }
-    const widget = Widget.getOrCreateWidget(e);
-    if (!(widget instanceof type)) {
-      throw new Error(`Expected an element with a widget of type ${type.name} but got ${e?.constructor?.name}`);
-    }
-    callback(widget);
-  });
-}
-var widgetCounterMap = /* @__PURE__ */ new WeakMap();
-var widgetMap = /* @__PURE__ */ new WeakMap();
-function incrementWidgetCounter(parentElement, childElement) {
-  const count = (widgetCounterMap.get(childElement) || 0) + (widgetMap.get(childElement) ? 1 : 0);
-  for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
-    widgetCounterMap.set(el, (widgetCounterMap.get(el) || 0) + count);
-  }
-}
-function decrementWidgetCounter(parentElement, childElement) {
-  const count = (widgetCounterMap.get(childElement) || 0) + (widgetMap.get(childElement) ? 1 : 0);
-  for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
-    const elCounter = widgetCounterMap.get(el);
-    if (elCounter) {
-      widgetCounterMap.set(el, elCounter - count);
-    }
-  }
-}
-var UPDATE_COMPLETE = Promise.resolve();
-var Widget = class _Widget {
-  element;
-  contentElement;
-  defaultFocusedChild = null;
-  #shadowRoot;
-  #visible = false;
-  #isRoot = false;
-  #isShowing = false;
-  #children = [];
-  #hideOnDetach = false;
-  #notificationDepth = 0;
-  #invalidationsSuspended = 0;
-  #parentWidget = null;
-  #cachedConstraints;
-  #constraints;
-  #invalidationsRequested;
-  #externallyManaged;
-  #updateComplete = UPDATE_COMPLETE;
-  constructor(elementOrOptions, options) {
-    if (elementOrOptions instanceof HTMLElement) {
-      this.element = elementOrOptions;
-    } else {
-      this.element = document.createElement("div");
-      if (elementOrOptions !== void 0) {
-        options = elementOrOptions;
-      }
-    }
-    this.#shadowRoot = this.element.shadowRoot;
-    if (options?.useShadowDom && !this.#shadowRoot) {
-      this.element.classList.add("vbox");
-      this.element.classList.add("flex-auto");
-      this.#shadowRoot = createShadowRootWithCoreStyles(this.element, {
-        delegatesFocus: options?.delegatesFocus
-      });
-      this.contentElement = document.createElement("div");
-      this.#shadowRoot.appendChild(this.contentElement);
-    } else {
-      this.contentElement = this.element;
-    }
-    if (options?.classes) {
-      this.element.classList.add(...options.classes);
-    }
-    if (options?.jslog) {
-      this.contentElement.setAttribute("jslog", options.jslog);
-    }
-    this.contentElement.classList.add("widget");
-    widgetMap.set(this.element, this);
-  }
-  /**
-   * Returns the {@link Widget} whose element is the given `node`, or `undefined`
-   * if the `node` is not an element for a widget.
-   *
-   * @param node a DOM node.
-   * @returns the {@link Widget} that is attached to the `node` or `undefined`.
-   */
-  static get(node) {
-    return widgetMap.get(node);
-  }
-  static getOrCreateWidget(element) {
-    const widget = _Widget.get(element);
-    if (widget) {
-      return widget;
-    }
-    if (element instanceof WidgetElement) {
-      return element.createWidget();
-    }
-    return new _Widget(element);
-  }
-  markAsRoot() {
-    assert(!this.element.parentElement, "Attempt to mark as root attached node");
-    this.#isRoot = true;
-  }
-  parentWidget() {
-    return this.#parentWidget;
-  }
-  children() {
-    return this.#children;
-  }
-  childWasDetached(_widget) {
-  }
-  isShowing() {
-    return this.#isShowing;
-  }
-  shouldHideOnDetach() {
-    if (!this.element.parentElement) {
-      return false;
-    }
-    if (this.#hideOnDetach) {
-      return true;
-    }
-    for (const child of this.#children) {
-      if (child.shouldHideOnDetach()) {
-        return true;
-      }
-    }
-    return false;
-  }
-  setHideOnDetach() {
-    this.#hideOnDetach = true;
-  }
-  inNotification() {
-    return Boolean(this.#notificationDepth) || Boolean(this.#parentWidget?.inNotification());
-  }
-  parentIsShowing() {
-    if (this.#isRoot) {
-      return true;
-    }
-    return this.#parentWidget?.isShowing() ?? false;
-  }
-  callOnVisibleChildren(method) {
-    const copy = this.#children.slice();
-    for (let i = 0; i < copy.length; ++i) {
-      if (copy[i].#parentWidget === this && copy[i].#visible) {
-        method.call(copy[i]);
-      }
-    }
-  }
-  processWillShow() {
-    this.callOnVisibleChildren(this.processWillShow);
-    this.#isShowing = true;
-  }
-  processWasShown() {
-    if (this.inNotification()) {
-      return;
-    }
-    this.restoreScrollPositions();
-    this.notify(this.wasShown);
-    this.callOnVisibleChildren(this.processWasShown);
-  }
-  processWillHide() {
-    if (this.inNotification()) {
-      return;
-    }
-    this.storeScrollPositions();
-    this.callOnVisibleChildren(this.processWillHide);
-    this.notify(this.willHide);
-    this.#isShowing = false;
-  }
-  processWasHidden() {
-    this.callOnVisibleChildren(this.processWasHidden);
-    this.notify(this.wasHidden);
-  }
-  processOnResize() {
-    if (this.inNotification()) {
-      return;
-    }
-    if (!this.isShowing()) {
-      return;
-    }
-    this.notify(this.onResize);
-    this.callOnVisibleChildren(this.processOnResize);
-  }
-  notify(notification) {
-    ++this.#notificationDepth;
-    try {
-      notification.call(this);
-    } finally {
-      --this.#notificationDepth;
-    }
-  }
-  wasShown() {
-  }
-  willHide() {
-  }
-  wasHidden() {
-  }
-  onResize() {
-  }
-  onLayout() {
-  }
-  onDetach() {
-  }
-  async ownerViewDisposed() {
-  }
-  show(parentElement, insertBefore, suppressOrphanWidgetError = false) {
-    assert(parentElement, "Attempt to attach widget with no parent element");
-    if (!this.#isRoot) {
-      let currentParent = parentElement;
-      let currentWidget = void 0;
-      while (!currentWidget) {
-        if (!currentParent) {
-          if (suppressOrphanWidgetError) {
-            this.#isRoot = true;
-            this.show(parentElement, insertBefore);
-            return;
-          }
-          throw new Error("Attempt to attach widget to orphan node");
-        }
-        currentWidget = widgetMap.get(currentParent);
-        currentParent = currentParent.parentElementOrShadowHost();
-      }
-      this.attach(currentWidget);
-    }
-    this.#showWidget(parentElement, insertBefore);
-  }
-  attach(parentWidget) {
-    if (parentWidget === this.#parentWidget) {
-      return;
-    }
-    if (this.#parentWidget) {
-      this.detach();
-    }
-    this.#parentWidget = parentWidget;
-    this.#parentWidget.#children.push(this);
-    this.#isRoot = false;
-  }
-  showWidget() {
-    if (this.#visible) {
-      return;
-    }
-    if (!this.element.parentElement) {
-      throw new Error("Attempt to show widget that is not hidden using hideWidget().");
-    }
-    this.#showWidget(this.element.parentElement, this.element.nextSibling);
-  }
-  #showWidget(parentElement, insertBefore) {
-    let currentParent = parentElement;
-    while (currentParent && !widgetMap.get(currentParent)) {
-      currentParent = currentParent.parentElementOrShadowHost();
-    }
-    if (this.#isRoot) {
-      assert(!currentParent, "Attempt to show root widget under another widget");
-    } else {
-      assert(currentParent && widgetMap.get(currentParent) === this.#parentWidget, "Attempt to show under node belonging to alien widget");
-    }
-    const wasVisible = this.#visible;
-    if (wasVisible && this.element.parentElement === parentElement) {
-      return;
-    }
-    this.#visible = true;
-    if (!wasVisible && this.parentIsShowing()) {
-      this.processWillShow();
-    }
-    this.element.classList.remove("hidden");
-    if (this.element.parentElement !== parentElement) {
-      if (!this.#externallyManaged) {
-        incrementWidgetCounter(parentElement, this.element);
-      }
-      if (insertBefore) {
-        originalInsertBefore.call(parentElement, this.element, insertBefore);
-      } else {
-        originalAppendChild.call(parentElement, this.element);
-      }
-    }
-    if (!wasVisible && this.parentIsShowing()) {
-      this.processWasShown();
-    }
-    if (this.#parentWidget && this.hasNonZeroConstraints()) {
-      this.#parentWidget.invalidateConstraints();
-    } else {
-      this.processOnResize();
-    }
-  }
-  hideWidget() {
-    if (!this.#visible) {
-      return;
-    }
-    this.#hideWidget(false);
-  }
-  #hideWidget(removeFromDOM) {
-    this.#visible = false;
-    const { parentElement } = this.element;
-    if (this.parentIsShowing()) {
-      this.processWillHide();
-    }
-    if (removeFromDOM) {
-      if (parentElement) {
-        decrementWidgetCounter(parentElement, this.element);
-        originalRemoveChild.call(parentElement, this.element);
-      }
-      this.onDetach();
-    } else {
-      this.element.classList.add("hidden");
-    }
-    if (this.parentIsShowing()) {
-      this.processWasHidden();
-    }
-    if (this.#parentWidget && this.hasNonZeroConstraints()) {
-      this.#parentWidget.invalidateConstraints();
-    }
-  }
-  detach(overrideHideOnDetach) {
-    if (!this.#parentWidget && !this.#isRoot) {
-      return;
-    }
-    cancelUpdate(this);
-    const removeFromDOM = overrideHideOnDetach || !this.shouldHideOnDetach();
-    if (this.#visible) {
-      this.#hideWidget(removeFromDOM);
-    } else if (removeFromDOM) {
-      const { parentElement } = this.element;
-      if (parentElement) {
-        decrementWidgetCounter(parentElement, this.element);
-        originalRemoveChild.call(parentElement, this.element);
-      }
-    }
-    if (this.#parentWidget) {
-      const childIndex = this.#parentWidget.#children.indexOf(this);
-      assert(childIndex >= 0, "Attempt to remove non-child widget");
-      this.#parentWidget.#children.splice(childIndex, 1);
-      if (this.#parentWidget.defaultFocusedChild === this) {
-        this.#parentWidget.defaultFocusedChild = null;
-      }
-      this.#parentWidget.childWasDetached(this);
-      this.#parentWidget = null;
-    } else {
-      assert(this.#isRoot, "Removing non-root widget from DOM");
-    }
-  }
-  detachChildWidgets() {
-    const children = this.#children.slice();
-    for (let i = 0; i < children.length; ++i) {
-      children[i].detach();
-    }
-  }
-  elementsToRestoreScrollPositionsFor() {
-    return [this.element];
-  }
-  storeScrollPositions() {
-    const elements = this.elementsToRestoreScrollPositionsFor();
-    for (const container of elements) {
-      storedScrollPositions.set(container, { scrollLeft: container.scrollLeft, scrollTop: container.scrollTop });
-    }
-  }
-  restoreScrollPositions() {
-    const elements = this.elementsToRestoreScrollPositionsFor();
-    for (const container of elements) {
-      const storedPositions = storedScrollPositions.get(container);
-      if (storedPositions) {
-        container.scrollLeft = storedPositions.scrollLeft;
-        container.scrollTop = storedPositions.scrollTop;
-      }
-    }
-  }
-  doResize() {
-    if (!this.isShowing()) {
-      return;
-    }
-    if (!this.inNotification()) {
-      this.callOnVisibleChildren(this.processOnResize);
-    }
-  }
-  doLayout() {
-    if (!this.isShowing()) {
-      return;
-    }
-    this.notify(this.onLayout);
-    this.doResize();
-  }
-  registerRequiredCSS(...cssFiles) {
-    for (const cssFile of cssFiles) {
-      Platform5.DOMUtilities.appendStyle(this.#shadowRoot ?? this.element, cssFile);
-    }
-  }
-  // Unused, but useful for debugging.
-  printWidgetHierarchy() {
-    const lines = [];
-    this.collectWidgetHierarchy("", lines);
-    console.log(lines.join("\n"));
-  }
-  collectWidgetHierarchy(prefix, lines) {
-    lines.push(prefix + "[" + this.element.className + "]" + (this.#children.length ? " {" : ""));
-    for (let i = 0; i < this.#children.length; ++i) {
-      this.#children[i].collectWidgetHierarchy(prefix + "    ", lines);
-    }
-    if (this.#children.length) {
-      lines.push(prefix + "}");
-    }
-  }
-  setDefaultFocusedElement(element) {
-    const defaultFocusedElement = this.getDefaultFocusedElement();
-    if (defaultFocusedElement) {
-      defaultFocusedElement.removeAttribute("autofocus");
-    }
-    if (element) {
-      element.setAttribute("autofocus", "");
-    }
-  }
-  setDefaultFocusedChild(child) {
-    assert(child.#parentWidget === this, "Attempt to set non-child widget as default focused.");
-    this.defaultFocusedChild = child;
-  }
-  getDefaultFocusedElement() {
-    const autofocusElement = this.contentElement.hasAttribute("autofocus") ? this.contentElement : this.contentElement.querySelector("[autofocus]");
-    let widgetElement = autofocusElement;
-    while (widgetElement) {
-      const widget = _Widget.get(widgetElement);
-      if (widget) {
-        return widget === this ? autofocusElement : null;
-      }
-      widgetElement = widgetElement.parentElementOrShadowHost();
-    }
-    return null;
-  }
-  focus() {
-    if (!this.isShowing()) {
-      return;
-    }
-    const autofocusElement = this.getDefaultFocusedElement();
-    if (autofocusElement) {
-      autofocusElement.focus();
-      return;
-    }
-    if (this.defaultFocusedChild && this.defaultFocusedChild.#visible) {
-      this.defaultFocusedChild.focus();
-    } else {
-      for (const child of this.#children) {
-        if (child.#visible) {
-          child.focus();
-          return;
-        }
-      }
-    }
-  }
-  hasFocus() {
-    return this.element.hasFocus();
-  }
-  calculateConstraints() {
-    return new Geometry.Constraints();
-  }
-  constraints() {
-    if (typeof this.#constraints !== "undefined") {
-      return this.#constraints;
-    }
-    if (typeof this.#cachedConstraints === "undefined") {
-      this.#cachedConstraints = this.calculateConstraints();
-    }
-    return this.#cachedConstraints;
-  }
-  setMinimumAndPreferredSizes(width, height, preferredWidth, preferredHeight) {
-    this.#constraints = new Geometry.Constraints(new Geometry.Size(width, height), new Geometry.Size(preferredWidth, preferredHeight));
-    this.invalidateConstraints();
-  }
-  setMinimumSize(width, height) {
-    this.minimumSize = new Geometry.Size(width, height);
-  }
-  set minimumSize(size) {
-    this.#constraints = new Geometry.Constraints(size);
-    this.invalidateConstraints();
-  }
-  hasNonZeroConstraints() {
-    const constraints = this.constraints();
-    return Boolean(constraints.minimum.width || constraints.minimum.height || constraints.preferred.width || constraints.preferred.height);
-  }
-  suspendInvalidations() {
-    ++this.#invalidationsSuspended;
-  }
-  resumeInvalidations() {
-    --this.#invalidationsSuspended;
-    if (!this.#invalidationsSuspended && this.#invalidationsRequested) {
-      this.invalidateConstraints();
-    }
-  }
-  invalidateConstraints() {
-    if (this.#invalidationsSuspended) {
-      this.#invalidationsRequested = true;
-      return;
-    }
-    this.#invalidationsRequested = false;
-    const cached = this.#cachedConstraints;
-    this.#cachedConstraints = void 0;
-    const actual = this.constraints();
-    if (!actual.isEqual(cached || null) && this.#parentWidget) {
-      this.#parentWidget.invalidateConstraints();
-    } else {
-      this.doLayout();
-    }
-  }
-  // Excludes the widget from being tracked by its parents/ancestors via
-  // widgetCounter because the widget is being handled by external code.
-  // Widgets marked as being externally managed are responsible for
-  // finishing out their own lifecycle (i.e. calling detach() before being
-  // removed from the DOM). This is e.g. used for CodeMirror.
-  //
-  // Also note that this must be called before the widget is shown so that
-  // so that its ancestor's widgetCounter is not incremented.
-  markAsExternallyManaged() {
-    assert(!this.#parentWidget, "Attempt to mark widget as externally managed after insertion to the DOM");
-    this.#externallyManaged = true;
-  }
-  /**
-   * Override this method in derived classes to perform the actual view update.
-   *
-   * This is not meant to be called directly, but invoked (indirectly) through
-   * the `requestAnimationFrame` and executed with the animation frame. Instead,
-   * use the `requestUpdate()` method to schedule an asynchronous update.
-   *
-   * @returns can either return nothing or a promise; in that latter case, the
-   *          update logic will await the resolution of the returned promise
-   *          before proceeding.
-   */
-  performUpdate() {
-  }
-  /**
-   * Schedules an asynchronous update for this widget.
-   *
-   * The update will be deduplicated and executed with the next animation
-   * frame.
-   */
-  requestUpdate() {
-    this.#updateComplete = enqueueWidgetUpdate(this);
-  }
-  /**
-   * The `updateComplete` promise resolves when the widget has finished updating.
-   *
-   * Use `updateComplete` to wait for an update:
-   * ```js
-   * await widget.updateComplete;
-   * // do stuff
-   * ```
-   *
-   * This method is primarily useful for unit tests, to wait for widgets to build
-   * their DOM. For example:
-   * ```js
-   * // Set up the test widget, and wait for the initial update cycle to complete.
-   * const widget = new SomeWidget(someData);
-   * widget.requestUpdate();
-   * await widget.updateComplete;
-   *
-   * // Assert state of the widget.
-   * assert.isTrue(widget.someDataLoaded);
-   * ```
-   *
-   * @returns a promise that resolves to a `boolean` when the widget has finished
-   *          updating, the value is `true` if there are no more pending updates,
-   *          and `false` if the update cycle triggered another update.
-   */
-  get updateComplete() {
-    return this.#updateComplete;
-  }
-};
-var storedScrollPositions = /* @__PURE__ */ new WeakMap();
-var VBox = class extends Widget {
-  constructor() {
-    super(...arguments);
-    this.contentElement.classList.add("vbox");
-  }
-  calculateConstraints() {
-    let constraints = new Geometry.Constraints();
-    function updateForChild() {
-      const child = this.constraints();
-      constraints = constraints.widthToMax(child);
-      constraints = constraints.addHeight(child);
-    }
-    this.callOnVisibleChildren(updateForChild);
-    return constraints;
-  }
-};
-var HBox = class extends Widget {
-  constructor() {
-    super(...arguments);
-    this.contentElement.classList.add("hbox");
-  }
-  calculateConstraints() {
-    let constraints = new Geometry.Constraints();
-    function updateForChild() {
-      const child = this.constraints();
-      constraints = constraints.addWidth(child);
-      constraints = constraints.heightToMax(child);
-    }
-    this.callOnVisibleChildren(updateForChild);
-    return constraints;
-  }
-};
-var VBoxWithResizeCallback = class extends VBox {
-  resizeCallback;
-  constructor(resizeCallback) {
-    super();
-    this.resizeCallback = resizeCallback;
-  }
-  onResize() {
-    this.resizeCallback();
-  }
-};
-var WidgetFocusRestorer = class {
-  widget;
-  previous;
-  constructor(widget) {
-    this.widget = widget;
-    this.previous = Platform5.DOMUtilities.deepActiveElement(widget.element.ownerDocument);
-    widget.focus();
-  }
-  restore() {
-    if (!this.widget) {
-      return;
-    }
-    if (this.widget.hasFocus() && this.previous) {
-      this.previous.focus();
-    }
-    this.previous = null;
-    this.widget = null;
-  }
-};
-function domOperationError(funcName) {
-  return new Error(`Attempt to modify widget with native DOM method \`${funcName}\``);
-}
-Element.prototype.appendChild = function(node) {
-  if (widgetMap.get(node) && node.parentElement !== this) {
-    throw domOperationError("appendChild");
-  }
-  return originalAppendChild.call(this, node);
-};
-Element.prototype.insertBefore = function(node, child) {
-  if (widgetMap.get(node) && node.parentElement !== this) {
-    throw domOperationError("insertBefore");
-  }
-  return originalInsertBefore.call(this, node, child);
-};
-Element.prototype.removeChild = function(child) {
-  if (widgetCounterMap.get(child) || widgetMap.get(child)) {
-    throw domOperationError("removeChild");
-  }
-  return originalRemoveChild.call(this, child);
-};
-Element.prototype.removeChildren = function() {
-  if (widgetCounterMap.get(this)) {
-    throw domOperationError("removeChildren");
-  }
-  return originalRemoveChildren.call(this);
-};
-
-// gen/front_end/ui/legacy/ZoomManager.js
-var ZoomManager_exports = {};
-__export(ZoomManager_exports, {
-  ZoomManager: () => ZoomManager
-});
-import * as Common6 from "./../../core/common/common.js";
-var zoomManagerInstance;
-var ZoomManager = class _ZoomManager extends Common6.ObjectWrapper.ObjectWrapper {
-  frontendHost;
-  #zoomFactor;
-  constructor(window2, frontendHost) {
-    super();
-    this.frontendHost = frontendHost;
-    this.#zoomFactor = this.frontendHost.zoomFactor();
-    window2.addEventListener("resize", this.onWindowResize.bind(this), true);
-  }
-  static instance(opts = { forceNew: null, win: null, frontendHost: null }) {
-    const { forceNew, win, frontendHost } = opts;
-    if (!zoomManagerInstance || forceNew) {
-      if (!win || !frontendHost) {
-        throw new Error(`Unable to create zoom manager: window and frontendHost must be provided: ${new Error().stack}`);
-      }
-      zoomManagerInstance = new _ZoomManager(win, frontendHost);
-    }
-    return zoomManagerInstance;
-  }
-  static removeInstance() {
-    zoomManagerInstance = void 0;
-  }
-  zoomFactor() {
-    return this.#zoomFactor;
-  }
-  cssToDIP(value) {
-    return value * this.#zoomFactor;
-  }
-  dipToCSS(valueDIP) {
-    return valueDIP / this.#zoomFactor;
-  }
-  onWindowResize() {
-    const oldZoomFactor = this.#zoomFactor;
-    this.#zoomFactor = this.frontendHost.zoomFactor();
-    if (oldZoomFactor !== this.#zoomFactor) {
-      this.dispatchEventToListeners("ZoomChanged", { from: oldZoomFactor, to: this.#zoomFactor });
-    }
-  }
-};
-
-// gen/front_end/ui/legacy/SplitWidget.js
-var SplitWidget = class extends Common7.ObjectWrapper.eventMixin(Widget) {
-  #sidebarElement;
-  #mainElement;
-  #resizerElement;
-  #resizerElementSize = null;
-  #resizerWidget;
-  #defaultSidebarWidth;
-  #defaultSidebarHeight;
-  #constraintsInDip;
-  #resizeStartSizeDIP = 0;
-  // TODO: Used in WebTests
-  setting;
-  #totalSizeCSS = 0;
-  #totalSizeOtherDimensionCSS = 0;
-  #mainWidget = null;
-  #sidebarWidget = null;
-  #animationFrameHandle = 0;
-  #animationCallback = null;
-  #showSidebarButtonTitle = Common7.UIString.LocalizedEmptyString;
-  #hideSidebarButtonTitle = Common7.UIString.LocalizedEmptyString;
-  #shownSidebarString = Common7.UIString.LocalizedEmptyString;
-  #hiddenSidebarString = Common7.UIString.LocalizedEmptyString;
-  #showHideSidebarButton = null;
-  #isVertical = false;
-  #sidebarMinimized = false;
-  #detaching = false;
-  #sidebarSizeDIP = -1;
-  #savedSidebarSizeDIP;
-  #secondIsSidebar = false;
-  #shouldSaveShowMode = false;
-  #savedVerticalMainSize = null;
-  #savedHorizontalMainSize = null;
-  #showMode = "Both";
-  #savedShowMode;
-  #autoAdjustOrientation = false;
-  constructor(isVertical, secondIsSidebar, settingName, defaultSidebarWidth, defaultSidebarHeight, constraintsInDip, element) {
-    super(element, { useShadowDom: true });
-    this.element.classList.add("split-widget");
-    this.registerRequiredCSS(splitWidget_css_default);
-    this.contentElement.classList.add("shadow-split-widget");
-    this.#sidebarElement = this.contentElement.createChild("div", "shadow-split-widget-contents shadow-split-widget-sidebar vbox");
-    this.#mainElement = this.contentElement.createChild("div", "shadow-split-widget-contents shadow-split-widget-main vbox");
-    const mainSlot = this.#mainElement.createChild("slot");
-    mainSlot.name = "main";
-    mainSlot.addEventListener("slotchange", (_) => {
-      const assignedNode = mainSlot.assignedNodes()[0];
-      const widget = assignedNode instanceof HTMLElement ? Widget.getOrCreateWidget(assignedNode) : null;
-      if (widget && widget !== this.#mainWidget) {
-        this.setMainWidget(widget);
-      }
-    });
-    const sidebarSlot = this.#sidebarElement.createChild("slot");
-    sidebarSlot.name = "sidebar";
-    sidebarSlot.addEventListener("slotchange", (_) => {
-      const assignedNode = sidebarSlot.assignedNodes()[0];
-      const widget = assignedNode instanceof HTMLElement ? Widget.getOrCreateWidget(assignedNode) : null;
-      if (widget && widget !== this.#sidebarWidget) {
-        this.setSidebarWidget(widget);
-      }
-    });
-    this.#resizerElement = this.contentElement.createChild("div", "shadow-split-widget-resizer");
-    this.#resizerWidget = new SimpleResizerWidget();
-    this.#resizerWidget.setEnabled(true);
-    this.#resizerWidget.addEventListener("ResizeStart", this.#onResizeStart, this);
-    this.#resizerWidget.addEventListener("ResizeUpdatePosition", this.#onResizeUpdate, this);
-    this.#resizerWidget.addEventListener("ResizeEnd", this.#onResizeEnd, this);
-    this.#defaultSidebarWidth = defaultSidebarWidth || 200;
-    this.#defaultSidebarHeight = defaultSidebarHeight || this.#defaultSidebarWidth;
-    this.#constraintsInDip = Boolean(constraintsInDip);
-    this.setting = settingName ? Common7.Settings.Settings.instance().createSetting(settingName, {}) : null;
-    this.#savedSidebarSizeDIP = this.#sidebarSizeDIP;
-    this.setSecondIsSidebar(secondIsSidebar);
-    this.#setVertical(isVertical);
-    this.#savedShowMode = this.#showMode;
-    this.installResizer(this.#resizerElement);
-  }
-  isVertical() {
-    return this.#isVertical;
-  }
-  setVertical(isVertical) {
-    if (this.#isVertical === isVertical) {
-      return;
-    }
-    this.#setVertical(isVertical);
-    if (this.isShowing()) {
-      this.#updateLayout();
-    }
-  }
-  setAutoAdjustOrientation(autoAdjustOrientation) {
-    this.#autoAdjustOrientation = autoAdjustOrientation;
-    this.#maybeAutoAdjustOrientation();
-  }
-  #setVertical(isVertical) {
-    this.contentElement.classList.toggle("vbox", !isVertical);
-    this.contentElement.classList.toggle("hbox", isVertical);
-    this.#isVertical = isVertical;
-    this.#resizerElementSize = null;
-    this.#sidebarSizeDIP = -1;
-    this.#restoreSidebarSizeFromSettings();
-    if (this.#shouldSaveShowMode) {
-      this.#restoreAndApplyShowModeFromSettings();
-    }
-    this.#updateShowHideSidebarButton();
-    this.#resizerWidget.setVertical(!isVertical);
-    this.invalidateConstraints();
-  }
-  #updateLayout(animate) {
-    this.#totalSizeCSS = 0;
-    this.#totalSizeOtherDimensionCSS = 0;
-    this.#mainElement.style.removeProperty("width");
-    this.#mainElement.style.removeProperty("height");
-    this.#sidebarElement.style.removeProperty("width");
-    this.#sidebarElement.style.removeProperty("height");
-    this.#setSidebarSizeDIP(this.#preferredSidebarSizeDIP(), Boolean(animate));
-  }
-  setMainWidget(widget) {
-    if (this.#mainWidget === widget) {
-      return;
-    }
-    this.suspendInvalidations();
-    if (this.#mainWidget) {
-      this.#mainWidget.detach();
-    }
-    this.#mainWidget = widget;
-    if (widget) {
-      widget.element.slot = "main";
-      if (this.#showMode === "OnlyMain" || this.#showMode === "Both") {
-        widget.show(this.element);
-      }
-    }
-    this.resumeInvalidations();
-  }
-  setSidebarWidget(widget) {
-    if (this.#sidebarWidget === widget) {
-      return;
-    }
-    this.suspendInvalidations();
-    if (this.#sidebarWidget) {
-      this.#sidebarWidget.detach();
-    }
-    this.#sidebarWidget = widget;
-    if (widget) {
-      widget.element.slot = "sidebar";
-      if (this.#showMode === "OnlySidebar" || this.#showMode === "Both") {
-        widget.show(this.element);
-      }
-    }
-    this.resumeInvalidations();
-  }
-  mainWidget() {
-    return this.#mainWidget;
-  }
-  sidebarWidget() {
-    return this.#sidebarWidget;
-  }
-  sidebarElement() {
-    return this.#sidebarElement;
-  }
-  childWasDetached(widget) {
-    if (this.#detaching) {
-      return;
-    }
-    if (this.#mainWidget === widget) {
-      this.#mainWidget = null;
-    }
-    if (this.#sidebarWidget === widget) {
-      this.#sidebarWidget = null;
-    }
-    this.invalidateConstraints();
-  }
-  isSidebarSecond() {
-    return this.#secondIsSidebar;
-  }
-  enableShowModeSaving() {
-    this.#shouldSaveShowMode = true;
-    this.#restoreAndApplyShowModeFromSettings();
-  }
-  showMode() {
-    return this.#showMode;
-  }
-  sidebarIsShowing() {
-    return this.#showMode !== "OnlyMain";
-  }
-  setSecondIsSidebar(secondIsSidebar) {
-    if (secondIsSidebar === this.#secondIsSidebar) {
-      return;
-    }
-    this.#secondIsSidebar = secondIsSidebar;
-    if (!this.#mainWidget?.shouldHideOnDetach()) {
-      if (secondIsSidebar) {
-        this.contentElement.insertBefore(this.#mainElement, this.#sidebarElement);
-      } else {
-        this.contentElement.insertBefore(this.#mainElement, this.#resizerElement);
-      }
-    } else if (!this.#sidebarWidget?.shouldHideOnDetach()) {
-      if (secondIsSidebar) {
-        this.contentElement.insertBefore(this.#sidebarElement, this.#resizerElement);
-      } else {
-        this.contentElement.insertBefore(this.#sidebarElement, this.#mainElement);
-      }
-    } else {
-      console.error("Could not swap split widget side. Both children widgets contain iframes.");
-      this.#secondIsSidebar = !secondIsSidebar;
-    }
-  }
-  resizerElement() {
-    return this.#resizerElement;
-  }
-  hideMain(animate) {
-    this.#showOnly(this.#sidebarWidget, this.#mainWidget, this.#sidebarElement, this.#mainElement, animate);
-    this.#updateShowMode(
-      "OnlySidebar"
-      /* ShowMode.ONLY_SIDEBAR */
-    );
-  }
-  hideSidebar(animate) {
-    this.#showOnly(this.#mainWidget, this.#sidebarWidget, this.#mainElement, this.#sidebarElement, animate);
-    this.#updateShowMode(
-      "OnlyMain"
-      /* ShowMode.ONLY_MAIN */
-    );
-  }
-  setSidebarMinimized(minimized) {
-    this.#sidebarMinimized = minimized;
-    this.invalidateConstraints();
-  }
-  isSidebarMinimized() {
-    return this.#sidebarMinimized;
-  }
-  #showOnly(sideToShow, sideToHide, shadowToShow, shadowToHide, animate) {
-    this.#cancelAnimation();
-    function callback() {
-      if (sideToShow) {
-        if (sideToShow === this.#mainWidget) {
-          this.#mainWidget.show(this.element, this.#sidebarWidget ? this.#sidebarWidget.element : null);
-        } else if (this.#sidebarWidget) {
-          this.#sidebarWidget.show(this.element);
-        }
-      }
-      if (sideToHide) {
-        this.#detaching = true;
-        sideToHide.detach();
-        this.#detaching = false;
-      }
-      this.#resizerElement.classList.add("hidden");
-      shadowToShow.classList.remove("hidden");
-      shadowToShow.classList.add("maximized");
-      shadowToHide.classList.add("hidden");
-      shadowToHide.classList.remove("maximized");
-      this.#removeAllLayoutProperties();
-      this.doResize();
-      this.showFinishedForTest();
-    }
-    if (animate) {
-      this.#animate(true, callback.bind(this));
-    } else {
-      callback.call(this);
-    }
-    this.#sidebarSizeDIP = -1;
-    this.setResizable(false);
-  }
-  showFinishedForTest() {
-  }
-  #removeAllLayoutProperties() {
-    this.#sidebarElement.style.removeProperty("flexBasis");
-    this.#mainElement.style.removeProperty("width");
-    this.#mainElement.style.removeProperty("height");
-    this.#sidebarElement.style.removeProperty("width");
-    this.#sidebarElement.style.removeProperty("height");
-    this.#resizerElement.style.removeProperty("left");
-    this.#resizerElement.style.removeProperty("right");
-    this.#resizerElement.style.removeProperty("top");
-    this.#resizerElement.style.removeProperty("bottom");
-    this.#resizerElement.style.removeProperty("margin-left");
-    this.#resizerElement.style.removeProperty("margin-right");
-    this.#resizerElement.style.removeProperty("margin-top");
-    this.#resizerElement.style.removeProperty("margin-bottom");
-  }
-  showBoth(animate) {
-    if (this.#showMode === "Both") {
-      animate = false;
-    }
-    this.#cancelAnimation();
-    this.#mainElement.classList.remove("maximized", "hidden");
-    this.#sidebarElement.classList.remove("maximized", "hidden");
-    this.#resizerElement.classList.remove("hidden");
-    this.setResizable(true);
-    this.suspendInvalidations();
-    if (this.#sidebarWidget) {
-      this.#sidebarWidget.show(this.element);
-    }
-    if (this.#mainWidget) {
-      this.#mainWidget.show(this.element, this.#sidebarWidget ? this.#sidebarWidget.element : null);
-    }
-    this.resumeInvalidations();
-    this.setSecondIsSidebar(this.#secondIsSidebar);
-    this.#sidebarSizeDIP = -1;
-    this.#updateShowMode(
-      "Both"
-      /* ShowMode.BOTH */
-    );
-    this.#updateLayout(animate);
-  }
-  setResizable(resizable) {
-    this.#resizerWidget.setEnabled(resizable);
-  }
-  // Currently unused
-  forceSetSidebarWidth(width) {
-    this.#defaultSidebarWidth = width;
-    this.#savedSidebarSizeDIP = width;
-    this.#updateLayout();
-  }
-  isResizable() {
-    return this.#resizerWidget.isEnabled();
-  }
-  setSidebarSize(size) {
-    const sizeDIP = ZoomManager.instance().cssToDIP(size);
-    this.#savedSidebarSizeDIP = sizeDIP;
-    this.#saveSetting();
-    this.#setSidebarSizeDIP(sizeDIP, false, true);
-  }
-  sidebarSize() {
-    const sizeDIP = Math.max(0, this.#sidebarSizeDIP);
-    return ZoomManager.instance().dipToCSS(sizeDIP);
-  }
-  totalSize() {
-    const sizeDIP = Math.max(0, this.#totalSizeDIP());
-    return ZoomManager.instance().dipToCSS(sizeDIP);
-  }
-  /**
-   * Returns total size in DIP.
-   */
-  #totalSizeDIP() {
-    if (!this.#totalSizeCSS) {
-      this.#totalSizeCSS = this.#isVertical ? this.contentElement.offsetWidth : this.contentElement.offsetHeight;
-      this.#totalSizeOtherDimensionCSS = this.#isVertical ? this.contentElement.offsetHeight : this.contentElement.offsetWidth;
-    }
-    return ZoomManager.instance().cssToDIP(this.#totalSizeCSS);
-  }
-  #updateShowMode(showMode) {
-    this.#showMode = showMode;
-    this.#saveShowModeToSettings();
-    this.#updateShowHideSidebarButton();
-    this.dispatchEventToListeners("ShowModeChanged", showMode);
-    this.invalidateConstraints();
-  }
-  #setSidebarSizeDIP(sizeDIP, animate, userAction) {
-    if (this.#showMode !== "Both" || !this.isShowing()) {
-      return;
-    }
-    sizeDIP = this.#applyConstraints(sizeDIP, userAction);
-    if (this.#sidebarSizeDIP === sizeDIP) {
-      return;
-    }
-    if (!this.#resizerElementSize) {
-      this.#resizerElementSize = this.#isVertical ? this.#resizerElement.offsetWidth : this.#resizerElement.offsetHeight;
-    }
-    this.#removeAllLayoutProperties();
-    const roundSizeCSS = Math.round(ZoomManager.instance().dipToCSS(sizeDIP));
-    const sidebarSizeValue = roundSizeCSS + "px";
-    const mainSizeValue = this.#totalSizeCSS - roundSizeCSS + "px";
-    this.#sidebarElement.style.flexBasis = sidebarSizeValue;
-    if (this.#isVertical) {
-      this.#sidebarElement.style.width = sidebarSizeValue;
-      this.#mainElement.style.width = mainSizeValue;
-      this.#sidebarElement.style.height = this.#totalSizeOtherDimensionCSS + "px";
-      this.#mainElement.style.height = this.#totalSizeOtherDimensionCSS + "px";
-    } else {
-      this.#sidebarElement.style.height = sidebarSizeValue;
-      this.#mainElement.style.height = mainSizeValue;
-      this.#sidebarElement.style.width = this.#totalSizeOtherDimensionCSS + "px";
-      this.#mainElement.style.width = this.#totalSizeOtherDimensionCSS + "px";
-    }
-    if (this.#isVertical) {
-      if (this.#secondIsSidebar) {
-        this.#resizerElement.style.right = sidebarSizeValue;
-        this.#resizerElement.style.marginRight = -this.#resizerElementSize / 2 + "px";
-      } else {
-        this.#resizerElement.style.left = sidebarSizeValue;
-        this.#resizerElement.style.marginLeft = -this.#resizerElementSize / 2 + "px";
-      }
-    } else if (this.#secondIsSidebar) {
-      this.#resizerElement.style.bottom = sidebarSizeValue;
-      this.#resizerElement.style.marginBottom = -this.#resizerElementSize / 2 + "px";
-    } else {
-      this.#resizerElement.style.top = sidebarSizeValue;
-      this.#resizerElement.style.marginTop = -this.#resizerElementSize / 2 + "px";
-    }
-    this.#sidebarSizeDIP = sizeDIP;
-    if (animate) {
-      this.#animate(false);
-    } else {
-      this.doResize();
-      this.dispatchEventToListeners("SidebarSizeChanged", this.sidebarSize());
-    }
-  }
-  #animate(reverse, callback) {
-    const animationTime = 50;
-    this.#animationCallback = callback || null;
-    let animatedMarginPropertyName;
-    if (this.#isVertical) {
-      animatedMarginPropertyName = this.#secondIsSidebar ? "margin-right" : "margin-left";
-    } else {
-      animatedMarginPropertyName = this.#secondIsSidebar ? "margin-bottom" : "margin-top";
-    }
-    const marginFrom = reverse ? "0" : "-" + ZoomManager.instance().dipToCSS(this.#sidebarSizeDIP) + "px";
-    const marginTo = reverse ? "-" + ZoomManager.instance().dipToCSS(this.#sidebarSizeDIP) + "px" : "0";
-    this.contentElement.style.setProperty(animatedMarginPropertyName, marginFrom);
-    this.contentElement.style.setProperty("overflow", "hidden");
-    if (!reverse) {
-      suppressUnused(this.#mainElement.offsetWidth);
-      suppressUnused(this.#sidebarElement.offsetWidth);
-    }
-    if (!reverse && this.#sidebarWidget) {
-      this.#sidebarWidget.doResize();
-    }
-    this.contentElement.style.setProperty("transition", animatedMarginPropertyName + " " + animationTime + "ms linear");
-    const boundAnimationFrame = animationFrame.bind(this);
-    let startTime = null;
-    function animationFrame() {
-      this.#animationFrameHandle = 0;
-      if (!startTime) {
-        this.contentElement.style.setProperty(animatedMarginPropertyName, marginTo);
-        startTime = window.performance.now();
-      } else if (window.performance.now() < startTime + animationTime) {
-        if (this.#mainWidget) {
-          this.#mainWidget.doResize();
-        }
-      } else {
-        this.#cancelAnimation();
-        if (this.#mainWidget) {
-          this.#mainWidget.doResize();
-        }
-        this.dispatchEventToListeners("SidebarSizeChanged", this.sidebarSize());
-        return;
-      }
-      this.#animationFrameHandle = this.contentElement.window().requestAnimationFrame(boundAnimationFrame);
-    }
-    this.#animationFrameHandle = this.contentElement.window().requestAnimationFrame(boundAnimationFrame);
-  }
-  #cancelAnimation() {
-    this.contentElement.style.removeProperty("margin-top");
-    this.contentElement.style.removeProperty("margin-right");
-    this.contentElement.style.removeProperty("margin-bottom");
-    this.contentElement.style.removeProperty("margin-left");
-    this.contentElement.style.removeProperty("transition");
-    this.contentElement.style.removeProperty("overflow");
-    if (this.#animationFrameHandle) {
-      this.contentElement.window().cancelAnimationFrame(this.#animationFrameHandle);
-      this.#animationFrameHandle = 0;
-    }
-    if (this.#animationCallback) {
-      this.#animationCallback();
-      this.#animationCallback = null;
-    }
-  }
-  #applyConstraints(sidebarSize, userAction) {
-    const totalSize = this.#totalSizeDIP();
-    const zoomFactor = this.#constraintsInDip ? 1 : ZoomManager.instance().zoomFactor();
-    let constraints = this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry2.Constraints();
-    let minSidebarSize = this.isVertical() ? constraints.minimum.width : constraints.minimum.height;
-    if (!minSidebarSize) {
-      minSidebarSize = MinPadding;
-    }
-    minSidebarSize *= zoomFactor;
-    if (this.#sidebarMinimized) {
-      sidebarSize = minSidebarSize;
-    }
-    let preferredSidebarSize = this.isVertical() ? constraints.preferred.width : constraints.preferred.height;
-    if (!preferredSidebarSize) {
-      preferredSidebarSize = MinPadding;
-    }
-    preferredSidebarSize *= zoomFactor;
-    if (sidebarSize < preferredSidebarSize) {
-      preferredSidebarSize = Math.max(sidebarSize, minSidebarSize);
-    }
-    preferredSidebarSize += zoomFactor;
-    constraints = this.#mainWidget ? this.#mainWidget.constraints() : new Geometry2.Constraints();
-    let minMainSize = this.isVertical() ? constraints.minimum.width : constraints.minimum.height;
-    if (!minMainSize) {
-      minMainSize = MinPadding;
-    }
-    minMainSize *= zoomFactor;
-    let preferredMainSize = this.isVertical() ? constraints.preferred.width : constraints.preferred.height;
-    if (!preferredMainSize) {
-      preferredMainSize = MinPadding;
-    }
-    preferredMainSize *= zoomFactor;
-    const savedMainSize = this.isVertical() ? this.#savedVerticalMainSize : this.#savedHorizontalMainSize;
-    if (savedMainSize !== null) {
-      preferredMainSize = Math.min(preferredMainSize, savedMainSize * zoomFactor);
-    }
-    if (userAction) {
-      preferredMainSize = minMainSize;
-    }
-    const totalPreferred = preferredMainSize + preferredSidebarSize;
-    if (totalPreferred <= totalSize) {
-      return Platform6.NumberUtilities.clamp(sidebarSize, preferredSidebarSize, totalSize - preferredMainSize);
-    }
-    if (minMainSize + minSidebarSize <= totalSize) {
-      const delta = totalPreferred - totalSize;
-      const sidebarDelta = delta * preferredSidebarSize / totalPreferred;
-      sidebarSize = preferredSidebarSize - sidebarDelta;
-      return Platform6.NumberUtilities.clamp(sidebarSize, minSidebarSize, totalSize - minMainSize);
-    }
-    return Math.max(0, totalSize - minMainSize);
-  }
-  wasShown() {
-    super.wasShown();
-    this.#forceUpdateLayout();
-    ZoomManager.instance().addEventListener("ZoomChanged", this.onZoomChanged, this);
-  }
-  willHide() {
-    super.willHide();
-    ZoomManager.instance().removeEventListener("ZoomChanged", this.onZoomChanged, this);
-  }
-  onResize() {
-    this.#maybeAutoAdjustOrientation();
-    this.#updateLayout();
-  }
-  onLayout() {
-    this.#updateLayout();
-  }
-  calculateConstraints() {
-    if (this.#showMode === "OnlyMain") {
-      return this.#mainWidget ? this.#mainWidget.constraints() : new Geometry2.Constraints();
-    }
-    if (this.#showMode === "OnlySidebar") {
-      return this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry2.Constraints();
-    }
-    let mainConstraints = this.#mainWidget ? this.#mainWidget.constraints() : new Geometry2.Constraints();
-    let sidebarConstraints = this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry2.Constraints();
-    const min = MinPadding;
-    if (this.#isVertical) {
-      mainConstraints = mainConstraints.widthToMax(min).addWidth(1);
-      sidebarConstraints = sidebarConstraints.widthToMax(min);
-      return mainConstraints.addWidth(sidebarConstraints).heightToMax(sidebarConstraints);
-    }
-    mainConstraints = mainConstraints.heightToMax(min).addHeight(1);
-    sidebarConstraints = sidebarConstraints.heightToMax(min);
-    return mainConstraints.widthToMax(sidebarConstraints).addHeight(sidebarConstraints);
-  }
-  #maybeAutoAdjustOrientation() {
-    if (this.#autoAdjustOrientation) {
-      const width = this.isVertical() ? this.#totalSizeCSS : this.#totalSizeOtherDimensionCSS;
-      const height = this.isVertical() ? this.#totalSizeOtherDimensionCSS : this.#totalSizeCSS;
-      if (width <= 600 && height >= 600) {
-        this.setVertical(false);
-      } else {
-        this.setVertical(true);
-      }
-    }
-  }
-  #onResizeStart() {
-    this.#resizeStartSizeDIP = this.#sidebarSizeDIP;
-  }
-  #onResizeUpdate(event) {
-    const offset = event.data.currentPosition - event.data.startPosition;
-    const offsetDIP = ZoomManager.instance().cssToDIP(offset);
-    const newSizeDIP = this.#secondIsSidebar ? this.#resizeStartSizeDIP - offsetDIP : this.#resizeStartSizeDIP + offsetDIP;
-    const constrainedSizeDIP = this.#applyConstraints(newSizeDIP, true);
-    this.#savedSidebarSizeDIP = constrainedSizeDIP;
-    this.#saveSetting();
-    this.#setSidebarSizeDIP(constrainedSizeDIP, false, true);
-    if (this.isVertical()) {
-      this.#savedVerticalMainSize = this.#totalSizeDIP() - this.#sidebarSizeDIP;
-    } else {
-      this.#savedHorizontalMainSize = this.#totalSizeDIP() - this.#sidebarSizeDIP;
-    }
-  }
-  #onResizeEnd() {
-    this.#resizeStartSizeDIP = 0;
-  }
-  hideDefaultResizer(noSplitter) {
-    this.#resizerElement.classList.toggle("hidden", Boolean(noSplitter));
-    this.uninstallResizer(this.#resizerElement);
-    this.#sidebarElement.classList.toggle("no-default-splitter", Boolean(noSplitter));
-  }
-  installResizer(resizerElement) {
-    this.#resizerWidget.addElement(resizerElement);
-  }
-  uninstallResizer(resizerElement) {
-    this.#resizerWidget.removeElement(resizerElement);
-  }
-  toggleResizer(resizer, on) {
-    if (on) {
-      this.installResizer(resizer);
-    } else {
-      this.uninstallResizer(resizer);
-    }
-  }
-  #settingForOrientation() {
-    const state = this.setting ? this.setting.get() : {};
-    const orientationState = this.#isVertical ? state.vertical : state.horizontal;
-    return orientationState ?? null;
-  }
-  #preferredSidebarSizeDIP() {
-    let size = this.#savedSidebarSizeDIP;
-    if (!size) {
-      size = this.#isVertical ? this.#defaultSidebarWidth : this.#defaultSidebarHeight;
-      if (0 < size && size < 1) {
-        size *= this.#totalSizeDIP();
-      }
-    }
-    return size;
-  }
-  #restoreSidebarSizeFromSettings() {
-    const settingForOrientation = this.#settingForOrientation();
-    this.#savedSidebarSizeDIP = settingForOrientation ? settingForOrientation.size : 0;
-  }
-  #restoreAndApplyShowModeFromSettings() {
-    const orientationState = this.#settingForOrientation();
-    this.#savedShowMode = orientationState?.showMode ? orientationState.showMode : this.#showMode;
-    this.#showMode = this.#savedShowMode;
-    switch (this.#savedShowMode) {
-      case "Both":
-        this.showBoth();
-        break;
-      case "OnlyMain":
-        this.hideSidebar();
-        break;
-      case "OnlySidebar":
-        this.hideMain();
-        break;
-    }
-  }
-  #saveShowModeToSettings() {
-    this.#savedShowMode = this.#showMode;
-    this.#saveSetting();
-  }
-  #saveSetting() {
-    if (!this.setting) {
-      return;
-    }
-    const state = this.setting.get();
-    const orientationState = (this.#isVertical ? state.vertical : state.horizontal) || {};
-    orientationState.size = this.#savedSidebarSizeDIP;
-    if (this.#shouldSaveShowMode) {
-      orientationState.showMode = this.#savedShowMode;
-    }
-    if (this.#isVertical) {
-      state.vertical = orientationState;
-    } else {
-      state.horizontal = orientationState;
-    }
-    this.setting.set(state);
-  }
-  #forceUpdateLayout() {
-    this.#sidebarSizeDIP = -1;
-    this.#updateLayout();
-  }
-  onZoomChanged() {
-    this.#forceUpdateLayout();
-  }
-  createShowHideSidebarButton(showTitle, hideTitle, shownString, hiddenString, jslogContext) {
-    this.#showSidebarButtonTitle = showTitle;
-    this.#hideSidebarButtonTitle = hideTitle;
-    this.#shownSidebarString = shownString;
-    this.#hiddenSidebarString = hiddenString;
-    this.#showHideSidebarButton = new ToolbarButton("", "right-panel-open");
-    this.#showHideSidebarButton.addEventListener("Click", buttonClicked, this);
-    if (jslogContext) {
-      this.#showHideSidebarButton.element.setAttribute("jslog", `${VisualLogging4.toggleSubpane().track({ click: true }).context(jslogContext)}`);
-    }
-    this.#updateShowHideSidebarButton();
-    function buttonClicked() {
-      this.toggleSidebar();
-    }
-    return this.#showHideSidebarButton;
-  }
-  /**
-   * @returns true if this call makes the sidebar visible, and false otherwise.
-   */
-  toggleSidebar() {
-    if (this.#showMode !== "Both") {
-      this.showBoth(true);
-      LiveAnnouncer.alert(this.#shownSidebarString);
-      return true;
-    }
-    this.hideSidebar(true);
-    LiveAnnouncer.alert(this.#hiddenSidebarString);
-    return false;
-  }
-  #updateShowHideSidebarButton() {
-    if (!this.#showHideSidebarButton) {
-      return;
-    }
-    const sidebarHidden = this.#showMode === "OnlyMain";
-    let glyph = "";
-    if (sidebarHidden) {
-      glyph = this.isVertical() ? this.isSidebarSecond() ? "right-panel-open" : "left-panel-open" : this.isSidebarSecond() ? "bottom-panel-open" : "top-panel-open";
-    } else {
-      glyph = this.isVertical() ? this.isSidebarSecond() ? "right-panel-close" : "left-panel-close" : this.isSidebarSecond() ? "bottom-panel-close" : "top-panel-close";
-    }
-    this.#showHideSidebarButton.setGlyph(glyph);
-    this.#showHideSidebarButton.setTitle(sidebarHidden ? this.#showSidebarButtonTitle : this.#hideSidebarButtonTitle);
-  }
-};
-var SplitWidgetElement = class extends WidgetElement {
-  static observedAttributes = ["direction", "sidebar-position", "sidebar-initial-size", "sidebar-visibility"];
-  createWidget() {
-    const vertical = this.getAttribute("direction") === "column";
-    const autoAdjustOrientation = this.getAttribute("direction") === "auto";
-    const secondIsSidebar = this.getAttribute("sidebar-position") === "second";
-    const settingName = this.getAttribute("name") ?? void 0;
-    const sidebarSize = parseInt(this.getAttribute("sidebar-initial-size") || "", 10);
-    const defaultSidebarWidth = !isNaN(sidebarSize) ? sidebarSize : void 0;
-    const defaultSidebarHeight = !isNaN(sidebarSize) ? sidebarSize : void 0;
-    const widget = new SplitWidget(
-      vertical,
-      secondIsSidebar,
-      settingName,
-      defaultSidebarWidth,
-      defaultSidebarHeight,
-      /* constraintsInDip=*/
-      false,
-      this
-    );
-    if (this.getAttribute("sidebar-initial-size") === "minimized") {
-      widget.setSidebarMinimized(true);
-    }
-    if (autoAdjustOrientation) {
-      widget.setAutoAdjustOrientation(true);
-    }
-    const sidebarHidden = this.getAttribute("sidebar-visibility") === "hidden";
-    if (sidebarHidden) {
-      widget.hideSidebar();
-    }
-    widget.addEventListener("ShowModeChanged", () => {
-      this.dispatchEvent(new CustomEvent("change", { detail: widget.showMode() }));
-    });
-    return widget;
-  }
-  attributeChangedCallback(name, _oldValue, newValue) {
-    const widget = Widget.get(this);
-    if (!widget) {
-      return;
-    }
-    if (name === "direction") {
-      widget.setVertical(newValue === "column");
-      widget.setAutoAdjustOrientation(newValue === "auto");
-    } else if (name === "sidebar-position") {
-      widget.setSecondIsSidebar(newValue === "second");
-    } else if (name === "sidebar-visibility") {
-      if (newValue === "hidden") {
-        widget.hideSidebar();
-      } else {
-        widget.showBoth();
-      }
-    }
-  }
-};
-customElements.define("devtools-split-view", SplitWidgetElement);
-var MinPadding = 20;
-var suppressUnused = function(_value) {
-};
+/*# sourceURL=${import.meta.resolve("./inspectorDrawerTabbedPane.css")} */`;
 
 // gen/front_end/ui/legacy/TabbedPane.js
 var TabbedPane_exports = {};
 __export(TabbedPane_exports, {
   Events: () => Events,
   TabbedPane: () => TabbedPane,
+  TabbedPaneElement: () => TabbedPaneElement,
   TabbedPaneTab: () => TabbedPaneTab
 });
-import * as Common8 from "./../../core/common/common.js";
+import * as Common6 from "./../../core/common/common.js";
 import * as i18n7 from "./../../core/i18n/i18n.js";
-import * as Platform7 from "./../../core/platform/platform.js";
-import * as Geometry3 from "./../../models/geometry/geometry.js";
+import * as Platform6 from "./../../core/platform/platform.js";
+import * as Annotations from "./../../models/annotations/annotations.js";
+import * as Geometry2 from "./../../models/geometry/geometry.js";
 import * as Buttons2 from "./../components/buttons/buttons.js";
-import * as VisualLogging5 from "./../visual_logging/visual_logging.js";
-import * as IconButton2 from "./../components/icon_button/icon_button.js";
+import { render } from "./../lit/lit.js";
+import * as VisualLogging4 from "./../visual_logging/visual_logging.js";
+import { createIcon as createIcon2, Icon } from "./../kit/kit.js";
 
 // gen/front_end/ui/legacy/tabbedPane.css.js
 var tabbedPane_css_default = `/*
@@ -4488,6 +2689,13 @@ var tabbedPane_css_default = `/*
   }
 }
 
+.spark {
+  position: absolute;
+  top: 2px;
+
+  --icon-default: var(--sys-color-primary);
+}
+
 /*# sourceURL=${import.meta.resolve("./tabbedPane.css")} */`;
 
 // gen/front_end/ui/legacy/Tooltip.js
@@ -4506,6 +2714,1199 @@ var Tooltip = class {
       description += ` - ${shortcut.title()}`;
     }
     element.title = description;
+  }
+};
+
+// gen/front_end/ui/legacy/Widget.js
+var Widget_exports = {};
+__export(Widget_exports, {
+  HBox: () => HBox,
+  VBox: () => VBox,
+  VBoxWithResizeCallback: () => VBoxWithResizeCallback,
+  Widget: () => Widget,
+  WidgetConfig: () => WidgetConfig,
+  WidgetDirective: () => WidgetDirective,
+  WidgetElement: () => WidgetElement,
+  WidgetFocusRestorer: () => WidgetFocusRestorer,
+  registerWidgetConfig: () => registerWidgetConfig,
+  widget: () => widget,
+  widgetConfig: () => widgetConfig,
+  widgetRef: () => widgetRef
+});
+import "./../dom_extension/dom_extension.js";
+import * as Platform5 from "./../../core/platform/platform.js";
+import * as Geometry from "./../../models/geometry/geometry.js";
+import * as Lit from "./../lit/lit.js";
+
+// gen/front_end/ui/legacy/DOMUtilities.js
+var DOMUtilities_exports = {};
+__export(DOMUtilities_exports, {
+  appendStyle: () => appendStyle,
+  deepActiveElement: () => deepActiveElement,
+  getEnclosingShadowRootForNode: () => getEnclosingShadowRootForNode,
+  rangeOfWord: () => rangeOfWord
+});
+function deepActiveElement(doc) {
+  let activeElement = doc.activeElement;
+  while (activeElement?.shadowRoot?.activeElement) {
+    activeElement = activeElement.shadowRoot.activeElement;
+  }
+  return activeElement;
+}
+function getEnclosingShadowRootForNode(node) {
+  let parentNode = node.parentNodeOrShadowHost();
+  while (parentNode) {
+    if (parentNode instanceof ShadowRoot) {
+      return parentNode;
+    }
+    parentNode = parentNode.parentNodeOrShadowHost();
+  }
+  return null;
+}
+function rangeOfWord(rootNode, offset, stopCharacters, stayWithinNode, direction) {
+  let startNode;
+  let startOffset = 0;
+  let endNode;
+  let endOffset = 0;
+  if (!stayWithinNode) {
+    stayWithinNode = rootNode;
+  }
+  if (!direction || direction === "backward" || direction === "both") {
+    let node = rootNode;
+    while (node) {
+      if (node === stayWithinNode) {
+        if (!startNode) {
+          startNode = stayWithinNode;
+        }
+        break;
+      }
+      if (node.nodeType === Node.TEXT_NODE && node.nodeValue !== null) {
+        const start = node === rootNode ? offset - 1 : node.nodeValue.length - 1;
+        for (let i = start; i >= 0; --i) {
+          if (stopCharacters.indexOf(node.nodeValue[i]) !== -1) {
+            startNode = node;
+            startOffset = i + 1;
+            break;
+          }
+        }
+      }
+      if (startNode) {
+        break;
+      }
+      node = node.traversePreviousNode(stayWithinNode);
+    }
+    if (!startNode) {
+      startNode = stayWithinNode;
+      startOffset = 0;
+    }
+  } else {
+    startNode = rootNode;
+    startOffset = offset;
+  }
+  if (!direction || direction === "forward" || direction === "both") {
+    let node = rootNode;
+    while (node) {
+      if (node === stayWithinNode) {
+        if (!endNode) {
+          endNode = stayWithinNode;
+        }
+        break;
+      }
+      if (node.nodeType === Node.TEXT_NODE && node.nodeValue !== null) {
+        const start = node === rootNode ? offset : 0;
+        for (let i = start; i < node.nodeValue.length; ++i) {
+          if (stopCharacters.indexOf(node.nodeValue[i]) !== -1) {
+            endNode = node;
+            endOffset = i;
+            break;
+          }
+        }
+      }
+      if (endNode) {
+        break;
+      }
+      node = node.traverseNextNode(stayWithinNode);
+    }
+    if (!endNode) {
+      endNode = stayWithinNode;
+      endOffset = stayWithinNode.nodeType === Node.TEXT_NODE ? stayWithinNode.nodeValue?.length || 0 : stayWithinNode.childNodes.length;
+    }
+  } else {
+    endNode = rootNode;
+    endOffset = offset;
+  }
+  if (!rootNode.ownerDocument) {
+    throw new Error("No `ownerDocument` found for rootNode");
+  }
+  const result = rootNode.ownerDocument.createRange();
+  result.setStart(startNode, startOffset);
+  result.setEnd(endNode, endOffset);
+  return result;
+}
+function appendStyle(node, ...styles) {
+  for (const cssText of styles) {
+    const style = (node.ownerDocument ?? document).createElement("style");
+    style.textContent = cssText;
+    node.appendChild(style);
+  }
+}
+
+// gen/front_end/ui/legacy/Widget.js
+var { html } = Lit;
+var originalAppendChild = Node.prototype.appendChild;
+var originalInsertBefore = Node.prototype.insertBefore;
+var originalRemoveChild = Node.prototype.removeChild;
+var originalRemoveChildren = Node.prototype.removeChildren;
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+var WidgetConfig = class {
+  widgetClass;
+  widgetParams;
+  constructor(widgetClass, widgetParams) {
+    this.widgetClass = widgetClass;
+    this.widgetParams = widgetParams;
+  }
+};
+function widgetConfig(widgetClass, widgetParams) {
+  return new WidgetConfig(widgetClass, widgetParams);
+}
+var currentUpdateQueue = null;
+var currentlyProcessed = /* @__PURE__ */ new Set();
+var nextUpdateQueue = /* @__PURE__ */ new Map();
+var pendingAnimationFrame = null;
+var overallUpdatePromise = null;
+function enqueueIntoNextUpdateQueue(widget2) {
+  const scheduledUpdate = nextUpdateQueue.get(widget2) ?? Promise.withResolvers();
+  nextUpdateQueue.delete(widget2);
+  nextUpdateQueue.set(widget2, scheduledUpdate);
+  if (pendingAnimationFrame === null) {
+    pendingAnimationFrame = requestAnimationFrame(runNextUpdate);
+  }
+  return scheduledUpdate.promise;
+}
+function enqueueWidgetUpdate(widget2) {
+  if (currentUpdateQueue) {
+    if (currentlyProcessed.has(widget2)) {
+      return enqueueIntoNextUpdateQueue(widget2);
+    }
+    const scheduledUpdate = currentUpdateQueue.get(widget2) ?? Promise.withResolvers();
+    currentUpdateQueue.delete(widget2);
+    currentUpdateQueue.set(widget2, scheduledUpdate);
+    return scheduledUpdate.promise;
+  }
+  return enqueueIntoNextUpdateQueue(widget2);
+}
+function cancelUpdate(widget2) {
+  widget2.cancelUpdateController();
+  if (currentUpdateQueue) {
+    const scheduledUpdate2 = currentUpdateQueue.get(widget2);
+    if (scheduledUpdate2) {
+      scheduledUpdate2.resolve();
+      currentUpdateQueue.delete(widget2);
+    }
+  }
+  const scheduledUpdate = nextUpdateQueue.get(widget2);
+  if (scheduledUpdate) {
+    scheduledUpdate.resolve();
+    nextUpdateQueue.delete(widget2);
+  }
+}
+function runNextUpdate() {
+  pendingAnimationFrame = null;
+  if (!currentUpdateQueue) {
+    currentUpdateQueue = nextUpdateQueue;
+    nextUpdateQueue = /* @__PURE__ */ new Map();
+  }
+  for (const [widget2, { resolve }] of currentUpdateQueue) {
+    currentlyProcessed.add(widget2);
+    void (async () => {
+      try {
+        const controller = new AbortController();
+        widget2.addUpdateController(controller);
+        await widget2.performUpdate(controller.signal);
+      } finally {
+        resolve();
+      }
+    })().catch((e) => {
+      if (e.name !== "AbortError") {
+        console.error(`${widget2.constructor.name}.performUpdate failed: `, e);
+      }
+    });
+  }
+  currentUpdateQueue.clear();
+  queueMicrotask(() => {
+    if (currentUpdateQueue && currentUpdateQueue.size > 0) {
+      runNextUpdate();
+    } else {
+      currentUpdateQueue = null;
+      currentlyProcessed.clear();
+      if (!pendingAnimationFrame && overallUpdatePromise) {
+        overallUpdatePromise.resolve();
+        overallUpdatePromise = null;
+      }
+    }
+  });
+}
+var widgetConfigs = /* @__PURE__ */ new WeakMap();
+function registerWidgetConfig(element, config) {
+  if (!widgetConfigs.has(element)) {
+    setUpLifecycleTracking(element);
+  }
+  widgetConfigs.set(element, config);
+}
+function instantiateWidget(element, widgetConfig2) {
+  if (!widgetConfig2.widgetClass) {
+    throw new Error("No widgetClass defined");
+  }
+  let newWidget;
+  if (Widget.isPrototypeOf(widgetConfig2.widgetClass)) {
+    const ctor = widgetConfig2.widgetClass;
+    newWidget = new ctor(element);
+  } else {
+    const factory = widgetConfig2.widgetClass;
+    newWidget = factory(element);
+  }
+  if (widgetConfig2.widgetParams) {
+    Object.assign(newWidget, widgetConfig2.widgetParams);
+  }
+  newWidget.requestUpdate();
+  return newWidget;
+}
+function setUpLifecycleTracking(element) {
+  let tracker;
+  if (element instanceof WidgetElement) {
+    tracker = element;
+  } else {
+    tracker = document.createElement("devtools-widget");
+    tracker.style.display = "none";
+    element.appendChild(tracker);
+  }
+  tracker.onDisconnect = () => {
+    const widget2 = Widget.get(element);
+    if (widget2) {
+      widget2.setHideOnDetach();
+      widget2.detach();
+    }
+  };
+  tracker.onConnect = () => {
+    let widget2 = Widget.get(element);
+    if (!widget2) {
+      const config = widgetConfigs.get(element);
+      if (!config) {
+        throw new Error("No widgetConfig defined");
+      }
+      widget2 = instantiateWidget(element, config);
+    }
+    const parent = element.parentNode instanceof DocumentFragment ? element.parentNode : element.parentElementOrShadowHost();
+    if (!parent) {
+      widget2.markAsRoot();
+    } else {
+      widget2.show(
+        parent,
+        void 0,
+        /* suppressOrphanWidgetError= */
+        true
+      );
+    }
+  };
+}
+var WidgetElement = class extends HTMLElement {
+  onDisconnect;
+  onConnect;
+  #disconnectTimeout;
+  getWidget() {
+    return Widget.get(this);
+  }
+  connectedCallback() {
+    if (this.#disconnectTimeout) {
+      clearTimeout(this.#disconnectTimeout);
+      this.#disconnectTimeout = void 0;
+    }
+    if (this.onConnect) {
+      this.onConnect();
+      return;
+    }
+  }
+  disconnectedCallback() {
+    if (this.onDisconnect) {
+      this.#disconnectTimeout = setTimeout(() => {
+        this.onDisconnect?.();
+      }, 0);
+      return;
+    }
+  }
+  appendChild(child) {
+    const widget2 = child instanceof HTMLElement ? Widget.get(child) : null;
+    if (widget2) {
+      widget2.show(
+        this,
+        void 0,
+        /* suppressOrphanWidgetError= */
+        true
+      );
+      return child;
+    }
+    return super.appendChild(child);
+  }
+  insertBefore(child, referenceChild) {
+    const widget2 = child instanceof HTMLElement ? Widget.get(child) : null;
+    if (widget2) {
+      widget2.show(
+        this,
+        referenceChild,
+        /* suppressOrphanWidgetError= */
+        true
+      );
+      return child;
+    }
+    return super.insertBefore(child, referenceChild);
+  }
+  removeChild(child) {
+    const childWidget = Widget.get(child);
+    if (childWidget) {
+      childWidget.detach(
+        /* overrideHideOnDetach= */
+        true
+      );
+      return child;
+    }
+    return super.removeChild(child);
+  }
+  removeChildren() {
+    for (const child of this.children) {
+      const childWidget = Widget.get(child);
+      if (childWidget) {
+        childWidget.detach(
+          /* overrideHideOnDetach= */
+          true
+        );
+      }
+    }
+    super.removeChildren();
+  }
+  cloneNode(deep) {
+    const clone = cloneCustomElement(this, deep);
+    const config = widgetConfigs.get(this);
+    if (config) {
+      registerWidgetConfig(clone, config);
+    }
+    return clone;
+  }
+  focus() {
+    const widget2 = Widget.get(this);
+    if (widget2) {
+      widget2.focus();
+    }
+  }
+};
+customElements.define("devtools-widget", WidgetElement);
+var WidgetDirective = class extends Lit.Directive.Directive {
+  #partType;
+  constructor(partInfo) {
+    super(partInfo);
+    this.#partType = partInfo.type;
+    if (this.#partType !== Lit.Directive.PartType.CHILD && this.#partType !== Lit.Directive.PartType.ELEMENT) {
+      throw new Error("Widget directive must be used as a child or element directive.");
+    }
+  }
+  update(part, [widgetClass, widgetParams]) {
+    if (this.#partType === Lit.Directive.PartType.ELEMENT) {
+      const element = part.element;
+      const config = widgetConfig(widgetClass, widgetParams);
+      const oldConfig = widgetConfigs.get(element);
+      const widget2 = Widget.get(element);
+      if (widget2 && config.widgetParams) {
+        let needsUpdate = false;
+        for (const key in config.widgetParams) {
+          if (Object.prototype.hasOwnProperty.call(config.widgetParams, key) && config.widgetParams[key] !== oldConfig?.widgetParams?.[key]) {
+            widget2[key] = config.widgetParams[key];
+            needsUpdate = true;
+          }
+        }
+        if (needsUpdate) {
+          widget2.requestUpdate();
+        }
+      }
+      registerWidgetConfig(element, config);
+      return Lit.nothing;
+    }
+    return this.render(widgetClass, widgetParams);
+  }
+  render(widgetClass, widgetParams) {
+    if (this.#partType === Lit.Directive.PartType.ELEMENT) {
+      return Lit.nothing;
+    }
+    return Lit.Directives.repeat([widgetClass], () => widgetClass, () => html`<devtools-widget ${widget(widgetClass, widgetParams)}></devtools-widget>`);
+  }
+};
+var widget = Lit.Directive.directive(WidgetDirective);
+function widgetRef(type, callback) {
+  return Lit.Directives.ref((e) => {
+    if (!(e instanceof HTMLElement)) {
+      return;
+    }
+    const widget2 = Widget.getOrCreateWidget(e);
+    if (!(widget2 instanceof type)) {
+      throw new Error(`Expected an element with a widget of type ${type.name} but got ${e?.constructor?.name}`);
+    }
+    callback(widget2);
+  });
+}
+var widgetCounterMap = /* @__PURE__ */ new WeakMap();
+var widgetMap = /* @__PURE__ */ new WeakMap();
+function incrementWidgetCounter(parentElement, childElement) {
+  const count = (widgetCounterMap.get(childElement) || 0) + (Widget.get(childElement) ? 1 : 0);
+  for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
+    widgetCounterMap.set(el, (widgetCounterMap.get(el) || 0) + count);
+  }
+}
+function decrementWidgetCounter(parentElement, childElement) {
+  const count = (widgetCounterMap.get(childElement) || 0) + (Widget.get(childElement) ? 1 : 0);
+  for (let el = parentElement; el; el = el.parentElementOrShadowHost()) {
+    const elCounter = widgetCounterMap.get(el);
+    if (elCounter) {
+      widgetCounterMap.set(el, elCounter - count);
+    }
+  }
+}
+var UPDATE_COMPLETE = Promise.resolve();
+var Widget = class _Widget {
+  element;
+  #contentElement;
+  #shadowRoot;
+  #visible = false;
+  #isRoot = false;
+  #isShowing = false;
+  #children = [];
+  #hideOnDetach = false;
+  #notificationDepth = 0;
+  #invalidationsSuspended = 0;
+  #parentWidget = null;
+  #cachedConstraints;
+  #constraints;
+  #invalidationsRequested;
+  #externallyManaged;
+  #updateComplete = UPDATE_COMPLETE;
+  #updateController;
+  constructor(elementOrOptions, options) {
+    if (elementOrOptions instanceof HTMLElement) {
+      this.element = elementOrOptions;
+    } else {
+      this.element = document.createElement("div");
+      if (elementOrOptions !== void 0) {
+        options = elementOrOptions;
+      }
+    }
+    this.#shadowRoot = this.element.shadowRoot;
+    if (options?.useShadowDom && !this.#shadowRoot) {
+      this.element.classList.add("vbox");
+      this.element.classList.add("flex-auto");
+      this.#shadowRoot = createShadowRootWithCoreStyles(this.element, {
+        delegatesFocus: options?.delegatesFocus
+      });
+      if (options.useShadowDom === "pure") {
+        this.#contentElement = this.#shadowRoot;
+      } else {
+        const div = document.createElement("div");
+        this.#shadowRoot.appendChild(div);
+        this.#contentElement = div;
+      }
+    } else {
+      this.#contentElement = this.element;
+    }
+    const legacyOptions = options;
+    if (legacyOptions?.classes) {
+      this.element.classList.add(...legacyOptions.classes);
+    }
+    if (legacyOptions?.jslog) {
+      this.element.setAttribute("jslog", legacyOptions.jslog);
+    }
+    if (this.contentElement instanceof HTMLElement) {
+      this.contentElement.classList.add("widget");
+    } else if (options?.useShadowDom === "pure") {
+      this.element.classList.add("widget");
+    }
+    widgetMap.set(this.element, this);
+  }
+  /**
+   * Returns the {@link Widget} whose element is the given `node`, or `undefined`
+   * if the `node` is not an element for a widget.
+   *
+   * @param node a DOM node.
+   * @returns the {@link Widget} that is attached to the `node` or `undefined`.
+   */
+  static get(node) {
+    return widgetMap.get(node);
+  }
+  static get allUpdatesComplete() {
+    if (!pendingAnimationFrame && !currentUpdateQueue) {
+      return Promise.resolve();
+    }
+    if (!overallUpdatePromise) {
+      overallUpdatePromise = Promise.withResolvers();
+    }
+    return overallUpdatePromise.promise;
+  }
+  static getOrCreateWidget(element) {
+    const widget2 = _Widget.get(element);
+    if (widget2) {
+      return widget2;
+    }
+    let config = widgetConfigs.get(element);
+    if (!config) {
+      config = widgetConfig((element2) => new _Widget(element2));
+    }
+    return instantiateWidget(element, config);
+  }
+  get contentElement() {
+    return this.#contentElement;
+  }
+  set contentElement(contentElement) {
+    this.#contentElement = contentElement;
+  }
+  dispatchDOMEvent(event) {
+    this.element.dispatchEvent(event);
+  }
+  markAsRoot() {
+    assert(!this.element.parentElement, "Attempt to mark as root attached node");
+    this.#isRoot = true;
+  }
+  parentWidget() {
+    return this.#parentWidget;
+  }
+  children() {
+    return this.#children;
+  }
+  childWasDetached(_widget) {
+  }
+  isShowing() {
+    return this.#isShowing;
+  }
+  shouldHideOnDetach() {
+    if (!this.element.parentElement) {
+      return false;
+    }
+    if (this.#hideOnDetach) {
+      return true;
+    }
+    for (const child of this.#children) {
+      if (child.shouldHideOnDetach()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  setHideOnDetach() {
+    this.#hideOnDetach = true;
+  }
+  inNotification() {
+    return Boolean(this.#notificationDepth) || Boolean(this.#parentWidget?.inNotification());
+  }
+  parentIsShowing() {
+    if (this.#isRoot) {
+      return true;
+    }
+    return this.#parentWidget?.isShowing() ?? false;
+  }
+  callOnVisibleChildren(method) {
+    const copy = this.#children.slice();
+    for (let i = 0; i < copy.length; ++i) {
+      if (copy[i].#parentWidget === this && copy[i].#visible) {
+        method.call(copy[i]);
+      }
+    }
+  }
+  processWillShow() {
+    this.callOnVisibleChildren(this.processWillShow);
+    this.#isShowing = true;
+  }
+  processWasShown() {
+    if (this.inNotification()) {
+      return;
+    }
+    this.restoreScrollPositions();
+    this.notify(this.wasShown);
+    this.callOnVisibleChildren(this.processWasShown);
+  }
+  processWillHide() {
+    if (this.inNotification()) {
+      return;
+    }
+    this.storeScrollPositions();
+    this.callOnVisibleChildren(this.processWillHide);
+    this.notify(this.willHide);
+    this.#isShowing = false;
+  }
+  processWasHidden() {
+    this.callOnVisibleChildren(this.processWasHidden);
+    this.notify(this.wasHidden);
+  }
+  processOnResize() {
+    if (this.inNotification()) {
+      return;
+    }
+    if (!this.isShowing()) {
+      return;
+    }
+    this.notify(this.onResize);
+    this.callOnVisibleChildren(this.processOnResize);
+  }
+  notify(notification) {
+    ++this.#notificationDepth;
+    try {
+      notification.call(this);
+    } finally {
+      --this.#notificationDepth;
+    }
+  }
+  wasShown() {
+  }
+  willHide() {
+  }
+  wasHidden() {
+  }
+  onResize() {
+  }
+  onLayout() {
+  }
+  onDetach() {
+  }
+  async ownerViewDisposed() {
+  }
+  show(parentElement, insertBefore, suppressOrphanWidgetError = false) {
+    assert(parentElement, "Attempt to attach widget with no parent element");
+    if (!this.#isRoot) {
+      let currentParent = parentElement;
+      let currentWidget = void 0;
+      while (!currentWidget) {
+        if (!currentParent) {
+          if (suppressOrphanWidgetError) {
+            this.#isRoot = true;
+            this.show(parentElement, insertBefore);
+            return;
+          }
+          throw new Error("Attempt to attach widget to orphan node");
+        }
+        currentWidget = widgetMap.get(currentParent);
+        currentParent = currentParent.parentElementOrShadowHost();
+      }
+      this.attach(currentWidget);
+    }
+    this.#showWidget(parentElement, insertBefore);
+  }
+  attach(parentWidget) {
+    if (parentWidget === this.#parentWidget) {
+      return;
+    }
+    if (this.#parentWidget) {
+      this.detach();
+    }
+    this.#parentWidget = parentWidget;
+    this.#parentWidget.#children.push(this);
+    this.#isRoot = false;
+  }
+  showWidget() {
+    if (this.#visible) {
+      return;
+    }
+    if (!this.element.parentElement) {
+      throw new Error("Attempt to show widget that is not hidden using hideWidget().");
+    }
+    this.#showWidget(this.element.parentElement, this.element.nextSibling);
+  }
+  #showWidget(parentElement, insertBefore) {
+    let currentParent = parentElement;
+    while (currentParent && !_Widget.get(currentParent)) {
+      currentParent = currentParent.parentElementOrShadowHost();
+    }
+    if (this.#isRoot) {
+      assert(!currentParent, "Attempt to show root widget under another widget");
+    } else {
+      assert(currentParent && widgetMap.get(currentParent) === this.#parentWidget, "Attempt to show under node belonging to alien widget");
+    }
+    const wasVisible = this.#visible;
+    if (wasVisible && this.element.parentNode === parentElement) {
+      return;
+    }
+    this.#visible = true;
+    if (!wasVisible && this.parentIsShowing()) {
+      this.processWillShow();
+    }
+    this.element.classList.remove("hidden");
+    if (this.element.parentNode !== parentElement) {
+      if (!this.#externallyManaged) {
+        incrementWidgetCounter(parentElement, this.element);
+      }
+      if (insertBefore) {
+        originalInsertBefore.call(parentElement, this.element, insertBefore);
+      } else {
+        originalAppendChild.call(parentElement, this.element);
+      }
+    }
+    const focusedElementsCount = this.#parentWidget?.getDefaultFocusedElements?.()?.length ?? 0;
+    if (this.element.hasAttribute("autofocus") && focusedElementsCount > 1) {
+      this.element.removeAttribute("autofocus");
+    }
+    if (!wasVisible && this.parentIsShowing()) {
+      this.processWasShown();
+    }
+    if (this.#parentWidget && this.hasNonZeroConstraints()) {
+      this.#parentWidget.invalidateConstraints();
+    } else {
+      this.processOnResize();
+    }
+  }
+  hideWidget() {
+    if (!this.#visible) {
+      return;
+    }
+    this.#hideWidget(false);
+  }
+  #hideWidget(removeFromDOM) {
+    this.#visible = false;
+    const { parentElement } = this.element;
+    if (this.parentIsShowing()) {
+      this.processWillHide();
+    }
+    if (removeFromDOM) {
+      if (parentElement) {
+        decrementWidgetCounter(parentElement, this.element);
+        originalRemoveChild.call(parentElement, this.element);
+      }
+      this.onDetach();
+    } else {
+      this.element.classList.add("hidden");
+    }
+    if (this.parentIsShowing()) {
+      this.processWasHidden();
+    }
+    if (this.#parentWidget && this.hasNonZeroConstraints()) {
+      this.#parentWidget.invalidateConstraints();
+    }
+  }
+  detach(overrideHideOnDetach) {
+    if (!this.#parentWidget && !this.#isRoot) {
+      return;
+    }
+    cancelUpdate(this);
+    const removeFromDOM = overrideHideOnDetach || !this.shouldHideOnDetach();
+    if (this.#visible) {
+      this.#hideWidget(removeFromDOM);
+    } else if (removeFromDOM) {
+      const { parentElement } = this.element;
+      if (parentElement) {
+        decrementWidgetCounter(parentElement, this.element);
+        originalRemoveChild.call(parentElement, this.element);
+      }
+    }
+    if (this.#parentWidget) {
+      const childIndex = this.#parentWidget.#children.indexOf(this);
+      assert(childIndex >= 0, "Attempt to remove non-child widget");
+      this.#parentWidget.#children.splice(childIndex, 1);
+      this.#parentWidget.childWasDetached(this);
+      this.#parentWidget = null;
+    } else {
+      assert(this.#isRoot, "Removing non-root widget from DOM");
+    }
+  }
+  detachChildWidgets() {
+    const children = this.#children.slice();
+    for (let i = 0; i < children.length; ++i) {
+      children[i].detach();
+    }
+  }
+  elementsToRestoreScrollPositionsFor() {
+    return [this.element];
+  }
+  storeScrollPositions() {
+    const elements = this.elementsToRestoreScrollPositionsFor();
+    for (const container of elements) {
+      storedScrollPositions.set(container, { scrollLeft: container.scrollLeft, scrollTop: container.scrollTop });
+    }
+  }
+  restoreScrollPositions() {
+    const elements = this.elementsToRestoreScrollPositionsFor();
+    for (const container of elements) {
+      const storedPositions = storedScrollPositions.get(container);
+      if (storedPositions) {
+        container.scrollLeft = storedPositions.scrollLeft;
+        container.scrollTop = storedPositions.scrollTop;
+      }
+    }
+  }
+  doResize() {
+    if (!this.isShowing()) {
+      return;
+    }
+    if (!this.inNotification()) {
+      this.callOnVisibleChildren(this.processOnResize);
+    }
+  }
+  doLayout() {
+    if (!this.isShowing()) {
+      return;
+    }
+    this.notify(this.onLayout);
+    this.doResize();
+  }
+  registerRequiredCSS(...cssFiles) {
+    for (const cssFile of cssFiles) {
+      appendStyle(this.#shadowRoot ?? this.element, cssFile);
+    }
+  }
+  // Unused, but useful for debugging.
+  printWidgetHierarchy() {
+    const lines = [];
+    this.collectWidgetHierarchy("", lines);
+    console.log(lines.join("\n"));
+  }
+  collectWidgetHierarchy(prefix, lines) {
+    lines.push(prefix + "[" + this.element.className + "]" + (this.#children.length ? " {" : ""));
+    for (let i = 0; i < this.#children.length; ++i) {
+      this.#children[i].collectWidgetHierarchy(prefix + "    ", lines);
+    }
+    if (this.#children.length) {
+      lines.push(prefix + "}");
+    }
+  }
+  setDefaultFocusedElement(element) {
+    const defaultFocusedElement = this.getDefaultFocusedElement();
+    if (defaultFocusedElement) {
+      defaultFocusedElement.removeAttribute("autofocus");
+    }
+    if (element) {
+      element.setAttribute("autofocus", "");
+    }
+  }
+  setDefaultFocusedChild(child) {
+    assert(child.#parentWidget === this, "Attempt to set non-child widget as default focused.");
+    const defaultFocusedElement = this.getDefaultFocusedElement();
+    if (defaultFocusedElement) {
+      defaultFocusedElement.removeAttribute("autofocus");
+    }
+    child.element.setAttribute("autofocus", "");
+  }
+  getDefaultFocusedElements() {
+    const autofocusElements = [...this.contentElement.querySelectorAll("[autofocus]")];
+    const contentElement = this.contentElement;
+    if (contentElement !== this.element) {
+      if (contentElement instanceof HTMLElement && contentElement.hasAttribute("autofocus")) {
+        autofocusElements.push(contentElement);
+      }
+      if (autofocusElements.length === 0) {
+        autofocusElements.push(...this.element.querySelectorAll("[autofocus]"));
+      }
+    }
+    return autofocusElements.filter((autofocusElement) => {
+      let widgetElement = autofocusElement;
+      while (widgetElement) {
+        const widget2 = _Widget.get(widgetElement);
+        if (widget2) {
+          if (widgetElement === autofocusElement && widget2.#parentWidget === this && widget2.#visible) {
+            return true;
+          }
+          return widget2 === this;
+        }
+        widgetElement = widgetElement.parentElementOrShadowHost();
+      }
+      return false;
+    });
+  }
+  getDefaultFocusedElement() {
+    const elements = this.getDefaultFocusedElements();
+    if (elements.length > 1) {
+      console.error("Multiple autofocus elements found", this.constructor.name, ...elements.map((e) => Platform5.StringUtilities.trimMiddle(e.outerHTML, 250)));
+    }
+    return elements[0] || null;
+  }
+  focus() {
+    if (!this.isShowing()) {
+      return;
+    }
+    const autofocusElement = this.getDefaultFocusedElement();
+    if (autofocusElement) {
+      const widget2 = _Widget.get(autofocusElement);
+      if (widget2 && widget2 !== this) {
+        widget2.focus();
+      } else if (autofocusElement === this.element && autofocusElement instanceof WidgetElement) {
+        HTMLElement.prototype.focus.call(autofocusElement);
+      } else {
+        autofocusElement.focus();
+      }
+      return;
+    }
+    for (const child of this.#children) {
+      if (child.#visible) {
+        child.focus();
+        return;
+      }
+    }
+    if (this.element === this.contentElement && this.element.hasAttribute("autofocus")) {
+      if (this.element instanceof WidgetElement) {
+        HTMLElement.prototype.focus.call(this.element);
+      } else {
+        this.element.focus();
+      }
+    }
+  }
+  hasFocus() {
+    return this.element.hasFocus();
+  }
+  calculateConstraints() {
+    return new Geometry.Constraints();
+  }
+  constraints() {
+    if (typeof this.#constraints !== "undefined") {
+      return this.#constraints;
+    }
+    if (typeof this.#cachedConstraints === "undefined") {
+      this.#cachedConstraints = this.calculateConstraints();
+    }
+    return this.#cachedConstraints;
+  }
+  setMinimumAndPreferredSizes(width, height, preferredWidth, preferredHeight) {
+    this.#constraints = new Geometry.Constraints(new Geometry.Size(width, height), new Geometry.Size(preferredWidth, preferredHeight));
+    this.invalidateConstraints();
+  }
+  setMinimumSize(width, height) {
+    this.minimumSize = new Geometry.Size(width, height);
+  }
+  set minimumSize(size) {
+    this.#constraints = new Geometry.Constraints(size);
+    this.invalidateConstraints();
+  }
+  hasNonZeroConstraints() {
+    const constraints = this.constraints();
+    return Boolean(constraints.minimum.width || constraints.minimum.height || constraints.preferred.width || constraints.preferred.height);
+  }
+  suspendInvalidations() {
+    ++this.#invalidationsSuspended;
+  }
+  resumeInvalidations() {
+    --this.#invalidationsSuspended;
+    if (!this.#invalidationsSuspended && this.#invalidationsRequested) {
+      this.invalidateConstraints();
+    }
+  }
+  invalidateConstraints() {
+    if (this.#invalidationsSuspended) {
+      this.#invalidationsRequested = true;
+      return;
+    }
+    this.#invalidationsRequested = false;
+    const cached = this.#cachedConstraints;
+    this.#cachedConstraints = void 0;
+    const actual = this.constraints();
+    if (!actual.isEqual(cached || null) && this.#parentWidget) {
+      this.#parentWidget.invalidateConstraints();
+    } else {
+      this.doLayout();
+    }
+  }
+  // Excludes the widget from being tracked by its parents/ancestors via
+  // widgetCounter because the widget is being handled by external code.
+  // Widgets marked as being externally managed are responsible for
+  // finishing out their own lifecycle (i.e. calling detach() before being
+  // removed from the DOM). This is e.g. used for CodeMirror.
+  //
+  // Also note that this must be called before the widget is shown so that
+  // so that its ancestor's widgetCounter is not incremented.
+  markAsExternallyManaged() {
+    assert(!this.#parentWidget, "Attempt to mark widget as externally managed after insertion to the DOM");
+    this.#externallyManaged = true;
+  }
+  performUpdate(_signal) {
+  }
+  addUpdateController(controller) {
+    this.#updateController?.abort();
+    this.#updateController = controller;
+  }
+  cancelUpdateController() {
+    this.#updateController?.abort();
+  }
+  /**
+   * Schedules an asynchronous update for this widget.
+   *
+   * The update will be deduplicated and executed with the next animation
+   * frame.
+   */
+  requestUpdate() {
+    this.#updateController?.abort();
+    this.#updateComplete = enqueueWidgetUpdate(this);
+  }
+  /**
+   * The `updateComplete` promise resolves when the widget has finished updating.
+   *
+   * Use `updateComplete` to wait for an update:
+   * ```js
+   * await widget.updateComplete;
+   * // do stuff
+   * ```
+   *
+   * This method is primarily useful for unit tests, to wait for widgets to build
+   * their DOM. For example:
+   * ```js
+   * // Set up the test widget, and wait for the initial update cycle to complete.
+   * const widget = new SomeWidget(someData);
+   * widget.requestUpdate();
+   * await widget.updateComplete;
+   *
+   * // Assert state of the widget.
+   * assert.isTrue(widget.someDataLoaded);
+   * ```
+   *
+   * @returns a promise that resolves when the widget has finished updating.
+   */
+  get updateComplete() {
+    return this.#updateComplete;
+  }
+};
+var storedScrollPositions = /* @__PURE__ */ new WeakMap();
+var VBox = class extends Widget {
+  constructor(elementOrOptions, options) {
+    super(elementOrOptions, options);
+    if (this.contentElement instanceof HTMLElement) {
+      this.contentElement.classList.add("vbox");
+    } else {
+      this.element.classList.add("vbox");
+    }
+  }
+  calculateConstraints() {
+    let constraints = new Geometry.Constraints();
+    function updateForChild() {
+      const child = this.constraints();
+      constraints = constraints.widthToMax(child);
+      constraints = constraints.addHeight(child);
+    }
+    this.callOnVisibleChildren(updateForChild);
+    return constraints;
+  }
+};
+var HBox = class extends Widget {
+  constructor(elementOrOptions, options) {
+    super(elementOrOptions, options);
+    if (this.contentElement instanceof HTMLElement) {
+      this.contentElement.classList.add("hbox");
+    } else {
+      this.element.classList.remove("vbox");
+      this.element.classList.add("hbox");
+    }
+  }
+  calculateConstraints() {
+    let constraints = new Geometry.Constraints();
+    function updateForChild() {
+      const child = this.constraints();
+      constraints = constraints.addWidth(child);
+      constraints = constraints.heightToMax(child);
+    }
+    this.callOnVisibleChildren(updateForChild);
+    return constraints;
+  }
+};
+var VBoxWithResizeCallback = class extends VBox {
+  resizeCallback;
+  constructor(resizeCallback) {
+    super();
+    this.resizeCallback = resizeCallback;
+  }
+  onResize() {
+    this.resizeCallback();
+  }
+};
+var WidgetFocusRestorer = class {
+  widget;
+  previous;
+  constructor(widget2) {
+    this.widget = widget2;
+    this.previous = deepActiveElement(widget2.element.ownerDocument);
+    widget2.focus();
+  }
+  restore() {
+    if (!this.widget) {
+      return;
+    }
+    if (this.widget.hasFocus() && this.previous) {
+      this.previous.focus();
+    }
+    this.previous = null;
+    this.widget = null;
+  }
+};
+function domOperationError(funcName) {
+  return new Error(`Attempt to modify widget with native DOM method \`${funcName}\``);
+}
+Node.prototype.appendChild = function(node) {
+  if (widgetMap.get(node) && node.parentNode !== this) {
+    throw domOperationError("appendChild");
+  }
+  return originalAppendChild.call(this, node);
+};
+Node.prototype.insertBefore = function(node, child) {
+  if (widgetMap.get(node) && node.parentNode !== this) {
+    throw domOperationError("insertBefore");
+  }
+  return originalInsertBefore.call(this, node, child);
+};
+Node.prototype.removeChild = function(child) {
+  if (widgetCounterMap.get(child) || widgetMap.get(child)) {
+    throw domOperationError("removeChild");
+  }
+  return originalRemoveChild.call(this, child);
+};
+Node.prototype.removeChildren = function() {
+  if (widgetCounterMap.get(this)) {
+    throw domOperationError("removeChildren");
+  }
+  return originalRemoveChildren.call(this);
+};
+
+// gen/front_end/ui/legacy/ZoomManager.js
+var ZoomManager_exports = {};
+__export(ZoomManager_exports, {
+  ZoomManager: () => ZoomManager
+});
+import * as Common5 from "./../../core/common/common.js";
+var zoomManagerInstance;
+var ZoomManager = class _ZoomManager extends Common5.ObjectWrapper.ObjectWrapper {
+  frontendHost;
+  #zoomFactor;
+  constructor(window2, frontendHost) {
+    super();
+    this.frontendHost = frontendHost;
+    this.#zoomFactor = this.frontendHost.zoomFactor();
+    window2.addEventListener("resize", this.onWindowResize.bind(this), true);
+  }
+  static instance(opts = { forceNew: null, win: null, frontendHost: null }) {
+    const { forceNew, win, frontendHost } = opts;
+    if (!zoomManagerInstance || forceNew) {
+      if (!win || !frontendHost) {
+        throw new Error(`Unable to create zoom manager: window and frontendHost must be provided: ${new Error().stack}`);
+      }
+      zoomManagerInstance = new _ZoomManager(win, frontendHost);
+    }
+    return zoomManagerInstance;
+  }
+  static removeInstance() {
+    zoomManagerInstance = void 0;
+  }
+  zoomFactor() {
+    return this.#zoomFactor;
+  }
+  cssToDIP(value) {
+    return value * this.#zoomFactor;
+  }
+  dipToCSS(valueDIP) {
+    return valueDIP / this.#zoomFactor;
+  }
+  onWindowResize() {
+    const oldZoomFactor = this.#zoomFactor;
+    this.#zoomFactor = this.frontendHost.zoomFactor();
+    if (oldZoomFactor !== this.#zoomFactor) {
+      this.dispatchEventToListeners("ZoomChanged", { from: oldZoomFactor, to: this.#zoomFactor });
+    }
   }
 };
 
@@ -4541,6 +3942,10 @@ var UIStrings4 = {
    */
   previewFeature: "Preview feature",
   /**
+   * @description Indicates that a tab contains annotation(s).
+   */
+  panelContainsAnnotation: "This panel has one or more annotations",
+  /**
    * @description Text to move a tab forwar.
    */
   moveTabRight: "Move right",
@@ -4551,13 +3956,13 @@ var UIStrings4 = {
 };
 var str_4 = i18n7.i18n.registerUIStrings("ui/legacy/TabbedPane.ts", UIStrings4);
 var i18nString4 = i18n7.i18n.getLocalizedString.bind(void 0, str_4);
-var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
+var TabbedPane = class extends Common6.ObjectWrapper.eventMixin(VBox) {
   #headerElement;
   headerContentsElement;
   tabSlider;
   tabsElement;
   #contentElement;
-  tabs;
+  #tabs;
   tabsHistory;
   tabsById;
   currentTabLocked;
@@ -4588,7 +3993,23 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     this.contentElement.tabIndex = -1;
     this.setDefaultFocusedElement(this.contentElement);
     this.#headerElement = this.contentElement.createChild("div", "tabbed-pane-header");
+    const leftSlot = document.createElement("slot");
+    leftSlot.name = "left";
+    leftSlot.classList.add("tabbed-pane-left-toolbar");
+    this.#headerElement.appendChild(leftSlot);
+    leftSlot.addEventListener("slotchange", () => {
+      this.#leftToolbar = leftSlot.assignedElements()[0];
+      this.requestUpdate();
+    });
     this.headerContentsElement = this.#headerElement.createChild("div", "tabbed-pane-header-contents");
+    const rightSlot = document.createElement("slot");
+    rightSlot.name = "right";
+    rightSlot.classList.add("tabbed-pane-right-toolbar");
+    this.#headerElement.appendChild(rightSlot);
+    rightSlot.addEventListener("slotchange", () => {
+      this.#rightToolbar = rightSlot.assignedElements()[0];
+      this.requestUpdate();
+    });
     this.tabSlider = document.createElement("div");
     this.tabSlider.classList.add("tabbed-pane-tab-slider");
     this.tabsElement = this.headerContentsElement.createChild("div", "tabbed-pane-header-tabs");
@@ -4596,7 +4017,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     this.tabsElement.addEventListener("keydown", this.keyDown.bind(this), false);
     this.#contentElement = this.contentElement.createChild("div", "tabbed-pane-content");
     this.#contentElement.createChild("slot");
-    this.tabs = [];
+    this.#tabs = [];
     this.tabsHistory = [];
     this.tabsById = /* @__PURE__ */ new Map();
     this.currentTabLocked = false;
@@ -4606,6 +4027,11 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     this.currentDevicePixelRatio = window.devicePixelRatio;
     ZoomManager.instance().addEventListener("ZoomChanged", this.zoomChanged, this);
     this.makeTabSlider();
+    if (Annotations.AnnotationRepository.annotationsEnabled()) {
+      Annotations.AnnotationRepository.instance().addEventListener("AnnotationAdded", this.#onUpdateAnnotations, this);
+      Annotations.AnnotationRepository.instance().addEventListener("AnnotationDeleted", this.#onUpdateAnnotations, this);
+      Annotations.AnnotationRepository.instance().addEventListener("AllAnnotationsDeleted", this.#onUpdateAnnotations, this);
+    }
   }
   setAccessibleName(name) {
     setLabel(this.tabsElement, name);
@@ -4621,13 +4047,13 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     return this.currentTab ? this.currentTab.view : null;
   }
   tabIds() {
-    return this.tabs.map((tab) => tab.id);
+    return this.#tabs.map((tab) => tab.id);
   }
   tabIndex(tabId) {
-    return this.tabs.findIndex((tab) => tab.id === tabId);
+    return this.#tabs.findIndex((tab) => tab.id === tabId);
   }
   tabViews() {
-    return this.tabs.map((tab) => tab.view);
+    return this.#tabs.map((tab) => tab.view);
   }
   tabView(tabId) {
     const tab = this.tabsById.get(tabId);
@@ -4668,7 +4094,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     return this.#contentElement;
   }
   setTabDelegate(delegate) {
-    const tabs = this.tabs.slice();
+    const tabs = this.#tabs.slice();
     for (let i = 0; i < tabs.length; ++i) {
       tabs[i].setDelegate(delegate);
     }
@@ -4681,11 +4107,11 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     console.assert(!this.tabsById.has(id2), `Tabbed pane already contains a tab with id '${id2}'`);
     this.tabsById.set(id2, tab);
     tab.tabElement.tabIndex = -1;
-    tab.tabElement.setAttribute("jslog", `${VisualLogging5.panelTabHeader().track({ click: true, drag: true }).context(tab.jslogContext)}`);
+    tab.tabElement.setAttribute("jslog", `${VisualLogging4.panelTabHeader().track({ click: true, drag: true }).context(tab.jslogContext)}`);
     if (index !== void 0) {
-      this.tabs.splice(index, 0, tab);
+      this.#tabs.splice(index, 0, tab);
     } else {
-      this.tabs.push(tab);
+      this.#tabs.push(tab);
     }
     this.tabsHistory.push(tab);
     if (this.tabsHistory[0] === tab && this.isShowing()) {
@@ -4720,16 +4146,16 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     if (userGesture && !tab.closeable) {
       return;
     }
-    if (this.currentTab && this.currentTab.id === id2) {
+    if (this.currentTab?.id === id2) {
       this.hideCurrentTab();
     }
     this.tabsById.delete(id2);
     this.tabsHistory.splice(this.tabsHistory.indexOf(tab), 1);
-    this.tabs.splice(this.tabs.indexOf(tab), 1);
+    this.#tabs.splice(this.#tabs.indexOf(tab), 1);
     if (tab.shown) {
       this.hideTabElement(tab);
     }
-    const eventData = { prevTabId: void 0, tabId: id2, view: tab.view, isUserGesture: userGesture };
+    const eventData = { tabId: id2, view: tab.view, isUserGesture: userGesture };
     this.dispatchEventToListeners(Events.TabClosed, eventData);
     return true;
   }
@@ -4738,16 +4164,16 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   }
   otherTabs(id2) {
     const result = [];
-    for (let i = 0; i < this.tabs.length; ++i) {
-      if (this.tabs[i].id !== id2) {
-        result.push(this.tabs[i].id);
+    for (let i = 0; i < this.#tabs.length; ++i) {
+      if (this.#tabs[i].id !== id2) {
+        result.push(this.#tabs[i].id);
       }
     }
     return result;
   }
   tabsToTheRight(id2) {
     let index = -1;
-    for (let i = 0; i < this.tabs.length; ++i) {
+    for (let i = 0; i < this.#tabs.length; ++i) {
       if (this.tabs[i].id === id2) {
         index = i;
         break;
@@ -4756,7 +4182,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     if (index === -1) {
       return [];
     }
-    return this.tabs.slice(index + 1).map(function(tab) {
+    return this.#tabs.slice(index + 1).map(function(tab) {
       return tab.id;
     });
   }
@@ -4784,7 +4210,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
       isUserGesture: userGesture
     };
     this.dispatchEventToListeners(Events.TabInvoked, eventData);
-    if (this.currentTab && this.currentTab.id === id2) {
+    if (this.currentTab?.id === id2) {
       return true;
     }
     this.suspendInvalidations();
@@ -4802,17 +4228,17 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     return true;
   }
   selectNextTab() {
-    const index = this.tabs.indexOf(this.currentTab);
-    const nextIndex = Platform7.NumberUtilities.mod(index + 1, this.tabs.length);
-    this.selectTab(this.tabs[nextIndex].id, true);
+    const index = this.#tabs.indexOf(this.currentTab);
+    const nextIndex = Platform6.NumberUtilities.mod(index + 1, this.#tabs.length);
+    this.selectTab(this.#tabs[nextIndex].id, true);
   }
   selectPrevTab() {
-    const index = this.tabs.indexOf(this.currentTab);
-    const nextIndex = Platform7.NumberUtilities.mod(index - 1, this.tabs.length);
-    this.selectTab(this.tabs[nextIndex].id, true);
+    const index = this.#tabs.indexOf(this.currentTab);
+    const nextIndex = Platform6.NumberUtilities.mod(index - 1, this.#tabs.length);
+    this.selectTab(this.#tabs[nextIndex].id, true);
   }
   getTabIndex(id2) {
-    const index = this.tabs.indexOf(this.tabsById.get(id2));
+    const index = this.#tabs.indexOf(this.tabsById.get(id2));
     return index;
   }
   moveTabBackward(id2, index) {
@@ -4879,8 +4305,8 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     }
   }
   clearMeasuredWidths() {
-    for (let i = 0; i < this.tabs.length; ++i) {
-      delete this.tabs[i].measuredWidth;
+    for (let i = 0; i < this.#tabs.length; ++i) {
+      delete this.#tabs[i].measuredWidth;
     }
   }
   changeTabTitle(id2, tabTitle, tabTooltip) {
@@ -4900,7 +4326,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
       return;
     }
     this.suspendInvalidations();
-    const isSelected = this.currentTab && this.currentTab.id === id2;
+    const isSelected = this.currentTab?.id === id2;
     const shouldFocus = tab.view.hasFocus();
     if (isSelected) {
       this.hideTab(tab);
@@ -4913,6 +4339,69 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
       tab.view.focus();
     }
     this.resumeInvalidations();
+  }
+  get tabs() {
+    return this.#tabs.map((tab) => ({
+      id: tab.id,
+      title: tab.title,
+      view: tab.view,
+      tabTooltip: tab.tooltip,
+      isCloseable: tab.closeable,
+      previewFeature: tab.previewFeature,
+      index: this.#tabs.indexOf(tab),
+      jslogContext: tab.jslogContext,
+      enabled: this.tabIsEnabled(tab.id),
+      selected: this.currentTab?.id === tab.id
+    }));
+  }
+  set tabs(tabs) {
+    const newIds = new Set(tabs.map((tab) => tab.id));
+    for (const id2 of this.tabsById.keys()) {
+      if (!newIds.has(id2)) {
+        this.#closeTab(id2);
+      }
+    }
+    let index = 0;
+    for (const tab of tabs) {
+      const existingTab = this.tabsById.get(tab.id);
+      if (existingTab) {
+        this.changeTabView(tab.id, tab.view);
+        this.changeTabTitle(tab.id, tab.title, tab.tabTooltip);
+        if (tab.jslogContext !== void 0) {
+          existingTab.jslogContext = tab.jslogContext;
+        }
+        if (tab.isCloseable !== void 0) {
+          existingTab.closeable = tab.isCloseable;
+        }
+        if (tab.previewFeature !== void 0) {
+          existingTab.previewFeature = tab.previewFeature;
+        }
+        const currentIndex = this.#tabs.indexOf(existingTab);
+        if (currentIndex !== index) {
+          this.insertBefore(existingTab, index);
+        }
+      } else {
+        this.appendTab(
+          tab.id,
+          tab.title,
+          tab.view,
+          tab.tabTooltip,
+          /* userGesture=*/
+          false,
+          tab.isCloseable,
+          tab.previewFeature,
+          index,
+          tab.jslogContext
+        );
+      }
+      if (tab.enabled !== void 0) {
+        this.setTabEnabled(tab.id, tab.enabled);
+      }
+      if (tab.selected) {
+        this.selectTab(tab.id);
+      }
+      ++index;
+    }
   }
   onResize() {
     if (this.currentDevicePixelRatio !== window.devicePixelRatio) {
@@ -4948,12 +4437,12 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   }
   calculateConstraints() {
     let constraints = super.calculateConstraints();
-    const minContentConstraints = new Geometry3.Constraints(new Geometry3.Size(0, 0), new Geometry3.Size(50, 50));
+    const minContentConstraints = new Geometry2.Constraints(new Geometry2.Size(0, 0), new Geometry2.Size(50, 50));
     constraints = constraints.widthToMax(minContentConstraints).heightToMax(minContentConstraints);
     if (this.verticalTabLayout) {
-      constraints = constraints.addWidth(new Geometry3.Constraints(new Geometry3.Size(120, 0)));
+      constraints = constraints.addWidth(new Geometry2.Constraints(new Geometry2.Size(120, 0)));
     } else {
-      constraints = constraints.addHeight(new Geometry3.Constraints(new Geometry3.Size(0, 30)));
+      constraints = constraints.addHeight(new Geometry2.Constraints(new Geometry2.Size(0, 30)));
     }
     return constraints;
   }
@@ -4970,11 +4459,36 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   async waitForTabElementUpdate() {
     this.performUpdate();
   }
+  updateTabAnnotationIcons() {
+    if (!Annotations.AnnotationRepository.annotationsEnabled()) {
+      return;
+    }
+    const annotations = Annotations.AnnotationRepository.instance();
+    if (!annotations) {
+      return;
+    }
+    for (const tab of this.tabs) {
+      let primaryType = -1;
+      let secondaryType = -1;
+      switch (tab.id) {
+        case "elements":
+          primaryType = Annotations.AnnotationType.ELEMENT_NODE;
+          secondaryType = Annotations.AnnotationType.STYLE_RULE;
+          break;
+        case "network":
+          primaryType = Annotations.AnnotationType.NETWORK_REQUEST;
+          secondaryType = Annotations.AnnotationType.NETWORK_REQUEST_SUBPANEL_HEADERS;
+          break;
+      }
+      const showTabAnnotationIcon = annotations.getAnnotationDataByType(primaryType).length > 0 || annotations.getAnnotationDataByType(secondaryType).length > 0;
+      this.setTabAnnotationIcon(tab.id, showTabAnnotationIcon);
+    }
+  }
   performUpdate() {
     if (!this.isShowing()) {
       return;
     }
-    if (!this.tabs.length) {
+    if (!this.#tabs.length) {
       this.#contentElement.classList.add("has-no-tabs");
       if (this.placeholderElement && !this.placeholderContainerElement) {
         this.placeholderContainerElement = this.#contentElement.createChild("div", "tabbed-pane-placeholder fill");
@@ -4996,6 +4510,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     this.updateWidths();
     this.updateTabsDropDown();
     this.updateTabSlider();
+    this.updateTabAnnotationIcons();
   }
   adjustToolbarWidth() {
     if (!this.#rightToolbar || !this.measuredDropDownButtonWidth) {
@@ -5026,8 +4541,8 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   createDropDownButton() {
     const dropDownContainer = document.createElement("div");
     dropDownContainer.classList.add("tabbed-pane-header-tabs-drop-down-container");
-    dropDownContainer.setAttribute("jslog", `${VisualLogging5.dropDown("more-tabs").track({ click: true })}`);
-    const chevronIcon = IconButton2.Icon.create("chevron-double-right", "chevron-icon");
+    dropDownContainer.setAttribute("jslog", `${VisualLogging4.dropDown("more-tabs").track({ click: true })}`);
+    const chevronIcon = createIcon2("chevron-double-right", "chevron-icon");
     const moreTabsString = i18nString4(UIStrings4.moreTabs);
     dropDownContainer.title = moreTabsString;
     markAsMenuButton(dropDownContainer);
@@ -5061,7 +4576,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
         setExpanded(this.dropDownButton, false);
       }
     });
-    for (const tab of this.tabs) {
+    for (const tab of this.#tabs) {
       if (tab.shown) {
         continue;
       }
@@ -5074,7 +4589,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     void menu5.show().then(() => setExpanded(this.dropDownButton, menu5.isHostedMenuOpen()));
   }
   dropDownKeydown(event) {
-    if (Platform7.KeyboardUtilities.isEnterOrSpaceKey(event)) {
+    if (Platform6.KeyboardUtilities.isEnterOrSpaceKey(event)) {
       this.dropDownButton.click();
       event.consume(true);
     }
@@ -5087,7 +4602,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   }
   numberOfTabsShown() {
     let numTabsShown = 0;
-    for (const tab of this.tabs) {
+    for (const tab of this.#tabs) {
       if (tab.shown) {
         numTabsShown++;
       }
@@ -5095,24 +4610,24 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     return numTabsShown;
   }
   updateTabsDropDown() {
-    const tabsToShowIndexes = this.tabsToShowIndexes(this.tabs, this.tabsHistory, this.totalWidth(), this.measuredDropDownButtonWidth || 0);
+    const tabsToShowIndexes = this.tabsToShowIndexes(this.#tabs, this.tabsHistory, this.totalWidth(), this.measuredDropDownButtonWidth || 0);
     if (this.lastSelectedOverflowTab && this.numberOfTabsShown() !== tabsToShowIndexes.length) {
       delete this.lastSelectedOverflowTab;
       this.updateTabsDropDown();
       return;
     }
-    for (let i = 0; i < this.tabs.length; ++i) {
-      if (this.tabs[i].shown && tabsToShowIndexes.indexOf(i) === -1) {
-        this.hideTabElement(this.tabs[i]);
+    for (let i = 0; i < this.#tabs.length; ++i) {
+      if (this.#tabs[i].shown && tabsToShowIndexes.indexOf(i) === -1) {
+        this.hideTabElement(this.#tabs[i]);
       }
     }
     for (let i = 0; i < tabsToShowIndexes.length; ++i) {
-      const tab = this.tabs[tabsToShowIndexes[i]];
+      const tab = this.#tabs[tabsToShowIndexes[i]];
       if (!tab.shown) {
         this.showTabElement(i, tab);
       }
     }
-    this.maybeShowDropDown(tabsToShowIndexes.length !== this.tabs.length);
+    this.maybeShowDropDown(tabsToShowIndexes.length !== this.#tabs.length);
   }
   maybeShowDropDown(hasMoreTabs) {
     if (hasMoreTabs && !this.dropDownButton.parentElement) {
@@ -5135,14 +4650,14 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     const measuredWidths = this.measureWidths();
     const maxWidth = this.shrinkableTabs ? this.calculateMaxWidth(measuredWidths.slice(), this.totalWidth()) : Number.MAX_VALUE;
     let i = 0;
-    for (const tab of this.tabs) {
+    for (const tab of this.#tabs) {
       tab.setWidth(this.verticalTabLayout ? -1 : Math.min(maxWidth, measuredWidths[i++]));
     }
   }
   measureWidths() {
     this.tabsElement.style.setProperty("width", "2000px");
     const measuringTabElements = /* @__PURE__ */ new Map();
-    for (const tab of this.tabs) {
+    for (const tab of this.#tabs) {
       if (typeof tab.measuredWidth === "number") {
         continue;
       }
@@ -5155,13 +4670,13 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     }
     for (const [measuringTabElement, tab] of measuringTabElements) {
       const width = measuringTabElement.getBoundingClientRect().width;
-      tab.measuredWidth = Math.ceil(width);
+      tab.measuredWidth = Math.ceil(width) || void 0;
     }
     for (const measuringTabElement of measuringTabElements.keys()) {
       measuringTabElement.remove();
     }
     const measuredWidths = [];
-    for (const tab of this.tabs) {
+    for (const tab of this.#tabs) {
       measuredWidths.push(tab.measuredWidth || 0);
     }
     this.tabsElement.style.removeProperty("width");
@@ -5242,9 +4757,9 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
       return;
     }
     let left = 0;
-    for (let i = 0; i < this.tabs.length && this.currentTab !== this.tabs[i]; i++) {
-      if (this.tabs[i].shown) {
-        left += this.tabs[i].measuredWidth || 0;
+    for (let i = 0; i < this.#tabs.length && this.currentTab !== this.#tabs[i]; i++) {
+      if (this.#tabs[i].shown) {
+        left += this.#tabs[i].measuredWidth || 0;
       }
     }
     const sliderWidth = this.currentTab.shown ? this.currentTab.measuredWidth : this.dropDownButton.offsetWidth;
@@ -5267,16 +4782,20 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   }
   insertBefore(tab, index) {
     this.tabsElement.insertBefore(tab.tabElement, this.tabsElement.childNodes[index]);
-    const oldIndex = this.tabs.indexOf(tab);
-    this.tabs.splice(oldIndex, 1);
+    const oldIndex = this.#tabs.indexOf(tab);
+    this.#tabs.splice(oldIndex, 1);
     if (oldIndex < index) {
       --index;
     }
-    this.tabs.splice(index, 0, tab);
-    const eventData = { prevTabId: void 0, tabId: tab.id, view: tab.view, isUserGesture: void 0 };
+    this.#tabs.splice(index, 0, tab);
+    const eventData = { tabId: tab.id, view: tab.view };
     this.dispatchEventToListeners(Events.TabOrderChanged, eventData);
   }
   leftToolbar() {
+    if (!this.#leftToolbar) {
+      const leftSlot = this.#headerElement.querySelector('slot[name="left"]');
+      this.#leftToolbar = leftSlot?.assignedElements()[0];
+    }
     if (!this.#leftToolbar) {
       this.#leftToolbar = document.createElement("devtools-toolbar");
       this.#leftToolbar.classList.add("tabbed-pane-left-toolbar");
@@ -5285,6 +4804,10 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
     return this.#leftToolbar;
   }
   rightToolbar() {
+    if (!this.#rightToolbar) {
+      const rightSlot = this.#headerElement.querySelector('slot[name="right"]');
+      this.#rightToolbar = rightSlot?.assignedElements()[0];
+    }
     if (!this.#rightToolbar) {
       this.#rightToolbar = document.createElement("devtools-toolbar");
       this.#rightToolbar.classList.add("tabbed-pane-right-toolbar");
@@ -5295,6 +4818,15 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
   setAllowTabReorder(allow, automatic) {
     this.allowTabReorder = allow;
     this.automaticReorder = automatic;
+  }
+  setTabAnnotationIcon(id2, iconVisible) {
+    const tab = this.tabsById.get(id2);
+    if (tab) {
+      tab.tabAnnotationIcon = iconVisible;
+    }
+  }
+  #onUpdateAnnotations() {
+    this.updateTabAnnotationIcons();
   }
   keyDown(event) {
     if (!this.currentTab) {
@@ -5327,7 +4859,7 @@ var TabbedPane = class extends Common8.ObjectWrapper.eventMixin(VBox) {
       this.dropDownButton.click();
       return;
     }
-    const tab = this.tabs.find((tab2) => tab2.tabElement === nextTabElement);
+    const tab = this.#tabs.find((tab2) => tab2.tabElement === nextTabElement);
     if (tab) {
       this.selectTab(tab.id, true);
     }
@@ -5345,6 +4877,7 @@ var Events;
 var TabbedPaneTab = class {
   closeable;
   previewFeature = false;
+  #tabAnnotationIcon = false;
   tabbedPane;
   #id;
   #title;
@@ -5392,6 +4925,41 @@ var TabbedPaneTab = class {
   }
   get jslogContext() {
     return this.#jslogContext ?? (this.#id === "console-view" ? "console" : this.#id);
+  }
+  set jslogContext(jslogContext) {
+    this.#jslogContext = jslogContext;
+  }
+  get tabAnnotationIcon() {
+    return this.#tabAnnotationIcon;
+  }
+  set tabAnnotationIcon(iconVisible) {
+    if (this.#tabAnnotationIcon === iconVisible) {
+      return;
+    }
+    this.#tabAnnotationIcon = iconVisible;
+    if (!this.#tabElement) {
+      return;
+    }
+    const iconElement = this.#tabElement.querySelector(".spark");
+    if (iconVisible) {
+      if (!iconElement) {
+        const spark = this.createTabAnnotationIcon();
+        this.#tabElement.appendChild(spark);
+        const parentRect = this.#tabElement.parentElement?.getBoundingClientRect();
+        if (!parentRect) {
+          return;
+        }
+        const containerRect = this.tabElement.getBoundingClientRect();
+        const iconWidth = spark.getBoundingClientRect().width;
+        const x = containerRect.x - parentRect.x + containerRect.width - iconWidth;
+        spark.style.left = `${x}px`;
+      }
+    } else {
+      iconElement?.remove();
+    }
+    this.#tabElement.classList.toggle("ai", iconVisible);
+    delete this.measuredWidth;
+    this.tabbedPane.requestUpdate();
   }
   isCloseable() {
     return this.closeable;
@@ -5478,8 +5046,12 @@ var TabbedPaneTab = class {
     }
     const suffixElementContainer = document.createElement("span");
     suffixElementContainer.classList.add("tabbed-pane-header-tab-suffix-element");
-    const suffixElement = measuring ? this.suffixElement.cloneNode() : this.suffixElement;
-    suffixElementContainer.appendChild(suffixElement);
+    if (this.suffixElement instanceof HTMLElement) {
+      const suffixElement = measuring ? this.suffixElement.cloneNode() : this.suffixElement;
+      suffixElementContainer.appendChild(suffixElement);
+    } else {
+      render(this.suffixElement, suffixElementContainer);
+    }
     titleElement.insertAdjacentElement("afterend", suffixElementContainer);
     tabSuffixElements.set(tabElement, suffixElementContainer);
   }
@@ -5509,6 +5081,11 @@ var TabbedPaneTab = class {
       tabElement.appendChild(previewIcon);
       tabElement.classList.add("preview");
     }
+    if (this.tabAnnotationIcon) {
+      const tabAnnotationIcon = this.createTabAnnotationIcon();
+      tabElement.appendChild(tabAnnotationIcon);
+      tabElement.classList.add("ai");
+    }
     if (this.closeable) {
       const closeIcon = this.createCloseIconButton();
       tabElement.appendChild(closeIcon);
@@ -5529,6 +5106,15 @@ var TabbedPaneTab = class {
     }
     return tabElement;
   }
+  createTabAnnotationIcon() {
+    const tabAnnotationIcon = new Icon();
+    tabAnnotationIcon.name = "spark";
+    tabAnnotationIcon.classList.add("small");
+    tabAnnotationIcon.classList.add("spark");
+    tabAnnotationIcon.setAttribute("title", i18nString4(UIStrings4.panelContainsAnnotation));
+    tabAnnotationIcon.setAttribute("aria-label", i18nString4(UIStrings4.panelContainsAnnotation));
+    return tabAnnotationIcon;
+  }
   createCloseIconButton() {
     const closeButton = new Buttons2.Button.Button();
     closeButton.data = {
@@ -5538,14 +5124,14 @@ var TabbedPaneTab = class {
       title: i18nString4(UIStrings4.closeS, { PH1: this.title })
     };
     closeButton.classList.add("close-button", "tabbed-pane-close-button");
-    closeButton.setAttribute("jslog", `${VisualLogging5.close().track({ click: true })}`);
+    closeButton.setAttribute("jslog", `${VisualLogging4.close().track({ click: true })}`);
     closeButton.setAttribute("aria-label", i18nString4(UIStrings4.closeS, { PH1: this.title }));
     return closeButton;
   }
   createPreviewIcon() {
     const iconContainer = document.createElement("div");
     iconContainer.classList.add("preview-icon");
-    const previewIcon = new IconButton2.Icon.Icon();
+    const previewIcon = new Icon();
     previewIcon.name = "experiment";
     previewIcon.classList.add("small");
     iconContainer.appendChild(previewIcon);
@@ -5691,6 +5277,85 @@ var TabbedPaneTab = class {
 };
 var tabIcons = /* @__PURE__ */ new WeakMap();
 var tabSuffixElements = /* @__PURE__ */ new WeakMap();
+var TabbedPaneElement = class extends WidgetElement {
+  #tabObserver = new MutationObserver(() => this.#updateTabs());
+  constructor() {
+    super();
+    registerWidgetConfig(this, widgetConfig((element) => {
+      const widget2 = new TabbedPane(element);
+      const slot = widget2.contentElement.querySelector("slot:not([name])");
+      if (slot) {
+        slot.addEventListener("slotchange", () => this.#syncTabs());
+      }
+      widget2.addEventListener(Events.TabSelected, () => {
+        const slot2 = widget2.contentElement.querySelector("slot:not([name])");
+        const nodes = slot2 ? slot2.assignedElements() : [];
+        for (const child of nodes) {
+          if (child.id === widget2.selectedTabId) {
+            child.setAttribute("selected", "");
+          } else {
+            child.removeAttribute("selected");
+          }
+        }
+        this.dispatchEvent(new CustomEvent("select", { detail: { tabId: widget2.selectedTabId } }));
+      });
+      this.#syncTabs(widget2);
+      return widget2;
+    }));
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#tabObserver.disconnect();
+  }
+  #syncTabs(widget2 = this.getWidget()) {
+    if (!widget2) {
+      return;
+    }
+    this.#updateObserver(widget2);
+    this.#updateTabs(widget2);
+  }
+  #updateObserver(widget2) {
+    this.#tabObserver.disconnect();
+    const slot = widget2.contentElement.querySelector("slot:not([name])");
+    const nodes = slot ? slot.assignedElements() : [];
+    for (const child of nodes) {
+      this.#tabObserver.observe(child, { attributes: true, attributeFilter: ["title", "jslogcontext", "selected", "disabled"] });
+    }
+  }
+  #updateTabs(widget2 = this.getWidget()) {
+    if (!widget2) {
+      return;
+    }
+    const tabs = [];
+    const slot = widget2.contentElement.querySelector("slot:not([name])");
+    const nodes = slot ? slot.assignedElements() : [];
+    for (const child of nodes) {
+      const id2 = child.id;
+      const title = child.getAttribute("title") || "";
+      const jslogContext = child.getAttribute("jslogcontext") || void 0;
+      const selected = child.hasAttribute("selected");
+      const enabled = !child.hasAttribute("disabled");
+      const view = Widget.getOrCreateWidget(child);
+      view.setHideOnDetach();
+      if (widget2.selectedTabId !== id2) {
+        view.hideWidget();
+        child.classList.add("hidden");
+      } else {
+        view.showWidget();
+      }
+      tabs.push({
+        id: id2,
+        title,
+        view,
+        jslogContext,
+        selected,
+        enabled
+      });
+    }
+    widget2.tabs = tabs;
+  }
+};
+customElements.define("devtools-tabbed-pane", TabbedPaneElement);
 
 // gen/front_end/ui/legacy/ViewManager.js
 var ViewManager_exports = {};
@@ -5701,19 +5366,17 @@ __export(ViewManager_exports, {
   defaultOptionsForTabs: () => defaultOptionsForTabs,
   getLocalizedViewLocationCategory: () => getLocalizedViewLocationCategory,
   getRegisteredLocationResolvers: () => getRegisteredLocationResolvers,
-  getRegisteredViewExtensions: () => getRegisteredViewExtensions,
   maybeRemoveViewExtension: () => maybeRemoveViewExtension,
   registerLocationResolver: () => registerLocationResolver,
   registerViewExtension: () => registerViewExtension,
   resetViewRegistration: () => resetViewRegistration
 });
-import * as Common9 from "./../../core/common/common.js";
+import * as Common7 from "./../../core/common/common.js";
 import * as Host4 from "./../../core/host/host.js";
 import * as i18n11 from "./../../core/i18n/i18n.js";
-import * as Platform8 from "./../../core/platform/platform.js";
-import * as Root3 from "./../../core/root/root.js";
-import * as IconButton3 from "./../components/icon_button/icon_button.js";
-import * as VisualLogging6 from "./../visual_logging/visual_logging.js";
+import * as Platform7 from "./../../core/platform/platform.js";
+import { createIcon as createIcon3 } from "./../kit/kit.js";
+import * as VisualLogging5 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/viewContainers.css.js
 var viewContainers_css_default = `/* Copyright 2025 The Chromium Authors
@@ -5810,7 +5473,7 @@ found in the LICENSE file. */
 
 // gen/front_end/ui/legacy/ViewRegistration.js
 import * as i18n9 from "./../../core/i18n/i18n.js";
-import * as Root2 from "./../../core/root/root.js";
+import * as Root3 from "./../../core/root/root.js";
 var UIStrings5 = {
   /**
    * @description Badge label for an entry in the Quick Open menu. Selecting the entry opens the 'Elements' panel.
@@ -5843,26 +5506,19 @@ var UIStrings5 = {
 };
 var str_5 = i18n9.i18n.registerUIStrings("ui/legacy/ViewRegistration.ts", UIStrings5);
 var i18nString5 = i18n9.i18n.getLocalizedString.bind(void 0, str_5);
-var registeredViewExtensions = [];
-var viewIdSet = /* @__PURE__ */ new Set();
+var registeredViewExtensions = /* @__PURE__ */ new Map();
 function registerViewExtension(registration) {
   const viewId = registration.id;
-  if (viewIdSet.has(viewId)) {
+  if (registeredViewExtensions.has(viewId)) {
     throw new Error(`Duplicate view id '${viewId}'`);
   }
-  viewIdSet.add(viewId);
-  registeredViewExtensions.push(new PreRegisteredView(registration));
+  registeredViewExtensions.set(viewId, registration);
 }
 function getRegisteredViewExtensions() {
-  return registeredViewExtensions.filter((view) => Root2.Runtime.Runtime.isDescriptorEnabled({ experiment: view.experiment(), condition: view.condition() }));
+  return registeredViewExtensions.values().filter((view) => Root3.Runtime.Runtime.isDescriptorEnabled({ experiment: view.experiment, condition: view.condition })).toArray();
 }
 function maybeRemoveViewExtension(viewId) {
-  const viewIndex = registeredViewExtensions.findIndex((view) => view.viewId() === viewId);
-  if (viewIndex < 0 || !viewIdSet.delete(viewId)) {
-    return false;
-  }
-  registeredViewExtensions.splice(viewIndex, 1);
-  return true;
+  return registeredViewExtensions.delete(viewId);
 }
 var registeredLocationResolvers = [];
 var viewLocationNameSet = /* @__PURE__ */ new Set();
@@ -5878,10 +5534,9 @@ function getRegisteredLocationResolvers() {
   return registeredLocationResolvers;
 }
 function resetViewRegistration() {
-  registeredViewExtensions.length = 0;
+  registeredViewExtensions.clear();
   registeredLocationResolvers.length = 0;
   viewLocationNameSet.clear();
-  viewIdSet.clear();
 }
 function getLocalizedViewLocationCategory(category) {
   switch (category) {
@@ -5920,9 +5575,11 @@ var defaultOptionsForTabs = {
 };
 var PreRegisteredView = class {
   viewRegistration;
+  universe;
   widgetPromise;
-  constructor(viewRegistration) {
+  constructor(viewRegistration, universe) {
     this.viewRegistration = viewRegistration;
+    this.universe = universe;
     this.widgetPromise = null;
   }
   title() {
@@ -5976,7 +5633,10 @@ var PreRegisteredView = class {
   }
   widget() {
     if (this.widgetPromise === null) {
-      this.widgetPromise = this.viewRegistration.loadView();
+      if (!this.universe) {
+        throw new Error("Creating views via ViewManager requires a Foundation.Universe");
+      }
+      this.widgetPromise = this.viewRegistration.loadView(this.universe);
     }
     return this.widgetPromise;
   }
@@ -5984,8 +5644,8 @@ var PreRegisteredView = class {
     if (this.widgetPromise === null) {
       return;
     }
-    const widget = await this.widgetPromise;
-    await widget.ownerViewDisposed();
+    const widget2 = await this.widgetPromise;
+    await widget2.ownerViewDisposed();
   }
   experiment() {
     return this.viewRegistration.experiment;
@@ -5995,19 +5655,22 @@ var PreRegisteredView = class {
   }
 };
 var viewManagerInstance;
-var ViewManager = class _ViewManager extends Common9.ObjectWrapper.ObjectWrapper {
+var ViewManager = class _ViewManager extends Common7.ObjectWrapper.ObjectWrapper {
   views = /* @__PURE__ */ new Map();
   locationNameByViewId = /* @__PURE__ */ new Map();
   locationOverrideSetting;
-  constructor() {
+  preRegisteredViews = [];
+  // TODO(crbug.com/458180550): Pass the universe unconditionally once tests no longer rely
+  //   on `instance()` to create ViewManagers lazily in after/afterEach blocks.
+  constructor(universe) {
     super();
-    this.locationOverrideSetting = Common9.Settings.Settings.instance().createSetting("views-location-override", {});
+    this.locationOverrideSetting = Common7.Settings.Settings.instance().createSetting("views-location-override", {});
     const preferredExtensionLocations = this.locationOverrideSetting.get();
     const viewsByLocation = /* @__PURE__ */ new Map();
     for (const view of getRegisteredViewExtensions()) {
-      const location = view.location() || "none";
+      const location = view.location || "none";
       const views = viewsByLocation.get(location) || [];
-      views.push(view);
+      views.push(new PreRegisteredView(view, universe));
       viewsByLocation.set(location, views);
     }
     let sortedViewExtensions = [];
@@ -6028,18 +5691,19 @@ var ViewManager = class _ViewManager extends Common9.ObjectWrapper.ObjectWrapper
       if (this.views.has(viewId)) {
         throw new Error(`Duplicate view id '${viewId}'`);
       }
-      if (!Platform8.StringUtilities.isExtendedKebabCase(viewId)) {
+      if (!Platform7.StringUtilities.isExtendedKebabCase(viewId)) {
         throw new Error(`Invalid view ID '${viewId}'`);
       }
       this.views.set(viewId, view);
+      this.preRegisteredViews.push(view);
       const locationName = preferredExtensionLocations[viewId] || location;
       this.locationNameByViewId.set(viewId, locationName);
     }
   }
   static instance(opts = { forceNew: null }) {
-    const { forceNew } = opts;
+    const { forceNew, universe } = opts;
     if (!viewManagerInstance || forceNew) {
-      viewManagerInstance = new _ViewManager();
+      viewManagerInstance = new _ViewManager(universe);
     }
     return viewManagerInstance;
   }
@@ -6050,11 +5714,14 @@ var ViewManager = class _ViewManager extends Common9.ObjectWrapper.ObjectWrapper
     if (!toolbarItems.length) {
       return null;
     }
-    const toolbar4 = document.createElement("devtools-toolbar");
+    const toolbar5 = document.createElement("devtools-toolbar");
     for (const item8 of toolbarItems) {
-      toolbar4.appendToolbarItem(item8);
+      toolbar5.appendToolbarItem(item8);
     }
-    return toolbar4;
+    return toolbar5;
+  }
+  getRegisteredViewExtensions() {
+    return this.preRegisteredViews;
   }
   locationNameForViewId(viewId) {
     const locationName = this.locationNameByViewId.get(viewId);
@@ -6123,7 +5790,7 @@ var ViewManager = class _ViewManager extends Common9.ObjectWrapper.ObjectWrapper
     return view;
   }
   materializedWidget(viewId) {
-    const view = this.view(viewId);
+    const view = this.views.get(viewId);
     if (!view) {
       return null;
     }
@@ -6170,8 +5837,8 @@ var ViewManager = class _ViewManager extends Common9.ObjectWrapper.ObjectWrapper
     }
     throw new Error("Unresolved location: " + location);
   }
-  createTabbedLocation(revealCallback, location, restoreSelection, allowReorder, defaultTab) {
-    return new TabbedLocation(this, revealCallback, location, restoreSelection, allowReorder, defaultTab);
+  createTabbedLocation(revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory) {
+    return new TabbedLocation(this, revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory);
   }
   createStackLocation(revealCallback, location, jslogContext) {
     return new StackLocation(this, revealCallback, location, jslogContext);
@@ -6213,13 +5880,13 @@ var ContainerWidget = class extends VBox {
         this.element.insertBefore(toolbarElement, this.element.firstChild);
       }
     }));
-    promises.push(this.view.widget().then((widget) => {
+    promises.push(this.view.widget().then((widget2) => {
       const shouldFocus = this.element.hasFocus();
       this.setDefaultFocusedElement(null);
-      widgetForView.set(this.view, widget);
-      widget.show(this.element);
+      widgetForView.set(this.view, widget2);
+      widget2.show(this.element);
       if (shouldFocus) {
-        widget.focus();
+        widget2.focus();
       }
     }));
     this.materializePromise = Promise.all(promises).then(() => {
@@ -6229,9 +5896,9 @@ var ContainerWidget = class extends VBox {
   wasShown() {
     super.wasShown();
     void this.materialize().then(() => {
-      const widget = widgetForView.get(this.view);
-      if (widget) {
-        widget.show(this.element);
+      const widget2 = widgetForView.get(this.view);
+      if (widget2) {
+        widget2.show(this.element);
         this.wasShownForTest();
       }
     });
@@ -6251,12 +5918,12 @@ var ExpandableContainerWidget = class extends VBox {
     this.registerRequiredCSS(viewContainers_css_default);
     this.titleElement = document.createElement("div");
     this.titleElement.classList.add("expandable-view-title");
-    this.titleElement.setAttribute("jslog", `${VisualLogging6.sectionHeader().context(view.viewId()).track({
+    this.titleElement.setAttribute("jslog", `${VisualLogging5.sectionHeader().context(view.viewId()).track({
       click: true,
       keydown: "Enter|Space|ArrowLeft|ArrowRight"
     })}`);
     markAsTreeitem(this.titleElement);
-    this.titleExpandIcon = IconButton3.Icon.create("triangle-right", "title-expand-icon");
+    this.titleExpandIcon = createIcon3("triangle-right", "title-expand-icon");
     this.titleElement.appendChild(this.titleExpandIcon);
     const titleText = view.title();
     createTextChild(this.titleElement, titleText);
@@ -6291,10 +5958,10 @@ var ExpandableContainerWidget = class extends VBox {
         this.titleElement.appendChild(toolbarElement);
       }
     }));
-    promises.push(this.view.widget().then((widget) => {
-      this.widget = widget;
-      widgetForView.set(this.view, widget);
-      widget.show(this.element);
+    promises.push(this.view.widget().then((widget2) => {
+      this.widget = widget2;
+      widgetForView.set(this.view, widget2);
+      widget2.show(this.element);
     }));
     this.materializePromise = Promise.all(promises).then(() => {
     });
@@ -6357,10 +6024,10 @@ var Location = class {
   manager;
   revealCallback;
   #widget;
-  constructor(manager, widget, revealCallback) {
+  constructor(manager, widget2, revealCallback) {
     this.manager = manager;
     this.revealCallback = revealCallback;
-    this.#widget = widget;
+    this.#widget = widget2;
   }
   widget() {
     return this.#widget;
@@ -6389,9 +6056,10 @@ var TabbedLocation = class _TabbedLocation extends Location {
   tabOrderSetting;
   lastSelectedTabSetting;
   defaultTab;
+  isLocationVisible;
   views = /* @__PURE__ */ new Map();
-  constructor(manager, revealCallback, location, restoreSelection, allowReorder, defaultTab) {
-    const tabbedPane = new TabbedPane();
+  constructor(manager, revealCallback, location, restoreSelection, allowReorder, defaultTab, isLocationVisible, tabbedPaneFactory) {
+    const tabbedPane = tabbedPaneFactory ? tabbedPaneFactory() : new TabbedPane();
     if (allowReorder) {
       tabbedPane.setAllowTabReorder(true);
     }
@@ -6402,14 +6070,15 @@ var TabbedLocation = class _TabbedLocation extends Location {
     this.#tabbedPane.addEventListener(Events.TabSelected, this.tabSelected, this);
     this.#tabbedPane.addEventListener(Events.TabClosed, this.tabClosed, this);
     this.#tabbedPane.addEventListener(Events.PaneVisibilityChanged, this.tabbedPaneVisibilityChanged, this);
-    this.closeableTabSetting = Common9.Settings.Settings.instance().createSetting("closeable-tabs", {});
+    this.closeableTabSetting = Common7.Settings.Settings.instance().createSetting("closeable-tabs", {});
     this.setOrUpdateCloseableTabsSetting();
-    this.tabOrderSetting = Common9.Settings.Settings.instance().createSetting(location + "-tab-order", {});
+    this.tabOrderSetting = Common7.Settings.Settings.instance().createSetting(location + "-tab-order", {});
     this.#tabbedPane.addEventListener(Events.TabOrderChanged, this.persistTabOrder, this);
     if (restoreSelection) {
-      this.lastSelectedTabSetting = Common9.Settings.Settings.instance().createSetting(location + "-selected-tab", "");
+      this.lastSelectedTabSetting = Common7.Settings.Settings.instance().createSetting(location + "-selected-tab", "");
     }
     this.defaultTab = defaultTab;
+    this.isLocationVisible = isLocationVisible;
     if (location) {
       this.appendApplicableItems(location);
     }
@@ -6479,26 +6148,6 @@ var TabbedLocation = class _TabbedLocation extends Location {
   appendTabsToMenu(contextMenu) {
     const views = Array.from(this.views.values());
     views.sort((viewa, viewb) => viewa.title().localeCompare(viewb.title()));
-    const freestylerView = views.find((view) => view.viewId() === "freestyler");
-    if (freestylerView) {
-      const featureName = Root3.Runtime.hostConfig.devToolsFreestyler?.featureName;
-      const promotionId = freestylerView instanceof PreRegisteredView ? freestylerView.featurePromotionId() : void 0;
-      const handler = () => {
-        void this.showView(freestylerView, void 0, true);
-        if (promotionId) {
-          PromotionManager.instance().recordFeatureInteraction(promotionId);
-        }
-      };
-      contextMenu.defaultSection().appendItem(freestylerView.title(), handler, {
-        isPreviewFeature: freestylerView.isPreviewFeature(),
-        jslogContext: freestylerView.viewId(),
-        // Request to show a new badge in the native context menu only if:
-        // 1. The promotion manager agrees that we may show it, or 2. the promotion manager doesn't track this badge.
-        // Note that this is only a request to show the new badge, the back-end will decide whether
-        // or not it will show it depending on the user education service.
-        featureName: !promotionId || PromotionManager.instance().maybeShowPromotion(promotionId) ? featureName : void 0
-      });
-    }
     for (const view of views) {
       const title = view.title();
       if (view.viewId() === "issues-pane") {
@@ -6511,9 +6160,6 @@ var TabbedLocation = class _TabbedLocation extends Location {
         }, { jslogContext: "issues-pane" });
         continue;
       }
-      if (view.viewId() === "freestyler") {
-        continue;
-      }
       const isPreviewFeature = view.isPreviewFeature();
       contextMenu.defaultSection().appendItem(title, this.showView.bind(this, view, void 0, true), { isPreviewFeature, jslogContext: view.viewId() });
     }
@@ -6522,7 +6168,7 @@ var TabbedLocation = class _TabbedLocation extends Location {
     this.#tabbedPane.appendTab(view.viewId(), view.title(), new ContainerWidget(view), void 0, false, view.isCloseable() || view.isTransient(), view.isPreviewFeature(), index);
     const iconName = view.iconName();
     if (iconName) {
-      const icon = IconButton3.Icon.create(iconName);
+      const icon = createIcon3(iconName);
       this.#tabbedPane.setTabIcon(view.viewId(), icon);
     }
   }
@@ -6575,8 +6221,8 @@ var TabbedLocation = class _TabbedLocation extends Location {
     if (!omitFocus) {
       this.#tabbedPane.focus();
     }
-    const widget = this.#tabbedPane.tabView(view.viewId());
-    await widget.materialize();
+    const widget2 = this.#tabbedPane.tabView(view.viewId());
+    await widget2.materialize();
   }
   removeView(view) {
     if (!this.#tabbedPane.hasTab(view.viewId())) {
@@ -6588,7 +6234,8 @@ var TabbedLocation = class _TabbedLocation extends Location {
     this.views.delete(view.viewId());
   }
   isViewVisible(view) {
-    return this.#tabbedPane.isShowing() && this.#tabbedPane?.selectedTabId === view.viewId();
+    const locationVisible = this.isLocationVisible ? this.isLocationVisible() : this.#tabbedPane.isShowing();
+    return locationVisible && this.#tabbedPane.selectedTabId === view.viewId();
   }
   tabbedPaneVisibilityChanged(event) {
     if (!this.#tabbedPane.selectedTabId) {
@@ -6650,7 +6297,7 @@ var StackLocation = class extends Location {
   expandableContainers;
   constructor(manager, revealCallback, location, jslogContext) {
     const vbox = new VBox();
-    vbox.element.setAttribute("jslog", `${VisualLogging6.pane(jslogContext || "sidebar").track({ resize: true })}`);
+    vbox.element.setAttribute("jslog", `${VisualLogging5.pane(jslogContext || "sidebar").track({ resize: true })}`);
     super(manager, vbox, revealCallback);
     this.vbox = vbox;
     markAsTree(vbox.element);
@@ -6705,16 +6352,1347 @@ var StackLocation = class extends Location {
   }
 };
 
-// gen/front_end/ui/legacy/InspectorView.js
+// gen/front_end/ui/legacy/InspectorDrawerView.js
+var VERTICAL_MINIMIZED_DRAWER_SIZE = 27;
+var DrawerTabbedPane = class extends TabbedPane {
+  constructor() {
+    super();
+    this.registerRequiredCSS(inspectorDrawerTabbedPane_css_default);
+  }
+  setVerticalMinimized(isMinimized) {
+    this.element.classList.toggle("drawer-minimized-vertical", isMinimized);
+    this.contentElement.classList.toggle("collapsed-vertical-drawer-container", isMinimized);
+    this.tabbedPaneContentElement().classList.toggle("hide-element", isMinimized);
+    this.headerElement().classList.toggle("collapsed-vertical-drawer-header", isMinimized);
+    this.headerContentsElement.classList.toggle("hide-element", isMinimized);
+    this.leftToolbar().classList.toggle("hide-element", isMinimized);
+    this.rightToolbar().classList.toggle("collapsed-vertical-drawer-right-toolbar", isMinimized);
+    this.rightToolbar().classList.toggle("collapsed-vertical-drawer-toolbar-content", isMinimized);
+  }
+  restoreAfterVerticalMinimized() {
+    this.clearMeasuredWidths();
+    this.headerResized();
+  }
+};
 var UIStrings7 = {
   /**
-   * @description Title of more tabs button in inspector view
+   * @description Title of more tabs button in the drawer view.
    */
   moreTools: "More Tools",
   /**
-   * @description Text that appears when hovor over the close button on the drawer view
+   * @description Text that appears when hover over the minimize button on the drawer view.
+   */
+  minimizeDrawer: "Minimize drawer",
+  /**
+   * @description Text that appears when hover over the expand button on the drawer view.
+   */
+  expandDrawer: "Expand drawer",
+  /**
+   * @description Text that appears when hover over the close button on the drawer view.
    */
   closeDrawer: "Close drawer",
+  /**
+   * @description Text that appears when hover the toggle orientation button.
+   */
+  toggleDrawerOrientation: "Toggle drawer orientation"
+};
+var str_7 = i18n13.i18n.registerUIStrings("ui/legacy/InspectorDrawerView.ts", UIStrings7);
+var i18nString7 = i18n13.i18n.getLocalizedString.bind(void 0, str_7);
+var InspectorDrawerView = class {
+  tabbedLocation;
+  tabbedPane;
+  #splitWidget;
+  #drawerMinimizedSetting;
+  #verticalExpandedMinimumWidth;
+  #minimumSizes;
+  #setInspectorMinimumSize;
+  #drawerSizeBeforeMinimize = 0;
+  #wasVerticalAndMinimized = false;
+  #toggleOrientationButton;
+  #minimizeExpandButton;
+  #closeDrawerButton;
+  #moreTabsButton;
+  #onExpandFromMinimized;
+  #onMinimizeFromTabInteraction;
+  #onTabSelected;
+  #isConsoleOpenInMainAndDrawer;
+  constructor(options) {
+    this.#splitWidget = options.splitWidget;
+    this.#verticalExpandedMinimumWidth = options.verticalExpandedMinimumWidth;
+    this.#minimumSizes = options.minimumSizes;
+    this.#setInspectorMinimumSize = options.setInspectorMinimumSize;
+    this.#onExpandFromMinimized = options.onExpandFromMinimized;
+    this.#onMinimizeFromTabInteraction = options.onMinimizeFromTabInteraction;
+    this.#onTabSelected = options.onTabSelected;
+    this.#isConsoleOpenInMainAndDrawer = options.isConsoleOpenInMainAndDrawer;
+    this.#drawerMinimizedSetting = Common8.Settings.Settings.instance().createLocalSetting("inspector.drawer-minimized", false);
+    this.tabbedLocation = ViewManager.instance().createTabbedLocation(options.revealDrawer, "drawer-view", true, true, void 0, options.isVisible, () => new DrawerTabbedPane());
+    this.#moreTabsButton = this.tabbedLocation.enableMoreTabsButton();
+    this.#moreTabsButton.setTitle(i18nString7(UIStrings7.moreTools));
+    this.tabbedPane = this.tabbedLocation.tabbedPane();
+    this.tabbedPane.element.classList.add("drawer-tabbed-pane");
+    this.tabbedPane.element.setAttribute("jslog", `${VisualLogging6.drawer()}`);
+    this.#minimizeExpandButton = new ToolbarButton(i18nString7(UIStrings7.minimizeDrawer), options.isVertical ? "right-panel-close" : "bottom-panel-close");
+    this.#minimizeExpandButton.element.setAttribute("jslog", `${VisualLogging6.toggle("minimize-drawer").track({ click: true })}`);
+    this.#minimizeExpandButton.addEventListener("Click", options.onToggleMinimized);
+    this.#closeDrawerButton = new ToolbarButton(i18nString7(UIStrings7.closeDrawer), "cross");
+    this.#closeDrawerButton.element.setAttribute("jslog", `${VisualLogging6.close("close-drawer").track({ click: true })}`);
+    this.#closeDrawerButton.addEventListener("Click", options.onHide);
+    this.#toggleOrientationButton = new ToolbarButton(i18nString7(UIStrings7.toggleDrawerOrientation), options.isVertical ? "dock-bottom" : "dock-right");
+    this.#toggleOrientationButton.element.setAttribute("jslog", `${VisualLogging6.toggle("toggle-drawer-orientation").track({ click: true })}`);
+    this.#toggleOrientationButton.addEventListener("Click", options.onToggleOrientation);
+    if (options.enableOrientationToggle) {
+      this.tabbedPane.rightToolbar().appendToolbarItem(this.#toggleOrientationButton);
+    }
+    this.tabbedPane.rightToolbar().appendToolbarItem(this.#minimizeExpandButton);
+    this.tabbedPane.rightToolbar().appendToolbarItem(this.#closeDrawerButton);
+    this.tabbedPane.addEventListener(Events.TabInvoked, this.#drawerTabInvoked, this);
+    this.tabbedPane.addEventListener(Events.TabSelected, this.#drawerTabSelected, this);
+    this.tabbedPane.setTabDelegate(options.tabDelegate);
+    const selectedDrawerTab = this.tabbedPane.selectedTabId;
+    if (this.#splitWidget.showMode() !== "OnlyMain" && selectedDrawerTab) {
+      this.#onTabSelected(selectedDrawerTab);
+    }
+    const drawerElement = this.tabbedPane.element;
+    markAsComplementary(drawerElement);
+    setLabel(drawerElement, options.drawerLabel);
+    this.#splitWidget.installResizer(this.tabbedPane.headerElement());
+    this.#splitWidget.setSidebarWidget(this.tabbedPane);
+    this.tabbedPane.headerElement().setAttribute("jslog", `${VisualLogging6.toolbar("drawer").track({
+      drag: true,
+      keydown: "ArrowUp|ArrowLeft|ArrowDown|ArrowRight|Enter|Space"
+    })}`);
+    this.#updatePresentation(false);
+  }
+  restoreMinimizedStateFromSettings() {
+    if (!this.#drawerMinimizedSetting.get()) {
+      return;
+    }
+    this.#splitWidget.showBoth();
+    this.setMinimized(true);
+  }
+  setVertical(shouldBeVertical) {
+    if (shouldBeVertical === this.#splitWidget.isVertical()) {
+      return;
+    }
+    const previousShowMode = this.#splitWidget.showMode();
+    const wasDrawerMinimized = this.isMinimized();
+    this.#splitWidget.setVertical(shouldBeVertical);
+    this.#updatePresentation(wasDrawerMinimized);
+    this.applyState(previousShowMode, wasDrawerMinimized);
+  }
+  applyState(showMode, minimized) {
+    if (this.#splitWidget.showMode() !== showMode) {
+      switch (showMode) {
+        case "Both":
+          this.#splitWidget.showBoth();
+          break;
+        case "OnlyMain":
+          this.#splitWidget.hideSidebar();
+          break;
+        case "OnlySidebar":
+          this.#splitWidget.hideMain();
+          break;
+      }
+    }
+    const shouldBeMinimized = showMode === "Both" && minimized;
+    if (showMode === "Both") {
+      this.setMinimized(shouldBeMinimized);
+      return;
+    }
+    this.#splitWidget.setSidebarMinimized(false);
+    this.#splitWidget.setResizable(false);
+    this.#updatePresentation(false);
+    this.#drawerMinimizedSetting.set(false);
+  }
+  show(hasTargetDrawer) {
+    const wasDrawerVisible = this.isVisibleForEvents();
+    this.tabbedPane.setAutoSelectFirstItemOnShow(!hasTargetDrawer);
+    this.#splitWidget.showBoth();
+    this.#dispatchPaneVisibilityChangedIfNeeded(wasDrawerVisible);
+  }
+  hide() {
+    const wasDrawerVisible = this.isVisibleForEvents();
+    const wasMinimized = this.isMinimized();
+    this.#splitWidget.hideSidebar(!wasMinimized);
+    if (wasMinimized) {
+      this.#updatePresentation(false);
+      this.#splitWidget.setSidebarMinimized(false);
+      this.#splitWidget.setResizable(true);
+    }
+    this.#drawerMinimizedSetting.set(false);
+    this.#dispatchPaneVisibilityChangedIfNeeded(wasDrawerVisible);
+  }
+  setMinimized(minimized) {
+    const wasDrawerVisible = this.isVisibleForEvents();
+    if (minimized && !this.isMinimized()) {
+      this.#drawerSizeBeforeMinimize = this.#splitWidget.sidebarSize();
+    }
+    this.#updatePresentation(minimized);
+    this.#splitWidget.setSidebarMinimized(minimized);
+    this.#dispatchPaneVisibilityChangedIfNeeded(wasDrawerVisible);
+    this.#splitWidget.setResizable(!minimized);
+    this.#drawerMinimizedSetting.set(minimized);
+    if (!minimized && this.#drawerSizeBeforeMinimize > 0) {
+      this.#splitWidget.setSidebarSize(this.#drawerSizeBeforeMinimize);
+    }
+  }
+  drawerVisible() {
+    return this.tabbedPane.isShowing();
+  }
+  isVisibleForEvents() {
+    return this.#splitWidget.sidebarIsShowing() && !this.isMinimized();
+  }
+  drawerSize() {
+    return this.#splitWidget.sidebarSize();
+  }
+  setDrawerSize(size) {
+    this.#splitWidget.setSidebarSize(size);
+  }
+  totalSize() {
+    return this.#splitWidget.totalSize();
+  }
+  isMinimized() {
+    return this.#splitWidget.isSidebarMinimized();
+  }
+  isVertical() {
+    return this.#splitWidget.isVertical();
+  }
+  updatePresentation({ isVertical, isMinimized, verticalExpandedMinimumWidth }) {
+    this.#toggleOrientationButton.setGlyph(isVertical ? "dock-bottom" : "dock-right");
+    this.#updateMinimizeExpandButton(isVertical, isMinimized);
+    const isVerticalAndMinimized = isVertical && isMinimized;
+    if (isVerticalAndMinimized) {
+      this.tabbedPane.setMinimumSize(VERTICAL_MINIMIZED_DRAWER_SIZE, VERTICAL_MINIMIZED_DRAWER_SIZE);
+    } else if (isVertical) {
+      this.tabbedPane.setMinimumSize(verticalExpandedMinimumWidth, VERTICAL_MINIMIZED_DRAWER_SIZE);
+    } else {
+      this.tabbedPane.setMinimumSize(0, VERTICAL_MINIMIZED_DRAWER_SIZE);
+    }
+    this.tabbedPane.setVerticalMinimized(isVerticalAndMinimized);
+    if (this.#moreTabsButton) {
+      this.#moreTabsButton.setVisible(!isVerticalAndMinimized);
+    }
+    if (!isVerticalAndMinimized && this.#wasVerticalAndMinimized) {
+      this.tabbedPane.restoreAfterVerticalMinimized();
+    }
+    this.#wasVerticalAndMinimized = isVerticalAndMinimized;
+  }
+  #updateMinimizeExpandButton(isVertical, isMinimized) {
+    if (isMinimized) {
+      this.#minimizeExpandButton.setGlyph(isVertical ? "right-panel-open" : "bottom-panel-open");
+      this.#minimizeExpandButton.setTitle(i18nString7(UIStrings7.expandDrawer));
+      return;
+    }
+    this.#minimizeExpandButton.setGlyph(isVertical ? "right-panel-close" : "bottom-panel-close");
+    this.#minimizeExpandButton.setTitle(i18nString7(UIStrings7.minimizeDrawer));
+  }
+  #updatePresentation(minimized) {
+    const drawerIsVertical = this.#splitWidget.isVertical();
+    this.#setInspectorMinimumSize(drawerIsVertical ? this.#minimumSizes.inspectorWidthWhenVertical : this.#minimumSizes.inspectorWidthWhenHorizontal, this.#minimumSizes.inspectorHeight);
+    this.updatePresentation({
+      isVertical: drawerIsVertical,
+      isMinimized: minimized,
+      verticalExpandedMinimumWidth: this.#verticalExpandedMinimumWidth
+    });
+  }
+  #dispatchPaneVisibilityChangedIfNeeded(wasDrawerVisible) {
+    const isDrawerVisible = this.isVisibleForEvents();
+    if (wasDrawerVisible === isDrawerVisible) {
+      return;
+    }
+    this.tabbedPane.dispatchEventToListeners(Events.PaneVisibilityChanged, { isVisible: isDrawerVisible });
+  }
+  #drawerTabSelected(event) {
+    const { tabId, prevTabId, isUserGesture } = event.data;
+    this.#onTabSelected(tabId);
+    if (this.#isConsoleOpenInMainAndDrawer(tabId)) {
+      return;
+    }
+    if (isUserGesture && prevTabId && prevTabId !== tabId && this.isMinimized()) {
+      this.#onExpandFromMinimized();
+    }
+  }
+  #drawerTabInvoked(event) {
+    const { tabId, isUserGesture } = event.data;
+    if (isUserGesture && this.#isConsoleOpenInMainAndDrawer(tabId)) {
+      if (!this.isMinimized()) {
+        this.#onMinimizeFromTabInteraction();
+      }
+      return;
+    }
+    if (isUserGesture && this.isMinimized()) {
+      this.#onExpandFromMinimized();
+    }
+  }
+};
+
+// gen/front_end/ui/legacy/SplitWidget.js
+var SplitWidget_exports = {};
+__export(SplitWidget_exports, {
+  SplitWidget: () => SplitWidget,
+  SplitWidgetElement: () => SplitWidgetElement
+});
+import * as Common10 from "./../../core/common/common.js";
+import * as Platform8 from "./../../core/platform/platform.js";
+import * as Geometry3 from "./../../models/geometry/geometry.js";
+import * as VisualLogging7 from "./../visual_logging/visual_logging.js";
+
+// gen/front_end/ui/legacy/ResizerWidget.js
+var ResizerWidget_exports = {};
+__export(ResizerWidget_exports, {
+  ResizerWidget: () => ResizerWidget,
+  SimpleResizerWidget: () => SimpleResizerWidget
+});
+import * as Common9 from "./../../core/common/common.js";
+var ResizerWidget = class extends Common9.ObjectWrapper.ObjectWrapper {
+  #isEnabled = true;
+  #elements = /* @__PURE__ */ new Set();
+  #installDragOnMouseDownBound;
+  #cursor = "nwse-resize";
+  #startX;
+  #startY;
+  constructor() {
+    super();
+    this.#installDragOnMouseDownBound = this.#installDragOnMouseDown.bind(this);
+  }
+  isEnabled() {
+    return this.#isEnabled;
+  }
+  setEnabled(enabled) {
+    this.#isEnabled = enabled;
+    this.updateElementCursors();
+  }
+  elements() {
+    return [...this.#elements];
+  }
+  addElement(element) {
+    if (!this.#elements.has(element)) {
+      this.#elements.add(element);
+      element.addEventListener("pointerdown", this.#installDragOnMouseDownBound, false);
+      this.#updateElementCursor(element);
+    }
+  }
+  removeElement(element) {
+    if (this.#elements.has(element)) {
+      this.#elements.delete(element);
+      element.removeEventListener("pointerdown", this.#installDragOnMouseDownBound, false);
+      element.style.removeProperty("cursor");
+    }
+  }
+  updateElementCursors() {
+    this.#elements.forEach(this.#updateElementCursor.bind(this));
+  }
+  #updateElementCursor(element) {
+    if (this.#isEnabled) {
+      element.style.setProperty("cursor", this.cursor());
+      element.style.setProperty("touch-action", "none");
+    } else {
+      element.style.removeProperty("cursor");
+      element.style.removeProperty("touch-action");
+    }
+  }
+  cursor() {
+    return this.#cursor;
+  }
+  setCursor(cursor) {
+    this.#cursor = cursor;
+    this.updateElementCursors();
+  }
+  #installDragOnMouseDown(event) {
+    const element = event.target;
+    if (!this.#elements.has(element)) {
+      return false;
+    }
+    elementDragStart(element, this.#dragStart.bind(this), (event2) => {
+      this.#drag(event2);
+    }, this.#dragEnd.bind(this), this.cursor(), event);
+    return void 0;
+  }
+  #dragStart(event) {
+    if (!this.#isEnabled) {
+      return false;
+    }
+    this.#startX = event.pageX;
+    this.#startY = event.pageY;
+    this.sendDragStart(this.#startX, this.#startY);
+    return true;
+  }
+  sendDragStart(x, y) {
+    this.dispatchEventToListeners("ResizeStart", { startX: x, currentX: x, startY: y, currentY: y });
+  }
+  #drag(event) {
+    if (!this.#isEnabled) {
+      this.#dragEnd(event);
+      return true;
+    }
+    this.sendDragMove(this.#startX, event.pageX, this.#startY, event.pageY, event.shiftKey);
+    event.preventDefault();
+    return false;
+  }
+  sendDragMove(startX, currentX, startY, currentY, shiftKey) {
+    this.dispatchEventToListeners("ResizeUpdateXY", { startX, currentX, startY, currentY, shiftKey });
+  }
+  #dragEnd(_event) {
+    this.dispatchEventToListeners(
+      "ResizeEnd"
+      /* Events.RESIZE_END */
+    );
+    this.#startX = void 0;
+    this.#startY = void 0;
+  }
+};
+var SimpleResizerWidget = class extends ResizerWidget {
+  #isVertical = true;
+  isVertical() {
+    return this.#isVertical;
+  }
+  /**
+   * Vertical widget resizes height (along y-axis).
+   */
+  setVertical(vertical) {
+    this.#isVertical = vertical;
+    this.updateElementCursors();
+  }
+  cursor() {
+    return this.#isVertical ? "ns-resize" : "ew-resize";
+  }
+  sendDragStart(x, y) {
+    const position = this.#isVertical ? y : x;
+    this.dispatchEventToListeners("ResizeStart", { startPosition: position, currentPosition: position });
+  }
+  sendDragMove(startX, currentX, startY, currentY, shiftKey) {
+    if (this.#isVertical) {
+      this.dispatchEventToListeners("ResizeUpdatePosition", { startPosition: startY, currentPosition: currentY, shiftKey });
+    } else {
+      this.dispatchEventToListeners("ResizeUpdatePosition", { startPosition: startX, currentPosition: currentX, shiftKey });
+    }
+  }
+};
+
+// gen/front_end/ui/legacy/splitWidget.css.js
+var splitWidget_css_default = `/*
+ * Copyright (C) 2011 Google Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY GOOGLE INC. AND ITS CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE INC.
+ * OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.shadow-split-widget {
+  display: flex;
+  overflow: hidden;
+}
+
+.shadow-split-widget-contents {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  contain: layout size style;
+}
+
+.shadow-split-widget-sidebar {
+  flex: none;
+}
+
+.shadow-split-widget-main,
+.shadow-split-widget-sidebar.maximized {
+  flex: auto;
+}
+
+.shadow-split-widget.hbox > .shadow-split-widget-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  z-index: 4000;
+}
+
+.shadow-split-widget.vbox > .shadow-split-widget-resizer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 4000;
+}
+
+.shadow-split-widget.vbox > .shadow-split-widget-sidebar.no-default-splitter {
+  border: 0 !important; /* stylelint-disable-line declaration-no-important */
+}
+
+.shadow-split-widget.vbox > .shadow-split-widget-sidebar:not(.maximized) {
+  border: 0;
+  border-top: 1px solid var(--sys-color-divider);
+}
+
+.shadow-split-widget.hbox > .shadow-split-widget-sidebar:not(.maximized) {
+  border: 0;
+  border-left: 1px solid var(--sys-color-divider);
+}
+
+.shadow-split-widget.vbox > .shadow-split-widget-sidebar:first-child:not(.maximized) {
+  border: 0;
+  border-bottom: 1px solid var(--sys-color-divider);
+}
+
+.shadow-split-widget.hbox > .shadow-split-widget-sidebar:first-child:not(.maximized) {
+  border: 0;
+  border-right: 1px solid var(--sys-color-divider);
+}
+
+:host-context(.disable-resizer-for-elements-hack) .shadow-split-widget-resizer {
+  pointer-events: none;
+}
+
+:host {
+  display: flex;
+}
+
+/*# sourceURL=${import.meta.resolve("./splitWidget.css")} */`;
+
+// gen/front_end/ui/legacy/SplitWidget.js
+var SplitWidget = class extends Common10.ObjectWrapper.eventMixin(Widget) {
+  #sidebarElement;
+  #mainElement;
+  #resizerElement;
+  #resizerElementSize = null;
+  #resizerWidget;
+  #defaultSidebarWidth;
+  #defaultSidebarHeight;
+  #constraintsInDip;
+  #resizeStartSizeDIP = 0;
+  // TODO: Used in WebTests
+  setting;
+  #totalSizeCSS = 0;
+  #totalSizeOtherDimensionCSS = 0;
+  #mainWidget = null;
+  #sidebarWidget = null;
+  #animationFrameHandle = 0;
+  #animationCallback = null;
+  #showSidebarButtonTitle = Common10.UIString.LocalizedEmptyString;
+  #hideSidebarButtonTitle = Common10.UIString.LocalizedEmptyString;
+  #shownSidebarString = Common10.UIString.LocalizedEmptyString;
+  #hiddenSidebarString = Common10.UIString.LocalizedEmptyString;
+  #showHideSidebarButton = null;
+  #isVertical = false;
+  #sidebarMinimized = false;
+  #detaching = false;
+  #sidebarSizeDIP = -1;
+  #savedSidebarSizeDIP;
+  #secondIsSidebar = false;
+  #shouldSaveShowMode = false;
+  #savedVerticalMainSize = null;
+  #savedHorizontalMainSize = null;
+  #showMode = "Both";
+  #savedShowMode;
+  #autoAdjustOrientation = false;
+  constructor(isVertical, secondIsSidebar, settingName, defaultSidebarWidth, defaultSidebarHeight, constraintsInDip, element) {
+    super(element, { useShadowDom: true });
+    this.element.classList.add("split-widget");
+    this.registerRequiredCSS(splitWidget_css_default);
+    this.contentElement.classList.add("shadow-split-widget");
+    this.#sidebarElement = this.contentElement.createChild("div", "shadow-split-widget-contents shadow-split-widget-sidebar vbox");
+    this.#mainElement = this.contentElement.createChild("div", "shadow-split-widget-contents shadow-split-widget-main vbox");
+    const mainSlot = this.#mainElement.createChild("slot");
+    mainSlot.name = "main";
+    mainSlot.addEventListener("slotchange", (_) => {
+      const assignedNode = mainSlot.assignedNodes()[0];
+      const widget2 = assignedNode instanceof HTMLElement ? Widget.getOrCreateWidget(assignedNode) : null;
+      if (widget2 && widget2 !== this.#mainWidget) {
+        this.setMainWidget(widget2);
+      }
+    });
+    const sidebarSlot = this.#sidebarElement.createChild("slot");
+    sidebarSlot.name = "sidebar";
+    sidebarSlot.addEventListener("slotchange", (_) => {
+      const assignedNode = sidebarSlot.assignedNodes()[0];
+      const widget2 = assignedNode instanceof HTMLElement ? Widget.getOrCreateWidget(assignedNode) : null;
+      if (widget2 && widget2 !== this.#sidebarWidget) {
+        this.setSidebarWidget(widget2);
+      }
+    });
+    this.#resizerElement = this.contentElement.createChild("div", "shadow-split-widget-resizer");
+    this.#resizerWidget = new SimpleResizerWidget();
+    this.#resizerWidget.setEnabled(true);
+    this.#resizerWidget.addEventListener("ResizeStart", this.#onResizeStart, this);
+    this.#resizerWidget.addEventListener("ResizeUpdatePosition", this.#onResizeUpdate, this);
+    this.#resizerWidget.addEventListener("ResizeEnd", this.#onResizeEnd, this);
+    this.#defaultSidebarWidth = defaultSidebarWidth || 200;
+    this.#defaultSidebarHeight = defaultSidebarHeight || this.#defaultSidebarWidth;
+    this.#constraintsInDip = Boolean(constraintsInDip);
+    this.setting = settingName ? Common10.Settings.Settings.instance().createSetting(settingName, {}) : null;
+    this.#savedSidebarSizeDIP = this.#sidebarSizeDIP;
+    this.setSecondIsSidebar(secondIsSidebar);
+    this.#setVertical(isVertical);
+    this.#savedShowMode = this.#showMode;
+    this.installResizer(this.#resizerElement);
+  }
+  isVertical() {
+    return this.#isVertical;
+  }
+  setVertical(isVertical) {
+    if (this.#isVertical === isVertical) {
+      return;
+    }
+    this.#setVertical(isVertical);
+    if (this.isShowing()) {
+      this.#updateLayout();
+    }
+  }
+  setAutoAdjustOrientation(autoAdjustOrientation) {
+    this.#autoAdjustOrientation = autoAdjustOrientation;
+    this.#maybeAutoAdjustOrientation();
+  }
+  #setVertical(isVertical) {
+    this.contentElement.classList.toggle("vbox", !isVertical);
+    this.contentElement.classList.toggle("hbox", isVertical);
+    this.#isVertical = isVertical;
+    this.#resizerElementSize = null;
+    this.#sidebarSizeDIP = -1;
+    this.#restoreSidebarSizeFromSettings();
+    if (this.#shouldSaveShowMode) {
+      this.#restoreAndApplyShowModeFromSettings();
+    }
+    this.#updateShowHideSidebarButton();
+    this.#resizerWidget.setVertical(!isVertical);
+    this.invalidateConstraints();
+  }
+  #updateLayout(animate) {
+    this.#totalSizeCSS = 0;
+    this.#totalSizeOtherDimensionCSS = 0;
+    this.#mainElement.style.removeProperty("width");
+    this.#mainElement.style.removeProperty("height");
+    this.#sidebarElement.style.removeProperty("width");
+    this.#sidebarElement.style.removeProperty("height");
+    this.#setSidebarSizeDIP(this.#preferredSidebarSizeDIP(), Boolean(animate));
+  }
+  setMainWidget(widget2) {
+    if (this.#mainWidget === widget2) {
+      return;
+    }
+    this.suspendInvalidations();
+    if (this.#mainWidget) {
+      this.#mainWidget.detach();
+    }
+    this.#mainWidget = widget2;
+    if (widget2) {
+      widget2.element.slot = "main";
+      if (this.#showMode === "OnlyMain" || this.#showMode === "Both") {
+        widget2.show(this.element);
+      }
+    }
+    this.resumeInvalidations();
+  }
+  setSidebarWidget(widget2) {
+    if (this.#sidebarWidget === widget2) {
+      return;
+    }
+    this.suspendInvalidations();
+    if (this.#sidebarWidget) {
+      this.#sidebarWidget.detach();
+    }
+    this.#sidebarWidget = widget2;
+    if (widget2) {
+      widget2.element.slot = "sidebar";
+      if (this.#showMode === "OnlySidebar" || this.#showMode === "Both") {
+        widget2.show(this.element);
+      }
+    }
+    this.resumeInvalidations();
+  }
+  mainWidget() {
+    return this.#mainWidget;
+  }
+  sidebarWidget() {
+    return this.#sidebarWidget;
+  }
+  sidebarElement() {
+    return this.#sidebarElement;
+  }
+  childWasDetached(widget2) {
+    if (this.#detaching) {
+      return;
+    }
+    if (this.#mainWidget === widget2) {
+      this.#mainWidget = null;
+    }
+    if (this.#sidebarWidget === widget2) {
+      this.#sidebarWidget = null;
+    }
+    this.invalidateConstraints();
+  }
+  isSidebarSecond() {
+    return this.#secondIsSidebar;
+  }
+  enableShowModeSaving() {
+    this.#shouldSaveShowMode = true;
+    this.#restoreAndApplyShowModeFromSettings();
+  }
+  showMode() {
+    return this.#showMode;
+  }
+  sidebarIsShowing() {
+    return this.#showMode !== "OnlyMain";
+  }
+  setSecondIsSidebar(secondIsSidebar) {
+    if (secondIsSidebar === this.#secondIsSidebar) {
+      return;
+    }
+    this.#secondIsSidebar = secondIsSidebar;
+    if (!this.#mainWidget?.shouldHideOnDetach()) {
+      if (secondIsSidebar) {
+        this.contentElement.insertBefore(this.#mainElement, this.#sidebarElement);
+      } else {
+        this.contentElement.insertBefore(this.#mainElement, this.#resizerElement);
+      }
+    } else if (!this.#sidebarWidget?.shouldHideOnDetach()) {
+      if (secondIsSidebar) {
+        this.contentElement.insertBefore(this.#sidebarElement, this.#resizerElement);
+      } else {
+        this.contentElement.insertBefore(this.#sidebarElement, this.#mainElement);
+      }
+    } else {
+      console.error("Could not swap split widget side. Both children widgets contain iframes.");
+      this.#secondIsSidebar = !secondIsSidebar;
+    }
+  }
+  resizerElement() {
+    return this.#resizerElement;
+  }
+  hideMain(animate) {
+    this.#showOnly(this.#sidebarWidget, this.#mainWidget, this.#sidebarElement, this.#mainElement, animate);
+    this.#updateShowMode(
+      "OnlySidebar"
+      /* ShowMode.ONLY_SIDEBAR */
+    );
+  }
+  hideSidebar(animate) {
+    this.#showOnly(this.#mainWidget, this.#sidebarWidget, this.#mainElement, this.#sidebarElement, animate);
+    this.#updateShowMode(
+      "OnlyMain"
+      /* ShowMode.ONLY_MAIN */
+    );
+  }
+  setSidebarMinimized(minimized) {
+    this.#sidebarMinimized = minimized;
+    this.invalidateConstraints();
+  }
+  isSidebarMinimized() {
+    return this.#sidebarMinimized;
+  }
+  #showOnly(sideToShow, sideToHide, shadowToShow, shadowToHide, animate) {
+    this.#cancelAnimation();
+    function callback() {
+      if (sideToShow) {
+        if (sideToShow === this.#mainWidget) {
+          this.#mainWidget.show(this.element, this.#sidebarWidget ? this.#sidebarWidget.element : null);
+        } else if (this.#sidebarWidget) {
+          this.#sidebarWidget.show(this.element);
+        }
+      }
+      if (sideToHide) {
+        this.#detaching = true;
+        sideToHide.detach();
+        this.#detaching = false;
+      }
+      this.#resizerElement.classList.add("hidden");
+      shadowToShow.classList.remove("hidden");
+      shadowToShow.classList.add("maximized");
+      shadowToHide.classList.add("hidden");
+      shadowToHide.classList.remove("maximized");
+      this.#removeAllLayoutProperties();
+      this.doResize();
+      this.showFinishedForTest();
+    }
+    if (animate) {
+      this.#animate(true, callback.bind(this));
+    } else {
+      callback.call(this);
+    }
+    this.#sidebarSizeDIP = -1;
+    this.setResizable(false);
+  }
+  showFinishedForTest() {
+  }
+  #removeAllLayoutProperties() {
+    this.#sidebarElement.style.removeProperty("flexBasis");
+    this.#mainElement.style.removeProperty("width");
+    this.#mainElement.style.removeProperty("height");
+    this.#sidebarElement.style.removeProperty("width");
+    this.#sidebarElement.style.removeProperty("height");
+    this.#resizerElement.style.removeProperty("left");
+    this.#resizerElement.style.removeProperty("right");
+    this.#resizerElement.style.removeProperty("top");
+    this.#resizerElement.style.removeProperty("bottom");
+    this.#resizerElement.style.removeProperty("margin-left");
+    this.#resizerElement.style.removeProperty("margin-right");
+    this.#resizerElement.style.removeProperty("margin-top");
+    this.#resizerElement.style.removeProperty("margin-bottom");
+  }
+  showBoth(animate) {
+    if (this.#showMode === "Both") {
+      animate = false;
+    }
+    this.#cancelAnimation();
+    this.#mainElement.classList.remove("maximized", "hidden");
+    this.#sidebarElement.classList.remove("maximized", "hidden");
+    this.#resizerElement.classList.remove("hidden");
+    this.setResizable(true);
+    this.suspendInvalidations();
+    if (this.#sidebarWidget) {
+      this.#sidebarWidget.show(this.element);
+    }
+    if (this.#mainWidget) {
+      this.#mainWidget.show(this.element, this.#sidebarWidget ? this.#sidebarWidget.element : null);
+    }
+    this.resumeInvalidations();
+    this.setSecondIsSidebar(this.#secondIsSidebar);
+    this.#sidebarSizeDIP = -1;
+    this.#updateShowMode(
+      "Both"
+      /* ShowMode.BOTH */
+    );
+    this.#updateLayout(animate);
+  }
+  setResizable(resizable) {
+    this.#resizerWidget.setEnabled(resizable);
+  }
+  // Currently unused
+  forceSetSidebarWidth(width) {
+    this.#defaultSidebarWidth = width;
+    this.#savedSidebarSizeDIP = width;
+    this.#updateLayout();
+  }
+  isResizable() {
+    return this.#resizerWidget.isEnabled();
+  }
+  setSidebarSize(size) {
+    const sizeDIP = ZoomManager.instance().cssToDIP(size);
+    this.#savedSidebarSizeDIP = sizeDIP;
+    this.#saveSetting();
+    this.#setSidebarSizeDIP(sizeDIP, false, true);
+  }
+  sidebarSize() {
+    const sizeDIP = Math.max(0, this.#sidebarSizeDIP);
+    return ZoomManager.instance().dipToCSS(sizeDIP);
+  }
+  totalSize() {
+    const sizeDIP = Math.max(0, this.#totalSizeDIP());
+    return ZoomManager.instance().dipToCSS(sizeDIP);
+  }
+  /**
+   * Returns total size in DIP.
+   */
+  #totalSizeDIP() {
+    if (!this.#totalSizeCSS) {
+      const { width, height } = this.contentElement.getBoundingClientRect();
+      this.#totalSizeCSS = this.#isVertical ? width : height;
+      this.#totalSizeOtherDimensionCSS = this.#isVertical ? height : width;
+    }
+    return ZoomManager.instance().cssToDIP(this.#totalSizeCSS);
+  }
+  #updateShowMode(showMode) {
+    this.#showMode = showMode;
+    this.#saveShowModeToSettings();
+    this.#updateShowHideSidebarButton();
+    this.dispatchEventToListeners("ShowModeChanged", showMode);
+    this.invalidateConstraints();
+  }
+  #setSidebarSizeDIP(sizeDIP, animate, userAction) {
+    if (this.#showMode !== "Both" || !this.isShowing()) {
+      return;
+    }
+    sizeDIP = this.#applyConstraints(sizeDIP, userAction);
+    if (this.#sidebarSizeDIP === sizeDIP) {
+      return;
+    }
+    if (!this.#resizerElementSize) {
+      this.#resizerElementSize = this.#isVertical ? this.#resizerElement.offsetWidth : this.#resizerElement.offsetHeight;
+    }
+    this.#removeAllLayoutProperties();
+    const sizeCSS = ZoomManager.instance().dipToCSS(sizeDIP);
+    const sidebarSizeValue = sizeCSS + "px";
+    const mainSizeValue = this.#totalSizeCSS - sizeCSS + "px";
+    this.#sidebarElement.style.flexBasis = sidebarSizeValue;
+    if (this.#isVertical) {
+      this.#sidebarElement.style.width = sidebarSizeValue;
+      this.#mainElement.style.width = mainSizeValue;
+      this.#sidebarElement.style.height = this.#totalSizeOtherDimensionCSS + "px";
+      this.#mainElement.style.height = this.#totalSizeOtherDimensionCSS + "px";
+    } else {
+      this.#sidebarElement.style.height = sidebarSizeValue;
+      this.#mainElement.style.height = mainSizeValue;
+      this.#sidebarElement.style.width = this.#totalSizeOtherDimensionCSS + "px";
+      this.#mainElement.style.width = this.#totalSizeOtherDimensionCSS + "px";
+    }
+    if (this.#isVertical) {
+      if (this.#secondIsSidebar) {
+        this.#resizerElement.style.right = sidebarSizeValue;
+        this.#resizerElement.style.marginRight = -this.#resizerElementSize / 2 + "px";
+      } else {
+        this.#resizerElement.style.left = sidebarSizeValue;
+        this.#resizerElement.style.marginLeft = -this.#resizerElementSize / 2 + "px";
+      }
+    } else if (this.#secondIsSidebar) {
+      this.#resizerElement.style.bottom = sidebarSizeValue;
+      this.#resizerElement.style.marginBottom = -this.#resizerElementSize / 2 + "px";
+    } else {
+      this.#resizerElement.style.top = sidebarSizeValue;
+      this.#resizerElement.style.marginTop = -this.#resizerElementSize / 2 + "px";
+    }
+    this.#sidebarSizeDIP = sizeDIP;
+    if (animate) {
+      this.#animate(false);
+    } else {
+      this.doResize();
+      this.dispatchEventToListeners("SidebarSizeChanged", this.sidebarSize());
+    }
+  }
+  #animate(reverse, callback) {
+    const animationTime = 50;
+    this.#animationCallback = callback || null;
+    let animatedMarginPropertyName;
+    if (this.#isVertical) {
+      animatedMarginPropertyName = this.#secondIsSidebar ? "margin-right" : "margin-left";
+    } else {
+      animatedMarginPropertyName = this.#secondIsSidebar ? "margin-bottom" : "margin-top";
+    }
+    const marginFrom = reverse ? "0" : "-" + ZoomManager.instance().dipToCSS(this.#sidebarSizeDIP) + "px";
+    const marginTo = reverse ? "-" + ZoomManager.instance().dipToCSS(this.#sidebarSizeDIP) + "px" : "0";
+    this.contentElement.style.setProperty(animatedMarginPropertyName, marginFrom);
+    this.contentElement.style.setProperty("overflow", "hidden");
+    if (!reverse) {
+      suppressUnused(this.#mainElement.offsetWidth);
+      suppressUnused(this.#sidebarElement.offsetWidth);
+    }
+    if (!reverse && this.#sidebarWidget) {
+      this.#sidebarWidget.doResize();
+    }
+    this.contentElement.style.setProperty("transition", animatedMarginPropertyName + " " + animationTime + "ms linear");
+    const boundAnimationFrame = animationFrame.bind(this);
+    let startTime = null;
+    function animationFrame() {
+      this.#animationFrameHandle = 0;
+      if (!startTime) {
+        this.contentElement.style.setProperty(animatedMarginPropertyName, marginTo);
+        startTime = window.performance.now();
+      } else if (window.performance.now() < startTime + animationTime) {
+        if (this.#mainWidget) {
+          this.#mainWidget.doResize();
+        }
+      } else {
+        this.#cancelAnimation();
+        if (this.#mainWidget) {
+          this.#mainWidget.doResize();
+        }
+        this.dispatchEventToListeners("SidebarSizeChanged", this.sidebarSize());
+        return;
+      }
+      this.#animationFrameHandle = this.contentElement.window().requestAnimationFrame(boundAnimationFrame);
+    }
+    this.#animationFrameHandle = this.contentElement.window().requestAnimationFrame(boundAnimationFrame);
+  }
+  #cancelAnimation() {
+    this.contentElement.style.removeProperty("margin-top");
+    this.contentElement.style.removeProperty("margin-right");
+    this.contentElement.style.removeProperty("margin-bottom");
+    this.contentElement.style.removeProperty("margin-left");
+    this.contentElement.style.removeProperty("transition");
+    this.contentElement.style.removeProperty("overflow");
+    if (this.#animationFrameHandle) {
+      this.contentElement.window().cancelAnimationFrame(this.#animationFrameHandle);
+      this.#animationFrameHandle = 0;
+    }
+    if (this.#animationCallback) {
+      this.#animationCallback();
+      this.#animationCallback = null;
+    }
+  }
+  #applyConstraints(sidebarSize, userAction) {
+    const totalSize = this.#totalSizeDIP();
+    const zoomFactor = this.#constraintsInDip ? 1 : ZoomManager.instance().zoomFactor();
+    let constraints = this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry3.Constraints();
+    let minSidebarSize = this.isVertical() ? constraints.minimum.width : constraints.minimum.height;
+    if (!minSidebarSize) {
+      minSidebarSize = MinPadding;
+    }
+    minSidebarSize *= zoomFactor;
+    if (this.#sidebarMinimized) {
+      sidebarSize = minSidebarSize;
+    }
+    let preferredSidebarSize = this.isVertical() ? constraints.preferred.width : constraints.preferred.height;
+    if (!preferredSidebarSize) {
+      preferredSidebarSize = MinPadding;
+    }
+    preferredSidebarSize *= zoomFactor;
+    if (sidebarSize < preferredSidebarSize) {
+      preferredSidebarSize = Math.max(sidebarSize, minSidebarSize);
+    }
+    preferredSidebarSize += zoomFactor;
+    constraints = this.#mainWidget ? this.#mainWidget.constraints() : new Geometry3.Constraints();
+    let minMainSize = this.isVertical() ? constraints.minimum.width : constraints.minimum.height;
+    if (!minMainSize) {
+      minMainSize = MinPadding;
+    }
+    minMainSize *= zoomFactor;
+    let preferredMainSize = this.isVertical() ? constraints.preferred.width : constraints.preferred.height;
+    if (!preferredMainSize) {
+      preferredMainSize = MinPadding;
+    }
+    preferredMainSize *= zoomFactor;
+    const savedMainSize = this.isVertical() ? this.#savedVerticalMainSize : this.#savedHorizontalMainSize;
+    if (savedMainSize !== null) {
+      preferredMainSize = Math.min(preferredMainSize, savedMainSize * zoomFactor);
+    }
+    if (userAction) {
+      preferredMainSize = minMainSize;
+    }
+    const totalPreferred = preferredMainSize + preferredSidebarSize;
+    if (totalPreferred <= totalSize) {
+      return Platform8.NumberUtilities.clamp(sidebarSize, preferredSidebarSize, totalSize - preferredMainSize);
+    }
+    if (minMainSize + minSidebarSize <= totalSize) {
+      const delta = totalPreferred - totalSize;
+      const sidebarDelta = delta * preferredSidebarSize / totalPreferred;
+      sidebarSize = preferredSidebarSize - sidebarDelta;
+      return Platform8.NumberUtilities.clamp(sidebarSize, minSidebarSize, totalSize - minMainSize);
+    }
+    return Math.max(0, totalSize - minMainSize);
+  }
+  wasShown() {
+    super.wasShown();
+    this.#forceUpdateLayout();
+    ZoomManager.instance().addEventListener("ZoomChanged", this.onZoomChanged, this);
+  }
+  willHide() {
+    super.willHide();
+    ZoomManager.instance().removeEventListener("ZoomChanged", this.onZoomChanged, this);
+  }
+  onResize() {
+    this.#maybeAutoAdjustOrientation();
+    this.#updateLayout();
+  }
+  onLayout() {
+    this.#updateLayout();
+  }
+  calculateConstraints() {
+    if (this.#showMode === "OnlyMain") {
+      return this.#mainWidget ? this.#mainWidget.constraints() : new Geometry3.Constraints();
+    }
+    if (this.#showMode === "OnlySidebar") {
+      return this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry3.Constraints();
+    }
+    let mainConstraints = this.#mainWidget ? this.#mainWidget.constraints() : new Geometry3.Constraints();
+    let sidebarConstraints = this.#sidebarWidget ? this.#sidebarWidget.constraints() : new Geometry3.Constraints();
+    const min = MinPadding;
+    if (this.#isVertical) {
+      mainConstraints = mainConstraints.widthToMax(min).addWidth(1);
+      sidebarConstraints = sidebarConstraints.widthToMax(min);
+      return mainConstraints.addWidth(sidebarConstraints).heightToMax(sidebarConstraints);
+    }
+    mainConstraints = mainConstraints.heightToMax(min).addHeight(1);
+    sidebarConstraints = sidebarConstraints.heightToMax(min);
+    return mainConstraints.widthToMax(sidebarConstraints).addHeight(sidebarConstraints);
+  }
+  #maybeAutoAdjustOrientation() {
+    if (this.#autoAdjustOrientation) {
+      const width = this.isVertical() ? this.#totalSizeCSS : this.#totalSizeOtherDimensionCSS;
+      const height = this.isVertical() ? this.#totalSizeOtherDimensionCSS : this.#totalSizeCSS;
+      if (width <= 600 && height >= 600) {
+        this.setVertical(false);
+      } else {
+        this.setVertical(true);
+      }
+    }
+  }
+  #onResizeStart() {
+    this.#resizeStartSizeDIP = this.#sidebarSizeDIP;
+  }
+  #onResizeUpdate(event) {
+    const offset = event.data.currentPosition - event.data.startPosition;
+    const offsetDIP = ZoomManager.instance().cssToDIP(offset);
+    const newSizeDIP = this.#secondIsSidebar ? this.#resizeStartSizeDIP - offsetDIP : this.#resizeStartSizeDIP + offsetDIP;
+    const constrainedSizeDIP = this.#applyConstraints(newSizeDIP, true);
+    this.#savedSidebarSizeDIP = constrainedSizeDIP;
+    this.#saveSetting();
+    this.#setSidebarSizeDIP(constrainedSizeDIP, false, true);
+    if (this.isVertical()) {
+      this.#savedVerticalMainSize = this.#totalSizeDIP() - this.#sidebarSizeDIP;
+    } else {
+      this.#savedHorizontalMainSize = this.#totalSizeDIP() - this.#sidebarSizeDIP;
+    }
+  }
+  #onResizeEnd() {
+    this.#resizeStartSizeDIP = 0;
+  }
+  hideDefaultResizer(noSplitter) {
+    this.#resizerElement.classList.toggle("hidden", Boolean(noSplitter));
+    this.uninstallResizer(this.#resizerElement);
+    this.#sidebarElement.classList.toggle("no-default-splitter", Boolean(noSplitter));
+  }
+  installResizer(resizerElement) {
+    this.#resizerWidget.addElement(resizerElement);
+  }
+  uninstallResizer(resizerElement) {
+    this.#resizerWidget.removeElement(resizerElement);
+  }
+  toggleResizer(resizer, on) {
+    if (on) {
+      this.installResizer(resizer);
+    } else {
+      this.uninstallResizer(resizer);
+    }
+  }
+  #settingForOrientation() {
+    const state = this.setting ? this.setting.get() : {};
+    const orientationState = this.#isVertical ? state.vertical : state.horizontal;
+    return orientationState ?? null;
+  }
+  #preferredSidebarSizeDIP() {
+    let size = this.#savedSidebarSizeDIP;
+    if (!size) {
+      size = this.#isVertical ? this.#defaultSidebarWidth : this.#defaultSidebarHeight;
+      if (0 < size && size < 1) {
+        size *= this.#totalSizeDIP();
+      }
+    }
+    return size;
+  }
+  #restoreSidebarSizeFromSettings() {
+    const settingForOrientation = this.#settingForOrientation();
+    this.#savedSidebarSizeDIP = settingForOrientation ? settingForOrientation.size : 0;
+  }
+  #restoreAndApplyShowModeFromSettings() {
+    const orientationState = this.#settingForOrientation();
+    this.#savedShowMode = orientationState?.showMode ? orientationState.showMode : this.#showMode;
+    this.#showMode = this.#savedShowMode;
+    switch (this.#savedShowMode) {
+      case "Both":
+        this.showBoth();
+        break;
+      case "OnlyMain":
+        this.hideSidebar();
+        break;
+      case "OnlySidebar":
+        this.hideMain();
+        break;
+    }
+  }
+  #saveShowModeToSettings() {
+    this.#savedShowMode = this.#showMode;
+    this.#saveSetting();
+  }
+  #saveSetting() {
+    if (!this.setting) {
+      return;
+    }
+    const state = this.setting.get();
+    const orientationState = (this.#isVertical ? state.vertical : state.horizontal) || {};
+    orientationState.size = this.#savedSidebarSizeDIP;
+    if (this.#shouldSaveShowMode) {
+      orientationState.showMode = this.#savedShowMode;
+    }
+    if (this.#isVertical) {
+      state.vertical = orientationState;
+    } else {
+      state.horizontal = orientationState;
+    }
+    this.setting.set(state);
+  }
+  #forceUpdateLayout() {
+    this.#sidebarSizeDIP = -1;
+    this.#updateLayout();
+  }
+  onZoomChanged() {
+    this.#forceUpdateLayout();
+  }
+  createShowHideSidebarButton(showTitle, hideTitle, shownString, hiddenString, jslogContext) {
+    this.#showSidebarButtonTitle = showTitle;
+    this.#hideSidebarButtonTitle = hideTitle;
+    this.#shownSidebarString = shownString;
+    this.#hiddenSidebarString = hiddenString;
+    this.#showHideSidebarButton = new ToolbarButton("", "right-panel-open");
+    this.#showHideSidebarButton.addEventListener("Click", buttonClicked, this);
+    if (jslogContext) {
+      this.#showHideSidebarButton.element.setAttribute("jslog", `${VisualLogging7.toggleSubpane().track({ click: true }).context(jslogContext)}`);
+    }
+    this.#updateShowHideSidebarButton();
+    function buttonClicked() {
+      this.toggleSidebar();
+    }
+    return this.#showHideSidebarButton;
+  }
+  /**
+   * @returns true if this call makes the sidebar visible, and false otherwise.
+   */
+  toggleSidebar() {
+    if (this.#showMode !== "Both") {
+      this.showBoth(true);
+      LiveAnnouncer.alert(this.#shownSidebarString);
+      return true;
+    }
+    this.hideSidebar(true);
+    LiveAnnouncer.alert(this.#hiddenSidebarString);
+    return false;
+  }
+  #updateShowHideSidebarButton() {
+    if (!this.#showHideSidebarButton) {
+      return;
+    }
+    const sidebarHidden = this.#showMode === "OnlyMain";
+    let glyph = "";
+    if (sidebarHidden) {
+      glyph = this.isVertical() ? this.isSidebarSecond() ? "right-panel-open" : "left-panel-open" : this.isSidebarSecond() ? "bottom-panel-open" : "top-panel-open";
+    } else {
+      glyph = this.isVertical() ? this.isSidebarSecond() ? "right-panel-close" : "left-panel-close" : this.isSidebarSecond() ? "bottom-panel-close" : "top-panel-close";
+    }
+    this.#showHideSidebarButton.setGlyph(glyph);
+    this.#showHideSidebarButton.setTitle(sidebarHidden ? this.#showSidebarButtonTitle : this.#hideSidebarButtonTitle);
+  }
+};
+var SplitWidgetElement = class extends WidgetElement {
+  static observedAttributes = ["direction", "sidebar-position", "sidebar-initial-size", "sidebar-visibility"];
+  constructor() {
+    super();
+    registerWidgetConfig(this, widgetConfig((element) => {
+      const vertical = element.getAttribute("direction") === "column";
+      const autoAdjustOrientation = element.getAttribute("direction") === "auto";
+      const secondIsSidebar = element.getAttribute("sidebar-position") === "second";
+      const settingName = element.getAttribute("name") ?? void 0;
+      const sidebarSize = parseInt(element.getAttribute("sidebar-initial-size") || "", 10);
+      const defaultSidebarWidth = !isNaN(sidebarSize) ? sidebarSize : void 0;
+      const defaultSidebarHeight = !isNaN(sidebarSize) ? sidebarSize : void 0;
+      const widget2 = new SplitWidget(
+        vertical,
+        secondIsSidebar,
+        settingName,
+        defaultSidebarWidth,
+        defaultSidebarHeight,
+        /* constraintsInDip=*/
+        false,
+        element
+      );
+      if (element.getAttribute("sidebar-initial-size") === "minimized") {
+        widget2.setSidebarMinimized(true);
+      }
+      if (autoAdjustOrientation) {
+        widget2.setAutoAdjustOrientation(true);
+      }
+      const sidebarHidden = element.getAttribute("sidebar-visibility") === "hidden";
+      if (sidebarHidden) {
+        widget2.hideSidebar();
+      }
+      widget2.addEventListener("ShowModeChanged", () => {
+        element.dispatchEvent(new CustomEvent("change", { detail: widget2.showMode() }));
+      });
+      return widget2;
+    }));
+  }
+  attributeChangedCallback(name, _oldValue, newValue) {
+    const widget2 = Widget.get(this);
+    if (!widget2) {
+      return;
+    }
+    if (name === "direction") {
+      widget2.setVertical(newValue === "column");
+      widget2.setAutoAdjustOrientation(newValue === "auto");
+    } else if (name === "sidebar-position") {
+      widget2.setSecondIsSidebar(newValue === "second");
+    } else if (name === "sidebar-visibility") {
+      if (newValue === "hidden") {
+        widget2.hideSidebar();
+      } else {
+        widget2.showBoth();
+      }
+    }
+  }
+};
+customElements.define("devtools-split-view", SplitWidgetElement);
+var MinPadding = 20;
+var suppressUnused = function(_value) {
+};
+
+// gen/front_end/ui/legacy/UIUserMetrics.js
+var UIUserMetrics_exports = {};
+__export(UIUserMetrics_exports, {
+  UIUserMetrics: () => UIUserMetrics
+});
+import * as Host5 from "./../../core/host/host.js";
+var UIUserMetrics = class _UIUserMetrics {
+  #panelChangedSinceLaunch = false;
+  #firedLaunchHistogram = false;
+  #launchPanelName = "";
+  static #instance = null;
+  static instance() {
+    if (!this.#instance) {
+      this.#instance = new _UIUserMetrics();
+    }
+    return this.#instance;
+  }
+  panelLoaded(panelName, histogramName) {
+    if (this.#firedLaunchHistogram || panelName !== this.#launchPanelName) {
+      return;
+    }
+    this.#firedLaunchHistogram = true;
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        performance.mark(histogramName);
+        if (this.#panelChangedSinceLaunch) {
+          return;
+        }
+        Host5.InspectorFrontendHost.InspectorFrontendHostInstance.recordPerformanceHistogram(histogramName, performance.now());
+      }, 0);
+    });
+  }
+  setLaunchPanel(panelName) {
+    this.#launchPanelName = panelName;
+  }
+  performanceTraceLoad(measure) {
+    Host5.InspectorFrontendHost.InspectorFrontendHostInstance.recordPerformanceHistogram("DevTools.TraceLoad", measure.duration);
+  }
+  panelShown(panelName, isLaunching) {
+    const code = Host5.UserMetrics.PanelCodes[panelName] || 0;
+    Host5.InspectorFrontendHost.InspectorFrontendHostInstance.recordEnumeratedHistogram("DevTools.PanelShown", code, Host5.UserMetrics.PanelCodes.MAX_VALUE);
+    Host5.InspectorFrontendHost.InspectorFrontendHostInstance.recordUserMetricsAction("DevTools_PanelShown_" + panelName);
+    if (!isLaunching) {
+      this.#panelChangedSinceLaunch = true;
+    }
+  }
+  settingsPanelShown(settingsViewId) {
+    this.panelShown("settings-" + settingsViewId);
+  }
+};
+
+// gen/front_end/ui/legacy/InspectorView.js
+var UIStrings8 = {
+  /**
+   * @description The aria label for the drawer minimized.
+   */
+  drawerMinimized: "Drawer minimized",
+  /**
+   * @description The aria label for the drawer expanded.
+   */
+  drawerExpanded: "Drawer expanded",
   /**
    * @description The ARIA label for the main tab bar that contains the DevTools panels
    */
@@ -6727,6 +7705,14 @@ var UIStrings7 = {
    * @description Title of an action that reloads the DevTools
    */
   reloadDevtools: "Reload DevTools",
+  /**
+   * @description Title of an action that restarts Chrome
+   */
+  restartChrome: "Restart Chrome",
+  /**
+   * @description Confirmation dialog text for restarting Chrome
+   */
+  areYouSureYouWantToRestartChrome: "Are you sure you want to restart Chrome?",
   /**
    * @description Text for context menu action to move a tab to the main tab bar
    */
@@ -6779,19 +7765,15 @@ var UIStrings7 = {
   /**
    * @description Label for a button which opens a file picker.
    */
-  selectFolder: "Select folder",
-  /**
-   * @description Text that appears when hover the toggle orientation button
-   */
-  toggleDrawerOrientation: "Toggle drawer orientation"
+  selectFolder: "Select folder"
 };
-var str_7 = i18n13.i18n.registerUIStrings("ui/legacy/InspectorView.ts", UIStrings7);
-var i18nString7 = i18n13.i18n.getLocalizedString.bind(void 0, str_7);
+var str_8 = i18n15.i18n.registerUIStrings("ui/legacy/InspectorView.ts", UIStrings8);
+var i18nString8 = i18n15.i18n.getLocalizedString.bind(void 0, str_8);
 var inspectorViewInstance = null;
 var MIN_MAIN_PANEL_WIDTH = 240;
-var MIN_VERTICAL_DRAWER_WIDTH = 200;
+var MIN_VERTICAL_DRAWER_WIDTH = 280;
 var MIN_INSPECTOR_WIDTH_HORIZONTAL_DRAWER = 250;
-var MIN_INSPECTOR_WIDTH_VERTICAL_DRAWER = 450;
+var MIN_INSPECTOR_WIDTH_VERTICAL_DRAWER = 530;
 var MIN_INSPECTOR_HEIGHT = 72;
 var DrawerOrientation;
 (function(DrawerOrientation2) {
@@ -6808,6 +7790,7 @@ var DockMode;
 var InspectorView = class _InspectorView extends VBox {
   drawerOrientationByDockSetting;
   drawerSplitWidget;
+  #drawerView;
   tabDelegate;
   drawerTabbedLocation;
   drawerTabbedPane;
@@ -6817,16 +7800,20 @@ var InspectorView = class _InspectorView extends VBox {
   keyDownBound;
   currentPanelLocked;
   focusRestorer;
+  #mainPanelAtDrawerFocus = null;
   ownerSplitWidget;
   reloadRequiredInfobar;
+  #chromeRestartRequiredInfobar;
+  #debuggedTabReloadRequiredInfobar;
   #selectOverrideFolderInfobar;
   #resizeObserver;
-  #toggleOrientationButton;
+  #drawerShowModeBeforeDockSideChange = null;
+  #drawerMinimizedBeforeDockSideChange = null;
   constructor() {
     super();
     GlassPane.setContainer(this.element);
     this.setMinimumSize(MIN_INSPECTOR_WIDTH_HORIZONTAL_DRAWER, MIN_INSPECTOR_HEIGHT);
-    this.drawerOrientationByDockSetting = Common10.Settings.Settings.instance().createSetting("inspector.drawer-orientation-by-dock-mode", {
+    this.drawerOrientationByDockSetting = Common11.Settings.Settings.instance().createSetting("inspector.drawer-orientation-by-dock-mode", {
       [DockMode.BOTTOM]: DrawerOrientation.UNSET,
       [DockMode.SIDE]: DrawerOrientation.UNSET,
       [DockMode.UNDOCKED]: DrawerOrientation.UNSET
@@ -6838,42 +7825,35 @@ var InspectorView = class _InspectorView extends VBox {
     this.drawerSplitWidget.enableShowModeSaving();
     this.drawerSplitWidget.show(this.element);
     this.tabDelegate = new InspectorViewTabDelegate();
-    this.drawerTabbedLocation = ViewManager.instance().createTabbedLocation(this.showDrawer.bind(this, {
-      focus: false,
-      hasTargetDrawer: true
-    }), "drawer-view", true, true);
-    const moreTabsButton = this.drawerTabbedLocation.enableMoreTabsButton();
-    moreTabsButton.setTitle(i18nString7(UIStrings7.moreTools));
-    this.drawerTabbedPane = this.drawerTabbedLocation.tabbedPane();
-    this.setDrawerRelatedMinimumSizes();
-    this.drawerTabbedPane.element.classList.add("drawer-tabbed-pane");
-    this.drawerTabbedPane.element.setAttribute("jslog", `${VisualLogging7.drawer()}`);
-    const closeDrawerButton = new ToolbarButton(i18nString7(UIStrings7.closeDrawer), "cross");
-    closeDrawerButton.element.setAttribute("jslog", `${VisualLogging7.close().track({ click: true })}`);
-    closeDrawerButton.addEventListener("Click", this.closeDrawer, this);
-    this.#toggleOrientationButton = new ToolbarButton(i18nString7(UIStrings7.toggleDrawerOrientation), this.drawerSplitWidget.isVertical() ? "dock-bottom" : "dock-right");
-    this.#toggleOrientationButton.element.setAttribute("jslog", `${VisualLogging7.toggle("toggle-drawer-orientation").track({ click: true })}`);
-    this.#toggleOrientationButton.addEventListener("Click", () => this.toggleDrawerOrientation(), this);
-    this.drawerTabbedPane.addEventListener(Events.TabSelected, (event) => this.tabSelected(event.data.tabId), this);
-    const selectedDrawerTab = this.drawerTabbedPane.selectedTabId;
-    if (this.drawerSplitWidget.showMode() !== "OnlyMain" && selectedDrawerTab) {
-      Host5.userMetrics.panelShown(selectedDrawerTab, true);
-    }
-    this.drawerTabbedPane.setTabDelegate(this.tabDelegate);
-    const drawerElement = this.drawerTabbedPane.element;
-    markAsComplementary(drawerElement);
-    setLabel(drawerElement, i18nString7(UIStrings7.drawer));
-    this.drawerSplitWidget.installResizer(this.drawerTabbedPane.headerElement());
-    this.drawerSplitWidget.setSidebarWidget(this.drawerTabbedPane);
-    if (Root4.Runtime.hostConfig.devToolsFlexibleLayout?.verticalDrawerEnabled) {
-      this.drawerTabbedPane.rightToolbar().appendToolbarItem(this.#toggleOrientationButton);
-    }
-    this.drawerTabbedPane.rightToolbar().appendToolbarItem(closeDrawerButton);
-    this.drawerTabbedPane.headerElement().setAttribute("jslog", `${VisualLogging7.toolbar("drawer").track({
-      drag: true,
-      keydown: "ArrowUp|ArrowLeft|ArrowDown|ArrowRight|Enter|Space"
-    })}`);
-    this.tabbedLocation = ViewManager.instance().createTabbedLocation(Host5.InspectorFrontendHost.InspectorFrontendHostInstance.bringToFront.bind(Host5.InspectorFrontendHost.InspectorFrontendHostInstance), "panel", true, true, Root4.Runtime.Runtime.queryParam("panel"));
+    this.#drawerView = new InspectorDrawerView({
+      splitWidget: this.drawerSplitWidget,
+      revealDrawer: this.showDrawer.bind(this, {
+        focus: false,
+        hasTargetDrawer: true
+      }),
+      isVisible: () => this.drawerSplitWidget.sidebarIsShowing() && !this.drawerSplitWidget.isSidebarMinimized(),
+      drawerLabel: i18nString8(UIStrings8.drawer),
+      onToggleMinimized: this.toggleDrawerMinimized.bind(this),
+      onHide: this.closeDrawer.bind(this),
+      onToggleOrientation: this.toggleDrawerOrientation.bind(this),
+      onExpandFromMinimized: this.#expandDrawerFromInteraction.bind(this),
+      onMinimizeFromTabInteraction: this.minimizeDrawer.bind(this),
+      onTabSelected: this.tabSelected.bind(this),
+      isConsoleOpenInMainAndDrawer: (tabId) => tabId === "console-view" && this.tabbedPane.selectedTabId === "console",
+      tabDelegate: this.tabDelegate,
+      enableOrientationToggle: Boolean(Root4.Runtime.hostConfig.devToolsFlexibleLayout?.verticalDrawerEnabled),
+      isVertical,
+      verticalExpandedMinimumWidth: MIN_VERTICAL_DRAWER_WIDTH,
+      minimumSizes: {
+        inspectorWidthWhenVertical: MIN_INSPECTOR_WIDTH_VERTICAL_DRAWER,
+        inspectorWidthWhenHorizontal: MIN_INSPECTOR_WIDTH_HORIZONTAL_DRAWER,
+        inspectorHeight: MIN_INSPECTOR_HEIGHT
+      },
+      setInspectorMinimumSize: this.setMinimumSize.bind(this)
+    });
+    this.drawerTabbedLocation = this.#drawerView.tabbedLocation;
+    this.drawerTabbedPane = this.#drawerView.tabbedPane;
+    this.tabbedLocation = ViewManager.instance().createTabbedLocation(Host6.InspectorFrontendHost.InspectorFrontendHostInstance.bringToFront.bind(Host6.InspectorFrontendHost.InspectorFrontendHostInstance), "panel", true, true, Root4.Runtime.Runtime.queryParam("panel"));
     this.tabbedPane = this.tabbedLocation.tabbedPane();
     this.tabbedPane.setMinimumSize(MIN_MAIN_PANEL_WIDTH, 0);
     this.tabbedPane.element.classList.add("main-tabbed-pane");
@@ -6882,25 +7862,25 @@ var InspectorView = class _InspectorView extends VBox {
     this.tabbedPane.addEventListener(Events.TabSelected, (event) => this.tabSelected(event.data.tabId), this);
     const selectedTab = this.tabbedPane.selectedTabId;
     if (selectedTab) {
-      Host5.userMetrics.panelShown(selectedTab, true);
+      UIUserMetrics.instance().panelShown(selectedTab, true);
     }
-    this.tabbedPane.setAccessibleName(i18nString7(UIStrings7.panels));
+    this.tabbedPane.setAccessibleName(i18nString8(UIStrings8.panels));
     this.tabbedPane.setTabDelegate(this.tabDelegate);
     const mainHeaderElement = this.tabbedPane.headerElement();
     markAsNavigation(mainHeaderElement);
-    setLabel(mainHeaderElement, i18nString7(UIStrings7.mainToolbar));
-    mainHeaderElement.setAttribute("jslog", `${VisualLogging7.toolbar("main").track({
+    setLabel(mainHeaderElement, i18nString8(UIStrings8.mainToolbar));
+    mainHeaderElement.setAttribute("jslog", `${VisualLogging8.toolbar("main").track({
       drag: true,
       keydown: "ArrowUp|ArrowLeft|ArrowDown|ArrowRight|Enter|Space"
     })}`);
-    Host5.userMetrics.setLaunchPanel(this.tabbedPane.selectedTabId);
-    if (Host5.InspectorFrontendHost.isUnderTest()) {
+    UIUserMetrics.instance().setLaunchPanel(this.tabbedPane.selectedTabId);
+    if (Host6.InspectorFrontendHost.isUnderTest()) {
       this.tabbedPane.setAutoSelectFirstItemOnShow(false);
     }
     this.drawerSplitWidget.setMainWidget(this.tabbedPane);
     this.drawerSplitWidget.setDefaultFocusedChild(this.tabbedPane);
     this.keyDownBound = this.keyDown.bind(this);
-    Host5.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host5.InspectorFrontendHostAPI.Events.ShowPanel, showPanel.bind(this));
+    Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host6.InspectorFrontendHostAPI.Events.ShowPanel, showPanel.bind(this));
     function showPanel({ data: panelName }) {
       void this.showPanel(panelName);
     }
@@ -6910,6 +7890,10 @@ var InspectorView = class _InspectorView extends VBox {
       this.attachInfobar(infobar);
     }
     this.#resizeObserver = new ResizeObserver(this.#observedResize.bind(this));
+    DockController.instance().addEventListener("BeforeDockSideChanged", this.#rememberDrawerStateBeforeDockSideChange, this);
+    DockController.instance().addEventListener("DockSideChanged", this.#applyDrawerOrientationForDockSide, this);
+    DockController.instance().addEventListener("AfterDockSideChanged", this.#restoreDrawerStateAfterDockSideChange, this);
+    this.#drawerView.restoreMinimizedStateFromSettings();
   }
   static instance(opts = { forceNew: null }) {
     const { forceNew } = opts;
@@ -6956,13 +7940,14 @@ var InspectorView = class _InspectorView extends VBox {
   }
   #applyDrawerOrientation(orientation) {
     const shouldBeVertical = orientation === DrawerOrientation.VERTICAL;
-    const isVertical = this.drawerSplitWidget.isVertical();
+    const isVertical = this.#drawerView.isVertical();
     if (shouldBeVertical === isVertical) {
       return;
     }
-    this.#toggleOrientationButton.setGlyph(shouldBeVertical ? "dock-bottom" : "dock-right");
-    this.drawerSplitWidget.setVertical(shouldBeVertical);
-    this.setDrawerRelatedMinimumSizes();
+    this.#drawerView.setVertical(shouldBeVertical);
+  }
+  #applyDrawerState(showMode, minimized) {
+    this.#drawerView.applyState(showMode, minimized);
   }
   #observedResize() {
     const rect = this.element.getBoundingClientRect();
@@ -6978,14 +7963,26 @@ var InspectorView = class _InspectorView extends VBox {
     this.#resizeObserver.observe(this.element);
     this.#observedResize();
     this.element.ownerDocument.addEventListener("keydown", this.keyDownBound, false);
-    DockController.instance().addEventListener("DockSideChanged", this.#applyDrawerOrientationForDockSide, this);
     this.#applyDrawerOrientationForDockSide();
   }
   willHide() {
     super.willHide();
     this.#resizeObserver.unobserve(this.element);
     this.element.ownerDocument.removeEventListener("keydown", this.keyDownBound, false);
-    DockController.instance().removeEventListener("DockSideChanged", this.#applyDrawerOrientationForDockSide, this);
+  }
+  #rememberDrawerStateBeforeDockSideChange() {
+    this.#drawerShowModeBeforeDockSideChange = this.drawerSplitWidget.showMode();
+    this.#drawerMinimizedBeforeDockSideChange = this.isDrawerMinimized();
+  }
+  #restoreDrawerStateAfterDockSideChange() {
+    const showMode = this.#drawerShowModeBeforeDockSideChange;
+    const minimized = this.#drawerMinimizedBeforeDockSideChange;
+    this.#drawerShowModeBeforeDockSideChange = null;
+    this.#drawerMinimizedBeforeDockSideChange = null;
+    if (showMode === null || minimized === null) {
+      return;
+    }
+    this.#applyDrawerState(showMode, minimized);
   }
   resolveLocation(locationName) {
     if (locationName === "drawer-view") {
@@ -7031,7 +8028,7 @@ var InspectorView = class _InspectorView extends VBox {
       let icon = null;
       if (warnings.length !== 0) {
         const warning = warnings.length === 1 ? warnings[0] : "\xB7 " + warnings.join("\n\xB7 ");
-        icon = IconButton4.Icon.create("warning-filled", "small");
+        icon = createIcon4("warning-filled", "small");
         icon.classList.add("warning");
         Tooltip.install(icon, warning);
       }
@@ -7051,31 +8048,49 @@ var InspectorView = class _InspectorView extends VBox {
     return ViewManager.instance().materializedWidget(this.tabbedPane.selectedTabId || "");
   }
   showDrawer({ focus, hasTargetDrawer }) {
-    if (this.drawerTabbedPane.isShowing()) {
+    if (this.#drawerView.drawerVisible() && this.drawerSplitWidget.sidebarIsShowing()) {
+      if (focus && this.isDrawerMinimized()) {
+        this.setDrawerMinimized(false);
+        LiveAnnouncer.alert(i18nString8(UIStrings8.drawerExpanded));
+      }
       return;
     }
-    this.drawerTabbedPane.setAutoSelectFirstItemOnShow(!hasTargetDrawer);
-    this.drawerSplitWidget.showBoth();
+    this.#drawerView.show(hasTargetDrawer);
     if (focus) {
       this.focusRestorer = new WidgetFocusRestorer(this.drawerTabbedPane);
+      this.#mainPanelAtDrawerFocus = this.tabbedPane.selectedTabId;
     } else {
       this.focusRestorer = null;
+      this.#mainPanelAtDrawerFocus = null;
     }
     this.#applyDrawerOrientationForDockSide();
-    LiveAnnouncer.alert(i18nString7(UIStrings7.drawerShown));
+    LiveAnnouncer.alert(i18nString8(UIStrings8.drawerShown));
   }
   drawerVisible() {
-    return this.drawerTabbedPane.isShowing();
+    return this.#drawerView.drawerVisible();
   }
-  closeDrawer() {
-    if (!this.drawerTabbedPane.isShowing()) {
+  minimizeDrawer() {
+    if (!this.#drawerView.drawerVisible()) {
       return;
     }
-    if (this.focusRestorer) {
+    this.focusRestorer = null;
+    this.#mainPanelAtDrawerFocus = null;
+    this.setDrawerMinimized(true);
+    LiveAnnouncer.alert(i18nString8(UIStrings8.drawerMinimized));
+  }
+  closeDrawer() {
+    if (!this.#drawerView.drawerVisible()) {
+      return;
+    }
+    const scrollState = this.#captureMainPanelScrollState();
+    if (this.focusRestorer && this.#mainPanelAtDrawerFocus === this.tabbedPane.selectedTabId) {
       this.focusRestorer.restore();
     }
-    this.drawerSplitWidget.hideSidebar(true);
-    LiveAnnouncer.alert(i18nString7(UIStrings7.drawerHidden));
+    this.focusRestorer = null;
+    this.#mainPanelAtDrawerFocus = null;
+    this.#drawerView.hide();
+    this.#restoreMainPanelScrollState(scrollState);
+    LiveAnnouncer.alert(i18nString8(UIStrings8.drawerHidden));
   }
   toggleDrawerOrientation({ force } = {}) {
     if (!this.drawerTabbedPane.isShowing()) {
@@ -7099,40 +8114,95 @@ var InspectorView = class _InspectorView extends VBox {
     const dockMode = this.#getDockMode();
     return orientationSetting[dockMode] !== DrawerOrientation.UNSET;
   }
-  setDrawerRelatedMinimumSizes() {
-    const drawerIsVertical = this.drawerSplitWidget.isVertical();
-    if (drawerIsVertical) {
-      this.drawerTabbedPane.setMinimumSize(MIN_VERTICAL_DRAWER_WIDTH, 27);
-      this.setMinimumSize(MIN_INSPECTOR_WIDTH_VERTICAL_DRAWER, MIN_INSPECTOR_HEIGHT);
-    } else {
-      this.drawerTabbedPane.setMinimumSize(0, 27);
-      this.setMinimumSize(MIN_INSPECTOR_WIDTH_HORIZONTAL_DRAWER, MIN_INSPECTOR_HEIGHT);
-    }
-  }
   setDrawerMinimized(minimized) {
-    this.drawerSplitWidget.setSidebarMinimized(minimized);
-    this.drawerSplitWidget.setResizable(!minimized);
+    const scrollState = this.#captureMainPanelScrollState();
+    this.#drawerView.setMinimized(minimized);
+    this.#restoreMainPanelScrollState(scrollState);
+  }
+  // Showing, hiding, or minimizing the drawer causes SplitWidget to
+  // manipulate CSS classes and remove inline layout properties, triggering a
+  // flexbox reflow that resets scroll positions in the main panel. We capture
+  // them before the operation and restore them afterwards to preserve the
+  // user's scroll position.
+  #captureMainPanelScrollState() {
+    const selectedTabId = this.tabbedPane.selectedTabId;
+    if (!selectedTabId) {
+      return [];
+    }
+    let panel2 = null;
+    try {
+      panel2 = ViewManager.instance().materializedWidget(selectedTabId);
+    } catch {
+      return [];
+    }
+    if (!panel2) {
+      return [];
+    }
+    const rootElement = panel2.element;
+    const scrollableElements = [
+      rootElement,
+      ...rootElement.querySelectorAll("*")
+    ];
+    return scrollableElements.filter((element) => element.scrollTop !== 0 || element.scrollLeft !== 0).map((element) => ({
+      element,
+      scrollTop: element.scrollTop,
+      scrollLeft: element.scrollLeft
+    }));
+  }
+  #restoreMainPanelScrollState(scrollState) {
+    if (!scrollState.length) {
+      return;
+    }
+    this.element.window().requestAnimationFrame(() => {
+      for (const { element, scrollTop, scrollLeft } of scrollState) {
+        if (!element.isConnected) {
+          continue;
+        }
+        element.scrollTop = scrollTop;
+        element.scrollLeft = scrollLeft;
+      }
+    });
   }
   drawerSize() {
-    return this.drawerSplitWidget.sidebarSize();
+    return this.#drawerView.drawerSize();
   }
   setDrawerSize(size) {
-    this.drawerSplitWidget.setSidebarSize(size);
+    this.#drawerView.setDrawerSize(size);
   }
   totalSize() {
-    return this.drawerSplitWidget.totalSize();
+    return this.#drawerView.totalSize();
   }
   isDrawerMinimized() {
-    return this.drawerSplitWidget.isSidebarMinimized();
+    return this.#drawerView.isMinimized();
+  }
+  toggleDrawerMinimized() {
+    if (!this.#drawerView.drawerVisible()) {
+      this.showDrawer({ focus: true, hasTargetDrawer: false });
+      return;
+    }
+    const minimized = this.isDrawerMinimized();
+    if (minimized && this.drawerTabbedPane.selectedTabId === "console-view" && this.tabbedPane.selectedTabId === "console") {
+      return;
+    }
+    this.setDrawerMinimized(!minimized);
+    if (!minimized) {
+      LiveAnnouncer.alert(i18nString8(UIStrings8.drawerMinimized));
+    } else {
+      LiveAnnouncer.alert(i18nString8(UIStrings8.drawerExpanded));
+    }
   }
   isDrawerOrientationVertical() {
-    return this.drawerSplitWidget.isVertical();
+    return this.#drawerView.isVertical();
+  }
+  #expandDrawerFromInteraction() {
+    this.setDrawerMinimized(false);
+    LiveAnnouncer.alert(i18nString8(UIStrings8.drawerExpanded));
   }
   keyDown(event) {
     if (!KeyboardShortcut.eventHasCtrlEquivalentKey(event) || event.altKey || event.shiftKey) {
       return;
     }
-    const panelShortcutEnabled = Common10.Settings.moduleSetting("shortcut-panel-switch").get();
+    const panelShortcutEnabled = Common11.Settings.moduleSetting("shortcut-panel-switch").get();
     if (panelShortcutEnabled) {
       let panelIndex = -1;
       if (event.keyCode > 48 && event.keyCode < 58) {
@@ -7145,7 +8215,7 @@ var InspectorView = class _InspectorView extends VBox {
         if (panelName) {
           if (!Dialog.hasInstance() && !this.currentPanelLocked) {
             void this.showPanel(panelName);
-            void VisualLogging7.logKeyDown(null, event, `panel-by-index-${panelName}`);
+            void VisualLogging8.logKeyDown(null, event, `panel-by-index-${panelName}`);
           }
           event.consume(true);
         }
@@ -7162,7 +8232,7 @@ var InspectorView = class _InspectorView extends VBox {
     this.tabbedPane.headerResized();
   }
   tabSelected(tabId) {
-    Host5.userMetrics.panelShown(tabId);
+    UIUserMetrics.instance().panelShown(tabId, false);
   }
   setOwnerSplit(splitWidget) {
     this.ownerSplitWidget = splitWidget;
@@ -7181,10 +8251,10 @@ var InspectorView = class _InspectorView extends VBox {
     }
   }
   displayDebuggedTabReloadRequiredWarning(message) {
-    if (!this.reloadRequiredInfobar) {
+    if (!this.#debuggedTabReloadRequiredInfobar) {
       const infobar = new Infobar("info", message, [
         {
-          text: i18nString7(UIStrings7.reloadDebuggedTab),
+          text: i18nString8(UIStrings8.reloadDebuggedTab),
           delegate: () => {
             reloadDebuggedTab();
             this.removeDebuggedTabReloadRequiredWarning();
@@ -7196,24 +8266,24 @@ var InspectorView = class _InspectorView extends VBox {
       ], void 0, "reload-required");
       infobar.setParentView(this);
       this.attachInfobar(infobar);
-      this.reloadRequiredInfobar = infobar;
+      this.#debuggedTabReloadRequiredInfobar = infobar;
       infobar.setCloseCallback(() => {
-        delete this.reloadRequiredInfobar;
+        this.#debuggedTabReloadRequiredInfobar = void 0;
       });
       SDK.TargetManager.TargetManager.instance().addModelListener(SDK.ResourceTreeModel.ResourceTreeModel, SDK.ResourceTreeModel.Events.PrimaryPageChanged, this.removeDebuggedTabReloadRequiredWarning, this);
     }
   }
   removeDebuggedTabReloadRequiredWarning() {
-    if (this.reloadRequiredInfobar) {
-      this.reloadRequiredInfobar.dispose();
+    if (this.#debuggedTabReloadRequiredInfobar) {
+      this.#debuggedTabReloadRequiredInfobar.dispose();
       SDK.TargetManager.TargetManager.instance().removeModelListener(SDK.ResourceTreeModel.ResourceTreeModel, SDK.ResourceTreeModel.Events.PrimaryPageChanged, this.removeDebuggedTabReloadRequiredWarning, this);
     }
   }
   displayReloadRequiredWarning(message) {
-    if (!this.reloadRequiredInfobar) {
+    if (!this.reloadRequiredInfobar && !this.#chromeRestartRequiredInfobar) {
       const infobar = new Infobar("info", message, [
         {
-          text: i18nString7(UIStrings7.reloadDevtools),
+          text: i18nString8(UIStrings8.reloadDevtools),
           delegate: () => reloadDevTools(),
           dismiss: false,
           buttonVariant: "primary",
@@ -7224,15 +8294,41 @@ var InspectorView = class _InspectorView extends VBox {
       this.attachInfobar(infobar);
       this.reloadRequiredInfobar = infobar;
       infobar.setCloseCallback(() => {
-        delete this.reloadRequiredInfobar;
+        this.reloadRequiredInfobar = void 0;
+      });
+    }
+  }
+  displayChromeRestartRequiredWarning(message) {
+    if (this.reloadRequiredInfobar) {
+      this.reloadRequiredInfobar.dispose();
+    }
+    if (!this.#chromeRestartRequiredInfobar) {
+      const infobar = new Infobar("info", message, [
+        {
+          text: i18nString8(UIStrings8.restartChrome),
+          delegate: () => {
+            if (confirm(i18nString8(UIStrings8.areYouSureYouWantToRestartChrome))) {
+              Host6.InspectorFrontendHost.InspectorFrontendHostInstance.requestRestart();
+            }
+          },
+          dismiss: false,
+          buttonVariant: "primary",
+          jslogContext: "main.chrome-restart-chrome"
+        }
+      ], void 0, "reload-required");
+      infobar.setParentView(this);
+      this.attachInfobar(infobar);
+      this.#chromeRestartRequiredInfobar = infobar;
+      infobar.setCloseCallback(() => {
+        this.#chromeRestartRequiredInfobar = void 0;
       });
     }
   }
   displaySelectOverrideFolderInfobar(callback) {
     if (!this.#selectOverrideFolderInfobar) {
-      const infobar = new Infobar("info", i18nString7(UIStrings7.selectOverrideFolder), [
+      const infobar = new Infobar("info", i18nString8(UIStrings8.selectOverrideFolder), [
         {
-          text: i18nString7(UIStrings7.selectFolder),
+          text: i18nString8(UIStrings8.selectFolder),
           delegate: () => callback(),
           dismiss: true,
           buttonVariant: "tonal",
@@ -7260,27 +8356,27 @@ var InspectorView = class _InspectorView extends VBox {
   }
 };
 function getDisableLocaleInfoBarSetting() {
-  return Common10.Settings.Settings.instance().createSetting("disable-locale-info-bar", false);
+  return Common11.Settings.Settings.instance().createSetting("disable-locale-info-bar", false);
 }
 function shouldShowLocaleInfobar() {
   if (getDisableLocaleInfoBarSetting().get()) {
     return false;
   }
-  const languageSettingValue = Common10.Settings.Settings.instance().moduleSetting("language").get();
+  const languageSettingValue = Common11.Settings.Settings.instance().moduleSetting("language").get();
   if (languageSettingValue !== "en-US") {
     return false;
   }
-  return !i18n13.DevToolsLocale.localeLanguagesMatch(navigator.language, languageSettingValue) && i18n13.DevToolsLocale.DevToolsLocale.instance().languageIsSupportedByDevTools(navigator.language);
+  return !i18n15.DevToolsLocale.localeLanguagesMatch(navigator.language, languageSettingValue) && i18n15.DevToolsLocale.DevToolsLocale.instance().languageIsSupportedByDevTools(navigator.language);
 }
 function createLocaleInfobar() {
-  const devtoolsLocale = i18n13.DevToolsLocale.DevToolsLocale.instance();
+  const devtoolsLocale = i18n15.DevToolsLocale.DevToolsLocale.instance();
   const closestSupportedLocale = devtoolsLocale.lookupClosestDevToolsLocale(navigator.language);
   const locale = new Intl.Locale(closestSupportedLocale);
   const closestSupportedLanguageInCurrentLocale = new Intl.DisplayNames([devtoolsLocale.locale], { type: "language" }).of(locale.language || "en") || "English";
-  const languageSetting = Common10.Settings.Settings.instance().moduleSetting("language");
-  return new Infobar("info", i18nString7(UIStrings7.devToolsLanguageMissmatch, { PH1: closestSupportedLanguageInCurrentLocale }), [
+  const languageSetting = Common11.Settings.Settings.instance().moduleSetting("language");
+  return new Infobar("info", i18nString8(UIStrings8.devToolsLanguageMissmatch, { PH1: closestSupportedLanguageInCurrentLocale }), [
     {
-      text: i18nString7(UIStrings7.setToBrowserLanguage),
+      text: i18nString8(UIStrings8.setToBrowserLanguage),
       delegate: () => {
         languageSetting.set("browserLanguage");
         getDisableLocaleInfoBarSetting().set(true);
@@ -7290,7 +8386,7 @@ function createLocaleInfobar() {
       jslogContext: "set-to-browser-language"
     },
     {
-      text: i18nString7(UIStrings7.setToSpecificLanguage, { PH1: closestSupportedLanguageInCurrentLocale }),
+      text: i18nString8(UIStrings8.setToSpecificLanguage, { PH1: closestSupportedLanguageInCurrentLocale }),
       delegate: () => {
         languageSetting.set(closestSupportedLocale);
         getDisableLocaleInfoBarSetting().set(true);
@@ -7303,10 +8399,10 @@ function createLocaleInfobar() {
 }
 function reloadDevTools() {
   if (DockController.instance().canDock() && DockController.instance().dockSide() === "undocked") {
-    Host5.InspectorFrontendHost.InspectorFrontendHostInstance.setIsDocked(true, function() {
+    Host6.InspectorFrontendHost.InspectorFrontendHostInstance.setIsDocked(true, function() {
     });
   }
-  Host5.InspectorFrontendHost.InspectorFrontendHostInstance.reattach(() => window.location.reload());
+  Host6.InspectorFrontendHost.InspectorFrontendHostInstance.reattach(() => window.location.reload());
 }
 function reloadDebuggedTab() {
   void ActionRegistry.instance().getAction("inspector-main.reload").execute();
@@ -7344,11 +8440,11 @@ var InspectorViewTabDelegate = class {
     tabbedPane.closeTabs(ids, true);
   }
   moveToDrawer(tabId) {
-    Host5.userMetrics.actionTaken(Host5.UserMetrics.Action.TabMovedToDrawer);
+    Host6.userMetrics.actionTaken(Host6.UserMetrics.Action.TabMovedToDrawer);
     ViewManager.instance().moveView(tabId, "drawer-view");
   }
   moveToMainTabBar(tabId) {
-    Host5.userMetrics.actionTaken(Host5.UserMetrics.Action.TabMovedToMainPanel);
+    Host6.userMetrics.actionTaken(Host6.UserMetrics.Action.TabMovedToMainPanel);
     ViewManager.instance().moveView(tabId, "panel");
   }
   onContextMenu(tabId, contextMenu) {
@@ -7357,9 +8453,9 @@ var InspectorViewTabDelegate = class {
     }
     const locationName = ViewManager.instance().locationNameForViewId(tabId);
     if (locationName === "drawer-view") {
-      contextMenu.defaultSection().appendItem(i18nString7(UIStrings7.moveToMainTabBar), this.moveToMainTabBar.bind(this, tabId), { jslogContext: "move-to-top" });
+      contextMenu.defaultSection().appendItem(i18nString8(UIStrings8.moveToMainTabBar), this.moveToMainTabBar.bind(this, tabId), { jslogContext: "move-to-top" });
     } else {
-      contextMenu.defaultSection().appendItem(i18nString7(UIStrings7.moveToDrawer), this.moveToDrawer.bind(this, tabId), { jslogContext: "move-to-bottom" });
+      contextMenu.defaultSection().appendItem(i18nString8(UIStrings8.moveToDrawer), this.moveToDrawer.bind(this, tabId), { jslogContext: "move-to-bottom" });
     }
   }
 };
@@ -7492,6 +8588,8 @@ var softContextMenu_css_default = `/*
     background-color: Highlight;
     color: HighlightText;
     forced-color-adjust: none;
+
+    --icon-default: HighlightText;
   }
 
   .soft-context-menu .soft-context-menu-item devtools-icon,
@@ -7518,7 +8616,7 @@ var softContextMenu_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./softContextMenu.css")} */`;
 
 // gen/front_end/ui/legacy/SoftContextMenu.js
-var UIStrings8 = {
+var UIStrings9 = {
   /**
    * @description Text exposed to screen readers on checked items.
    */
@@ -7545,8 +8643,8 @@ var UIStrings8 = {
    */
   newFeature: "This is a new feature"
 };
-var str_8 = i18n15.i18n.registerUIStrings("ui/legacy/SoftContextMenu.ts", UIStrings8);
-var i18nString8 = i18n15.i18n.getLocalizedString.bind(void 0, str_8);
+var str_9 = i18n17.i18n.registerUIStrings("ui/legacy/SoftContextMenu.ts", UIStrings9);
+var i18nString9 = i18n17.i18n.getLocalizedString.bind(void 0, str_9);
 var SoftContextMenu = class _SoftContextMenu {
   items;
   itemSelectedCallback;
@@ -7602,11 +8700,11 @@ var SoftContextMenu = class _SoftContextMenu {
       /* AnchorBehavior.PREFER_BOTTOM */
     );
     this.contextMenuElement = this.glassPane.contentElement.createChild("div", "soft-context-menu");
-    this.contextMenuElement.setAttribute("jslog", `${VisualLogging8.menu().track({ resize: true }).parent("mapped").track({
+    this.contextMenuElement.setAttribute("jslog", `${VisualLogging9.menu().track({ resize: true }).parent("mapped").track({
       keydown: "ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Enter|Space|Escape"
     })}`);
     if (this.loggableParent) {
-      VisualLogging8.setMappedParent(this.contextMenuElement, this.loggableParent);
+      VisualLogging9.setMappedParent(this.contextMenuElement, this.loggableParent);
     }
     this.contextMenuElement.tabIndex = -1;
     markAsMenu(this.contextMenuElement);
@@ -7703,24 +8801,18 @@ var SoftContextMenu = class _SoftContextMenu {
       menuItemElement.setAttribute("data-action-id", item8.id.toString());
     }
     if (menuContainsCheckbox) {
-      const checkMarkElement = IconButton5.Icon.create("checkmark", "checkmark");
+      const checkMarkElement = createIcon5("checkmark", "checkmark");
       menuItemElement.appendChild(checkMarkElement);
     }
     if (item8.tooltip) {
       Tooltip.install(menuItemElement, item8.tooltip);
     }
-    const detailsForElement = {
-      actionId: void 0,
-      isSeparator: void 0,
-      customElement: void 0,
-      subItems: void 0,
-      subMenuTimer: void 0
-    };
+    const detailsForElement = {};
     if (item8.jslogContext && item8.label) {
       if (item8.type === "checkbox") {
-        menuItemElement.setAttribute("jslog", `${VisualLogging8.toggle().track({ click: true }).context(item8.jslogContext)}`);
+        menuItemElement.setAttribute("jslog", `${VisualLogging9.toggle().track({ click: true }).context(item8.jslogContext)}`);
       } else {
-        menuItemElement.setAttribute("jslog", `${VisualLogging8.action().track({ click: true }).context(item8.jslogContext)}`);
+        menuItemElement.setAttribute("jslog", `${VisualLogging9.action().track({ click: true }).context(item8.jslogContext)}`);
       }
     }
     if (item8.element && !item8.label) {
@@ -7750,21 +8842,21 @@ var SoftContextMenu = class _SoftContextMenu {
     detailsForElement.actionId = item8.id;
     let accessibleName = item8.label || "";
     if (item8.type === "checkbox") {
-      const checkedState = item8.checked ? i18nString8(UIStrings8.checked) : i18nString8(UIStrings8.unchecked);
+      const checkedState = item8.checked ? i18nString9(UIStrings9.checked) : i18nString9(UIStrings9.unchecked);
       if (item8.shortcut) {
-        accessibleName = i18nString8(UIStrings8.sSS, { PH1: String(item8.label), PH2: item8.shortcut, PH3: checkedState });
+        accessibleName = i18nString9(UIStrings9.sSS, { PH1: String(item8.label), PH2: item8.shortcut, PH3: checkedState });
       } else {
-        accessibleName = i18nString8(UIStrings8.sS, { PH1: String(item8.label), PH2: checkedState });
+        accessibleName = i18nString9(UIStrings9.sS, { PH1: String(item8.label), PH2: checkedState });
       }
     } else if (item8.shortcut) {
-      accessibleName = i18nString8(UIStrings8.sS, { PH1: String(item8.label), PH2: item8.shortcut });
+      accessibleName = i18nString9(UIStrings9.sS, { PH1: String(item8.label), PH2: item8.shortcut });
     }
     if (item8.element?.className === "new-badge") {
-      accessibleName = i18nString8(UIStrings8.sS, { PH1: String(item8.label), PH2: i18nString8(UIStrings8.newFeature) });
+      accessibleName = i18nString9(UIStrings9.sS, { PH1: String(item8.label), PH2: i18nString9(UIStrings9.newFeature) });
     }
     setLabel(menuItemElement, accessibleName);
     if (item8.isExperimentalFeature) {
-      const experimentIcon = IconButton5.Icon.create("experiment");
+      const experimentIcon = createIcon5("experiment");
       menuItemElement.appendChild(experimentIcon);
     }
     this.detailsForElementMap.set(menuItemElement, detailsForElement);
@@ -7776,26 +8868,22 @@ var SoftContextMenu = class _SoftContextMenu {
     menuItemElement.tabIndex = -1;
     markAsMenuItemSubMenu(menuItemElement);
     this.detailsForElementMap.set(menuItemElement, {
-      subItems: item8.subItems,
-      actionId: void 0,
-      isSeparator: void 0,
-      customElement: void 0,
-      subMenuTimer: void 0
+      subItems: item8.subItems
     });
     if (menuContainsCheckbox) {
-      const checkMarkElement = IconButton5.Icon.create("checkmark", "checkmark soft-context-menu-item-checkmark");
+      const checkMarkElement = createIcon5("checkmark", "checkmark soft-context-menu-item-checkmark");
       menuItemElement.appendChild(checkMarkElement);
     }
     createTextChild(menuItemElement, item8.label || "");
     setExpanded(menuItemElement, false);
-    const subMenuArrowElement = IconButton5.Icon.create("keyboard-arrow-right", "soft-context-menu-item-submenu-arrow");
+    const subMenuArrowElement = createIcon5("keyboard-arrow-right", "soft-context-menu-item-submenu-arrow");
     menuItemElement.appendChild(subMenuArrowElement);
     menuItemElement.addEventListener("mousedown", this.menuItemMouseDown.bind(this), false);
     menuItemElement.addEventListener("mouseup", this.menuItemMouseUp.bind(this), false);
     menuItemElement.addEventListener("mouseover", this.menuItemMouseOver.bind(this), false);
     menuItemElement.addEventListener("mouseleave", this.menuItemMouseLeave.bind(this), false);
     if (item8.jslogContext) {
-      menuItemElement.setAttribute("jslog", `${VisualLogging8.item().context(item8.jslogContext)}`);
+      menuItemElement.setAttribute("jslog", `${VisualLogging9.item(item8.jslogContext).track({ click: true, resize: true })}`);
     }
     return menuItemElement;
   }
@@ -7803,11 +8891,7 @@ var SoftContextMenu = class _SoftContextMenu {
     const separatorElement = document.createElement("div");
     separatorElement.classList.add("soft-context-menu-separator");
     this.detailsForElementMap.set(separatorElement, {
-      subItems: void 0,
-      actionId: void 0,
-      isSeparator: true,
-      customElement: void 0,
-      subMenuTimer: void 0
+      isSeparator: true
     });
     separatorElement.createChild("div", "separator-line");
     return separatorElement;
@@ -7817,7 +8901,7 @@ var SoftContextMenu = class _SoftContextMenu {
   }
   menuItemMouseUp(event) {
     this.triggerAction(event.target, event);
-    void VisualLogging8.logClick(event.target, event);
+    void VisualLogging9.logClick(event.target, event);
     event.consume();
   }
   root() {
@@ -7838,8 +8922,8 @@ var SoftContextMenu = class _SoftContextMenu {
     } else {
       element.removeAttribute("checked");
     }
-    const checkedState = item8.checked ? i18nString8(UIStrings8.checked) : i18nString8(UIStrings8.unchecked);
-    const accessibleName = item8.shortcut ? i18nString8(UIStrings8.sSS, { PH1: String(item8.label), PH2: item8.shortcut, PH3: checkedState }) : i18nString8(UIStrings8.sS, { PH1: String(item8.label), PH2: checkedState });
+    const checkedState = item8.checked ? i18nString9(UIStrings9.checked) : i18nString9(UIStrings9.unchecked);
+    const accessibleName = item8.shortcut ? i18nString9(UIStrings9.sSS, { PH1: String(item8.label), PH2: item8.shortcut, PH3: checkedState }) : i18nString9(UIStrings9.sS, { PH1: String(item8.label), PH2: checkedState });
     setLabel(element, accessibleName);
   }
   triggerAction(menuItemElement, event) {
@@ -7969,7 +9053,7 @@ var SoftContextMenu = class _SoftContextMenu {
       if (!detailsForElement || detailsForElement.customElement) {
         return;
       }
-      VisualLogging8.logClick(this.highlightedMenuItemElement, keyboardEvent);
+      VisualLogging9.logClick(this.highlightedMenuItemElement, keyboardEvent);
       this.triggerAction(this.highlightedMenuItemElement, keyboardEvent);
       if (detailsForElement.subItems && this.subMenu) {
         this.subMenu.highlightNext();
@@ -8131,8 +9215,6 @@ var Item = class {
           label: this.label,
           isExperimentalFeature: this.previewFeature,
           enabled: !this.disabled,
-          checked: void 0,
-          subItems: void 0,
           tooltip: this.#tooltip,
           jslogContext: this.jslogContext,
           featureName: this.featureName
@@ -8153,12 +9235,7 @@ var Item = class {
       }
       case "separator": {
         return {
-          type: "separator",
-          id: void 0,
-          label: void 0,
-          enabled: void 0,
-          checked: void 0,
-          subItems: void 0
+          type: "separator"
         };
       }
       case "checkbox": {
@@ -8169,7 +9246,6 @@ var Item = class {
           checked: Boolean(this.checked),
           isExperimentalFeature: this.previewFeature,
           enabled: !this.disabled,
-          subItems: void 0,
           tooltip: this.#tooltip,
           jslogContext: this.jslogContext
         };
@@ -8217,15 +9293,20 @@ var Section = class {
   }
   /**
    * Appends a standard clickable item to this section.
-   * @param label The text to display for the item.
+   * @param labelOrItem The text to display for the item, or a premade Item. In the latter case, `option` is ignored.
    * @param handler The function to execute when the item is clicked.
    * @param options Optional settings for the item.
    * @returns The newly created `Item`.
    */
-  appendItem(label, handler, options) {
-    const item8 = new Item(this.contextMenu, "item", label, options?.isPreviewFeature, options?.disabled, void 0, options?.accelerator, options?.tooltip, options?.jslogContext, options?.featureName);
-    if (options?.additionalElement) {
-      item8.customElement = options?.additionalElement;
+  appendItem(labelOrItem, handler, options) {
+    let item8;
+    if (labelOrItem instanceof Item) {
+      item8 = labelOrItem;
+    } else {
+      item8 = new Item(this.contextMenu, "item", labelOrItem, options?.isPreviewFeature, options?.disabled, void 0, options?.accelerator, options?.tooltip, options?.jslogContext, options?.featureName);
+      if (options?.additionalElement) {
+        item8.customElement = options?.additionalElement;
+      }
     }
     this.items.push(item8);
     if (this.contextMenu) {
@@ -8450,8 +9531,6 @@ var SubMenu = class extends Item {
       isExperimentalFeature: this.previewFeature,
       enabled: !this.disabled,
       subItems: [],
-      id: void 0,
-      checked: void 0,
       jslogContext: this.jslogContext,
       featureName: this.featureName
     };
@@ -8468,12 +9547,7 @@ var SubMenu = class extends Item {
           result.subItems = [];
         }
         result.subItems.push({
-          type: "separator",
-          id: void 0,
-          subItems: void 0,
-          checked: void 0,
-          enabled: void 0,
-          label: void 0
+          type: "separator"
         });
       }
     }
@@ -8566,7 +9640,7 @@ var ContextMenu = class _ContextMenu extends SubMenu {
    * commands from the host to toggle soft menu usage.
    */
   static initialize() {
-    Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host6.InspectorFrontendHostAPI.Events.SetUseSoftMenu, setUseSoftMenu);
+    Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host7.InspectorFrontendHostAPI.Events.SetUseSoftMenu, setUseSoftMenu);
     function setUseSoftMenu(event) {
       _ContextMenu.useSoftMenu = event.data;
     }
@@ -8647,11 +9721,11 @@ var ContextMenu = class _ContextMenu extends SubMenu {
     for (const descriptor of descriptors) {
       if (descriptor.jslogContext) {
         if (descriptor.type === "checkbox") {
-          VisualLogging9.registerLoggable(descriptor, `${VisualLogging9.toggle().track({ click: true }).context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
+          VisualLogging10.registerLoggable(descriptor, `${VisualLogging10.toggle().track({ click: true }).context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
         } else if (descriptor.type === "item") {
-          VisualLogging9.registerLoggable(descriptor, `${VisualLogging9.action().track({ click: true }).context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
+          VisualLogging10.registerLoggable(descriptor, `${VisualLogging10.action().track({ click: true }).context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
         } else if (descriptor.type === "subMenu") {
-          VisualLogging9.registerLoggable(descriptor, `${VisualLogging9.item().context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
+          VisualLogging10.registerLoggable(descriptor, `${VisualLogging10.item().context(descriptor.jslogContext)}`, parent || descriptors, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING));
         }
         if (descriptor.subItems) {
           this.registerLoggablesWithin(descriptor.subItems, descriptor);
@@ -8665,7 +9739,11 @@ var ContextMenu = class _ContextMenu extends SubMenu {
     }
     const menuObject = this.buildMenuDescriptors();
     const ownerDocument = this.eventTarget.ownerDocument;
-    if (this.useSoftMenu || _ContextMenu.useSoftMenu || Host6.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode()) {
+    let useSoftMenu = this.useSoftMenu || _ContextMenu.useSoftMenu || Host7.InspectorFrontendHost.InspectorFrontendHostInstance.isHostedMode();
+    if (!this.useSoftMenu && _ContextMenu.useSoftMenu && this.event.altKey) {
+      useSoftMenu = false;
+    }
+    if (useSoftMenu) {
       this.softMenu = new SoftContextMenu(menuObject, this.itemSelected.bind(this), this.keepOpen, void 0, this.onSoftMenuClosed, this.loggableParent);
       const isMouseEvent = this.event.pointerType === "mouse" && this.event.button >= 0;
       this.softMenu.setFocusOnTheFirstItem(!isMouseEvent);
@@ -8675,11 +9753,11 @@ var ContextMenu = class _ContextMenu extends SubMenu {
       }
     } else {
       let listenToEvents = function() {
-        Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host6.InspectorFrontendHostAPI.Events.ContextMenuCleared, this.menuCleared, this);
-        Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host6.InspectorFrontendHostAPI.Events.ContextMenuItemSelected, this.onItemSelected, this);
+        Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host7.InspectorFrontendHostAPI.Events.ContextMenuCleared, this.menuCleared, this);
+        Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.addEventListener(Host7.InspectorFrontendHostAPI.Events.ContextMenuItemSelected, this.onItemSelected, this);
       };
-      Host6.InspectorFrontendHost.InspectorFrontendHostInstance.showContextMenuAtPoint(this.x, this.y, menuObject, ownerDocument);
-      VisualLogging9.registerLoggable(menuObject, `${VisualLogging9.menu()}`, this.loggableParent, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING * menuObject.length));
+      Host7.InspectorFrontendHost.InspectorFrontendHostInstance.showContextMenuAtPoint(this.x, this.y, menuObject, ownerDocument);
+      VisualLogging10.registerLoggable(menuObject, `${VisualLogging10.menu()}`, this.loggableParent, new DOMRect(0, 0, MENU_ITEM_WIDTH_FOR_LOGGING, MENU_ITEM_HEIGHT_FOR_LOGGING * menuObject.length));
       this.registerLoggablesWithin(menuObject);
       this.openHostedMenu = menuObject;
       queueMicrotask(listenToEvents.bind(this));
@@ -8749,19 +9827,19 @@ var ContextMenu = class _ContextMenu extends SubMenu {
       };
       const item8 = itemWithId(this.openHostedMenu, id2);
       if (item8?.jslogContext) {
-        void VisualLogging9.logClick(item8, new MouseEvent("click"));
+        void VisualLogging10.logClick(item8, new MouseEvent("click"));
       }
       if (item8 && featuresUsed.length > 0) {
-        featuresUsed.map((feature) => Host6.InspectorFrontendHost.InspectorFrontendHostInstance.recordNewBadgeUsage(feature));
+        featuresUsed.map((feature) => Host7.InspectorFrontendHost.InspectorFrontendHostInstance.recordNewBadgeUsage(feature));
       }
     }
     this.menuCleared();
   }
   menuCleared() {
-    Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.removeEventListener(Host6.InspectorFrontendHostAPI.Events.ContextMenuCleared, this.menuCleared, this);
-    Host6.InspectorFrontendHost.InspectorFrontendHostInstance.events.removeEventListener(Host6.InspectorFrontendHostAPI.Events.ContextMenuItemSelected, this.onItemSelected, this);
+    Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.removeEventListener(Host7.InspectorFrontendHostAPI.Events.ContextMenuCleared, this.menuCleared, this);
+    Host7.InspectorFrontendHost.InspectorFrontendHostInstance.events.removeEventListener(Host7.InspectorFrontendHostAPI.Events.ContextMenuItemSelected, this.onItemSelected, this);
     if (this.openHostedMenu) {
-      void VisualLogging9.logResize(this.openHostedMenu, new DOMRect(0, 0, 0, 0));
+      void VisualLogging10.logResize(this.openHostedMenu, new DOMRect(0, 0, 0, 0));
     }
     this.openHostedMenu = null;
     if (!this.keepOpen) {
@@ -8850,7 +9928,7 @@ var MenuButton = class extends HTMLElement {
    * Reflects the `jslogContext` attribute. Sets the visual logging context for the button.
    */
   set jslogContext(jslogContext) {
-    this.setAttribute("jslog", VisualLogging9.dropDown(jslogContext).track({ click: true }).toString());
+    this.setAttribute("jslog", VisualLogging10.dropDown(jslogContext).track({ click: true }).toString());
   }
   get jslogContext() {
     return this.getAttribute("jslogContext");
@@ -8913,7 +9991,7 @@ var MenuButton = class extends HTMLElement {
     if (!this.iconName) {
       throw new Error("<devtools-menu-button> expects an icon.");
     }
-    render(html`
+    render2(html2`
         <devtools-button .disabled=${this.disabled}
                          .iconName=${this.iconName}
                          .variant=${"icon"}
@@ -8931,7 +10009,7 @@ function registerProvider(registration) {
 async function loadApplicableRegisteredProviders(target) {
   const providers = [];
   for (const providerRegistration of registeredProviders) {
-    if (!Root5.Runtime.Runtime.isDescriptorEnabled({ experiment: providerRegistration.experiment, condition: void 0 })) {
+    if (!Root5.Runtime.Runtime.isDescriptorEnabled({ experiment: providerRegistration.experiment })) {
       continue;
     }
     if (providerRegistration.contextTypes) {
@@ -8966,20 +10044,20 @@ __export(TextPrompt_exports, {
   TextPrompt: () => TextPrompt,
   TextPromptElement: () => TextPromptElement
 });
-import * as Common12 from "./../../core/common/common.js";
+import * as Common13 from "./../../core/common/common.js";
 import * as Platform12 from "./../../core/platform/platform.js";
 import * as TextUtils from "./../../models/text_utils/text_utils.js";
-import * as VisualLogging12 from "./../visual_logging/visual_logging.js";
+import * as VisualLogging13 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/SuggestBox.js
 var SuggestBox_exports = {};
 __export(SuggestBox_exports, {
   SuggestBox: () => SuggestBox
 });
-import * as i18n17 from "./../../core/i18n/i18n.js";
+import * as i18n19 from "./../../core/i18n/i18n.js";
 import * as Platform11 from "./../../core/platform/platform.js";
 import * as Geometry4 from "./../../models/geometry/geometry.js";
-import * as VisualLogging11 from "./../visual_logging/visual_logging.js";
+import * as VisualLogging12 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/ListControl.js
 var ListControl_exports = {};
@@ -8988,7 +10066,7 @@ __export(ListControl_exports, {
   ListMode: () => ListMode
 });
 import * as Platform9 from "./../../core/platform/platform.js";
-import * as VisualLogging10 from "./../visual_logging/visual_logging.js";
+import * as VisualLogging11 from "./../visual_logging/visual_logging.js";
 var ListMode;
 (function(ListMode2) {
   ListMode2["NonViewport"] = "UI.ListMode.NonViewport";
@@ -9217,6 +10295,24 @@ var ListControl = class {
     }
     return false;
   }
+  selectFirstItem(center) {
+    const index = this.findFirstSelectable(0, 1, false);
+    if (index !== -1) {
+      this.scrollIntoView(index, center);
+      this.select(index);
+      return true;
+    }
+    return false;
+  }
+  selectLastItem(center) {
+    const index = this.findFirstSelectable(this.model.length - 1, -1, false);
+    if (index !== -1) {
+      this.scrollIntoView(index, center);
+      this.select(index);
+      return true;
+    }
+    return false;
+  }
   scrollIntoView(index, center) {
     if (this.mode === ListMode.NonViewport) {
       this.elementAtIndex(index).scrollIntoViewIfNeeded(Boolean(center));
@@ -9258,6 +10354,12 @@ var ListControl = class {
       case "PageDown":
         selected = this.selectItemNextPage(false);
         break;
+      case "Home":
+        selected = this.selectFirstItem();
+        break;
+      case "End":
+        selected = this.selectLastItem();
+        break;
     }
     if (selected) {
       event.consume(true);
@@ -9287,7 +10389,11 @@ var ListControl = class {
     if (!element) {
       element = this.delegate.createElementForItem(item8);
       if (!element.hasAttribute("jslog")) {
-        element.setAttribute("jslog", `${VisualLogging10.item().track({ click: true, keydown: "ArrowUp|ArrowDown|PageUp|PageDown" })}`);
+        element.setAttribute("jslog", `${VisualLogging11.item().track({
+          click: true,
+          resize: true,
+          keydown: "ArrowUp|ArrowDown|PageUp|PageDown|Home|End"
+        })}`);
       }
       this.itemToElement.set(item8, element);
       this.updateElementARIA(element, index);
@@ -9523,9 +10629,9 @@ var ListModel_exports = {};
 __export(ListModel_exports, {
   ListModel: () => ListModel
 });
-import * as Common11 from "./../../core/common/common.js";
+import * as Common12 from "./../../core/common/common.js";
 import * as Platform10 from "./../../core/platform/platform.js";
-var ListModel = class extends Common11.ObjectWrapper.ObjectWrapper {
+var ListModel = class extends Common12.ObjectWrapper.ObjectWrapper {
   items;
   constructor(items) {
     super();
@@ -9702,7 +10808,7 @@ var suggestBox_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./suggestBox.css")} */`;
 
 // gen/front_end/ui/legacy/SuggestBox.js
-var UIStrings9 = {
+var UIStrings10 = {
   /**
    * @description Aria alert to read the suggestion for the suggestion box when typing in text editor
    * @example {name} PH1
@@ -9716,8 +10822,8 @@ var UIStrings9 = {
    */
   sSuggestionSSelected: "{PH1}, suggestion selected"
 };
-var str_9 = i18n17.i18n.registerUIStrings("ui/legacy/SuggestBox.ts", UIStrings9);
-var i18nString9 = i18n17.i18n.getLocalizedString.bind(void 0, str_9);
+var str_10 = i18n19.i18n.registerUIStrings("ui/legacy/SuggestBox.ts", UIStrings10);
+var i18nString10 = i18n19.i18n.getLocalizedString.bind(void 0, str_10);
 var SuggestBox = class {
   suggestBoxDelegate;
   maxItemsHeight;
@@ -9740,7 +10846,7 @@ var SuggestBox = class {
     this.element.classList.add("suggest-box");
     this.element.addEventListener("mousedown", (event) => event.preventDefault(), true);
     this.element.addEventListener("click", this.onClick.bind(this), false);
-    this.element.setAttribute("jslog", `${VisualLogging11.menu().parent("mapped").track({ resize: true, keydown: "ArrowUp|ArrowDown|PageUp|PageDown" })}`);
+    this.element.setAttribute("jslog", `${VisualLogging12.menu().parent("mapped").track({ resize: true, keydown: "ArrowUp|ArrowDown|PageUp|PageDown" })}`);
     this.glassPane = new GlassPane();
     this.glassPane.setAnchorBehavior(
       "PreferBottom"
@@ -9752,6 +10858,9 @@ var SuggestBox = class {
   }
   visible() {
     return this.glassPane.isShowing();
+  }
+  completion() {
+    return this.list.selectedItem();
   }
   setPosition(anchorBox) {
     this.glassPane.setContentAnchorBox(anchorBox);
@@ -9787,7 +10896,7 @@ var SuggestBox = class {
     if (this.visible()) {
       return;
     }
-    VisualLogging11.setMappedParent(this.element, this.suggestBoxDelegate.ownerElement());
+    VisualLogging12.setMappedParent(this.element, this.suggestBoxDelegate.ownerElement());
     this.glassPane.show(document);
     const suggestion = { text: "1", subtitle: "12" };
     this.rowHeight = measurePreferredSize(this.createElementForItem(suggestion), this.element).height;
@@ -9804,17 +10913,17 @@ var SuggestBox = class {
   }
   applySuggestion(isIntermediateSuggestion) {
     if (this.onlyCompletion) {
-      isIntermediateSuggestion ? LiveAnnouncer.alert(i18nString9(UIStrings9.sSuggestionSOfS, { PH1: this.onlyCompletion.text, PH2: this.list.selectedIndex() + 1, PH3: this.items.length })) : LiveAnnouncer.alert(i18nString9(UIStrings9.sSuggestionSSelected, { PH1: this.onlyCompletion.text }));
+      isIntermediateSuggestion ? LiveAnnouncer.alert(i18nString10(UIStrings10.sSuggestionSOfS, { PH1: this.onlyCompletion.text, PH2: this.list.selectedIndex() + 1, PH3: this.items.length })) : LiveAnnouncer.alert(i18nString10(UIStrings10.sSuggestionSSelected, { PH1: this.onlyCompletion.text }));
       this.suggestBoxDelegate.applySuggestion(this.onlyCompletion, isIntermediateSuggestion);
       return true;
     }
     const suggestion = this.list.selectedItem();
     if (suggestion?.text) {
-      isIntermediateSuggestion ? LiveAnnouncer.alert(i18nString9(UIStrings9.sSuggestionSOfS, {
+      isIntermediateSuggestion ? LiveAnnouncer.alert(i18nString10(UIStrings10.sSuggestionSOfS, {
         PH1: suggestion.title || suggestion.text,
         PH2: this.list.selectedIndex() + 1,
         PH3: this.items.length
-      })) : LiveAnnouncer.alert(i18nString9(UIStrings9.sSuggestionSSelected, { PH1: suggestion.title || suggestion.text }));
+      })) : LiveAnnouncer.alert(i18nString10(UIStrings10.sSuggestionSSelected, { PH1: suggestion.title || suggestion.text }));
     }
     this.suggestBoxDelegate.applySuggestion(suggestion, isIntermediateSuggestion);
     return this.visible() && Boolean(suggestion);
@@ -10032,42 +11141,71 @@ var textPrompt_css_default = `/*
 
 // gen/front_end/ui/legacy/TextPrompt.js
 var TextPromptElement = class _TextPromptElement extends HTMLElement {
-  static observedAttributes = ["editing", "completions"];
+  static observedAttributes = ["editing", "completions", "placeholder"];
   #shadow = this.attachShadow({ mode: "open" });
   #entrypoint = this.#shadow.createChild("span");
   #slot = this.#entrypoint.createChild("slot");
   #textPrompt = new TextPrompt();
   #completionTimeout = null;
+  #completionObserver = new MutationObserver(this.#onMutate.bind(this));
   constructor() {
     super();
     this.#textPrompt.initialize(this.#willAutoComplete.bind(this));
   }
+  #onMutate(changes) {
+    const listId = this.getAttribute("completions");
+    if (!listId) {
+      return;
+    }
+    const checkIfNodeIsInCompletionList = (node) => {
+      if (node instanceof HTMLDataListElement) {
+        return node.id === listId;
+      }
+      if (node instanceof HTMLOptionElement) {
+        return Boolean(node.parentElement && checkIfNodeIsInCompletionList(node.parentElement));
+      }
+      return false;
+    };
+    const affectsCompletionList = (change) => change.addedNodes.values().some(checkIfNodeIsInCompletionList) || change.removedNodes.values().some(checkIfNodeIsInCompletionList) || checkIfNodeIsInCompletionList(change.target);
+    if (changes.some(affectsCompletionList)) {
+      this.#updateCompletions();
+    }
+  }
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue || !this.isConnected) {
+    if (oldValue === newValue) {
       return;
     }
     switch (name) {
       case "editing":
-        if (newValue !== null && newValue !== "false" && oldValue === null) {
-          this.#startEditing();
-        } else {
-          this.#stopEditing();
+        if (this.isConnected) {
+          if (newValue !== null && newValue !== "false" && oldValue === null) {
+            this.#startEditing();
+          } else {
+            this.#stopEditing();
+          }
         }
         break;
       case "completions":
-        if (this.#textPrompt.isSuggestBoxVisible()) {
-          void this.#textPrompt.complete(
-            /* force=*/
-            true
-          );
+        if (this.getAttribute("completions")) {
+          this.#completionObserver.observe(this, { childList: true, subtree: true });
+          this.#updateCompletions();
+        } else {
+          this.#textPrompt.clearAutocomplete();
+          this.#completionObserver.disconnect();
         }
         break;
     }
   }
-  async #willAutoComplete(expression, filter, force) {
-    if (!force) {
-      this.dispatchEvent(new _TextPromptElement.BeforeAutoCompleteEvent({ expression, filter }));
+  #updateCompletions() {
+    if (this.isConnected) {
+      void this.#textPrompt.complete(
+        /* force=*/
+        true
+      );
     }
+  }
+  async #willAutoComplete(expression, filter, force) {
+    this.dispatchEvent(new _TextPromptElement.BeforeAutoCompleteEvent({ expression, filter, force }));
     const listId = this.getAttribute("completions");
     if (!listId) {
       return [];
@@ -10076,12 +11214,16 @@ var TextPromptElement = class _TextPromptElement extends HTMLElement {
     if (!datalist?.length) {
       return [];
     }
-    filter = filter?.toLowerCase();
-    return datalist.values().filter((option) => option.textContent.startsWith(filter ?? "")).map((option) => ({ text: option.textContent })).toArray();
+    return datalist.values().filter((option) => option.textContent.startsWith(filter.toLowerCase())).map((option) => ({ text: option.textContent })).toArray();
   }
   #startEditing() {
+    const truncatedTextPlaceholder = this.getAttribute("placeholder");
     const placeholder = this.#entrypoint.createChild("span");
-    placeholder.textContent = this.#slot.deepInnerText();
+    if (truncatedTextPlaceholder === null) {
+      placeholder.textContent = this.#slot.deepInnerText();
+    } else {
+      placeholder.setTextContentTruncatedIfNeeded(this.#slot.deepInnerText(), truncatedTextPlaceholder);
+    }
     this.#slot.remove();
     const proxy = this.#textPrompt.attachAndStartEditing(placeholder, (e) => this.#done(
       e,
@@ -10162,7 +11304,7 @@ var TextPromptElement = class _TextPromptElement extends HTMLElement {
   TextPromptElement2.BeforeAutoCompleteEvent = BeforeAutoCompleteEvent;
 })(TextPromptElement || (TextPromptElement = {}));
 customElements.define("devtools-prompt", TextPromptElement);
-var TextPrompt = class extends Common12.ObjectWrapper.ObjectWrapper {
+var TextPrompt = class extends Common13.ObjectWrapper.ObjectWrapper {
   proxyElement;
   proxyElementDisplay;
   autocompletionTimeout;
@@ -10246,14 +11388,14 @@ var TextPrompt = class extends Common12.ObjectWrapper.ObjectWrapper {
     this.boundClearAutocomplete = this.clearAutocomplete.bind(this);
     this.boundOnBlur = this.onBlur.bind(this);
     this.proxyElement = element.ownerDocument.createElement("span");
-    Platform12.DOMUtilities.appendStyle(this.proxyElement, textPrompt_css_default);
+    appendStyle(this.proxyElement, textPrompt_css_default);
     this.contentElement = this.proxyElement.createChild("div", "text-prompt-root");
     this.proxyElement.style.display = this.proxyElementDisplay;
     if (element.parentElement) {
       element.parentElement.insertBefore(this.proxyElement, element);
     }
     this.contentElement.appendChild(element);
-    let jslog = VisualLogging12.textField().track({
+    let jslog = VisualLogging13.textField().track({
       keydown: "ArrowLeft|ArrowUp|PageUp|Home|PageDown|ArrowRight|ArrowDown|End|Space|Tab|Enter|Escape",
       change: true
     });
@@ -10435,7 +11577,7 @@ var TextPrompt = class extends Common12.ObjectWrapper.ObjectWrapper {
   onKeyDown(event) {
     let handled = false;
     if (this.isSuggestBoxVisible() && this.suggestBox?.keyPressed(event)) {
-      void VisualLogging12.logKeyDown(this.suggestBox.element, event);
+      void VisualLogging13.logKeyDown(this.suggestBox.element, event);
       event.consume(true);
       return;
     }
@@ -10480,7 +11622,7 @@ var TextPrompt = class extends Common12.ObjectWrapper.ObjectWrapper {
     }
   }
   acceptSuggestionOnStopCharacters(key) {
-    if (!this.currentSuggestion || !this.queryRange || key.length !== 1 || !this.completionStopCharacters?.includes(key)) {
+    if (!this.currentSuggestion || !this.queryRange || key.length !== 1 || !this.completionStopCharacters?.includes(key) || this.currentSuggestion.disableAcceptSuggestionOnStopCharacters) {
       return false;
     }
     const query = this.text().substring(this.queryRange.startColumn, this.queryRange.endColumn);
@@ -10598,7 +11740,7 @@ var TextPrompt = class extends Common12.ObjectWrapper.ObjectWrapper {
       this.clearAutocomplete();
       return;
     }
-    const wordQueryRange = Platform12.DOMUtilities.rangeOfWord(selectionRange.startContainer, selectionRange.startOffset, this.completionStopCharacters, this.element(), "backward");
+    const wordQueryRange = rangeOfWord(selectionRange.startContainer, selectionRange.startOffset, this.completionStopCharacters, this.element(), "backward");
     const expressionRange = wordQueryRange.cloneRange();
     expressionRange.collapse(true);
     expressionRange.setStartBefore(this.element());
@@ -10858,7 +12000,7 @@ devtools-toolbar-input {
 /*# sourceURL=${import.meta.resolve("./toolbar.css")} */`;
 
 // gen/front_end/ui/legacy/Toolbar.js
-var UIStrings10 = {
+var UIStrings11 = {
   /**
    * @description Announced screen reader message for ToolbarSettingToggle when the setting is toggled on.
    */
@@ -10874,10 +12016,14 @@ var UIStrings10 = {
   /**
    * @description Placeholder for filter bars that shows before the user types in a filter keyword.
    */
-  filter: "Filter"
+  filter: "Filter",
+  /**
+   * @description Tooltip shown when the user hovers over the regex icon to toggle regular-expression filtering.
+   */
+  useRegularExpression: "Use regular expression"
 };
-var str_10 = i18n19.i18n.registerUIStrings("ui/legacy/Toolbar.ts", UIStrings10);
-var i18nString10 = i18n19.i18n.getLocalizedString.bind(void 0, str_10);
+var str_11 = i18n21.i18n.registerUIStrings("ui/legacy/Toolbar.ts", UIStrings11);
+var i18nString11 = i18n21.i18n.getLocalizedString.bind(void 0, str_11);
 var Toolbar = class _Toolbar extends HTMLElement {
   #shadowRoot = this.attachShadow({ mode: "open" });
   items = [];
@@ -11123,7 +12269,12 @@ var Toolbar = class _Toolbar extends HTMLElement {
       item8.applyEnabledState(false);
     }
     if (item8.element.parentElement !== this) {
-      this.appendChild(item8.element);
+      const widget2 = Widget.get(item8.element);
+      if (widget2) {
+        widget2.show(this);
+      } else {
+        this.appendChild(item8.element);
+      }
     }
     this.hideSeparatorDupes();
   }
@@ -11137,7 +12288,14 @@ var Toolbar = class _Toolbar extends HTMLElement {
     if (!this.enabled) {
       item8.applyEnabledState(false);
     }
-    this.prepend(item8.element);
+    if (item8.element.parentElement !== this) {
+      const widget2 = Widget.get(item8.element);
+      if (widget2) {
+        widget2.show(this, this.firstChild);
+      } else {
+        this.prepend(item8.element);
+      }
+    }
     this.hideSeparatorDupes();
   }
   appendSeparator() {
@@ -11153,7 +12311,12 @@ var Toolbar = class _Toolbar extends HTMLElement {
     const updatedItems = [];
     for (const item8 of this.items) {
       if (item8 === itemToRemove) {
-        item8.element.remove();
+        const widget2 = Widget.get(item8.element);
+        if (widget2) {
+          widget2.detach();
+        } else {
+          item8.element.remove();
+        }
       } else {
         updatedItems.push(item8);
       }
@@ -11163,6 +12326,10 @@ var Toolbar = class _Toolbar extends HTMLElement {
   removeToolbarItems() {
     for (const item8 of this.items) {
       item8.toolbar = null;
+      const widget2 = Widget.get(item8.element);
+      if (widget2) {
+        widget2.detach();
+      }
     }
     this.items = [];
     this.removeChildren();
@@ -11221,7 +12388,7 @@ var Toolbar = class _Toolbar extends HTMLElement {
   }
 };
 customElements.define("devtools-toolbar", Toolbar);
-var ToolbarItem = class extends Common13.ObjectWrapper.ObjectWrapper {
+var ToolbarItem = class extends Common14.ObjectWrapper.ObjectWrapper {
   element;
   #visible;
   enabled;
@@ -11291,7 +12458,7 @@ var ToolbarText = class extends ToolbarItem {
     this.setText(text);
   }
   text() {
-    return this.element.textContent ?? "";
+    return this.element.textContent;
   }
   setText(text) {
     this.element.textContent = text;
@@ -11422,7 +12589,7 @@ var ToolbarInput = class extends ToolbarItem {
     if (shrinkFactor) {
       this.element.style.flexShrink = String(shrinkFactor);
     }
-    const clearButtonText = i18nString10(UIStrings10.clearInput);
+    const clearButtonText = i18nString11(UIStrings11.clearInput);
     const clearButton = new Buttons5.Button.Button();
     clearButton.data = {
       variant: "icon",
@@ -11431,8 +12598,8 @@ var ToolbarInput = class extends ToolbarItem {
       title: clearButtonText
     };
     clearButton.className = "toolbar-input-clear-button";
-    clearButton.setAttribute("jslog", `${VisualLogging13.action("clear").track({ click: true }).parent("mapped")}`);
-    VisualLogging13.setMappedParent(clearButton, internalPromptElement);
+    clearButton.setAttribute("jslog", `${VisualLogging14.action("clear").track({ click: true }).parent("mapped")}`);
+    VisualLogging14.setMappedParent(clearButton, internalPromptElement);
     clearButton.variant = "icon";
     clearButton.size = "SMALL";
     clearButton.iconName = "cross-circle-filled";
@@ -11445,6 +12612,9 @@ var ToolbarInput = class extends ToolbarItem {
     });
     this.element.appendChild(clearButton);
     this.updateEmptyStyles();
+  }
+  insertTrailingElement(element) {
+    this.element.appendChild(element);
   }
   applyEnabledState(enabled) {
     if (enabled) {
@@ -11492,19 +12662,38 @@ var ToolbarInput = class extends ToolbarItem {
   }
 };
 var ToolbarFilter = class extends ToolbarInput {
-  constructor(filterBy, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext, element) {
-    const filterPlaceholder = filterBy ? filterBy : i18nString10(UIStrings10.filter);
+  constructor(filterBy, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext, element, showRegexToggle, onRegexToggle) {
+    const filterPlaceholder = filterBy ? filterBy : i18nString11(UIStrings11.filter);
     super(filterPlaceholder, filterPlaceholder, growFactor, shrinkFactor, tooltip, completions, dynamicCompletions, jslogContext || "filter", element);
-    const filterIcon = IconButton6.Icon.create("filter");
+    const filterIcon = createIcon6("filter");
     this.element.prepend(filterIcon);
     this.element.classList.add("toolbar-filter");
+    if (showRegexToggle) {
+      const regexIconName = "regular-expression";
+      const regexButton = new Buttons5.Button.Button();
+      regexButton.data = {
+        variant: "icon_toggle",
+        size: "SMALL",
+        iconName: regexIconName,
+        toggledIconName: regexIconName,
+        toggleType: "primary-toggle",
+        toggled: false,
+        title: i18nString11(UIStrings11.useRegularExpression),
+        jslogContext: regexIconName
+      };
+      setLabel(regexButton, i18nString11(UIStrings11.useRegularExpression));
+      regexButton.addEventListener("click", () => {
+        onRegexToggle?.();
+      });
+      this.insertTrailingElement(regexButton);
+    }
   }
 };
 var ToolbarInputElement = class extends HTMLElement {
-  static observedAttributes = ["value", "disabled"];
+  static observedAttributes = ["value", "disabled", "regex"];
   item;
   datalist = null;
-  value = void 0;
+  #value = void 0;
   #disabled = false;
   connectedCallback() {
     if (this.item) {
@@ -11531,7 +12720,9 @@ var ToolbarInputElement = class extends HTMLElement {
         /* dynamicCompletions=*/
         void 0,
         jslogContext || "filter",
-        this
+        this,
+        this.hasAttribute("regex"),
+        this.#onRegexToggle.bind(this)
       );
     } else {
       this.item = new ToolbarInput(
@@ -11549,8 +12740,8 @@ var ToolbarInputElement = class extends HTMLElement {
         this
       );
     }
-    if (this.value) {
-      this.item.setValue(this.value);
+    if (this.#value) {
+      this.item.setValue(this.#value);
     }
     if (this.#disabled) {
       this.item.setEnabled(false);
@@ -11565,6 +12756,9 @@ var ToolbarInputElement = class extends HTMLElement {
   focus() {
     this.item?.focus();
   }
+  #onRegexToggle() {
+    this.dispatchEvent(new CustomEvent("regextoggle"));
+  }
   async #onAutocomplete(expression, prefix, force) {
     if (!prefix && !force && expression || !this.datalist) {
       return [];
@@ -11577,7 +12771,7 @@ var ToolbarInputElement = class extends HTMLElement {
       if (this.item && this.item.value() !== newValue) {
         this.item.setValue(newValue, true);
       } else {
-        this.value = newValue;
+        this.#value = newValue;
       }
     } else if (name === "disabled") {
       this.#disabled = typeof newValue === "string";
@@ -11585,6 +12779,12 @@ var ToolbarInputElement = class extends HTMLElement {
         this.item.setEnabled(!this.#disabled);
       }
     }
+  }
+  get value() {
+    return this.item ? this.item.value() : this.#value ?? "";
+  }
+  set value(value) {
+    this.setAttribute("value", value);
   }
   set disabled(disabled) {
     if (disabled) {
@@ -11610,7 +12810,7 @@ var ToolbarToggle = class extends ToolbarButton {
     );
     this.toggled(false);
     if (jslogContext) {
-      this.element.setAttribute("jslog", `${VisualLogging13.toggle().track({ click: true }).context(jslogContext)}`);
+      this.element.setAttribute("jslog", `${VisualLogging14.toggle().track({ click: true }).context(jslogContext)}`);
     }
     if (toggleOnClick !== void 0) {
       this.setToggleOnClick(toggleOnClick);
@@ -11659,11 +12859,11 @@ var ToolbarMenuButton = class extends ToolbarItem {
     this.title = "";
     if (!isIconDropdown) {
       this.element.classList.add("toolbar-has-dropdown");
-      const dropdownArrowIcon = IconButton6.Icon.create("triangle-down", "toolbar-dropdown-arrow");
+      const dropdownArrowIcon = createIcon6("triangle-down", "toolbar-dropdown-arrow");
       this.element.appendChild(dropdownArrowIcon);
     }
     if (jslogContext) {
-      this.element.setAttribute("jslog", `${VisualLogging13.dropDown().track({ click: true }).context(jslogContext)}`);
+      this.element.setAttribute("jslog", `${VisualLogging14.dropDown().track({ click: true }).context(jslogContext)}`);
     }
     this.element.addEventListener("mousedown", this.mouseDown.bind(this), false);
     this.contextMenuHandler = contextMenuHandler;
@@ -11758,7 +12958,7 @@ var ToolbarSettingToggle = class extends ToolbarToggle {
   settingChanged() {
     const toggled = this.setting.get();
     this.setToggled(toggled);
-    const toggleAnnouncement = toggled ? i18nString10(UIStrings10.pressed) : i18nString10(UIStrings10.notPressed);
+    const toggleAnnouncement = toggled ? i18nString11(UIStrings11.pressed) : i18nString11(UIStrings11.notPressed);
     if (this.willAnnounceState) {
       LiveAnnouncer.alert(toggleAnnouncement);
     }
@@ -11793,8 +12993,11 @@ var ToolbarComboBox = class extends ToolbarItem {
       this.element.classList.add(className);
     }
     if (jslogContext) {
-      this.element.setAttribute("jslog", `${VisualLogging13.dropDown().track({ change: true }).context(jslogContext)}`);
+      this.element.setAttribute("jslog", `${VisualLogging14.dropDown().track({ change: true }).context(jslogContext)}`);
     }
+  }
+  turnShrinkable() {
+    this.element.classList.add("toolbar-has-dropdown-shrinkable");
   }
   size() {
     return this.element.childElementCount;
@@ -11814,7 +13017,7 @@ var ToolbarComboBox = class extends ToolbarItem {
     if (!jslogContext) {
       jslogContext = value ? Platform13.StringUtilities.toKebabCase(value) : void 0;
     }
-    option.setAttribute("jslog", `${VisualLogging13.item(jslogContext).track({ click: true })}`);
+    option.setAttribute("jslog", `${VisualLogging14.item(jslogContext).track({ click: true })}`);
     return option;
   }
   applyEnabledState(enabled) {
@@ -11918,11 +13121,8 @@ var ToolbarSettingComboBox = class extends ToolbarComboBox {
 var ToolbarCheckbox = class extends ToolbarItem {
   #checkboxLabel;
   constructor(text, tooltip, listener, jslogContext) {
-    const checkboxLabel = CheckboxLabel.create(text, void 0, void 0, jslogContext);
+    const checkboxLabel = CheckboxLabel.create(text, void 0, void 0, jslogContext, void 0, tooltip);
     super(checkboxLabel);
-    if (tooltip) {
-      Tooltip.install(this.element, tooltip);
-    }
     if (listener) {
       this.element.addEventListener("click", listener, false);
     }
@@ -11964,17 +13164,15 @@ function getRegisteredToolbarItems() {
 }
 
 // gen/front_end/ui/legacy/UIUtils.js
-import * as Common14 from "./../../core/common/common.js";
-import * as Host7 from "./../../core/host/host.js";
-import * as i18n21 from "./../../core/i18n/i18n.js";
+import * as Common15 from "./../../core/common/common.js";
+import * as Host8 from "./../../core/host/host.js";
+import * as i18n23 from "./../../core/i18n/i18n.js";
 import * as Platform15 from "./../../core/platform/platform.js";
-import * as Root7 from "./../../core/root/root.js";
 import * as Geometry5 from "./../../models/geometry/geometry.js";
-import * as TextUtils2 from "./../../models/text_utils/text_utils.js";
 import * as Buttons6 from "./../components/buttons/buttons.js";
-import * as IconButton7 from "./../components/icon_button/icon_button.js";
+import { Icon as Icon2 } from "./../kit/kit.js";
 import * as Lit2 from "./../lit/lit.js";
-import * as VisualLogging14 from "./../visual_logging/visual_logging.js";
+import * as VisualLogging15 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/checkboxTextLabel.css.js
 var checkboxTextLabel_css_default = `/*
@@ -12162,7 +13360,7 @@ body {
 }
 
 :focus {
-  outline-width: 0;
+  outline-style: none;
 }
 
 /* Prevent UA stylesheet from overriding font-family for HTML elements. */
@@ -12184,10 +13382,6 @@ code, kbd, samp, pre {
   ) !important; /* stylelint-disable-line declaration-no-important */
 
   white-space: pre-wrap;
-
-  &:not(input)::selection {
-    color: var(--sys-color-on-surface);
-  }
 }
 
 .source-code.breakpoint {
@@ -12267,11 +13461,12 @@ iframe.widget {
   inset: 0;
 }
 
-.hidden {
+[hidden],
+.hidden { /* TODO(crbug.com/458299714): remove the class */
   display: none !important; /* stylelint-disable-line declaration-no-important */
 }
 
-.highlighted-search-result,::highlight(highlighted-search-result) {
+.highlighted-search-result,:host::highlight(highlighted-search-result) {
   border-radius: 1px;
   background-color: var(--sys-color-yellow-container);
   outline: 1px solid var(--sys-color-yellow-container);
@@ -12290,12 +13485,6 @@ select {
   /* Form elements do not automatically inherit font style from ancestors. */
   font-family: inherit;
   font-size: inherit;
-}
-
-select option,
-select optgroup,
-input {
-  background-color: var(--sys-color-cdt-base-container);
 }
 
 input {
@@ -12456,7 +13645,7 @@ input[type='range']:disabled::-webkit-slider-thumb {
   }
 }
 
-.highlighted-search-result.current-search-result,::highlight(current-search-result) {
+.highlighted-search-result.current-search-result,:host::highlight(current-search-result) {
   /* Note: this value is used in light & dark mode */
   --override-current-search-result-background-color: rgb(255 127 0 / 80%);
 
@@ -12624,7 +13813,7 @@ select option {
     font: var(--sys-typescale-body4-regular);
     color: var(--sys-color-on-surface-subtle);
 
-    > x-link {
+    > devtools-link {
       white-space: nowrap;
       margin-left: var(--sys-size-3);
     }
@@ -12740,7 +13929,7 @@ button.link:focus-visible {
 @media (forced-colors: active) {
   .dimmed,
   select:disabled {
-    opacity: 100%;
+    opacity: 70%;
   }
 
   .harmony-input:not([type]),
@@ -13328,6 +14517,7 @@ devtools-toolbar {
   word-break: break-all;
 }
 
+.webkit-html-processing-instruction,
 .webkit-html-tag {
   color: var(--sys-color-token-tag);
 }
@@ -13368,6 +14558,7 @@ devtools-toolbar {
   /* See: crbug.com/1152736 for color variable migration. */
 }
 
+.webkit-html-processing-instruction-value,
 .webkit-html-attribute-name {
   /* Keep this in sync with view-source.css (.webkit-html-attribute-name) */
   color: var(--sys-color-token-attribute);
@@ -13487,8 +14678,8 @@ div.error {
 /*# sourceURL=${import.meta.resolve("./smallBubble.css")} */`;
 
 // gen/front_end/ui/legacy/UIUtils.js
-var { Directives: Directives2, render: render2 } = Lit2;
-var UIStrings11 = {
+var { Directives: Directives2, render: render3 } = Lit2;
+var UIStrings12 = {
   /**
    * @description label to open link externally
    */
@@ -13538,10 +14729,8 @@ var UIStrings11 = {
    */
   new: "NEW"
 };
-var str_11 = i18n21.i18n.registerUIStrings("ui/legacy/UIUtils.ts", UIStrings11);
-var i18nString11 = i18n21.i18n.getLocalizedString.bind(void 0, str_11);
-var highlightedSearchResultClassName = "highlighted-search-result";
-var highlightedCurrentSearchResultClassName = "current-search-result";
+var str_12 = i18n23.i18n.registerUIStrings("ui/legacy/UIUtils.ts", UIStrings12);
+var i18nString12 = i18n23.i18n.getLocalizedString.bind(void 0, str_12);
 function installDragHandle(element, elementDragStart2, elementDrag, elementDragEnd, cursor, hoverCursor, startDelay, mouseDownPreventDefault = true) {
   function onMouseDown(event) {
     const dragHandler = new DragHandler();
@@ -13613,7 +14802,7 @@ var DragHandler = class _DragHandler {
   }
   elementDragStart(targetElement, elementDragStart2, elementDrag, elementDragEnd, cursor, ev, preventDefault = true) {
     const event = ev;
-    if (event.button || Host7.Platform.isMac() && event.ctrlKey) {
+    if (event.button || Host8.Platform.isMac() && event.ctrlKey) {
       return;
     }
     if (this.elementDraggingEventListener) {
@@ -13735,7 +14924,7 @@ function isEditing() {
   if (elementsBeingEdited.size) {
     return true;
   }
-  const focused = Platform15.DOMUtilities.deepActiveElement(document);
+  const focused = deepActiveElement(document);
   if (!focused) {
     return false;
   }
@@ -13896,7 +15085,7 @@ function handleElementValueModifications(event, element, finishHandler, suggesti
   if (!isElementValueModification(event)) {
     return false;
   }
-  void VisualLogging14.logKeyDown(event.currentTarget, event, "element-value-modification");
+  void VisualLogging15.logKeyDown(event.currentTarget, event, "element-value-modification");
   const selection = element.getComponentSelection();
   if (!selection?.rangeCount) {
     return false;
@@ -13906,7 +15095,7 @@ function handleElementValueModifications(event, element, finishHandler, suggesti
     return false;
   }
   const originalValue = element.textContent;
-  const wordRange = Platform15.DOMUtilities.rangeOfWord(selectionRange.startContainer, selectionRange.startOffset, StyleValueDelimiters, element);
+  const wordRange = rangeOfWord(selectionRange.startContainer, selectionRange.startOffset, StyleValueDelimiters, element);
   const wordString = wordRange.toString();
   if (suggestionHandler?.(wordString)) {
     return false;
@@ -13931,41 +15120,52 @@ function handleElementValueModifications(event, element, finishHandler, suggesti
   return false;
 }
 function openLinkExternallyLabel() {
-  return i18nString11(UIStrings11.openInNewTab);
+  return i18nString12(UIStrings12.openInNewTab);
 }
 function copyLinkAddressLabel() {
-  return i18nString11(UIStrings11.copyLinkAddress);
+  return i18nString12(UIStrings12.copyLinkAddress);
 }
 function copyFileNameLabel() {
-  return i18nString11(UIStrings11.copyFileName);
+  return i18nString12(UIStrings12.copyFileName);
 }
 function anotherProfilerActiveLabel() {
-  return i18nString11(UIStrings11.anotherProfilerIsAlreadyActive);
+  return i18nString12(UIStrings12.anotherProfilerIsAlreadyActive);
 }
-function asyncStackTraceLabel(description, previousCallFrames) {
-  if (description) {
-    if (description === "Promise.resolve") {
-      return i18nString11(UIStrings11.promiseResolvedAsync);
-    }
-    if (description === "Promise.reject") {
-      return i18nString11(UIStrings11.promiseRejectedAsync);
-    }
-    if (description === "await" && previousCallFrames.length !== 0) {
-      const lastPreviousFrame = previousCallFrames[previousCallFrames.length - 1];
-      const lastPreviousFrameName = beautifyFunctionName(lastPreviousFrame.functionName);
-      description = `await in ${lastPreviousFrameName}`;
-    }
-    return description;
+function asyncFragmentLabel(stackTrace, asyncFragment) {
+  const description = asyncFragment.description;
+  if (!description) {
+    return i18nString12(UIStrings12.asyncCall);
   }
-  return i18nString11(UIStrings11.asyncCall);
+  if (description === "Promise.resolve") {
+    return i18nString12(UIStrings12.promiseResolvedAsync);
+  }
+  if (description === "Promise.reject") {
+    return i18nString12(UIStrings12.promiseRejectedAsync);
+  }
+  if (description === "await") {
+    const asyncFragments = stackTrace.asyncFragments;
+    const index = asyncFragments.indexOf(asyncFragment);
+    let previousFragment;
+    if (index === 0) {
+      previousFragment = stackTrace.syncFragment;
+    } else if (index > 0) {
+      previousFragment = asyncFragments[index - 1];
+    }
+    const lastPreviousFrame = previousFragment?.frames.at(-1);
+    if (lastPreviousFrame) {
+      const lastPreviousFrameName = beautifyFunctionName(lastPreviousFrame.name || "");
+      return `await in ${lastPreviousFrameName}`;
+    }
+  }
+  return description;
 }
 function addPlatformClass(element) {
-  element.classList.add("platform-" + Host7.Platform.platform());
+  element.classList.add("platform-" + Host8.Platform.platform());
 }
 function installComponentRootStyles(element) {
-  Platform15.DOMUtilities.appendStyle(element, inspectorCommon_css_default);
-  Platform15.DOMUtilities.appendStyle(element, Buttons6.textButtonStyles);
-  if (!Host7.Platform.isMac() && measuredScrollbarWidth(element.ownerDocument) === 0) {
+  appendStyle(element, inspectorCommon_css_default);
+  appendStyle(element, Buttons6.textButtonStyles);
+  if (!Host8.Platform.isMac() && measuredScrollbarWidth(element.ownerDocument) === 0) {
     element.classList.add("overlay-scrollbar-enabled");
   }
 }
@@ -13984,7 +15184,7 @@ var ElementFocusRestorer = class {
   previous;
   constructor(element) {
     this.element = element;
-    this.previous = Platform15.DOMUtilities.deepActiveElement(element.ownerDocument);
+    this.previous = deepActiveElement(element.ownerDocument);
     element.focus();
   }
   restore() {
@@ -13998,164 +15198,38 @@ var ElementFocusRestorer = class {
     this.element = null;
   }
 };
-function highlightSearchResult(element, offset, length, domChanges) {
-  const result = highlightSearchResults(element, [new TextUtils2.TextRange.SourceRange(offset, length)], domChanges);
-  return result.length ? result[0] : null;
-}
-function highlightSearchResults(element, resultRanges, changes) {
-  return highlightRangesWithStyleClass(element, resultRanges, highlightedSearchResultClassName, changes);
-}
 function runCSSAnimationOnce(element, className) {
   function animationEndCallback() {
     element.classList.remove(className);
-    element.removeEventListener("webkitAnimationEnd", animationEndCallback, false);
+    element.removeEventListener("animationend", animationEndCallback, false);
     element.removeEventListener("animationcancel", animationEndCallback, false);
   }
-  if (element.classList.contains(className)) {
-    element.classList.remove(className);
-  }
-  element.addEventListener("webkitAnimationEnd", animationEndCallback, false);
+  element.classList.toggle(
+    className,
+    /* force=*/
+    false
+  );
+  element.addEventListener("animationend", animationEndCallback, false);
   element.addEventListener("animationcancel", animationEndCallback, false);
   element.classList.add(className);
 }
-function highlightRangesWithStyleClass(element, resultRanges, styleClass, changes) {
-  changes = changes || [];
-  const highlightNodes = [];
-  const textNodes = element.childTextNodes();
-  const lineText = textNodes.map(function(node) {
-    return node.textContent;
-  }).join("");
-  const ownerDocument = element.ownerDocument;
-  if (textNodes.length === 0) {
-    return highlightNodes;
+var AnimateOnDirective = class extends Lit2.Directive.Directive {
+  #previousValue = false;
+  render(_condition, _className) {
+    return void 0;
   }
-  const nodeRanges = [];
-  let rangeEndOffset = 0;
-  for (const textNode of textNodes) {
-    const range = new TextUtils2.TextRange.SourceRange(rangeEndOffset, textNode.textContent ? textNode.textContent.length : 0);
-    rangeEndOffset = range.offset + range.length;
-    nodeRanges.push(range);
+  update(part, [condition, className]) {
+    const el = part.element;
+    if (condition && !this.#previousValue) {
+      this.#animate(el, className);
+    }
+    this.#previousValue = condition;
   }
-  let startIndex = 0;
-  for (let i = 0; i < resultRanges.length; ++i) {
-    const startOffset = resultRanges[i].offset;
-    const endOffset = startOffset + resultRanges[i].length;
-    while (startIndex < textNodes.length && nodeRanges[startIndex].offset + nodeRanges[startIndex].length <= startOffset) {
-      startIndex++;
-    }
-    let endIndex = startIndex;
-    while (endIndex < textNodes.length && nodeRanges[endIndex].offset + nodeRanges[endIndex].length < endOffset) {
-      endIndex++;
-    }
-    if (endIndex === textNodes.length) {
-      break;
-    }
-    const highlightNode = ownerDocument.createElement("span");
-    highlightNode.className = styleClass;
-    highlightNode.textContent = lineText.substring(startOffset, endOffset);
-    const lastTextNode = textNodes[endIndex];
-    const lastText = lastTextNode.textContent || "";
-    lastTextNode.textContent = lastText.substring(endOffset - nodeRanges[endIndex].offset);
-    changes.push({
-      node: lastTextNode,
-      type: "changed",
-      oldText: lastText,
-      newText: lastTextNode.textContent,
-      nextSibling: void 0,
-      parent: void 0
-    });
-    if (startIndex === endIndex && lastTextNode.parentElement) {
-      lastTextNode.parentElement.insertBefore(highlightNode, lastTextNode);
-      changes.push({
-        node: highlightNode,
-        type: "added",
-        nextSibling: lastTextNode,
-        parent: lastTextNode.parentElement,
-        oldText: void 0,
-        newText: void 0
-      });
-      highlightNodes.push(highlightNode);
-      const prefixNode = ownerDocument.createTextNode(lastText.substring(0, startOffset - nodeRanges[startIndex].offset));
-      lastTextNode.parentElement.insertBefore(prefixNode, highlightNode);
-      changes.push({
-        node: prefixNode,
-        type: "added",
-        nextSibling: highlightNode,
-        parent: lastTextNode.parentElement,
-        oldText: void 0,
-        newText: void 0
-      });
-    } else {
-      const firstTextNode = textNodes[startIndex];
-      const firstText = firstTextNode.textContent || "";
-      const anchorElement = firstTextNode.nextSibling;
-      if (firstTextNode.parentElement) {
-        firstTextNode.parentElement.insertBefore(highlightNode, anchorElement);
-        changes.push({
-          node: highlightNode,
-          type: "added",
-          nextSibling: anchorElement || void 0,
-          parent: firstTextNode.parentElement,
-          oldText: void 0,
-          newText: void 0
-        });
-        highlightNodes.push(highlightNode);
-      }
-      firstTextNode.textContent = firstText.substring(0, startOffset - nodeRanges[startIndex].offset);
-      changes.push({
-        node: firstTextNode,
-        type: "changed",
-        oldText: firstText,
-        newText: firstTextNode.textContent,
-        nextSibling: void 0,
-        parent: void 0
-      });
-      for (let j = startIndex + 1; j < endIndex; j++) {
-        const textNode = textNodes[j];
-        const text = textNode.textContent;
-        textNode.textContent = "";
-        changes.push({
-          node: textNode,
-          type: "changed",
-          oldText: text || void 0,
-          newText: textNode.textContent,
-          nextSibling: void 0,
-          parent: void 0
-        });
-      }
-    }
-    startIndex = endIndex;
-    nodeRanges[startIndex].offset = endOffset;
-    nodeRanges[startIndex].length = lastTextNode.textContent.length;
+  #animate(el, className) {
+    runCSSAnimationOnce(el, className);
   }
-  return highlightNodes;
-}
-function applyDomChanges(domChanges) {
-  for (let i = 0, size = domChanges.length; i < size; ++i) {
-    const entry = domChanges[i];
-    switch (entry.type) {
-      case "added":
-        entry.parent?.insertBefore(entry.node, entry.nextSibling ?? null);
-        break;
-      case "changed":
-        entry.node.textContent = entry.newText ?? null;
-        break;
-    }
-  }
-}
-function revertDomChanges(domChanges) {
-  for (let i = domChanges.length - 1; i >= 0; --i) {
-    const entry = domChanges[i];
-    switch (entry.type) {
-      case "added":
-        entry.node.remove();
-        break;
-      case "changed":
-        entry.node.textContent = entry.oldText ?? null;
-        break;
-    }
-  }
-}
+};
+var animateOn = Lit2.Directive.directive(AnimateOnDirective);
 function measurePreferredSize(element, containerElement) {
   const oldParent = element.parentElement;
   const oldNextSibling = element.nextSibling;
@@ -14321,7 +15395,7 @@ function initializeUIUtils(document2) {
   GlassPane.setContainer(body);
 }
 function beautifyFunctionName(name) {
-  return name || i18nString11(UIStrings11.anonymous);
+  return name || i18nString12(UIStrings12.anonymous);
 }
 var createTextChild = (element, text) => {
   const textNode = element.ownerDocument.createTextNode(text);
@@ -14350,7 +15424,7 @@ function createTextButton(text, clickHandler, opts) {
     });
   }
   if (opts?.jslogContext) {
-    button.setAttribute("jslog", `${VisualLogging14.action().track({ click: true }).context(opts.jslogContext)}`);
+    button.setAttribute("jslog", `${VisualLogging15.action().track({ click: true }).context(opts.jslogContext)}`);
   }
   if (opts?.title) {
     button.setAttribute("title", opts.title);
@@ -14369,7 +15443,7 @@ function createInput(className, type, jslogContext) {
     element.type = type;
   }
   if (jslogContext) {
-    element.setAttribute("jslog", `${VisualLogging14.textField().track({ keydown: "Enter", change: true }).context(jslogContext)}`);
+    element.setAttribute("jslog", `${VisualLogging15.textField().track({ keydown: "Enter", change: true }).context(jslogContext)}`);
   }
   return element;
 }
@@ -14433,7 +15507,7 @@ function createSelect(name, options) {
 function createOption(title, value, jslogContext) {
   const result = new Option(title, value || title);
   if (jslogContext) {
-    result.setAttribute("jslog", `${VisualLogging14.item(jslogContext).track({ click: true })}`);
+    result.setAttribute("jslog", `${VisualLogging15.item(jslogContext).track({ click: true })}`);
   }
   return result;
 }
@@ -14466,7 +15540,7 @@ function createRadioButton(name, title, jslogContext) {
   const radio = label.createChild("input");
   radio.type = "radio";
   radio.name = name;
-  radio.setAttribute("jslog", `${VisualLogging14.toggle().track({ change: true }).context(jslogContext)}`);
+  radio.setAttribute("jslog", `${VisualLogging15.toggle().track({ change: true }).context(jslogContext)}`);
   createTextChild(label, title);
   return { label, radio };
 }
@@ -14501,18 +15575,22 @@ var CheckboxLabel = class _CheckboxLabel extends HTMLElement {
     this.#textElement.addEventListener("click", (e) => e.stopPropagation());
     this.#textElement.createChild("slot");
   }
-  static create(title, checked, subtitle, jslogContext, small) {
+  static create(title, checked, subtitle, jslogContext, small, tooltip) {
     const element = document.createElement("devtools-checkbox");
     element.#checkboxElement.checked = Boolean(checked);
     if (jslogContext) {
-      element.#checkboxElement.setAttribute("jslog", `${VisualLogging14.toggle().track({ change: true }).context(jslogContext)}`);
+      element.#checkboxElement.setAttribute("jslog", `${VisualLogging15.toggle().track({ change: true }).context(jslogContext)}`);
     }
     if (title !== void 0) {
       element.#textElement.textContent = title;
-      element.#checkboxElement.title = title;
       if (subtitle !== void 0) {
         element.#textElement.createChild("div", "devtools-checkbox-subtitle").textContent = subtitle;
       }
+    }
+    const inputTooltip = tooltip ?? title;
+    if (inputTooltip) {
+      element.#checkboxElement.title = inputTooltip;
+      element.#checkboxElement.setAttribute("aria-description", inputTooltip);
     }
     element.#checkboxElement.classList.toggle("small", small);
     return element;
@@ -14591,7 +15669,7 @@ var DevToolsIconLabel = class extends HTMLElement {
   constructor() {
     super();
     const root = createShadowRootWithCoreStyles(this);
-    this.#icon = new IconButton7.Icon.Icon();
+    this.#icon = new Icon2();
     this.#icon.style.setProperty("margin-right", "4px");
     this.#icon.style.setProperty("vertical-align", "baseline");
     root.appendChild(this.#icon);
@@ -14629,9 +15707,9 @@ var DevToolsCloseButton = class extends HTMLElement {
     this.#button = new Buttons6.Button.Button();
     this.#button.data = { variant: "icon", iconName: "cross" };
     this.#button.classList.add("close-button");
-    this.#button.setAttribute("jslog", `${VisualLogging14.close().track({ click: true })}`);
-    Tooltip.install(this.#button, i18nString11(UIStrings11.close));
-    setLabel(this.#button, i18nString11(UIStrings11.close));
+    this.#button.setAttribute("jslog", `${VisualLogging15.close().track({ click: true })}`);
+    Tooltip.install(this.#button, i18nString12(UIStrings12.close));
+    setLabel(this.#button, i18nString12(UIStrings12.close));
     root.appendChild(this.#button);
   }
   setAccessibleName(name) {
@@ -14785,6 +15863,7 @@ function createFileSelectorElement(callback, accept) {
   return fileSelectorElement;
 }
 var MaxLengthForDisplayedURLs = 150;
+var MaxLengthForDisplayedURLsInConsole = 40;
 var MessageDialog = class {
   static async show(header, message, where, jslogContext) {
     const dialog3 = new Dialog(jslogContext);
@@ -14796,7 +15875,7 @@ var MessageDialog = class {
     const shadowRoot = createShadowRootWithCoreStyles(dialog3.contentElement, { cssFile: confirmDialog_css_default });
     const content = shadowRoot.createChild("div", "widget");
     await new Promise((resolve) => {
-      const okButton = createTextButton(i18nString11(UIStrings11.ok), resolve, {
+      const okButton = createTextButton(i18nString12(UIStrings12.ok), resolve, {
         jslogContext: "confirm",
         variant: "primary"
         /* Buttons.Button.Variant.PRIMARY */
@@ -14833,7 +15912,7 @@ var ConfirmDialog = class {
     const result = await new Promise((resolve) => {
       const okButton = createTextButton(
         /* text= */
-        options?.okButtonLabel || i18nString11(UIStrings11.ok),
+        options?.okButtonLabel || i18nString12(UIStrings12.ok),
         /* clickHandler= */
         () => resolve(true),
         {
@@ -14843,7 +15922,7 @@ var ConfirmDialog = class {
         }
       );
       buttonsBar.appendChild(okButton);
-      buttonsBar.appendChild(createTextButton(options?.cancelButtonLabel || i18nString11(UIStrings11.cancel), () => resolve(false), { jslogContext: "cancel" }));
+      buttonsBar.appendChild(createTextButton(options?.cancelButtonLabel || i18nString12(UIStrings12.cancel), () => resolve(false), { jslogContext: "cancel" }));
       dialog3.setOutsideClickCallback((event) => {
         event.consume();
         resolve(false);
@@ -14952,33 +16031,30 @@ function updateWidgetfocusWidgetForNode(node) {
   if (!node) {
     return;
   }
-  let widget = Widget.get(node);
-  while (widget?.parentWidget()) {
-    const parentWidget = widget.parentWidget();
+  let widget2 = Widget.get(node);
+  while (widget2?.parentWidget()) {
+    const parentWidget = widget2.parentWidget();
     if (!parentWidget) {
       break;
     }
-    parentWidget.defaultFocusedChild = widget;
-    widget = parentWidget;
+    parentWidget.setDefaultFocusedChild(widget2);
+    widget2 = parentWidget;
   }
 }
 function focusChanged(event) {
   const target = event.target;
   const document2 = target ? target.ownerDocument : null;
-  const element = document2 ? Platform15.DOMUtilities.deepActiveElement(document2) : null;
+  const element = document2 ? deepActiveElement(document2) : null;
   updateWidgetfocusWidgetForNode(element);
 }
-function createShadowRootWithCoreStyles(element, options = {
-  delegatesFocus: void 0,
-  cssFile: void 0
-}) {
+function createShadowRootWithCoreStyles(element, options = {}) {
   const { cssFile, delegatesFocus } = options;
   const shadowRoot = element.attachShadow({ mode: "open", delegatesFocus });
-  Platform15.DOMUtilities.appendStyle(shadowRoot, inspectorCommon_css_default, Buttons6.textButtonStyles);
+  appendStyle(shadowRoot, inspectorCommon_css_default, Buttons6.textButtonStyles);
   if (Array.isArray(cssFile)) {
-    Platform15.DOMUtilities.appendStyle(shadowRoot, ...cssFile);
+    appendStyle(shadowRoot, ...cssFile);
   } else if (cssFile) {
-    Platform15.DOMUtilities.appendStyle(shadowRoot, cssFile);
+    appendStyle(shadowRoot, cssFile);
   }
   shadowRoot.addEventListener("focus", focusChanged, true);
   return shadowRoot;
@@ -15003,19 +16079,6 @@ function measuredScrollbarWidth(document2) {
   cachedMeasuredScrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
   document2.body.removeChild(scrollDiv);
   return cachedMeasuredScrollbarWidth;
-}
-function openInNewTab(url) {
-  url = new URL(`${url}`);
-  if (["developer.chrome.com", "developers.google.com", "web.dev"].includes(url.hostname)) {
-    if (!url.searchParams.has("utm_source")) {
-      url.searchParams.append("utm_source", "devtools");
-    }
-    const { channel } = Root7.Runtime.hostConfig;
-    if (!url.searchParams.has("utm_campaign") && typeof channel === "string") {
-      url.searchParams.append("utm_campaign", channel);
-    }
-  }
-  Host7.InspectorFrontendHost.InspectorFrontendHostInstance.openInNewTab(Platform15.DevToolsPath.urlString`${url}`);
 }
 var MAX_DISPLAY_COUNT = 10;
 var MAX_DURATION = 60 * 24 * 60 * 60 * 1e3;
@@ -15083,8 +16146,8 @@ function maybeCreateNewBadge(promotionId) {
   if (promotionManager.maybeShowPromotion(promotionId)) {
     const badge2 = document.createElement("div");
     badge2.className = "new-badge";
-    badge2.textContent = i18nString11(UIStrings11.new);
-    badge2.setAttribute("jslog", `${VisualLogging14.badge("new-badge")}`);
+    badge2.textContent = i18nString12(UIStrings12.new);
+    badge2.setAttribute("jslog", `${VisualLogging15.badge("new-badge")}`);
     return badge2;
   }
   return void 0;
@@ -15155,6 +16218,7 @@ function bindToAction(actionName) {
 }
 var InterceptBindingDirective = class _InterceptBindingDirective extends Lit2.Directive.Directive {
   static #interceptedBindings = /* @__PURE__ */ new WeakMap();
+  static #attachedBindings = /* @__PURE__ */ new WeakMap();
   update(part, [listener]) {
     if (part.type !== Lit2.Directive.PartType.EVENT) {
       return listener;
@@ -15168,16 +16232,24 @@ var InterceptBindingDirective = class _InterceptBindingDirective extends Lit2.Di
     return this.render(listener);
   }
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-function-type */
-  render(_listener) {
-    return void 0;
+  render(listener) {
+    return listener;
   }
-  static attachEventListeners(templateElement, renderedElement) {
-    const eventListeners = _InterceptBindingDirective.#interceptedBindings.get(templateElement);
-    if (!eventListeners) {
-      return;
+  static setEventListeners(templateElement, renderedElement) {
+    const attachedListeners = _InterceptBindingDirective.#attachedBindings.get(renderedElement);
+    if (attachedListeners) {
+      for (const [name, listener] of attachedListeners) {
+        renderedElement.removeEventListener(name, listener);
+      }
     }
-    for (const [name, listener] of eventListeners) {
-      renderedElement.addEventListener(name, listener);
+    const newListeners = _InterceptBindingDirective.#interceptedBindings.get(templateElement);
+    if (newListeners?.size) {
+      for (const [name, listener] of newListeners) {
+        renderedElement.addEventListener(name, listener);
+      }
+      _InterceptBindingDirective.#attachedBindings.set(renderedElement, new Map(newListeners));
+    } else {
+      _InterceptBindingDirective.#attachedBindings.delete(renderedElement);
     }
   }
 };
@@ -15206,12 +16278,18 @@ var HTMLElementWithLightDOMTemplate = class _HTMLElementWithLightDOMTemplate ext
       clone.appendChild(_HTMLElementWithLightDOMTemplate.cloneNode(child));
     }
     if (node instanceof Element && clone instanceof Element) {
-      InterceptBindingDirective.attachEventListeners(node, clone);
+      InterceptBindingDirective.setEventListeners(node, clone);
     }
     return clone;
   }
   static patchLitTemplate(template) {
-    const wrapper = Lit2.Directive.directive(InterceptBindingDirective);
+    const interceptingWrapper = Lit2.Directive.directive(InterceptBindingDirective);
+    const patchingWrapper = (fn) => {
+      return function(...args) {
+        const result = fn.apply(this, args);
+        return patchValue(result);
+      };
+    };
     if (template === Lit2.nothing) {
       return;
     }
@@ -15219,10 +16297,16 @@ var HTMLElementWithLightDOMTemplate = class _HTMLElementWithLightDOMTemplate ext
     function isLitTemplate(value) {
       return Boolean(typeof value === "object" && value && "_$litType$" in value && "strings" in value && "values" in value && value["_$litType$"] === 1);
     }
+    function isLitDirective(value) {
+      return Boolean(typeof value === "object" && value && "_$litDirective$" in value && "values" in value);
+    }
+    function isCallable(value) {
+      return typeof value === "function" && Object.getOwnPropertyDescriptor(value, "prototype")?.writable !== false;
+    }
     function patchValue(value) {
-      if (typeof value === "function") {
+      if (isCallable(value)) {
         try {
-          return wrapper(value);
+          return interceptingWrapper(value);
         } catch {
           return value;
         }
@@ -15231,7 +16315,18 @@ var HTMLElementWithLightDOMTemplate = class _HTMLElementWithLightDOMTemplate ext
         _HTMLElementWithLightDOMTemplate.patchLitTemplate(value);
         return value;
       }
-      if (Array.isArray(value)) {
+      if (isLitDirective(value)) {
+        for (let i = 0; i < value.values.length; i++) {
+          const subvalue = value.values[i];
+          if (isCallable(subvalue)) {
+            value.values[i] = patchingWrapper(subvalue);
+          } else {
+            value.values[i] = patchValue(subvalue);
+          }
+        }
+        return value;
+      }
+      if (Array.isArray(value) || value instanceof Iterator) {
         return value.map(patchValue);
       }
       return value;
@@ -15248,7 +16343,7 @@ var HTMLElementWithLightDOMTemplate = class _HTMLElementWithLightDOMTemplate ext
       this.#mutationObserver.observe(this.#contentTemplate.content, { childList: true, attributes: true, subtree: true, characterData: true });
     }
     _HTMLElementWithLightDOMTemplate.patchLitTemplate(template);
-    render2(template, this.#contentTemplate.content);
+    render3(template, this.#contentTemplate.content);
   }
   #onChange(mutationList) {
     this.onChange(mutationList);
@@ -15284,7 +16379,7 @@ var HTMLElementWithLightDOMTemplate = class _HTMLElementWithLightDOMTemplate ext
   }
 };
 function copyTextToClipboard(text, alert) {
-  Host7.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(text);
+  Host8.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(text);
   if (alert) {
     LiveAnnouncer.alert(alert);
   }
@@ -15302,13 +16397,13 @@ var bindCheckboxImpl = function(input, apply, metric) {
   function onInputChanged() {
     apply(input.checked);
     if (input.checked && metric?.enable) {
-      Host7.userMetrics.actionTaken(metric.enable);
+      Host8.userMetrics.actionTaken(metric.enable);
     }
     if (!input.checked && metric?.disable) {
-      Host7.userMetrics.actionTaken(metric.disable);
+      Host8.userMetrics.actionTaken(metric.disable);
     }
     if (metric?.toggle) {
-      Host7.userMetrics.actionTaken(metric.toggle);
+      Host8.userMetrics.actionTaken(metric.toggle);
     }
   }
   return function setValue(value) {
@@ -15317,28 +16412,64 @@ var bindCheckboxImpl = function(input, apply, metric) {
     }
   };
 };
-var bindToSetting = (settingOrName, stringValidator) => {
-  const setting = typeof settingOrName === "string" ? Common14.Settings.Settings.instance().moduleSetting(settingOrName) : settingOrName;
+var bindToSetting = (settingOrName, optionsOrValidator) => {
+  const setting = typeof settingOrName === "string" ? Common15.Settings.Settings.instance().moduleSetting(settingOrName) : settingOrName;
+  let stringValidator;
+  let jslog = true;
+  if (typeof optionsOrValidator === "function") {
+    stringValidator = optionsOrValidator;
+  } else if (optionsOrValidator) {
+    stringValidator = optionsOrValidator.validator;
+    if (optionsOrValidator.jslog !== void 0) {
+      jslog = optionsOrValidator.jslog;
+    }
+  }
   let setValue;
   function settingChanged() {
     setValue(setting.get());
   }
   if (setting.type() === "boolean" || typeof setting.defaultValue === "boolean") {
+    let attachedButton;
+    let clickListener;
+    return Directives2.ref((e) => {
+      if (e === void 0) {
+        setting.removeChangeListener(settingChanged);
+        if (attachedButton && clickListener) {
+          attachedButton.removeEventListener("click", clickListener);
+          attachedButton = void 0;
+        }
+        return;
+      }
+      if (jslog) {
+        const isButton = e instanceof Buttons6.Button.Button;
+        const jslogBuilder2 = VisualLogging15.toggle(setting.name).track(isButton ? { click: true } : { change: true });
+        e.setAttribute("jslog", jslogBuilder2.toString());
+      }
+      setting.addChangeListener(settingChanged);
+      if (e instanceof Buttons6.Button.Button) {
+        attachedButton = e;
+        clickListener = () => {
+          setting.set(!setting.get());
+        };
+        e.addEventListener("click", clickListener);
+        setValue = (value) => {
+          e.toggled = value;
+        };
+      } else {
+        setValue = bindCheckboxImpl(e, setting.set.bind(setting));
+      }
+      setValue(setting.get());
+    });
+  }
+  const jslogBuilder = jslog ? VisualLogging15.toggle(setting.name).track({ change: true }) : null;
+  if (setting.type() === "regex" || setting instanceof Common15.Settings.RegExpSetting) {
     return Directives2.ref((e) => {
       if (e === void 0) {
         setting.removeChangeListener(settingChanged);
         return;
       }
-      setting.addChangeListener(settingChanged);
-      setValue = bindCheckboxImpl(e, setting.set.bind(setting));
-      setValue(setting.get());
-    });
-  }
-  if (setting.type() === "regex" || setting instanceof Common14.Settings.RegExpSetting) {
-    return Directives2.ref((e) => {
-      if (e === void 0) {
-        setting.removeChangeListener(settingChanged);
-        return;
+      if (jslogBuilder) {
+        e.setAttribute("jslog", jslogBuilder.toString());
       }
       setting.addChangeListener(settingChanged);
       setValue = bindInput(
@@ -15363,6 +16494,9 @@ var bindToSetting = (settingOrName, stringValidator) => {
       if (e === void 0) {
         setting.removeChangeListener(settingChanged);
         return;
+      }
+      if (jslogBuilder) {
+        e.setAttribute("jslog", jslogBuilder.toString());
       }
       setting.addChangeListener(settingChanged);
       setValue = bindInput(
@@ -15658,7 +16792,15 @@ var panes = /* @__PURE__ */ new Set();
 var GlassPanePanes = panes;
 
 // gen/front_end/ui/legacy/Dialog.js
-var Dialog = class _Dialog extends Common15.ObjectWrapper.eventMixin(GlassPane) {
+var UIStrings13 = {
+  /**
+   * @description Text to close the dialog
+   */
+  close: "Close"
+};
+var str_13 = i18n25.i18n.registerUIStrings("ui/legacy/Dialog.ts", UIStrings13);
+var i18nString13 = i18n25.i18n.getLocalizedString.bind(void 0, str_13);
+var Dialog = class _Dialog extends Common16.ObjectWrapper.eventMixin(GlassPane) {
   tabIndexBehavior = "DisableAllTabIndex";
   tabIndexMap = /* @__PURE__ */ new Map();
   focusRestorer = null;
@@ -15672,7 +16814,7 @@ var Dialog = class _Dialog extends Common15.ObjectWrapper.eventMixin(GlassPane) 
     this.contentElement.tabIndex = 0;
     this.contentElement.addEventListener("focus", () => this.widget().focus(), false);
     if (jslogContext) {
-      this.contentElement.setAttribute("jslog", `${VisualLogging15.dialog(jslogContext).track({ resize: true, keydown: "Escape" })}`);
+      this.contentElement.setAttribute("jslog", `${VisualLogging16.dialog(jslogContext).track({ resize: true, keydown: "Escape" })}`);
     }
     this.setPointerEventsBehavior(
       "BlockedByGlassPane"
@@ -15747,8 +16889,16 @@ var Dialog = class _Dialog extends Common15.ObjectWrapper.eventMixin(GlassPane) 
     this.escapeKeyCallback = callback;
   }
   addCloseButton() {
-    const closeButton = this.contentElement.createChild("dt-close-button", "dialog-close-button");
-    closeButton.addEventListener("click", this.hide.bind(this), false);
+    const button = new Buttons7.Button.Button();
+    button.data = {
+      variant: "icon",
+      iconName: "cross",
+      accessibleLabel: i18nString13(UIStrings13.close),
+      jslogContext: "dialog-close"
+    };
+    button.classList.add("dialog-close-button");
+    button.addEventListener("click", this.hide.bind(this));
+    this.contentElement.appendChild(button);
   }
   setOutsideTabIndexBehavior(tabIndexBehavior) {
     this.tabIndexBehavior = tabIndexBehavior;
@@ -16063,7 +17213,7 @@ function setActiveDescendant(element, activedescendant) {
     return;
   }
   if (activedescendant.isConnected && element.isConnected) {
-    console.assert(Platform16.DOMUtilities.getEnclosingShadowRootForNode(activedescendant) === Platform16.DOMUtilities.getEnclosingShadowRootForNode(element), "elements are not in the same shadow dom");
+    console.assert(getEnclosingShadowRootForNode(activedescendant) === getEnclosingShadowRootForNode(element), "elements are not in the same shadow dom");
   }
   ensureId(activedescendant);
   element.setAttribute("aria-activedescendant", activedescendant.id);
@@ -16300,8 +17450,9 @@ var EmptyWidget_exports = {};
 __export(EmptyWidget_exports, {
   EmptyWidget: () => EmptyWidget
 });
-import * as i18n23 from "./../../core/i18n/i18n.js";
-import { Directives as Directives3, html as html3, render as render3 } from "./../lit/lit.js";
+import "./../kit/kit.js";
+import * as i18n27 from "./../../core/i18n/i18n.js";
+import { Directives as Directives3, html as html3, render as render4 } from "./../lit/lit.js";
 import * as VisualLogging17 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/emptyWidget.css.js
@@ -16317,397 +17468,18 @@ var emptyWidget_css_default = `/*
 
 /*# sourceURL=${import.meta.resolve("./emptyWidget.css")} */`;
 
-// gen/front_end/ui/legacy/XLink.js
-var XLink_exports = {};
-__export(XLink_exports, {
-  ContextMenuProvider: () => ContextMenuProvider,
-  XLink: () => XLink
-});
-import * as Host8 from "./../../core/host/host.js";
-import * as Platform17 from "./../../core/platform/platform.js";
-import * as VisualLogging16 from "./../visual_logging/visual_logging.js";
-
-// gen/front_end/ui/legacy/Fragment.js
-var Fragment_exports = {};
-__export(Fragment_exports, {
-  Fragment: () => Fragment,
-  attributeMarker: () => attributeMarker,
-  html: () => html2,
-  textMarker: () => textMarker
-});
-function getNodeData(node) {
-  return node.data;
-}
-function setNodeData(node, value) {
-  node.data = value;
-}
-var Fragment = class _Fragment {
-  #element;
-  elementsById = /* @__PURE__ */ new Map();
-  constructor(element) {
-    this.#element = element;
-  }
-  element() {
-    return this.#element;
-  }
-  $(elementId) {
-    return this.elementsById.get(elementId);
-  }
-  static build(strings, ...values) {
-    return _Fragment.render(_Fragment.template(strings), values);
-  }
-  static cached(strings, ...values) {
-    let template = templateCache.get(strings);
-    if (!template) {
-      template = _Fragment.template(strings);
-      templateCache.set(strings, template);
-    }
-    return _Fragment.render(template, values);
-  }
-  static template(strings) {
-    let html7 = "";
-    let insideText = true;
-    for (let i = 0; i < strings.length - 1; i++) {
-      html7 += strings[i];
-      const close5 = strings[i].lastIndexOf(">");
-      const open = strings[i].indexOf("<", close5 + 1);
-      if (close5 !== -1 && open === -1) {
-        insideText = true;
-      } else if (open !== -1) {
-        insideText = false;
-      }
-      html7 += insideText ? textMarker : attributeMarker(i);
-    }
-    html7 += strings[strings.length - 1];
-    const template = document.createElement("template");
-    template.innerHTML = html7;
-    const walker = template.ownerDocument.createTreeWalker(template.content, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null);
-    let valueIndex = 0;
-    const emptyTextNodes = [];
-    const binds = [];
-    const nodesToMark = [];
-    while (walker.nextNode()) {
-      const node = walker.currentNode;
-      if (node.nodeType === Node.ELEMENT_NODE && node.hasAttributes()) {
-        if (node.hasAttribute("$")) {
-          nodesToMark.push(node);
-          binds.push({ replaceNodeIndex: void 0, attr: void 0, elementId: node.getAttribute("$") || "" });
-          node.removeAttribute("$");
-        }
-        const attributesToRemove = [];
-        for (let i = 0; i < node.attributes.length; i++) {
-          const name = node.attributes[i].name;
-          if (!attributeMarkerRegex.test(name) && !attributeMarkerRegex.test(node.attributes[i].value)) {
-            continue;
-          }
-          attributesToRemove.push(name);
-          nodesToMark.push(node);
-          const attr = {
-            index: valueIndex,
-            names: name.split(attributeMarkerRegex),
-            values: node.attributes[i].value.split(attributeMarkerRegex)
-          };
-          valueIndex += attr.names.length - 1;
-          valueIndex += attr.values.length - 1;
-          const bind = {
-            elementId: void 0,
-            replaceNodeIndex: void 0,
-            attr
-          };
-          binds.push(bind);
-        }
-        for (let i = 0; i < attributesToRemove.length; i++) {
-          node.removeAttribute(attributesToRemove[i]);
-        }
-      }
-      if (node.nodeType === Node.TEXT_NODE && getNodeData(node).indexOf(textMarker) !== -1) {
-        const texts = getNodeData(node).split(textMarkerRegex);
-        setNodeData(node, texts[texts.length - 1]);
-        const parentNode = node.parentNode;
-        for (let i = 0; i < texts.length - 1; i++) {
-          if (texts[i]) {
-            parentNode.insertBefore(document.createTextNode(texts[i]), node);
-          }
-          const nodeToReplace = document.createElement("span");
-          nodesToMark.push(nodeToReplace);
-          binds.push({ attr: void 0, elementId: void 0, replaceNodeIndex: valueIndex++ });
-          parentNode.insertBefore(nodeToReplace, node);
-        }
-      }
-      if (node.nodeType === Node.TEXT_NODE && (!node.previousSibling || node.previousSibling.nodeType === Node.ELEMENT_NODE) && (!node.nextSibling || node.nextSibling.nodeType === Node.ELEMENT_NODE) && /^\s*$/.test(getNodeData(node))) {
-        emptyTextNodes.push(node);
-      }
-    }
-    for (let i = 0; i < nodesToMark.length; i++) {
-      nodesToMark[i].classList.add(generateClassName(i));
-    }
-    for (const emptyTextNode of emptyTextNodes) {
-      emptyTextNode.remove();
-    }
-    return { template, binds };
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static render(template, values) {
-    const content = template.template.ownerDocument.importNode(template.template.content, true);
-    const resultElement = content.firstChild === content.lastChild ? content.firstChild : content;
-    const result = new _Fragment(resultElement);
-    const boundElements = [];
-    for (let i = 0; i < template.binds.length; i++) {
-      const className = generateClassName(i);
-      const element = content.querySelector("." + className);
-      element.classList.remove(className);
-      boundElements.push(element);
-    }
-    for (let bindIndex = 0; bindIndex < template.binds.length; bindIndex++) {
-      const bind = template.binds[bindIndex];
-      const element = boundElements[bindIndex];
-      if (bind.elementId !== void 0) {
-        result.elementsById.set(bind.elementId, element);
-      } else if (bind.replaceNodeIndex !== void 0) {
-        const value = values[bind.replaceNodeIndex];
-        element.parentNode.replaceChild(this.nodeForValue(value), element);
-      } else if (bind.attr !== void 0) {
-        if (bind.attr.names.length === 2 && bind.attr.values.length === 1 && typeof values[bind.attr.index] === "function") {
-          values[bind.attr.index].call(null, element);
-        } else {
-          let name = bind.attr.names[0];
-          for (let i = 1; i < bind.attr.names.length; i++) {
-            name += values[bind.attr.index + i - 1];
-            name += bind.attr.names[i];
-          }
-          if (name) {
-            let value = bind.attr.values[0];
-            for (let i = 1; i < bind.attr.values.length; i++) {
-              value += values[bind.attr.index + bind.attr.names.length - 1 + i - 1];
-              value += bind.attr.values[i];
-            }
-            element.setAttribute(name, value);
-          }
-        }
-      } else {
-        throw new Error("Unexpected bind");
-      }
-    }
-    return result;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static nodeForValue(value) {
-    if (value instanceof Node) {
-      return value;
-    }
-    if (value instanceof _Fragment) {
-      return value.#element;
-    }
-    if (Array.isArray(value)) {
-      const node = document.createDocumentFragment();
-      for (const v of value) {
-        node.appendChild(this.nodeForValue(v));
-      }
-      return node;
-    }
-    return document.createTextNode(String(value));
-  }
-};
-var textMarker = "{{template-text}}";
-var textMarkerRegex = /{{template-text}}/;
-var attributeMarker = (index) => "template-attribute" + index;
-var attributeMarkerRegex = /template-attribute\d+/;
-var generateClassName = (index) => "template-class-" + index;
-var templateCache = /* @__PURE__ */ new Map();
-var html2 = (strings, ...vararg) => {
-  return Fragment.cached(strings, ...vararg).element();
-};
-
-// gen/front_end/ui/legacy/XElement.js
-var XElement_exports = {};
-__export(XElement_exports, {
-  XElement: () => XElement
-});
-var XElement = class extends HTMLElement {
-  static get observedAttributes() {
-    return [
-      "flex",
-      "padding",
-      "padding-top",
-      "padding-bottom",
-      "padding-left",
-      "padding-right",
-      "margin",
-      "margin-top",
-      "margin-bottom",
-      "margin-left",
-      "margin-right",
-      "overflow",
-      "overflow-x",
-      "overflow-y",
-      "font-size",
-      "color",
-      "background",
-      "background-color",
-      "border",
-      "border-top",
-      "border-bottom",
-      "border-left",
-      "border-right",
-      "max-width",
-      "max-height"
-    ];
-  }
-  attributeChangedCallback(attr, _oldValue, newValue) {
-    if (attr === "flex") {
-      if (newValue === null) {
-        this.style.removeProperty("flex");
-      } else if (newValue === "initial" || newValue === "auto" || newValue === "none" || newValue.indexOf(" ") !== -1) {
-        this.style.setProperty("flex", newValue);
-      } else {
-        this.style.setProperty("flex", "0 0 " + newValue);
-      }
-      return;
-    }
-    if (newValue === null) {
-      this.style.removeProperty(attr);
-      if (attr.startsWith("padding-") || attr.startsWith("margin-") || attr.startsWith("border-") || attr.startsWith("background-") || attr.startsWith("overflow-")) {
-        const shorthand = attr.substring(0, attr.indexOf("-"));
-        const shorthandValue = this.getAttribute(shorthand);
-        if (shorthandValue !== null) {
-          this.style.setProperty(shorthand, shorthandValue);
-        }
-      }
-    } else {
-      this.style.setProperty(attr, newValue);
-    }
-  }
-};
-
-// gen/front_end/ui/legacy/XLink.js
-var XLink = class extends XElement {
-  #href;
-  clickable;
-  onClick;
-  onKeyDown;
-  static create(url, linkText, className, preventClick, jsLogContext, tabindex = "0") {
-    if (!linkText) {
-      linkText = url;
-    }
-    className = className || "";
-    const element = html2`
-  <x-link href='${url}' tabindex='${tabindex}' class='${className} devtools-link' ${preventClick ? "no-click" : ""}
-  jslog=${VisualLogging16.link().track({ click: true, keydown: "Enter|Space" }).context(jsLogContext)}>${Platform17.StringUtilities.trimMiddle(linkText, MaxLengthForDisplayedURLs)}</x-link>`;
-    return element;
-  }
-  constructor() {
-    super();
-    this.style.setProperty("display", "inline");
-    markAsLink(this);
-    this.setAttribute("tabindex", "0");
-    this.setAttribute("target", "_blank");
-    this.setAttribute("rel", "noopener");
-    this.#href = null;
-    this.clickable = true;
-    this.onClick = (event) => {
-      event.consume(true);
-      if (this.#href) {
-        openInNewTab(this.#href);
-      }
-      this.dispatchEvent(new Event("x-link-invoke"));
-    };
-    this.onKeyDown = (event) => {
-      if (Platform17.KeyboardUtilities.isEnterOrSpaceKey(event)) {
-        event.consume(true);
-        if (this.#href) {
-          openInNewTab(this.#href);
-        }
-      }
-      this.dispatchEvent(new Event("x-link-invoke"));
-    };
-  }
-  static get observedAttributes() {
-    return XElement.observedAttributes.concat(["href", "no-click", "title", "tabindex"]);
-  }
-  get href() {
-    return this.#href;
-  }
-  attributeChangedCallback(attr, oldValue, newValue) {
-    if (attr === "no-click") {
-      this.clickable = !newValue;
-      this.updateClick();
-      return;
-    }
-    if (attr === "href") {
-      if (!newValue) {
-        newValue = "";
-      }
-      let href = null;
-      try {
-        const url = new URL(newValue);
-        if (url.protocol !== "javascript:") {
-          href = Platform17.DevToolsPath.urlString`${url}`;
-        }
-      } catch {
-      }
-      this.#href = href;
-      if (!this.hasAttribute("title")) {
-        Tooltip.install(this, newValue);
-      }
-      this.updateClick();
-      return;
-    }
-    if (attr === "tabindex") {
-      if (oldValue !== newValue) {
-        this.setAttribute("tabindex", newValue || "0");
-      }
-      return;
-    }
-    super.attributeChangedCallback(attr, oldValue, newValue);
-  }
-  updateClick() {
-    if (this.#href !== null && this.clickable) {
-      this.addEventListener("click", this.onClick, false);
-      this.addEventListener("keydown", this.onKeyDown, false);
-      this.style.setProperty("cursor", "pointer");
-    } else {
-      this.removeEventListener("click", this.onClick, false);
-      this.removeEventListener("keydown", this.onKeyDown, false);
-      this.style.removeProperty("cursor");
-    }
-  }
-};
-var ContextMenuProvider = class {
-  appendApplicableItems(_event, contextMenu, target) {
-    let targetNode = target;
-    while (targetNode && !(targetNode instanceof XLink)) {
-      targetNode = targetNode.parentNodeOrShadowHost();
-    }
-    if (!targetNode?.href) {
-      return;
-    }
-    const node = targetNode;
-    contextMenu.revealSection().appendItem(openLinkExternallyLabel(), () => {
-      if (node.href) {
-        openInNewTab(node.href);
-      }
-    }, { jslogContext: "open-in-new-tab" });
-    contextMenu.revealSection().appendItem(copyLinkAddressLabel(), () => {
-      if (node.href) {
-        Host8.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(node.href);
-      }
-    }, { jslogContext: "copy-link-address" });
-  }
-};
-customElements.define("x-link", XLink);
-
 // gen/front_end/ui/legacy/EmptyWidget.js
-var UIStrings12 = {
+var UIStrings14 = {
   /**
    * @description Text that is usually a hyperlink to more documentation
    */
   learnMore: "Learn more"
 };
-var str_12 = i18n23.i18n.registerUIStrings("ui/legacy/EmptyWidget.ts", UIStrings12);
-var i18nString12 = i18n23.i18n.getLocalizedString.bind(void 0, str_12);
+var str_14 = i18n27.i18n.registerUIStrings("ui/legacy/EmptyWidget.ts", UIStrings14);
+var i18nString14 = i18n27.i18n.getLocalizedString.bind(void 0, str_14);
 var { ref } = Directives3;
 var DEFAULT_VIEW = (input, output, target) => {
-  render3(html3`
+  render4(html3`
     <style>${inspectorCommon_css_default}</style>
     <style>${emptyWidget_css_default}</style>
     <div class="empty-state" jslog=${VisualLogging17.section("empty-view")}
@@ -16717,10 +17489,10 @@ var DEFAULT_VIEW = (input, output, target) => {
       <div class="empty-state-header">${input.header}</div>
       <div class="empty-state-description">
         <span>${input.text}</span>
-        ${input.link ? XLink.create(input.link, i18nString12(UIStrings12.learnMore), void 0, void 0, "learn-more") : ""}
+        ${input.link ? html3`<devtools-link href=${input.link} jslogContext=${"learn-more"}>${i18nString14(UIStrings14.learnMore)}</devtools-link>` : ""}
       </div>
       ${input.extraElements}
-    </div>`, target);
+    </div>`, target, { container: { classes: ["empty-view-scroller"] } });
 };
 var EmptyWidget = class extends VBox {
   #header;
@@ -16734,15 +17506,15 @@ var EmptyWidget = class extends VBox {
     if (!element && headerOrElement instanceof HTMLElement) {
       element = headerOrElement;
     }
-    super(element, { classes: ["empty-view-scroller"] });
+    super(element);
     this.#header = header;
     this.#text = text;
     this.#link = void 0;
     this.#view = view;
     this.performUpdate();
   }
-  set link(link3) {
-    this.#link = link3;
+  set link(link2) {
+    this.#link = link2;
     this.performUpdate();
   }
   set text(text) {
@@ -16753,12 +17525,17 @@ var EmptyWidget = class extends VBox {
     this.#header = header;
     this.performUpdate();
   }
+  set extraElements(elements) {
+    this.#extraElements = elements;
+    this.#firstUpdate = false;
+    this.requestUpdate();
+  }
   performUpdate() {
     if (this.#firstUpdate) {
       this.#extraElements = [...this.element.children];
       this.#firstUpdate = false;
     }
-    const output = { contentElement: void 0 };
+    const output = {};
     this.#view({ header: this.#header, text: this.#text, link: this.#link, extraElements: this.#extraElements }, output, this.element);
     if (output.contentElement) {
       this.contentElement = output.contentElement;
@@ -16773,12 +17550,13 @@ __export(FilterBar_exports, {
   FilterBar: () => FilterBar,
   NamedBitSetFilterUI: () => NamedBitSetFilterUI,
   NamedBitSetFilterUIElement: () => NamedBitSetFilterUIElement,
-  TextFilterUI: () => TextFilterUI
+  TextFilterUI: () => TextFilterUI,
+  filterStyles: () => filter_css_default
 });
-import * as Common16 from "./../../core/common/common.js";
+import * as Common17 from "./../../core/common/common.js";
 import * as Host9 from "./../../core/host/host.js";
-import * as i18n25 from "./../../core/i18n/i18n.js";
-import * as Platform19 from "./../../core/platform/platform.js";
+import * as i18n29 from "./../../core/i18n/i18n.js";
+import * as Platform18 from "./../../core/platform/platform.js";
 import * as VisualLogging18 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/filter.css.js
@@ -16966,7 +17744,7 @@ var filter_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./filter.css")} */`;
 
 // gen/front_end/ui/legacy/FilterBar.js
-var UIStrings13 = {
+var UIStrings15 = {
   /**
    * @description Text to filter result items
    */
@@ -16985,9 +17763,9 @@ var UIStrings13 = {
    */
   allStrings: "All"
 };
-var str_13 = i18n25.i18n.registerUIStrings("ui/legacy/FilterBar.ts", UIStrings13);
-var i18nString13 = i18n25.i18n.getLocalizedString.bind(void 0, str_13);
-var FilterBar = class extends Common16.ObjectWrapper.eventMixin(HBox) {
+var str_15 = i18n29.i18n.registerUIStrings("ui/legacy/FilterBar.ts", UIStrings15);
+var i18nString15 = i18n29.i18n.getLocalizedString.bind(void 0, str_15);
+var FilterBar = class extends Common17.ObjectWrapper.eventMixin(HBox) {
   enabled;
   stateSetting;
   #filterButton;
@@ -17000,8 +17778,8 @@ var FilterBar = class extends Common16.ObjectWrapper.eventMixin(HBox) {
     this.enabled = true;
     this.element.classList.add("filter-bar");
     this.element.setAttribute("jslog", `${VisualLogging18.toolbar("filter-bar")}`);
-    this.stateSetting = Common16.Settings.Settings.instance().createSetting("filter-bar-" + name + "-toggled", Boolean(visibleByDefault));
-    this.#filterButton = new ToolbarSettingToggle(this.stateSetting, "filter", i18nString13(UIStrings13.filter), "filter-filled", "filter");
+    this.stateSetting = Common17.Settings.Settings.instance().createSetting("filter-bar-" + name + "-toggled", Boolean(visibleByDefault));
+    this.#filterButton = new ToolbarSettingToggle(this.stateSetting, "filter", i18nString15(UIStrings15.filter), "filter-filled", "filter");
     this.#filterButton.element.style.setProperty("--dot-toggle-top", "13px");
     this.#filterButton.element.style.setProperty("--dot-toggle-left", "14px");
     this.filters = [];
@@ -17083,7 +17861,7 @@ var FilterBar = class extends Common16.ObjectWrapper.eventMixin(HBox) {
     return this.alwaysShowFilters || this.stateSetting.get() && this.enabled;
   }
 };
-var TextFilterUI = class extends Common16.ObjectWrapper.ObjectWrapper {
+var TextFilterUI = class extends Common17.ObjectWrapper.ObjectWrapper {
   filterElement;
   #filter;
   suggestionProvider;
@@ -17093,7 +17871,7 @@ var TextFilterUI = class extends Common16.ObjectWrapper.ObjectWrapper {
     this.filterElement.classList.add("text-filter");
     const filterToolbar = this.filterElement.createChild("devtools-toolbar");
     filterToolbar.style.borderBottom = "none";
-    this.#filter = new ToolbarFilter(void 0, 1, 1, i18nString13(UIStrings13.egSmalldUrlacomb), this.completions.bind(this));
+    this.#filter = new ToolbarFilter(void 0, 1, 1, i18nString15(UIStrings15.egSmalldUrlacomb), this.completions.bind(this));
     filterToolbar.appendToolbarItem(this.#filter);
     this.#filter.addEventListener("TextChanged", () => this.valueChanged());
     this.suggestionProvider = null;
@@ -17166,7 +17944,7 @@ var NamedBitSetFilterUIElement = class extends HTMLElement {
   }
 };
 customElements.define("devtools-named-bit-set-filter", NamedBitSetFilterUIElement);
-var NamedBitSetFilterUI = class _NamedBitSetFilterUI extends Common16.ObjectWrapper.ObjectWrapper {
+var NamedBitSetFilterUI = class _NamedBitSetFilterUI extends Common17.ObjectWrapper.ObjectWrapper {
   filtersElement;
   typeFilterElementTypeNames = /* @__PURE__ */ new WeakMap();
   allowedTypes = /* @__PURE__ */ new Set();
@@ -17179,10 +17957,10 @@ var NamedBitSetFilterUI = class _NamedBitSetFilterUI extends Common16.ObjectWrap
     this.filtersElement.setAttribute("jslog", `${VisualLogging18.section("filter-bitset")}`);
     markAsListBox(this.filtersElement);
     markAsMultiSelectable(this.filtersElement);
-    Tooltip.install(this.filtersElement, i18nString13(UIStrings13.sclickToSelectMultipleTypes, {
+    Tooltip.install(this.filtersElement, i18nString15(UIStrings15.sclickToSelectMultipleTypes, {
       PH1: KeyboardShortcut.shortcutToString("", Modifiers.CtrlOrMeta.value)
     }));
-    this.addBit(_NamedBitSetFilterUI.ALL_TYPES, i18nString13(UIStrings13.allStrings), _NamedBitSetFilterUI.ALL_TYPES);
+    this.addBit(_NamedBitSetFilterUI.ALL_TYPES, i18nString15(UIStrings15.allStrings), _NamedBitSetFilterUI.ALL_TYPES);
     this.typeFilterElements[0].tabIndex = 0;
     this.filtersElement.createChild("div", "filter-bitset-filter-divider");
     for (let i = 0; i < items.length; ++i) {
@@ -17292,7 +18070,7 @@ var NamedBitSetFilterUI = class _NamedBitSetFilterUI extends Common16.ObjectWrap
       )) {
         event.consume(true);
       }
-    } else if (Platform19.KeyboardUtilities.isEnterOrSpaceKey(event)) {
+    } else if (Platform18.KeyboardUtilities.isEnterOrSpaceKey(event)) {
       this.onTypeFilterClicked(event);
     }
   }
@@ -17340,7 +18118,7 @@ var NamedBitSetFilterUI = class _NamedBitSetFilterUI extends Common16.ObjectWrap
   }
   static ALL_TYPES = "all";
 };
-var CheckboxFilterUI = class extends Common16.ObjectWrapper.ObjectWrapper {
+var CheckboxFilterUI = class extends Common17.ObjectWrapper.ObjectWrapper {
   filterElement;
   activeWhenChecked;
   checkbox;
@@ -17386,7 +18164,7 @@ var FilterSuggestionBuilder_exports = {};
 __export(FilterSuggestionBuilder_exports, {
   FilterSuggestionBuilder: () => FilterSuggestionBuilder
 });
-import * as Platform20 from "./../../core/platform/platform.js";
+import * as Platform19 from "./../../core/platform/platform.js";
 var FilterSuggestionBuilder = class {
   keys;
   valueSorter;
@@ -17407,7 +18185,7 @@ var FilterSuggestionBuilder = class {
     const valueDelimiterIndex = prefix.indexOf(":");
     const suggestions = [];
     if (valueDelimiterIndex === -1) {
-      const matcher = new RegExp("^" + Platform20.StringUtilities.escapeForRegExp(prefix), "i");
+      const matcher = new RegExp("^" + Platform19.StringUtilities.escapeForRegExp(prefix), "i");
       for (const key of this.keys) {
         if (matcher.test(key)) {
           suggestions.push({ text: modifier + key + ":" });
@@ -17416,7 +18194,7 @@ var FilterSuggestionBuilder = class {
     } else {
       const key = prefix.substring(0, valueDelimiterIndex).toLowerCase();
       const value = prefix.substring(valueDelimiterIndex + 1);
-      const matcher = new RegExp("^" + Platform20.StringUtilities.escapeForRegExp(value), "i");
+      const matcher = new RegExp("^" + Platform19.StringUtilities.escapeForRegExp(value), "i");
       const values = Array.from(this.valuesMap.get(key) || /* @__PURE__ */ new Set());
       this.valueSorter(key, values);
       for (const item8 of values) {
@@ -17473,7 +18251,7 @@ __export(InplaceEditor_exports, {
   Config: () => Config,
   InplaceEditor: () => InplaceEditor
 });
-import * as Platform21 from "./../../core/platform/platform.js";
+import * as Platform20 from "./../../core/platform/platform.js";
 var inplaceEditorInstance = null;
 var InplaceEditor = class _InplaceEditor {
   focusRestorer;
@@ -17571,10 +18349,10 @@ var InplaceEditor = class _InplaceEditor {
       element.dispatchEvent(new Event("change"));
     }
     function defaultFinishHandler(event) {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && !event.shiftKey) {
         return "commit";
       }
-      if (event.keyCode === Keys.Esc.code || event.key === Platform21.KeyboardUtilities.ESCAPE_KEY) {
+      if (event.keyCode === Keys.Esc.code || event.key === Platform20.KeyboardUtilities.ESCAPE_KEY) {
         return "cancel";
       }
       if (event.key === "Tab") {
@@ -17641,16 +18419,47 @@ var Config = class {
   }
 };
 
+// gen/front_end/ui/legacy/LinkContextMenuProvider.js
+var LinkContextMenuProvider_exports = {};
+__export(LinkContextMenuProvider_exports, {
+  LinkContextMenuProvider: () => LinkContextMenuProvider
+});
+import * as Host11 from "./../../core/host/host.js";
+import * as UIHelpers from "./../helpers/helpers.js";
+import { Link } from "./../kit/kit.js";
+var LinkContextMenuProvider = class {
+  appendApplicableItems(_event, contextMenu, target) {
+    let targetNode = target;
+    while (targetNode && !(targetNode instanceof Link)) {
+      targetNode = targetNode.parentNodeOrShadowHost();
+    }
+    if (!targetNode?.href) {
+      return;
+    }
+    const node = targetNode;
+    contextMenu.revealSection().appendItem(openLinkExternallyLabel(), () => {
+      if (node.href) {
+        UIHelpers.openInNewTab(node.href);
+      }
+    }, { jslogContext: "open-in-new-tab" });
+    contextMenu.revealSection().appendItem(copyLinkAddressLabel(), () => {
+      if (node.href) {
+        Host11.InspectorFrontendHost.InspectorFrontendHostInstance.copyText(node.href);
+      }
+    }, { jslogContext: "copy-link-address" });
+  }
+};
+
 // gen/front_end/ui/legacy/ListWidget.js
 var ListWidget_exports = {};
 __export(ListWidget_exports, {
   Editor: () => Editor,
   ListWidget: () => ListWidget
 });
-import * as i18n27 from "./../../core/i18n/i18n.js";
-import * as Platform22 from "./../../core/platform/platform.js";
-import * as Buttons7 from "./../components/buttons/buttons.js";
-import { html as html4, render as render4 } from "./../lit/lit.js";
+import * as i18n31 from "./../../core/i18n/i18n.js";
+import * as Platform21 from "./../../core/platform/platform.js";
+import * as Buttons8 from "./../components/buttons/buttons.js";
+import { html as html4, render as render5 } from "./../lit/lit.js";
 import * as VisualLogging19 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/listWidget.css.js
@@ -17822,7 +18631,7 @@ var listWidget_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./listWidget.css")} */`;
 
 // gen/front_end/ui/legacy/ListWidget.js
-var UIStrings14 = {
+var UIStrings16 = {
   /**
    * @description Text on a button to start editing text
    */
@@ -17852,14 +18661,14 @@ var UIStrings14 = {
    */
   removedItem: "Item has been removed"
 };
-var str_14 = i18n27.i18n.registerUIStrings("ui/legacy/ListWidget.ts", UIStrings14);
-var i18nString14 = i18n27.i18n.getLocalizedString.bind(void 0, str_14);
+var str_16 = i18n31.i18n.registerUIStrings("ui/legacy/ListWidget.ts", UIStrings16);
+var i18nString16 = i18n31.i18n.getLocalizedString.bind(void 0, str_16);
 var ListWidget = class extends VBox {
   delegate;
   list;
   lastSeparator;
   focusRestorer;
-  items;
+  #items;
   editable;
   elements;
   editor;
@@ -17874,7 +18683,7 @@ var ListWidget = class extends VBox {
     this.list = this.contentElement.createChild("div", "list");
     this.lastSeparator = false;
     this.focusRestorer = null;
-    this.items = [];
+    this.#items = [];
     this.editable = [];
     this.elements = [];
     this.editor = null;
@@ -17887,8 +18696,11 @@ var ListWidget = class extends VBox {
     }
     this.updatePlaceholder();
   }
+  get items() {
+    return this.#items;
+  }
   clear() {
-    this.items = [];
+    this.#items = [];
     this.editable = [];
     this.elements = [];
     this.lastSeparator = false;
@@ -17896,8 +18708,29 @@ var ListWidget = class extends VBox {
     this.updatePlaceholder();
     this.stopEditing();
   }
-  appendItem(item8, editable) {
-    if (this.lastSeparator && this.items.length) {
+  updateItem(index, newItem, editable, focusable = true, controlLabels = {}) {
+    if (index < 0 || index >= this.#items.length) {
+      this.appendItem(newItem, editable, focusable, controlLabels);
+      return;
+    }
+    this.#items[index] = newItem;
+    this.editable[index] = editable;
+    const element = this.elements[index];
+    const [content, controls] = element.children;
+    if (controls) {
+      element.removeChild(controls);
+    }
+    this.delegate.updateItem?.(content, newItem, editable, index);
+    element.classList.toggle("editable", editable);
+    if (editable) {
+      if (focusable) {
+        element.tabIndex = 0;
+      }
+      element.appendChild(this.createControls(newItem, element, controlLabels));
+    }
+  }
+  appendItem(item8, editable, focusable = true, controlLabels = {}) {
+    if (this.lastSeparator && this.#items.length) {
       const element2 = document.createElement("div");
       element2.classList.add("list-separator");
       if (this.isTable) {
@@ -17906,21 +18739,23 @@ var ListWidget = class extends VBox {
       this.list.appendChild(element2);
     }
     this.lastSeparator = false;
-    this.items.push(item8);
+    this.#items.push(item8);
     this.editable.push(editable);
     const element = this.list.createChild("div", "list-item");
     if (this.isTable) {
       element.role = "rowgroup";
     }
-    const content = this.delegate.renderItem(item8, editable, this.items.length - 1);
+    const content = this.delegate.renderItem(item8, editable, this.#items.length - 1);
     if (!content.hasAttribute("jslog")) {
-      element.setAttribute("jslog", `${VisualLogging19.item()}`);
+      element.setAttribute("jslog", `${VisualLogging19.item().track({ resize: true })}`);
     }
     element.appendChild(content);
     if (editable) {
       element.classList.add("editable");
-      element.tabIndex = 0;
-      element.appendChild(this.createControls(item8, element));
+      if (focusable) {
+        element.tabIndex = 0;
+      }
+      element.appendChild(this.createControls(item8, element, controlLabels));
     }
     this.elements.push(element);
     this.updatePlaceholder();
@@ -17929,7 +18764,7 @@ var ListWidget = class extends VBox {
     this.lastSeparator = true;
   }
   removeItem(index) {
-    if (this.editItem === this.items[index]) {
+    if (this.editItem === this.#items[index]) {
       this.stopEditing();
     }
     const element = this.elements[index];
@@ -17945,7 +18780,7 @@ var ListWidget = class extends VBox {
     }
     element.remove();
     this.elements.splice(index, 1);
-    this.items.splice(index, 1);
+    this.#items.splice(index, 1);
     this.editable.splice(index, 1);
     this.updatePlaceholder();
   }
@@ -17956,24 +18791,24 @@ var ListWidget = class extends VBox {
     this.emptyPlaceholder = element;
     this.updatePlaceholder();
   }
-  createControls(item8, element) {
+  createControls(item8, element, controlLabels) {
     const controls = document.createElement("div");
     controls.classList.add("controls-container");
     controls.classList.add("fill");
-    render4(html4`
+    render5(html4`
       <div class="controls-gradient"></div>
       <div class="controls-buttons">
         <devtools-toolbar>
           <devtools-button class=toolbar-button
                            .iconName=${"edit"}
                            .jslogContext=${"edit-item"}
-                           .title=${i18nString14(UIStrings14.editString)}
+                           .title=${controlLabels?.edit ?? i18nString16(UIStrings16.editString)}
                            .variant=${"icon"}
                            @click=${onEditClicked}></devtools-button>
           <devtools-button class=toolbar-button
                            .iconName=${"bin"}
                            .jslogContext=${"remove-item"}
-                           .title=${i18nString14(UIStrings14.removeString)}
+                           .title=${controlLabels?.delete ?? i18nString16(UIStrings16.removeString)}
                            .variant=${"icon"}
                            @click=${onRemoveClicked}></devtools-button>
         </devtools-toolbar>
@@ -17987,8 +18822,8 @@ var ListWidget = class extends VBox {
     function onRemoveClicked() {
       const index = this.elements.indexOf(element);
       this.element.focus();
-      this.delegate.removeItemRequested(this.items[index], index);
-      LiveAnnouncer.alert(i18nString14(UIStrings14.removedItem));
+      this.delegate.removeItemRequested(this.#items[index], index);
+      LiveAnnouncer.alert(i18nString16(UIStrings16.removedItem));
       if (this.elements.length >= 1) {
         this.elements[Math.min(index, this.elements.length - 1)].focus();
       }
@@ -18025,7 +18860,7 @@ var ListWidget = class extends VBox {
     this.editor = this.delegate.beginEdit(item8);
     this.updatePlaceholder();
     this.list.insertBefore(this.editor.element, insertionPoint);
-    this.editor.beginEdit(item8, index, element ? i18nString14(UIStrings14.saveString) : i18nString14(UIStrings14.addString), this.commitEditing.bind(this), this.stopEditing.bind(this));
+    this.editor.beginEdit(item8, index, element ? i18nString16(UIStrings16.saveString) : i18nString16(UIStrings16.addString), this.commitEditing.bind(this), this.stopEditing.bind(this));
   }
   commitEditing() {
     const editItem = this.editItem;
@@ -18035,7 +18870,7 @@ var ListWidget = class extends VBox {
     this.stopEditing();
     if (editItem !== null) {
       this.delegate.commitEdit(editItem, editor, isNew);
-      LiveAnnouncer.alert(i18nString14(UIStrings14.changesSaved));
+      LiveAnnouncer.alert(i18nString16(UIStrings16.changesSaved));
       if (this.elements[focusElementIndex]) {
         this.elements[focusElementIndex].focus();
       }
@@ -18076,7 +18911,7 @@ var Editor = class {
     this.element = document.createElement("div");
     this.element.classList.add("editor-container");
     this.element.setAttribute("jslog", `${VisualLogging19.pane("editor").track({ resize: true })}`);
-    this.element.addEventListener("keydown", onKeyDown.bind(null, Platform22.KeyboardUtilities.isEscKey, this.cancelClicked.bind(this)), false);
+    this.element.addEventListener("keydown", onKeyDown.bind(null, Platform21.KeyboardUtilities.isEscKey, this.cancelClicked.bind(this)), false);
     this.#contentElement = this.element.createChild("div", "editor-content");
     this.#contentElement.addEventListener("keydown", onKeyDown.bind(null, (event) => {
       if (event.key !== "Enter") {
@@ -18088,7 +18923,7 @@ var Editor = class {
       return true;
     }, this.commitClicked.bind(this)), false);
     const buttonsRow = this.element.createChild("div", "editor-buttons");
-    this.cancelButton = createTextButton(i18nString14(UIStrings14.cancelString), this.cancelClicked.bind(this), {
+    this.cancelButton = createTextButton(i18nString16(UIStrings16.cancelString), this.cancelClicked.bind(this), {
       jslogContext: "cancel",
       variant: "outlined"
     });
@@ -18129,7 +18964,7 @@ var Editor = class {
       const option = select.createChild("option");
       option.value = options[index];
       option.textContent = options[index];
-      option.setAttribute("jslog", `${VisualLogging19.item(Platform22.StringUtilities.toKebabCase(options[index])).track({ click: true })}`);
+      option.setAttribute("jslog", `${VisualLogging19.item(Platform21.StringUtilities.toKebabCase(options[index])).track({ click: true })}`);
     }
     if (title) {
       Tooltip.install(select, title);
@@ -18289,17 +19124,18 @@ var popover_css_default = `/*
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-.widget {
-  display: flex;
-  font: var(--sys-typescale-body4-regular);
-  box-shadow: var(--sys-elevation-level2);
-  color: var(--sys-color-on-surface);
-  background-color: var(--sys-color-base-container-elevated);
-  border-radius: var(--sys-shape-corner-small);
-  padding: var(--sys-size-4);
-  user-select: text;
-  overflow: auto;
+@scope to (.widget > *) {
+  .widget {
+    display: flex;
+    font: var(--sys-typescale-body4-regular);
+    box-shadow: var(--sys-elevation-level2);
+    color: var(--sys-color-on-surface);
+    background-color: var(--sys-color-base-container-elevated);
+    border-radius: var(--sys-shape-corner-small);
+    padding: var(--sys-size-4);
+    user-select: text;
+    overflow: auto;
+  }
 }
 
 .squiggles-content {
@@ -18347,6 +19183,7 @@ var PopoverHelper = class _PopoverHelper {
   boundMouseDown;
   boundMouseMove;
   boundMouseOut;
+  boundScrollEnd;
   boundKeyUp;
   jslogContext;
   constructor(container, getRequest, jslogContext) {
@@ -18363,6 +19200,7 @@ var PopoverHelper = class _PopoverHelper {
     this.boundMouseDown = this.mouseDown.bind(this);
     this.boundMouseMove = this.mouseMove.bind(this);
     this.boundMouseOut = this.mouseOut.bind(this);
+    this.boundScrollEnd = this.scrollEnd.bind(this);
     this.boundKeyUp = this.keyUp.bind(this);
     this.container.addEventListener("mousedown", this.boundMouseDown, false);
     this.container.addEventListener("mousemove", this.boundMouseMove, false);
@@ -18379,6 +19217,9 @@ var PopoverHelper = class _PopoverHelper {
   }
   eventInScheduledContent(event) {
     return this.scheduledRequest ? this.scheduledRequest.box.contains(event.clientX, event.clientY) : false;
+  }
+  scrollEnd(_event) {
+    this.hidePopover();
   }
   mouseDown(event) {
     if (this.disableOnClick) {
@@ -18509,12 +19350,14 @@ var PopoverHelper = class _PopoverHelper {
       popover2.contentElement.addEventListener("mouseout", this.popoverMouseOut.bind(this, popover2), true);
       popover2.setContentAnchorBox(request.box);
       popover2.show(document2);
+      this.container.addEventListener("scrollend", this.boundScrollEnd, true);
       this.hidePopoverCallback = () => {
         if (request.hide) {
           request.hide.call(null);
         }
         popover2.hide();
         popoverHelperInstance = null;
+        this.container.removeEventListener("scrollend", this.boundScrollEnd, true);
       };
     });
   }
@@ -18530,6 +19373,7 @@ var PopoverHelper = class _PopoverHelper {
     this.container.removeEventListener("mousedown", this.boundMouseDown, false);
     this.container.removeEventListener("mousemove", this.boundMouseMove, false);
     this.container.removeEventListener("mouseout", this.boundMouseOut, false);
+    this.container.removeEventListener("keyup", this.boundKeyUp, false);
   }
 };
 var popoverHelperInstance = null;
@@ -18626,7 +19470,7 @@ var ProgressIndicator = class extends HTMLElement {
     this.#labelElement.textContent = title;
   }
   get title() {
-    return this.#labelElement.textContent ?? "";
+    return this.#labelElement.textContent;
   }
   set totalWork(totalWork) {
     this.#progressElement.max = totalWork;
@@ -18650,9 +19494,9 @@ __export(RemoteDebuggingTerminatedScreen_exports, {
   DEFAULT_VIEW: () => DEFAULT_VIEW2,
   RemoteDebuggingTerminatedScreen: () => RemoteDebuggingTerminatedScreen
 });
-import * as i18n29 from "./../../core/i18n/i18n.js";
-import * as Buttons8 from "./../components/buttons/buttons.js";
-import { html as html5, render as render5 } from "./../lit/lit.js";
+import * as i18n33 from "./../../core/i18n/i18n.js";
+import * as Buttons9 from "./../components/buttons/buttons.js";
+import { html as html5, render as render6 } from "./../lit/lit.js";
 
 // gen/front_end/ui/legacy/remoteDebuggingTerminatedScreen.css.js
 var remoteDebuggingTerminatedScreen_css_default = `/*
@@ -18687,7 +19531,7 @@ var remoteDebuggingTerminatedScreen_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./remoteDebuggingTerminatedScreen.css")} */`;
 
 // gen/front_end/ui/legacy/RemoteDebuggingTerminatedScreen.js
-var UIStrings15 = {
+var UIStrings17 = {
   /**
    * @description Text in a dialog box in DevTools stating that remote debugging has been terminated.
    * "Remote debugging" here means that DevTools on a PC is inspecting a website running on an actual mobile device
@@ -18714,20 +19558,20 @@ var UIStrings15 = {
    */
   reconnectDevtools: "Reconnect `DevTools`"
 };
-var str_15 = i18n29.i18n.registerUIStrings("ui/legacy/RemoteDebuggingTerminatedScreen.ts", UIStrings15);
-var i18nString15 = i18n29.i18n.getLocalizedString.bind(void 0, str_15);
+var str_17 = i18n33.i18n.registerUIStrings("ui/legacy/RemoteDebuggingTerminatedScreen.ts", UIStrings17);
+var i18nString17 = i18n33.i18n.getLocalizedString.bind(void 0, str_17);
 var DEFAULT_VIEW2 = (input, _output, target) => {
-  render5(html5`
+  render6(html5`
     <style>${remoteDebuggingTerminatedScreen_css_default}</style>
-    <div class="header">${i18nString15(UIStrings15.debuggingConnectionWasClosed)}</div>
+    <div class="header">${i18nString17(UIStrings17.debuggingConnectionWasClosed)}</div>
     <div class="content">
-      <div class="reason">${i18nString15(UIStrings15.connectionClosedReason, { PH1: input.reason })}</div>
-      <div class="message">${i18nString15(UIStrings15.reconnectWhenReadyByReopening)}</div>
+      <div class="reason">${i18nString17(UIStrings17.connectionClosedReason, { PH1: input.reason })}</div>
+      <div class="message">${i18nString17(UIStrings17.reconnectWhenReadyByReopening)}</div>
     </div>
     <div class="button-container">
       <div class="button">
         <devtools-button @click=${input.onReconnect} .jslogContext=${"reconnect"}
-            .variant=${"outlined"}>${i18nString15(UIStrings15.reconnectDevtools)}</devtools-button>
+            .variant=${"outlined"}>${i18nString17(UIStrings17.reconnectDevtools)}</devtools-button>
       </div>
     </div>`, target);
 };
@@ -18889,30 +19733,6 @@ var reportView_css_default = `/*
   user-select: text;
 }
 
-.image-wrapper,
-.image-wrapper img {
-  max-width: 200px;
-  max-height: 200px;
-  display: block;
-  object-fit: contain;
-}
-
-.image-wrapper {
-  height: fit-content;
-  margin-right: 8px;
-}
-
-.show-mask img {
-  /* The safe zone is a centrally positioned circle, with radius 2/5
-  * (40%) of the minimum of the icon's width and height.
-  * https://w3c.github.io/manifest/#icon-masks */
-  clip-path: circle(40% at 50% 50%);
-}
-
-.show-mask .image-wrapper {
-  background: var(--image-file-checker);
-}
-
 @media (forced-colors: active) {
   .report-field-value .inline-icon {
     color: ButtonText;
@@ -18958,7 +19778,7 @@ var ReportView = class extends VBox {
     this.headerElement.classList.toggle("hidden", Boolean(title));
   }
   setSubtitle(subtitle) {
-    if (this.subtitleElement && this.subtitleElement.textContent === subtitle) {
+    if (this.subtitleElement?.textContent === subtitle) {
       return;
     }
     if (!this.subtitleElement) {
@@ -18966,13 +19786,13 @@ var ReportView = class extends VBox {
     }
     this.subtitleElement.textContent = subtitle;
   }
-  setURL(link3) {
+  setURL(link2) {
     if (!this.urlElement) {
       this.urlElement = this.headerElement.createChild("div", "report-url link");
     }
     this.urlElement.removeChildren();
-    if (link3) {
-      this.urlElement.appendChild(link3);
+    if (link2) {
+      this.urlElement.appendChild(link2);
     }
     this.urlElement.setAttribute("jslog", `${VisualLogging22.link("source-location").track({ click: true })}`);
   }
@@ -19111,9 +19931,6 @@ var Section2 = class extends VBox {
     markAsGroup(this.fieldList);
     setLabel(this.fieldList, this.title());
   }
-  setIconMasked(masked) {
-    this.element.classList.toggle("show-mask", masked);
-  }
 };
 
 // gen/front_end/ui/legacy/RootView.js
@@ -19175,12 +19992,12 @@ __export(SearchableView_exports, {
   SearchConfig: () => SearchConfig,
   SearchableView: () => SearchableView
 });
-import * as Common17 from "./../../core/common/common.js";
-import * as i18n31 from "./../../core/i18n/i18n.js";
-import * as Platform23 from "./../../core/platform/platform.js";
+import * as Common18 from "./../../core/common/common.js";
+import * as i18n35 from "./../../core/i18n/i18n.js";
+import * as Platform22 from "./../../core/platform/platform.js";
 import * as VisualLogging23 from "./../visual_logging/visual_logging.js";
-import * as Buttons9 from "./../components/buttons/buttons.js";
-import * as IconButton8 from "./../components/icon_button/icon_button.js";
+import * as Buttons10 from "./../components/buttons/buttons.js";
+import { createIcon as createIcon7 } from "./../kit/kit.js";
 
 // gen/front_end/ui/legacy/searchableView.css.js
 var searchableView_css_default = `/*
@@ -19349,7 +20166,7 @@ var searchableView_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./searchableView.css")} */`;
 
 // gen/front_end/ui/legacy/SearchableView.js
-var UIStrings16 = {
+var UIStrings18 = {
   /**
    * @description Text on a button to replace one instance with input text for the ctrl+F search bar
    */
@@ -19420,18 +20237,18 @@ var UIStrings16 = {
    */
   clearInput: "Clear"
 };
-var str_16 = i18n31.i18n.registerUIStrings("ui/legacy/SearchableView.ts", UIStrings16);
-var i18nString16 = i18n31.i18n.getLocalizedString.bind(void 0, str_16);
+var str_18 = i18n35.i18n.registerUIStrings("ui/legacy/SearchableView.ts", UIStrings18);
+var i18nString18 = i18n35.i18n.getLocalizedString.bind(void 0, str_18);
 function createClearButton(jslogContext) {
-  const button = new Buttons9.Button.Button();
+  const button = new Buttons10.Button.Button();
   button.data = {
     variant: "icon",
     size: "SMALL",
     jslogContext,
-    title: i18nString16(UIStrings16.clearInput),
+    title: i18nString18(UIStrings18.clearInput),
     iconName: "cross-circle-filled"
   };
-  button.ariaLabel = i18nString16(UIStrings16.clearInput);
+  button.ariaLabel = i18nString18(UIStrings18.clearInput);
   button.classList.add("clear-button");
   button.tabIndex = -1;
   return button;
@@ -19448,6 +20265,7 @@ var SearchableView = class extends VBox {
   replaceToggleButton;
   searchInputElement;
   matchesElement;
+  matchesElementValue;
   searchNavigationPrevElement;
   searchNavigationNextElement;
   replaceInputElement;
@@ -19466,7 +20284,7 @@ var SearchableView = class extends VBox {
     searchableViewsByElement.set(this.element, this);
     this.searchProvider = searchable;
     this.replaceProvider = replaceable;
-    this.setting = settingName ? Common17.Settings.Settings.instance().createSetting(settingName, {}) : null;
+    this.setting = settingName ? Common18.Settings.Settings.instance().createSetting(settingName, {}) : null;
     this.replaceable = false;
     this.contentElement.createChild("slot");
     this.footerElementContainer = this.contentElement.createChild("div", "search-bar hidden");
@@ -19474,18 +20292,18 @@ var SearchableView = class extends VBox {
     this.footerElement = this.footerElementContainer.createChild("div", "toolbar-search");
     this.footerElement.setAttribute("jslog", `${VisualLogging23.toolbar("search").track({ resize: true })}`);
     const replaceToggleToolbar = this.footerElement.createChild("devtools-toolbar", "replace-toggle-toolbar");
-    this.replaceToggleButton = new ToolbarToggle(i18nString16(UIStrings16.enableFindAndReplace), "replace", void 0, "replace");
-    setLabel(this.replaceToggleButton.element, i18nString16(UIStrings16.enableFindAndReplace));
+    this.replaceToggleButton = new ToolbarToggle(i18nString18(UIStrings18.enableFindAndReplace), "replace", void 0, "replace");
+    setLabel(this.replaceToggleButton.element, i18nString18(UIStrings18.enableFindAndReplace));
     this.replaceToggleButton.addEventListener("Click", this.toggleReplace, this);
     replaceToggleToolbar.appendToolbarItem(this.replaceToggleButton);
     const searchInputElements = this.footerElement.createChild("div", "search-inputs");
     const iconAndInput = searchInputElements.createChild("div", "icon-and-input");
-    const searchIcon = IconButton8.Icon.create("search");
+    const searchIcon = createIcon7("search");
     iconAndInput.appendChild(searchIcon);
     this.searchInputElement = createHistoryInput("search", "search-replace search");
     this.searchInputElement.id = "search-input-field";
     this.searchInputElement.autocomplete = "off";
-    this.searchInputElement.placeholder = i18nString16(UIStrings16.findString);
+    this.searchInputElement.placeholder = i18nString18(UIStrings18.findString);
     this.searchInputElement.setAttribute("jslog", `${VisualLogging23.textField("search").track({ change: true, keydown: "ArrowUp|ArrowDown|Enter|Escape" })}`);
     this.searchInputElement.addEventListener("keydown", this.onSearchKeyDown.bind(this), true);
     this.searchInputElement.addEventListener("input", this.onInput.bind(this), false);
@@ -19493,7 +20311,7 @@ var SearchableView = class extends VBox {
     const replaceInputElements = searchInputElements.createChild("div", "replace-element input-line");
     this.replaceInputElement = replaceInputElements.createChild("input", "search-replace");
     this.replaceInputElement.addEventListener("keydown", this.onReplaceKeyDown.bind(this), true);
-    this.replaceInputElement.placeholder = i18nString16(UIStrings16.replace);
+    this.replaceInputElement.placeholder = i18nString18(UIStrings18.replace);
     this.replaceInputElement.setAttribute("jslog", `${VisualLogging23.textField("replace").track({ change: true, keydown: "Enter" })}`);
     const replaceInputClearButton = createClearButton("clear-replace-input");
     replaceInputClearButton.addEventListener("click", () => {
@@ -19515,7 +20333,7 @@ var SearchableView = class extends VBox {
     };
     if (this.searchProvider.supportsCaseSensitiveSearch()) {
       const iconName = "match-case";
-      this.caseSensitiveButton = new Buttons9.Button.Button();
+      this.caseSensitiveButton = new Buttons10.Button.Button();
       this.caseSensitiveButton.data = {
         variant: "icon_toggle",
         size: "SMALL",
@@ -19523,16 +20341,16 @@ var SearchableView = class extends VBox {
         toggledIconName: iconName,
         toggled: false,
         toggleType: "primary-toggle",
-        title: i18nString16(UIStrings16.matchCase),
+        title: i18nString18(UIStrings18.matchCase),
         jslogContext: iconName
       };
-      setLabel(this.caseSensitiveButton, i18nString16(UIStrings16.matchCase));
+      setLabel(this.caseSensitiveButton, i18nString18(UIStrings18.matchCase));
       this.caseSensitiveButton.addEventListener("click", saveSettingAndPerformSearch);
       searchConfigButtons.appendChild(this.caseSensitiveButton);
     }
     if (this.searchProvider.supportsWholeWordSearch()) {
       const iconName = "match-whole-word";
-      this.wholeWordButton = new Buttons9.Button.Button();
+      this.wholeWordButton = new Buttons10.Button.Button();
       this.wholeWordButton.data = {
         variant: "icon_toggle",
         size: "SMALL",
@@ -19540,16 +20358,16 @@ var SearchableView = class extends VBox {
         toggledIconName: iconName,
         toggled: false,
         toggleType: "primary-toggle",
-        title: i18nString16(UIStrings16.matchWholeWord),
+        title: i18nString18(UIStrings18.matchWholeWord),
         jslogContext: iconName
       };
-      setLabel(this.wholeWordButton, i18nString16(UIStrings16.matchWholeWord));
+      setLabel(this.wholeWordButton, i18nString18(UIStrings18.matchWholeWord));
       this.wholeWordButton.addEventListener("click", saveSettingAndPerformSearch);
       searchConfigButtons.appendChild(this.wholeWordButton);
     }
     if (this.searchProvider.supportsRegexSearch()) {
       const iconName = "regular-expression";
-      this.regexButton = new Buttons9.Button.Button();
+      this.regexButton = new Buttons10.Button.Button();
       this.regexButton.data = {
         variant: "icon_toggle",
         size: "SMALL",
@@ -19558,50 +20376,53 @@ var SearchableView = class extends VBox {
         toggleType: "primary-toggle",
         toggled: false,
         jslogContext: iconName,
-        title: i18nString16(UIStrings16.useRegularExpression)
+        title: i18nString18(UIStrings18.useRegularExpression)
       };
-      setLabel(this.regexButton, i18nString16(UIStrings16.useRegularExpression));
+      setLabel(this.regexButton, i18nString18(UIStrings18.useRegularExpression));
       this.regexButton.addEventListener("click", saveSettingAndPerformSearch);
       searchConfigButtons.appendChild(this.regexButton);
     }
     searchInputElements.createChild("div", "input-line search-input-background");
     const buttonsContainer = this.footerElement.createChild("div", "toolbar-search-buttons");
     const firstRowButtons = buttonsContainer.createChild("div", "first-row-buttons");
-    const toolbar4 = firstRowButtons.createChild("devtools-toolbar", "toolbar-search-options");
-    this.searchNavigationPrevElement = new ToolbarButton(i18nString16(UIStrings16.searchPrevious), "chevron-up", void 0, "select-previous");
+    const toolbar5 = firstRowButtons.createChild("devtools-toolbar", "toolbar-search-options");
+    this.searchNavigationPrevElement = new ToolbarButton(i18nString18(UIStrings18.searchPrevious), "chevron-up", void 0, "select-previous");
     this.searchNavigationPrevElement.addEventListener("Click", () => this.onPrevButtonSearch());
-    toolbar4.appendToolbarItem(this.searchNavigationPrevElement);
-    setLabel(this.searchNavigationPrevElement.element, i18nString16(UIStrings16.searchPrevious));
-    this.searchNavigationNextElement = new ToolbarButton(i18nString16(UIStrings16.searchNext), "chevron-down", void 0, "select-next");
+    toolbar5.appendToolbarItem(this.searchNavigationPrevElement);
+    setLabel(this.searchNavigationPrevElement.element, i18nString18(UIStrings18.searchPrevious));
+    this.searchNavigationNextElement = new ToolbarButton(i18nString18(UIStrings18.searchNext), "chevron-down", void 0, "select-next");
     this.searchNavigationNextElement.addEventListener("Click", () => this.onNextButtonSearch());
-    setLabel(this.searchNavigationNextElement.element, i18nString16(UIStrings16.searchNext));
-    toolbar4.appendToolbarItem(this.searchNavigationNextElement);
+    setLabel(this.searchNavigationNextElement.element, i18nString18(UIStrings18.searchNext));
+    toolbar5.appendToolbarItem(this.searchNavigationNextElement);
     const matchesText = new ToolbarText();
     this.matchesElement = matchesText.element;
     this.matchesElement.style.fontVariantNumeric = "tabular-nums";
     this.matchesElement.style.color = "var(--sys-color-on-surface-subtle)";
     this.matchesElement.style.padding = "0 var(--sys-size-3)";
     this.matchesElement.classList.add("search-results-matches");
-    toolbar4.appendToolbarItem(matchesText);
-    const cancelButtonElement = new Buttons9.Button.Button();
+    markAsPoliteLiveRegion(this.matchesElement, false);
+    this.matchesElementValue = this.matchesElement.createChild("span");
+    setHidden(this.matchesElementValue, true);
+    toolbar5.appendToolbarItem(matchesText);
+    const cancelButtonElement = new Buttons10.Button.Button();
     cancelButtonElement.data = {
       variant: "toolbar",
       size: "REGULAR",
       iconName: "cross",
-      title: i18nString16(UIStrings16.closeSearchBar),
+      title: i18nString18(UIStrings18.closeSearchBar),
       jslogContext: "close-search"
     };
     cancelButtonElement.classList.add("close-search-button");
     cancelButtonElement.addEventListener("click", () => this.closeSearch());
     firstRowButtons.appendChild(cancelButtonElement);
     const secondRowButtons = buttonsContainer.createChild("div", "second-row-buttons replace-element");
-    this.replaceButtonElement = createTextButton(i18nString16(UIStrings16.replace), this.replace.bind(this), {
+    this.replaceButtonElement = createTextButton(i18nString18(UIStrings18.replace), this.replace.bind(this), {
       className: "search-action-button",
       jslogContext: "replace"
     });
     this.replaceButtonElement.disabled = true;
     secondRowButtons.appendChild(this.replaceButtonElement);
-    this.replaceAllButtonElement = createTextButton(i18nString16(UIStrings16.replaceAll), this.replaceAll.bind(this), {
+    this.replaceAllButtonElement = createTextButton(i18nString18(UIStrings18.replaceAll), this.replaceAll.bind(this), {
       className: "search-action-button",
       jslogContext: "replace-all"
     });
@@ -19620,7 +20441,7 @@ var SearchableView = class extends VBox {
   }
   toggleReplace() {
     const replaceEnabled = this.replaceToggleButton.isToggled();
-    const label = replaceEnabled ? i18nString16(UIStrings16.disableFindAndReplace) : i18nString16(UIStrings16.enableFindAndReplace);
+    const label = replaceEnabled ? i18nString18(UIStrings18.disableFindAndReplace) : i18nString18(UIStrings18.enableFindAndReplace);
     setLabel(this.replaceToggleButton.element, label);
     this.replaceToggleButton.element.title = label;
     this.updateSecondRowVisibility();
@@ -19700,7 +20521,7 @@ var SearchableView = class extends VBox {
   resetSearch() {
     this.clearSearch();
     this.updateReplaceVisibility();
-    this.matchesElement.textContent = "";
+    this.matchesElementValue.textContent = "";
   }
   refreshSearch() {
     if (!this.searchIsVisible) {
@@ -19737,19 +20558,23 @@ var SearchableView = class extends VBox {
   updateSearchNavigationButtonState(enabled) {
     this.replaceButtonElement.disabled = !enabled;
     this.replaceAllButtonElement.disabled = !enabled;
-    this.searchNavigationPrevElement.setEnabled(enabled);
-    this.searchNavigationNextElement.setEnabled(enabled);
+    if (this.searchProvider.supportsMatchCounts?.() === true) {
+      this.searchNavigationPrevElement.setEnabled(enabled);
+      this.searchNavigationNextElement.setEnabled(enabled);
+    }
   }
   updateSearchMatchesCountAndCurrentMatchIndex(matches, currentMatchIndex) {
     if (!this.currentQuery) {
-      this.matchesElement.textContent = "";
+      this.matchesElementValue.textContent = "";
     } else if (matches === 0 || currentMatchIndex >= 0) {
-      this.matchesElement.textContent = i18nString16(UIStrings16.dOfD, { PH1: currentMatchIndex + 1, PH2: matches });
-      setLabel(this.matchesElement, i18nString16(UIStrings16.accessibledOfD, { PH1: currentMatchIndex + 1, PH2: matches }));
+      this.matchesElementValue.textContent = i18nString18(UIStrings18.dOfD, { PH1: currentMatchIndex + 1, PH2: matches });
+      setLabel(this.matchesElement, i18nString18(UIStrings18.accessibledOfD, { PH1: currentMatchIndex + 1, PH2: matches }));
     } else if (matches === 1) {
-      this.matchesElement.textContent = i18nString16(UIStrings16.matchString);
+      this.matchesElementValue.textContent = i18nString18(UIStrings18.matchString);
+      setLabel(this.matchesElement, i18nString18(UIStrings18.matchString));
     } else {
-      this.matchesElement.textContent = i18nString16(UIStrings16.dMatches, { PH1: matches });
+      this.matchesElementValue.textContent = i18nString18(UIStrings18.dMatches, { PH1: matches });
+      setLabel(this.matchesElement, i18nString18(UIStrings18.dMatches, { PH1: matches }));
     }
     this.updateSearchNavigationButtonState(matches > 0);
   }
@@ -19782,7 +20607,7 @@ var SearchableView = class extends VBox {
     }
   }
   onSearchKeyDown(event) {
-    if (Platform23.KeyboardUtilities.isEscKey(event)) {
+    if (Platform22.KeyboardUtilities.isEscKey(event)) {
       this.closeSearch();
       event.consume(true);
       return;
@@ -19870,7 +20695,7 @@ var SearchableView = class extends VBox {
     this.replaceProvider.replaceAllWith(searchConfig, this.replaceInputElement.value);
   }
   onInput() {
-    if (!Common17.Settings.Settings.instance().moduleSetting("search-as-you-type").get()) {
+    if (!Common18.Settings.Settings.instance().moduleSetting("search-as-you-type").get()) {
       this.clearSearch();
       return;
     }
@@ -19915,7 +20740,7 @@ var SearchConfig = class {
     } catch {
     }
     if (!regex) {
-      regex = Platform23.StringUtilities.createPlainTextSearchRegex(query, modifiers);
+      regex = Platform22.StringUtilities.createPlainTextSearchRegex(query, modifiers);
     }
     if (this.wholeWord) {
       let { source } = regex;
@@ -19939,10 +20764,9 @@ var SoftDropDown_exports = {};
 __export(SoftDropDown_exports, {
   SoftDropDown: () => SoftDropDown
 });
-import * as i18n33 from "./../../core/i18n/i18n.js";
-import * as Platform24 from "./../../core/platform/platform.js";
+import * as i18n37 from "./../../core/i18n/i18n.js";
 import * as Geometry6 from "./../../models/geometry/geometry.js";
-import * as IconButton9 from "./../components/icon_button/icon_button.js";
+import { createIcon as createIcon8 } from "./../kit/kit.js";
 import * as VisualLogging24 from "./../visual_logging/visual_logging.js";
 
 // gen/front_end/ui/legacy/softDropDown.css.js
@@ -19965,6 +20789,9 @@ var softDropDown_css_default = `/*
 
 .item.highlighted {
   background-color: var(--sys-color-state-hover-on-subtle);
+  outline: var(--sys-size-2) solid var(--sys-color-primary);
+  outline-offset: calc(-1 * var(--sys-size-2));
+  border-radius: var(--sys-shape-corner-extra-small);
 }
 
 @media (forced-colors: active) {
@@ -19973,7 +20800,7 @@ var softDropDown_css_default = `/*
   }
 
   .item-list {
-    border: 1px solid ButtonText;
+    border: var(--sys-size-1) solid ButtonText;
     background-color: ButtonFace;
   }
 
@@ -19981,6 +20808,9 @@ var softDropDown_css_default = `/*
     forced-color-adjust: none;
     color: HighlightText;
     background-color: Highlight;
+    outline: var(--sys-size-2) solid Highlight;
+    outline-offset: calc(-1 * var(--sys-size-2));
+    border-radius: var(--sys-shape-corner-extra-small);
   }
 }
 
@@ -20040,14 +20870,14 @@ button.soft-dropdown:hover:not(:active) > .title {
 /*# sourceURL=${import.meta.resolve("./softDropDownButton.css")} */`;
 
 // gen/front_end/ui/legacy/SoftDropDown.js
-var UIStrings17 = {
+var UIStrings19 = {
   /**
    * @description Placeholder text in Soft Drop Down
    */
   noItemSelected: "(no item selected)"
 };
-var str_17 = i18n33.i18n.registerUIStrings("ui/legacy/SoftDropDown.ts", UIStrings17);
-var i18nString17 = i18n33.i18n.getLocalizedString.bind(void 0, str_17);
+var str_19 = i18n37.i18n.registerUIStrings("ui/legacy/SoftDropDown.ts", UIStrings19);
+var i18nString19 = i18n37.i18n.getLocalizedString.bind(void 0, str_19);
 var SoftDropDown = class {
   delegate;
   selectedItem;
@@ -20063,15 +20893,15 @@ var SoftDropDown = class {
     this.delegate = delegate;
     this.selectedItem = null;
     this.model = model;
-    this.placeholderText = i18nString17(UIStrings17.noItemSelected);
+    this.placeholderText = i18nString19(UIStrings19.noItemSelected);
     this.element = document.createElement("button");
     if (jslogContext) {
       this.element.setAttribute("jslog", `${VisualLogging24.dropDown().track({ click: true, keydown: "ArrowUp|ArrowDown|Enter" }).context(jslogContext)}`);
     }
     this.element.classList.add("soft-dropdown");
-    Platform24.DOMUtilities.appendStyle(this.element, softDropDownButton_css_default);
+    appendStyle(this.element, softDropDownButton_css_default);
     this.titleElement = this.element.createChild("span", "title");
-    const dropdownArrowIcon = IconButton9.Icon.create("triangle-down");
+    const dropdownArrowIcon = createIcon8("triangle-down");
     this.element.appendChild(dropdownArrowIcon);
     setExpanded(this.element, false);
     this.glassPane = new GlassPane();
@@ -20314,8 +21144,8 @@ __export(TargetCrashedScreen_exports, {
   DEFAULT_VIEW: () => DEFAULT_VIEW3,
   TargetCrashedScreen: () => TargetCrashedScreen
 });
-import * as i18n35 from "./../../core/i18n/i18n.js";
-import { html as html6, render as render6 } from "./../lit/lit.js";
+import * as i18n39 from "./../../core/i18n/i18n.js";
+import { html as html6, render as render7 } from "./../lit/lit.js";
 
 // gen/front_end/ui/legacy/targetCrashedScreen.css.js
 var targetCrashedScreen_css_default = `/*
@@ -20338,7 +21168,7 @@ var targetCrashedScreen_css_default = `/*
 /*# sourceURL=${import.meta.resolve("./targetCrashedScreen.css")} */`;
 
 // gen/front_end/ui/legacy/TargetCrashedScreen.js
-var UIStrings18 = {
+var UIStrings20 = {
   /**
    * @description Text in dialog box when the target page crashed
    */
@@ -20348,13 +21178,13 @@ var UIStrings18 = {
    */
   oncePageIsReloadedDevtoolsWill: "Once page is reloaded, DevTools will automatically reconnect."
 };
-var str_18 = i18n35.i18n.registerUIStrings("ui/legacy/TargetCrashedScreen.ts", UIStrings18);
-var i18nString18 = i18n35.i18n.getLocalizedString.bind(void 0, str_18);
+var str_20 = i18n39.i18n.registerUIStrings("ui/legacy/TargetCrashedScreen.ts", UIStrings20);
+var i18nString20 = i18n39.i18n.getLocalizedString.bind(void 0, str_20);
 var DEFAULT_VIEW3 = (input, _output, target) => {
-  render6(html6`
+  render7(html6`
     <style>${targetCrashedScreen_css_default}</style>
-    <div class="message">${i18nString18(UIStrings18.devtoolsWasDisconnectedFromThe)}</div>
-    <div class="message">${i18nString18(UIStrings18.oncePageIsReloadedDevtoolsWill)}</div>`, target);
+    <div class="message">${i18nString20(UIStrings20.devtoolsWasDisconnectedFromThe)}</div>
+    <div class="message">${i18nString20(UIStrings20.oncePageIsReloadedDevtoolsWill)}</div>`, target);
 };
 var TargetCrashedScreen = class extends VBox {
   hideCallback;
@@ -20374,14 +21204,16 @@ var Treeoutline_exports = {};
 __export(Treeoutline_exports, {
   Events: () => Events2,
   TreeElement: () => TreeElement,
+  TreeElementWrapper: () => TreeElementWrapper,
   TreeOutline: () => TreeOutline,
   TreeOutlineInShadow: () => TreeOutlineInShadow,
   TreeSearch: () => TreeSearch,
   TreeViewElement: () => TreeViewElement,
+  ifExpanded: () => ifExpanded,
   treeElementBylistItemNode: () => treeElementBylistItemNode
 });
-import * as Common18 from "./../../core/common/common.js";
-import * as Platform25 from "./../../core/platform/platform.js";
+import * as Common19 from "./../../core/common/common.js";
+import * as Platform23 from "./../../core/platform/platform.js";
 import * as SDK2 from "./../../core/sdk/sdk.js";
 import * as Highlighting from "./../components/highlighting/highlighting.js";
 import * as Lit3 from "./../lit/lit.js";
@@ -20397,6 +21229,10 @@ var treeoutline_css_default = `/*
 :host {
   flex: 1 1 auto;
   padding: 2px 0 0;
+}
+
+:host(devtools-tree) {
+  display: inline-block;
 }
 
 .tree-outline-disclosure:not(.tree-outline-disclosure-hide-overflow) {
@@ -20505,11 +21341,11 @@ ol.tree-outline:not(.hide-selection-when-blurred) li.selected:focus {
 
 .tree-outline li::before {
   user-select: none;
+  mask-position: left center;
   mask-image: var(--image-file-arrow-collapse);
   background-color: var(--icon-default);
   content: "\\A0\\A0";
   text-shadow: none;
-  margin-top: calc(-1 * var(--sys-size-2));
   height: var(--sys-size-8);
   width: var(--sys-size-8);
 }
@@ -20689,6 +21525,12 @@ ol.tree-outline.tree-variant-navigation:not(.hide-selection-when-blurred) li.sel
   .tree-outline.hide-selection-when-blurred .selected:focus-visible span {
     forced-color-adjust: none;
     color: HighlightText;
+
+    --icon-default: HighlightText;
+
+     &.event-listener-details .text-button {
+      color: HighlightText;
+    }
   }
 
   .tree-outline:not(.hide-selection-when-blurred) li.selected:focus-visible devtools-adorner,
@@ -20702,7 +21544,7 @@ ol.tree-outline.tree-variant-navigation:not(.hide-selection-when-blurred) li.sel
 
 // gen/front_end/ui/legacy/Treeoutline.js
 var nodeToParentTreeElementMap = /* @__PURE__ */ new WeakMap();
-var { render: render7 } = Lit3;
+var { render: render8 } = Lit3;
 var Events2;
 (function(Events3) {
   Events3["ElementAttached"] = "ElementAttached";
@@ -20711,7 +21553,7 @@ var Events2;
   Events3["ElementCollapsed"] = "ElementCollapsed";
   Events3["ElementSelected"] = "ElementSelected";
 })(Events2 || (Events2 = {}));
-var TreeOutline = class extends Common18.ObjectWrapper.ObjectWrapper {
+var TreeOutline = class extends Common19.ObjectWrapper.ObjectWrapper {
   rootElementInternal;
   renderSelection;
   selectedTreeElement;
@@ -20948,7 +21790,7 @@ var TreeOutline = class extends Common18.ObjectWrapper.ObjectWrapper {
       let scrollParentElement = this.element;
       while (getComputedStyle(scrollParentElement).overflow === "visible" && scrollParentElement.parentElementOrShadowHost()) {
         const parent = scrollParentElement.parentElementOrShadowHost();
-        Platform25.assertNotNullOrUndefined(parent);
+        Platform23.assertNotNullOrUndefined(parent);
         scrollParentElement = parent;
       }
       const viewRect = scrollParentElement.getBoundingClientRect();
@@ -21004,7 +21846,7 @@ var TreeOutlineInShadow = class extends TreeOutline {
   }
   registerRequiredCSS(...cssFiles) {
     for (const cssFile of cssFiles) {
-      Platform25.DOMUtilities.appendStyle(this.shadowRoot, cssFile);
+      appendStyle(this.shadowRoot, cssFile);
     }
   }
   setHideOverflow(hideOverflow) {
@@ -21068,6 +21910,7 @@ var TreeElement = class {
     this.listItemNode.addEventListener("dblclick", this.handleDoubleClick.bind(this), false);
     this.listItemNode.setAttribute("jslog", `${VisualLogging25.treeItem().parent("parentTreeItem").context(jslogContext).track({
       click: true,
+      resize: true,
       keydown: "ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Backspace|Delete|Enter|Space|Home|End"
     })}`);
     markAsTreeitem(this.listItemNode);
@@ -21147,9 +21990,9 @@ var TreeElement = class {
     }
     let insertionIndex;
     if (comparator) {
-      insertionIndex = Platform25.ArrayUtilities.lowerBound(this.childrenInternal, child, comparator);
+      insertionIndex = Platform23.ArrayUtilities.lowerBound(this.childrenInternal, child, comparator);
     } else if (this.treeOutline?.comparator) {
-      insertionIndex = Platform25.ArrayUtilities.lowerBound(this.childrenInternal, child, this.treeOutline.comparator);
+      insertionIndex = Platform23.ArrayUtilities.lowerBound(this.childrenInternal, child, this.treeOutline.comparator);
     } else {
       insertionIndex = this.childrenInternal.length;
     }
@@ -21337,7 +22180,7 @@ var TreeElement = class {
       this.listItemNode.insertBefore(this.leadingIconsElement, this.titleElement);
       this.ensureSelection();
     }
-    render7(icons, this.leadingIconsElement);
+    render8(icons, this.leadingIconsElement);
   }
   get tooltip() {
     return this.tooltipInternal;
@@ -21700,7 +22543,7 @@ var TreeElement = class {
     this.listItemNode.classList.remove("selected");
     clearSelected(this.listItemNode);
     this.setFocusable(false);
-    if (this.treeOutline && this.treeOutline.selectedTreeElement === this) {
+    if (this.treeOutline?.selectedTreeElement === this) {
       this.treeOutline.selectedTreeElement = null;
       this.treeOutline.updateFocusable();
       if (hadFocus) {
@@ -21865,11 +22708,11 @@ var TreeSearch = class {
     view.updateCurrentMatchIndex(this.#currentMatchIndex);
   }
   next() {
-    this.#currentMatchIndex = Platform25.NumberUtilities.mod(this.#currentMatchIndex + 1, this.#matches.length);
+    this.#currentMatchIndex = Platform23.NumberUtilities.mod(this.#currentMatchIndex + 1, this.#matches.length);
     return this.currentMatch();
   }
   prev() {
-    this.#currentMatchIndex = Platform25.NumberUtilities.mod(this.#currentMatchIndex - 1, this.#matches.length);
+    this.#currentMatchIndex = Platform23.NumberUtilities.mod(this.#currentMatchIndex - 1, this.#matches.length);
     return this.currentMatch();
   }
   // This is a generator to sidestep stack overflow risks
@@ -21914,13 +22757,17 @@ var TreeSearch = class {
     this.reset();
     for (const _ of this.#innerSearch(node, currentMatch, jumpBackwards, match)) {
     }
-    this.#currentMatchIndex = Platform25.NumberUtilities.mod(this.#currentMatchIndex, this.#matches.length);
+    this.#currentMatchIndex = Platform23.NumberUtilities.mod(this.#currentMatchIndex, this.#matches.length);
     return this.#matches.length;
   }
 };
 var TreeViewTreeElement = class _TreeViewTreeElement extends TreeElement {
+  static CLONED_ATTRIBUTES = SDK2.DOMModel.ARIA_ATTRIBUTES.union(/* @__PURE__ */ new Set(["jslog"]));
   #clonedAttributes = /* @__PURE__ */ new Set();
   #clonedClasses = /* @__PURE__ */ new Set();
+  #userExpanded = false;
+  #isProcessingAttribute = false;
+  #previousOpenAttributeValue;
   static #elementToTreeElement = /* @__PURE__ */ new WeakMap();
   configElement;
   constructor(treeOutline, configElement) {
@@ -21929,7 +22776,42 @@ var TreeViewTreeElement = class _TreeViewTreeElement extends TreeElement {
     _TreeViewTreeElement.#elementToTreeElement.set(configElement, this);
     this.refresh();
   }
+  onexpand() {
+    if (!this.#isProcessingAttribute) {
+      this.#userExpanded = true;
+    }
+  }
+  oncollapse() {
+    if (!this.#isProcessingAttribute) {
+      this.#userExpanded = false;
+    }
+  }
+  updateExpansionFromAttribute() {
+    this.#isProcessingAttribute = true;
+    try {
+      const openAttr = this.configElement.getAttribute("open");
+      if (openAttr === this.#previousOpenAttributeValue) {
+        return;
+      }
+      this.#previousOpenAttributeValue = openAttr;
+      if (openAttr === null) {
+        if (this.#userExpanded) {
+          this.expand();
+        } else {
+          this.collapse();
+        }
+      } else if (openAttr === "false") {
+        this.collapse();
+      } else {
+        this.expand();
+      }
+    } finally {
+      this.#isProcessingAttribute = false;
+    }
+  }
   refresh() {
+    const expandable = Boolean(this.configElement.querySelector('ul[role="group"]'));
+    this.setExpandable(expandable);
     this.titleElement.textContent = "";
     this.#clonedAttributes.forEach((attr) => this.listItemElement.attributes.removeNamedItem(attr));
     this.#clonedClasses.forEach((className) => this.listItemElement.classList.remove(className));
@@ -21937,7 +22819,7 @@ var TreeViewTreeElement = class _TreeViewTreeElement extends TreeElement {
     this.#clonedClasses.clear();
     for (let i = 0; i < this.configElement.attributes.length; ++i) {
       const attribute = this.configElement.attributes.item(i);
-      if (attribute && attribute.name !== "role" && SDK2.DOMModel.ARIA_ATTRIBUTES.has(attribute.name)) {
+      if (attribute && attribute.name !== "role" && _TreeViewTreeElement.CLONED_ATTRIBUTES.has(attribute.name)) {
         this.listItemElement.setAttribute(attribute.name, attribute.value);
         this.#clonedAttributes.add(attribute.name);
       }
@@ -21946,54 +22828,80 @@ var TreeViewTreeElement = class _TreeViewTreeElement extends TreeElement {
       this.listItemElement.classList.add(className);
       this.#clonedClasses.add(className);
     }
-    InterceptBindingDirective.attachEventListeners(this.configElement, this.listItemElement);
+    InterceptBindingDirective.setEventListeners(this.configElement, this.listItemElement);
     for (const child of this.configElement.childNodes) {
       if (child instanceof HTMLUListElement && child.role === "group") {
         continue;
       }
       this.titleElement.appendChild(HTMLElementWithLightDOMTemplate.cloneNode(child));
     }
+    this.hidden = hasBooleanAttribute(this.configElement, "hidden");
+    this.updateExpansionFromAttribute();
     Highlighting.HighlightManager.HighlightManager.instance().apply(this.titleElement);
   }
   static get(configElement) {
     return configElement && _TreeViewTreeElement.#elementToTreeElement.get(configElement);
   }
   remove() {
-    const parent = this.parent;
-    if (parent) {
-      parent.removeChild(this);
-      parent.setExpandable(parent.children().length > 0);
-    }
+    removeNode(this, Boolean(this.parent && this.parent.configElement?.querySelector('ul[role="group"]')));
     _TreeViewTreeElement.#elementToTreeElement.delete(this.configElement);
   }
 };
 function getTreeNodes(nodeList) {
   return nodeList.values().flatMap((node) => {
+    if (node instanceof TreeElementWrapper) {
+      return [node];
+    }
     if (node instanceof HTMLLIElement && node.role === "treeitem") {
-      return [node, ...node.querySelectorAll('ul[role="group"] li[role="treeitem"]')];
+      return [
+        node,
+        ...node.querySelectorAll('ul[role="group"] li[role="treeitem"],ul[role="group"] devtools-tree-wrapper')
+      ];
     }
     if (node instanceof HTMLElement) {
-      return node.querySelectorAll('li[role="treeitem"]');
+      return node.querySelectorAll('li[role="treeitem"],devtools-tree-wrapper');
     }
     return [];
   }).toArray();
 }
+function getStyleElements(nodes) {
+  return [...nodes].flatMap((node) => {
+    if (node instanceof HTMLStyleElement) {
+      return [node];
+    }
+    if (node instanceof HTMLElement) {
+      return [...node.querySelectorAll("style")];
+    }
+    return [];
+  });
+}
+function removeNode(node, preserveParentExpandable = false) {
+  const parent = node.parent;
+  if (parent) {
+    parent.removeChild(node);
+    if (!preserveParentExpandable) {
+      parent.setExpandable(parent.children().length > 0);
+    }
+  }
+}
 var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemplate {
-  static observedAttributes = ["navigation-variant", "hide-overflow"];
+  static observedAttributes = ["navigation-variant", "hide-overflow", "dense", "show-selection-on-keyboard-focus"];
   #treeOutline = new TreeOutlineInShadow(void 0, this);
   constructor() {
     super();
     this.#treeOutline.addEventListener(Events2.ElementSelected, (event) => {
       if (event.data instanceof TreeViewTreeElement) {
-        this.dispatchEvent(new _TreeViewElement.SelectEvent(event.data.configElement));
+        event.data.listItemElement.dispatchEvent(new _TreeViewElement.SelectEvent());
       }
     });
     this.#treeOutline.addEventListener(Events2.ElementExpanded, (event) => {
+      this.dispatchEvent(new _TreeViewElement.TreeElementExpandEvent(event.data, true));
       if (event.data instanceof TreeViewTreeElement) {
         event.data.listItemElement.dispatchEvent(new _TreeViewElement.ExpandEvent({ expanded: true }));
       }
     });
     this.#treeOutline.addEventListener(Events2.ElementCollapsed, (event) => {
+      this.dispatchEvent(new _TreeViewElement.TreeElementExpandEvent(event.data, false));
       if (event.data instanceof TreeViewTreeElement) {
         event.data.listItemElement.dispatchEvent(new _TreeViewElement.ExpandEvent({ expanded: false }));
       }
@@ -22009,14 +22917,14 @@ var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemp
       return null;
     }
     if (subtreeRoot.role === "tree") {
-      return { treeElement: this.#treeOutline.rootElement(), expanded: false };
+      return { treeElement: this.#treeOutline.rootElement(), expanded: false, classes: subtreeRoot.classList };
     }
     if (subtreeRoot.role !== "group" || !subtreeRoot.parentElement) {
       return null;
     }
-    const expanded = !hasBooleanAttribute(subtreeRoot, "hidden");
     const treeElement = TreeViewTreeElement.get(subtreeRoot.parentElement);
-    return treeElement ? { expanded, treeElement } : null;
+    const expanded = treeElement ? treeElement.expanded : hasBooleanAttribute(subtreeRoot.parentElement, "open");
+    return treeElement ? { expanded, treeElement, classes: subtreeRoot.classList } : null;
   }
   updateNode(node, attributeName) {
     while (node?.parentNode && !(node instanceof HTMLElement)) {
@@ -22034,12 +22942,8 @@ var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemp
     if (node === treeNode && attributeName === "selected" && hasBooleanAttribute(treeNode, "selected")) {
       treeElement.revealAndSelect(true);
     }
-    if (attributeName === "hidden" && node instanceof HTMLUListElement && node.role === "group") {
-      if (hasBooleanAttribute(node, "hidden")) {
-        treeElement.collapse();
-      } else {
-        treeElement.expand();
-      }
+    if (node === treeNode && attributeName === "open") {
+      treeElement.updateExpansionFromAttribute();
     }
   }
   addNodes(nodes, nextSibling) {
@@ -22051,26 +22955,47 @@ var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemp
       if (!parent) {
         continue;
       }
+      if (parent.treeElement.childCount() === 0) {
+        parent.treeElement.childrenListElement.classList.add(...parent.classes.values());
+      }
       while (nextSibling && nextSibling.nodeType !== Node.ELEMENT_NODE) {
         nextSibling = nextSibling.nextSibling;
       }
       const nextElement = nextSibling ? TreeViewTreeElement.get(nextSibling) : null;
       const index = nextElement ? parent.treeElement.indexOfChild(nextElement) : parent.treeElement.children().length;
-      const treeElement = new TreeViewTreeElement(this.#treeOutline, node);
-      const expandable = Boolean(node.querySelector('ul[role="group"]'));
-      treeElement.setExpandable(expandable);
-      parent.treeElement.insertChild(treeElement, index);
-      if (hasBooleanAttribute(node, "selected")) {
-        treeElement.revealAndSelect(true);
+      let treeElement;
+      if (node instanceof HTMLLIElement) {
+        treeElement = new TreeViewTreeElement(this.#treeOutline, node);
+        const expandable = Boolean(node.querySelector('ul[role="group"]'));
+        treeElement.setExpandable(expandable);
+        treeElement.updateExpansionFromAttribute();
+      } else {
+        treeElement = node.treeElement;
       }
-      if (parent.expanded) {
-        parent.treeElement.expand();
+      if (treeElement) {
+        if (treeElement.parent) {
+          removeNode(treeElement);
+        }
+        parent.treeElement.insertChild(treeElement, index);
+        if (hasBooleanAttribute(node, "selected")) {
+          treeElement.revealAndSelect(true);
+        }
+        if (parent.expanded) {
+          parent.treeElement.expand();
+        }
       }
+    }
+    for (const element of getStyleElements(nodes)) {
+      this.#treeOutline.shadowRoot.appendChild(element.cloneNode(true));
     }
   }
   removeNodes(nodes) {
     for (const node of getTreeNodes(nodes)) {
-      TreeViewTreeElement.get(node)?.remove();
+      if (node instanceof HTMLLIElement) {
+        TreeViewTreeElement.get(node)?.remove();
+      } else if (node.treeElement) {
+        removeNode(node.treeElement, Boolean(node.treeElement.parent && node.treeElement.parent.configElement?.querySelector('ul[role="group"]')));
+      }
     }
   }
   set hideOverflow(hide) {
@@ -22085,26 +23010,40 @@ var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemp
   get navigationVariant() {
     return hasBooleanAttribute(this, "navigation-variant");
   }
+  set dense(dense) {
+    this.toggleAttribute("dense", dense);
+  }
+  get dense() {
+    return hasBooleanAttribute(this, "dense");
+  }
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) {
       return;
     }
+    const booleanValueIsTrue = newValue !== null && newValue !== "false";
     switch (name) {
       case "navigation-variant":
         this.#treeOutline.setVariant(
-          newValue !== "false" ? "NavigationTree" : "Other"
+          booleanValueIsTrue ? "NavigationTree" : "Other"
           /* TreeVariant.OTHER */
         );
         break;
       case "hide-overflow":
-        this.#treeOutline.setHideOverflow(newValue !== "false");
+        this.#treeOutline.setHideOverflow(booleanValueIsTrue);
+        break;
+      case "dense":
+        this.#treeOutline.setDense(booleanValueIsTrue);
+        break;
+      case "show-selection-on-keyboard-focus":
+        this.#treeOutline.setShowSelectionOnKeyboardFocus(booleanValueIsTrue);
+        break;
     }
   }
 };
 (function(TreeViewElement2) {
   class SelectEvent extends CustomEvent {
-    constructor(detail) {
-      super("select", { detail });
+    constructor() {
+      super("select");
     }
   }
   TreeViewElement2.SelectEvent = SelectEvent;
@@ -22114,8 +23053,67 @@ var TreeViewElement = class _TreeViewElement extends HTMLElementWithLightDOMTemp
     }
   }
   TreeViewElement2.ExpandEvent = ExpandEvent;
+  class TreeElementExpandEvent extends CustomEvent {
+    constructor(treeElement, expanded) {
+      super("treeelementexpand", { detail: { treeElement, expanded } });
+    }
+  }
+  TreeViewElement2.TreeElementExpandEvent = TreeElementExpandEvent;
 })(TreeViewElement || (TreeViewElement = {}));
+var IfExpandedDirective = class extends Lit3.Directive.Directive {
+  #partInfo;
+  constructor(partInfo) {
+    if (partInfo.type !== Lit3.Directive.PartType.CHILD) {
+      throw new Error("ifExpanded directive must be used in a child node");
+    }
+    super(partInfo);
+    this.#partInfo = partInfo;
+  }
+  render(content) {
+    return this.#isInExpandedRow(this.#partInfo.startNode) ? content : Lit3.nothing;
+  }
+  #isInExpandedRow(element) {
+    if (!element) {
+      return false;
+    }
+    if (!(element instanceof HTMLElement)) {
+      element = element.parentNode;
+    }
+    if (!(element instanceof HTMLElement)) {
+      return false;
+    }
+    element = element.closest('li[role="treeitem"]') ?? void 0;
+    if (!(element instanceof HTMLLIElement)) {
+      return false;
+    }
+    if (hasBooleanAttribute(element, "open")) {
+      return true;
+    }
+    const node = TreeViewTreeElement.get(element);
+    if (!node) {
+      return false;
+    }
+    return node.expanded;
+  }
+};
+var ifExpanded = Lit3.Directive.directive(IfExpandedDirective);
+var TreeElementWrapper = class extends HTMLElement {
+  #treeElement;
+  set treeElement(treeElement) {
+    if (this.#treeElement?.parent) {
+      const parent = this.#treeElement.parent;
+      const index = parent.indexOfChild(this.#treeElement);
+      parent.removeChildAtIndex(index);
+      parent.insertChild(treeElement, index);
+    }
+    this.#treeElement = treeElement;
+  }
+  get treeElement() {
+    return this.#treeElement;
+  }
+};
 customElements.define("devtools-tree", TreeViewElement);
+customElements.define("devtools-tree-wrapper", TreeElementWrapper);
 function loggingParentProvider(e) {
   const treeElement = TreeElement.getTreeElementBylistItemNode(e);
   const parentElement = treeElement?.parent?.listItemElement;
@@ -22128,7 +23126,7 @@ var View_exports = {};
 __export(View_exports, {
   SimpleView: () => SimpleView
 });
-import * as Platform26 from "./../../core/platform/platform.js";
+import * as Platform24 from "./../../core/platform/platform.js";
 var SimpleView = class extends VBox {
   #title;
   #viewId;
@@ -22142,7 +23140,7 @@ var SimpleView = class extends VBox {
     super(options);
     this.#title = options.title;
     this.#viewId = options.viewId;
-    if (!Platform26.StringUtilities.isExtendedKebabCase(this.#viewId)) {
+    if (!Platform24.StringUtilities.isExtendedKebabCase(this.#viewId)) {
       throw new TypeError(`Invalid view ID '${this.#viewId}'`);
     }
   }
@@ -22180,9 +23178,12 @@ export {
   ARIAUtils_exports as ARIAUtils,
   ActionRegistration_exports as ActionRegistration,
   ActionRegistry_exports as ActionRegistry,
+  App_exports as App,
+  AppProvider_exports as AppProvider,
   Context_exports as Context,
   ContextFlavorListener_exports as ContextFlavorListener,
   ContextMenu_exports as ContextMenu,
+  DOMUtilities_exports as DOMUtilities,
   Dialog_exports as Dialog,
   DockController_exports as DockController,
   DropTarget_exports as DropTarget,
@@ -22190,12 +23191,12 @@ export {
   FilterBar_exports as FilterBar,
   FilterSuggestionBuilder_exports as FilterSuggestionBuilder,
   ForwardedInputEventHandler_exports as ForwardedInputEventHandler,
-  Fragment_exports as Fragment,
   GlassPane_exports as GlassPane,
   Infobar_exports as Infobar,
   InplaceEditor_exports as InplaceEditor,
   InspectorView_exports as InspectorView,
   KeyboardShortcut_exports as KeyboardShortcut,
+  LinkContextMenuProvider_exports as LinkContextMenuProvider,
   ListControl_exports as ListControl,
   ListModel_exports as ListModel,
   ListWidget_exports as ListWidget,
@@ -22218,12 +23219,11 @@ export {
   Toolbar_exports as Toolbar,
   Tooltip_exports as Tooltip,
   Treeoutline_exports as TreeOutline,
+  UIUserMetrics_exports as UIUserMetrics,
   UIUtils_exports as UIUtils,
   View_exports as View,
   ViewManager_exports as ViewManager,
   Widget_exports as Widget,
-  XElement_exports as XElement,
-  XLink_exports as XLink,
   ZoomManager_exports as ZoomManager,
   inspectorCommon_css_default as inspectorCommonStyles
 };

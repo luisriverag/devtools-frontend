@@ -69,10 +69,10 @@ export declare const RevealerDestination: {
     CHANGES_DRAWER: () => Platform.UIString.LocalizedString;
     ISSUES_VIEW: () => Platform.UIString.LocalizedString;
     NETWORK_PANEL: () => Platform.UIString.LocalizedString;
+    REQUEST_CONDITIONS_DRAWER: () => Platform.UIString.LocalizedString;
     TIMELINE_PANEL: () => Platform.UIString.LocalizedString;
     APPLICATION_PANEL: () => Platform.UIString.LocalizedString;
     SOURCES_PANEL: () => Platform.UIString.LocalizedString;
-    SECURITY_PANEL: () => Platform.UIString.LocalizedString;
     MEMORY_INSPECTOR_PANEL: () => Platform.UIString.LocalizedString;
     ANIMATIONS_PANEL: () => Platform.UIString.LocalizedString;
 };
